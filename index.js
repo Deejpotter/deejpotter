@@ -5,7 +5,7 @@
  */
 
 var app = require('./app');
-var debug = require('debug')('deejpotterdesigns-node:server');
+var debug = require('debug')('deejpotter:server');
 var http = require('http');
 
 /**
