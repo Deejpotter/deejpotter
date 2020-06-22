@@ -1,0 +1,35 @@
+	{{!-- Hero section --}}
+	{{>homeHero heroSection=heroSection}}
+
+	{{!-- First section --}}
+    <section class="bg-{{firstSection.bgColour}} text-{{firstSection.textColour}} py-5 {{firstSection.otherClasses}}" style='background-image:url({{firstSection.bgImage}});'>
+        <div class="container">
+            <h2>{{firstSection.sectionH2}}</h2>
+            <p class="">{{firstSection.sectionP}}</p>
+        </div>
+    </section>
+
+	{{!-- Second section --}}
+    <section class="bg-{{secondSection.bgColour}} text-{{secondSection.textColour}} py-5 {{secondSection.otherClasses}}" style='background-image:url({{secondSection.bgImage}});'>
+        <div class="container">
+            <h2>{{secondSection.sectionH2}}</h2>
+            <p class="">{{secondSection.sectionP}}</p>
+        </div>
+    </section>
+
+    {{!-- About section --}}
+    <section class="bg-{{aboutSection.bgColour}} text-{{aboutSection.textColour}} py-5 {{aboutSection.otherClasses}}" style='background-image:url({{aboutSection.bgImage}});'>
+        <div class="container">
+            <h2>{{aboutSection.sectionH2}}</h2>
+            <p class="">{{aboutSection.sectionP}}</p>
+        </div>
+    </section>
+
+	<!-- Contact section -->
+	<section class="bg-{{contactSection.bgColour}} text-{{contactSection.textColour}} py-5 {{contactSection.otherClasses}}" style='background-image:url({{contactSection.bgImage}});'>
+		<div class="container">
+			<h2>{{contactSection.sectionH2}}</h2>
+			<p class="">{{contactSection.sectionP}}</p>
+			<a class="shadow btn btn-{{contactSection.buttonColour}}" href= "{{contactSection.sectionButtonLink}}">{{contactSection.sectionButtonText}}</a>	
+		</div>
+	</section>

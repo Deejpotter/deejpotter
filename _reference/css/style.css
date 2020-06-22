@@ -1,0 +1,210 @@
+/*--------------------------------------------------------- 
+                    #Index 
+---------------------------------------------------------
+  #Global  
+    #Variables
+    #BaseSelectors
+  #MainClasses
+    #GeneralClasses
+    #Header
+    #Footer
+    #IndexSection
+    #Calculator
+    
+*/
+
+/*--------------------------------------------------------- 
+                    #Global 
+---------------------------------------------------------*/
+
+
+/*----------
+#Variables
+---------*/
+
+:root {
+  --main: #26BF66;
+  --light-accent: #59B7CC;
+  --dark-accent: #7A616C;
+  --light: #F4EFF2;
+  --dark: #181821;
+
+  --heading-font: 'Lemonada', cursive;
+  --body-font: 'Montserrat', sans-serif;
+
+  --bottom-margin: 0 0 15px 0;
+  --bigger-margin: 0 0 30px 0;
+  --box-shadow: 4px 4px 8px 0px #18182133;
+  --box-shadow-top: 0 0 8px 0px #18182133;
+  --box-shadow-inset: inset 0px 1px 4px 1px  #181821;
+  --default-radius: 8px;
+
+}
+
+/*----------
+#BaseSelectors
+---------*/  
+
+
+
+/*--------------------------------------------------------- 
+                    #MainClasses 
+---------------------------------------------------------*/
+
+
+/*---------
+#GeneralClasses
+---------*/
+
+.background {
+  background-image: url("../images/white-waves.png");
+  background-attachment: fixed;
+}
+
+ .inset{
+  box-shadow: var(--box-shadow-inset);
+}
+
+.inset-background-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  box-shadow: var(--box-shadow-inset);
+ }
+
+.inset-background-right {
+  background-attachment: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: var(--box-shadow-inset);
+}
+@media (max-width: 500px) {
+  .inset-background-right {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+.inset-background-left {
+  background-attachment: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  box-shadow: var(--box-shadow-inset);
+}
+@media (max-width: 500px) {
+  .inset-background-left {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+
+/*---------
+#Header
+---------*/
+
+  /* Bootstrap makes the logo huge for some reason */
+  .navbar-brand img {
+    height: 5rem;
+  }
+
+  /*---------
+#Footer
+---------*/
+
+  #main-footer {
+    box-shadow: var(--box-shadow-top);
+  }
+
+  /* Make the facebook icon bigger */
+  #main-footer i {
+    font-size: 5rem;
+  }
+
+/*---------
+#IndexSection
+---------*/
+
+.index-section i {
+  font-size: 5rem;
+}
+
+.index-section i:hover {
+  font-size: 6rem;
+}
+
+
+/*--------------------------------------------------------- 
+          #Calculator
+  ---------------------------------------------------------*/
+  
+  #calculator {
+    height: 80vh;
+    width: 80vw;
+    max-width: 600px;
+    margin: 5vh auto;
+    padding: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    background: var(--main);
+  }
+  @media (min-width: 600) {
+    #calculator {
+      width: 90vw;
+    }
+  }
+
+     	/*---
+		  #Screen
+		  ---*/ 
+
+  .screen {
+    height: 20%;
+    padding: 20px;
+    background: #fff;
+    box-shadow: var(--box-shadow);;
+    border-radius: 10px;
+  }
+
+  #output-text {
+    text-align: right;
+    min-height: var(--font-size);
+  }
+
+  #old-text {
+    color: darkgrey;
+    min-height: var(--font-size);
+  }
+
+    	/*---
+		  #Keypad
+      ---*/
+      
+  .keypad {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    height: 70%;
+  }
+
+  button {
+    margin: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    background: #fff;
+  }
+  
+  button:hover {
+    background: var(--light);
+  }
+
+
+  /*--------------------------------------------------------- 
+          #Phaser
+  ---------------------------------------------------------*/
+  
+  #game-area canvas {
+    margin: auto;
+  }

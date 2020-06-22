@@ -1,0 +1,825 @@
+  /*--Colour Palette
+  Main        #26BF66
+  LightAccent #59B7CC
+  DarkAccent  #7A616C
+  Light       #F4EFF2
+  Dark        #181821
+  */
+
+/* 
+  #Global  
+  #Header and footer
+    #Header
+    #Footer
+  #Home page
+    #Hero
+    #Personal
+    #Techincal
+    #About Me
+    #Contact
+  #About me page
+    #Hero
+  #Sidebar page
+    #Hero
+    #Main Content
+  #Index page
+    #Hero
+    #Index Section
+  #Calculator
+    #Screen
+    #Keypad
+  #Forms
+    #Contact form
+    #Pricing form
+*/
+
+  /*--------------------------------------------------------- 
+					#Global 
+  ---------------------------------------------------------*/
+
+  :root {
+    --main: #26BF66;
+    --light-accent: #59B7CC;
+    --dark-accent: #7A616C;
+    --light: #F4EFF2;
+    --dark: #181821;
+
+    --heading-font: 'Lemonada', cursive;
+    --body-font: 'Montserrat', sans-serif;
+
+    --bottom-margin: 0 0 15px 0;
+    --bigger-margin: 0 0 30px 0;
+    --box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, .2);
+    --default-radius: 8px;
+
+  }
+
+  .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  h1 {
+    font-size: 3.5em;
+	  line-height: 1.2;
+    font-family: var(--heading-font);
+	  margin: var(--bottom-margin);
+  }
+
+  h2 {
+    font-size: 2.5em;
+	  line-height: 1.2;
+    font-family: var(--heading-font);
+	  margin: var(--bottom-margin);
+  }
+
+  h3 {
+    font-size: 1.5em;
+	  line-height: 1.2;
+    font-family: var(--heading-font);
+	  margin: var(--bottom-margin);
+  }
+
+  h4 {
+    font-size: 1.1em;
+	  line-height: 1.2;
+    font-family: var(--heading-font);
+	  margin: var(--bottom-margin);
+  }
+  @media (max-width:400px) {
+  h1 {
+    font-size: 2.5em;    
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+  
+  h4 {
+    font-size: 1em;
+  }
+  }
+
+  main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: url("../images/white-waves.png");
+    background-attachment: fixed;
+  }
+
+  body {
+    font-size: 1.15em;
+	  line-height: 1.6;
+    font-family: var(--body-font);
+    background: var(--light);
+  }
+  @media (max-width: 800px) {
+    body {
+      font-size: 1em;
+    }
+  }
+
+  section {
+    min-height: 10vh;
+	  padding: 10vh 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media (max-width:950px) {
+	section {
+		padding:5%;
+    }
+  }
+  
+  a {
+	font-size: 1.2em;
+    text-decoration: none;
+    color: var(--main);
+    transition: font-size .5s ease-out;
+  }
+    
+  /* Hover styles for links in the nav */
+  a:hover {
+    font-size: 1.4em;
+  }
+  
+  p {
+	  margin: var(--bigger-margin);
+  }
+
+  canvas {
+    background: var(--light);
+    display: block;
+    margin: 0 auto;
+    border-style: solid;
+  }
+
+		  /*----
+		  #Basic classes
+		  ---*/
+      
+  .container {
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-left {
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  @media (max-width: 500px) {
+    .container{
+      flex-direction: column;
+    }
+  }
+  
+  .inset{
+    box-shadow: inset 0 0px 5px 1px black;
+  }
+
+  .inset-background-right {
+    background-attachment: fixed;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    box-shadow: inset 0 0px 5px 1px black;
+  }
+  @media (max-width: 500px) {
+    .inset-background-right {
+      background-attachment: scroll;
+      background-size: cover;
+    }
+  }
+	
+  .inset-background-left {
+    background-attachment: fixed;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left;
+    box-shadow: inset 0 0px 5px 1px black;
+  }
+  @media (max-width: 500px) {
+    .inset-background-left {
+      background-attachment: scroll;
+      background-size: cover;
+    }
+  }
+  
+  @media (min-width: 500px) {
+  /* These are for a bounce animation in the hero */
+  .bounce {
+    display: inline-block;
+    position: relative;
+    animation: bounce 2.5s 5s 4 ease-in-out;
+  }
+  @keyframes bounce {
+      0% { top: 0; }
+      50% { top: 0.5em; }
+      100% { top: 0; }
+  }
+  
+  /* These are for a shake animation for the contact buttons */
+    .shake {
+    position: relative;
+    animation: shake .2s 2s 2 linear;
+  }
+  @keyframes shake {
+      0% { left: 0; }
+      50% { left: 0.2em; }
+      100% { left: 0; }
+  }
+  }
+
+
+  /*--------------------------------------------------------- 
+					#Header and footer 
+  ---------------------------------------------------------*/
+
+
+		  /*----
+		  Header
+		  ---*/
+
+  /* This is the container for the whole header */
+  .main-header {
+    padding: 1vh 10vw;
+    position: relative;
+	  box-shadow: var(--box-shadow);
+  }
+
+  /* Container for the top of the header */
+  .main-header-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Container for the bottom of the header */
+  .main-header-bottom {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Limit the logo hight in the header */
+  .logo {
+    height: 10vh;
+  }
+
+  .btn btn-primary shadow {
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    transition: background .5s, color .5s, font-size .5s ease-out;
+    background: var(--main);
+    color: var(--light);
+    box-shadow: var(--box-shadow);
+  }
+
+  .btn btn-primary shadow:hover {
+	background: var(--dark-accent);
+  color: var(--main);
+  font-size: 1.6em;
+  }
+
+  /* Layout styles for the main nav. Items should fill
+  the div vertically and have space between horizontally  */
+  .main-nav {
+    height: 100%;
+    display: flex;
+    align-items: center;
+	justify-content: space-between;
+  }
+  @media (max-width:600px) {
+	  .main-nav {
+		display: none;
+		flex-direction: column;
+		position: absolute;
+		width: 100%;
+		top: 18vh;
+		background: var(--light);
+		height: 50vh;
+		padding-bottom: 8%;
+	  }
+  }
+
+  /* Add a bit of space between hr in the nav
+	also needs a height*/
+  .main-nav hr {
+	  margin: 20px;
+	  height: 5vh;
+  }
+  @media (max-width: 600px) {
+	.main-nav hr {
+	  margin: 5px;
+	  width: 90%;
+	  height: 1px;
+	}
+  }
+
+  /* This is for styling the links in the nav */
+  .main-nav a {
+
+  }  
+  @media (max-width: 800px) {
+    .main-nav a {
+      font-size: 1.1em;
+    }
+  }
+
+  /* Dropdown on hover */
+  .dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    background-color: var(--light);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--default-radius);
+    z-index: 1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: flex;
+  }
+
+  .dropdown-content a {
+    margin: 10px;
+  }
+  
+  /* Button for showing and hiding the nav on small screens */
+	.mobile-menu-button {
+	  display: none;
+	  text-align: right;
+  }
+  @media (max-width: 600px) {
+    .mobile-menu-button {
+      display: block;
+    }
+  }
+  
+  
+  		  /*---
+		  Footer
+		  ---*/
+  
+  .main-footer {
+    box-shadow: var(--box-shadow);
+	  padding: 10px 0;
+  }
+  
+  /* Increase the size of
+  the icons in the footer */
+  .main-footer i {
+    font-size: 100px;
+	transition: font-size .5s ease-out;
+  }
+  
+  .main-footer i:hover {
+	  font-size: 120px;
+  }
+
+  /* Change the colour of the
+  icons and links in the footer */
+  .main-footer a i {
+    color: var(--main);
+  }
+
+  .main-footer hr {
+	margin: 20px;
+	height: 10em;
+  }
+  
+  .main-footer .container {
+	width: 50%;
+	height: 100%;
+	text-align: center;
+  }  
+  @media (max-width: 800px) {
+	.main-footer, .main-footer a {
+		font-size: 1em;
+    }
+  }
+  @media (max-width: 500px) {
+	  	.main-footer hr {
+		width: 9em;
+		height: 1px;
+		margin: 10px;
+	}
+  }
+
+  /*--------------------------------------------------------- 
+					#Home page 
+  ---------------------------------------------------------*/
+  
+	
+		  /*---
+		  #Hero
+		  ---*/
+  .home {
+    background-image: url(../images/laptop-60-opacity.png);
+  }
+
+  .hero {
+    color: var(--light);
+    background-color: var(--main);
+    text-align: center;
+  }
+
+  /* Increase the icon size in the hero */
+  .hero i {
+	  font-size: 50px;
+  }
+  
+  
+		  /*---
+		  #Personal
+		  ---*/
+  
+  .personal-section .container {
+	  display: block;
+  }
+
+  .personal-section a {
+    float: right;
+  }
+  
+  /* Add a bit of space between hr in the nav
+	also needs a height*/
+  .personal-section hr {
+	  margin: 2vw;
+	  height: 2em;
+  }
+  @media (max-width: 500px) {
+	.personal-section hr {
+    width: 9em;
+    height: 1px;
+    margin: 8px;
+	}
+  }
+  
+  /* Change the links in the services section to
+  sit on the right */
+  .personal-section .container {
+	  justify-content: flex-end;
+	  }
+	  
+  
+		  /*---
+		  #Technical
+		  ---*/
+  
+  .technical-section {
+	color: var(--light);
+	background-image: url(../images/pencils-60-opacity.png);
+	background-color: var(--dark-accent);
+  }
+  
+
+  		  /*---
+		  #About me
+		  ---*/
+  
+  .about-me-section a {
+    float: right;
+  }
+  
+
+		  /*---
+		  #Contact
+		  ---*/
+  
+  .home-contact {
+	  padding: 10%;
+    text-align: center;
+    background: var(--main);
+  }   
+  
+  .home-contact a {
+    background: var(--dark-accent);
+  }
+  .home-contact a:hover {
+    background: var(--main);
+    color: var(--light);
+  }
+
+
+    /*--------------------------------------------------------- 
+					#About me page 
+  ---------------------------------------------------------*/
+  
+  
+  		  /*---
+		  #Hero
+		  ---*/
+
+  .about-me-image {
+    background-image: url(../images/about-me-image-50-450x600.png);
+  }
+  
+  
+  /*--------------------------------------------------------- 
+					#Sidebar page 
+  ---------------------------------------------------------*/
+  
+  
+  		  /*---
+		  #Hero
+		  ---*/
+		  
+  .sidebar-hero {
+    color: var(--light);
+	background-image: url(../images/laptop-60-opacity.png);
+	background-color: var(--main);
+	text-align: center;
+  }
+  
+    .sidebar-hero i {
+	  font-size: 50px;
+  }
+    
+  
+  		  /*---
+		  #Main content
+		  ---*/
+	
+	.sidebar-70-30 {
+		display: flex;
+		flex-direction: row;
+		margin: 0 auto;
+		padding: 5%;
+		max-width: 900px;
+	}
+	@media (max-width: 700px) {
+	.sidebar-70-30 {
+		flex-direction: column;
+		}
+	}
+	
+	.big {
+		width: 70%;
+		margin-right: 10%;
+	}
+	@media (max-width: 700px) {
+	.big {
+		width: 100%;
+		margin-right: 0%;
+		}
+	}
+	
+	.small {
+		width: 30%;
+		
+	}
+	@media (max-width: 700px) {
+	.small {
+		width: 100%;	
+		display: flex;
+		flex-direction: row;
+		}
+		.small div {
+		width: 50%;
+		padding: 1%;
+		}
+	}
+	
+	.small a {
+		display: inline-block;
+		margin: 0 0 30px 0;
+	}
+	
+	.small i {
+		color: var(--main);
+	}
+	
+	
+	/*--------------------------------------------------------- 
+					#Index page 
+  ---------------------------------------------------------*/
+  
+  
+  		  /*---
+		  #Hero
+		  ---*/
+	
+	.index-hero {
+	min-height: 30vh;
+    color: var(--light);
+	background-color: var(--main);
+	text-align: center;
+	
+  }
+  
+  
+    	/*---
+		  #Index Section
+		  ---*/
+		  
+	.index-section {
+		
+		}
+		  
+	.index-section .container {
+		align-items: flex-start;
+		margin: 0 5%;		
+	}
+	
+	.index-card {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin: 20px auto;
+		padding: 20px;
+		border-radius: 10px;
+		background: var(--light);
+		box-shadow: var(--box-shadow);
+	}
+	
+	.index-card i {
+		font-size: 50px;
+		transition: font-size .5s ease-out;
+	}
+	.index-card i:hover {
+		font-size:80px;
+	}
+	
+	.index-card a {
+		margin-right: 20px;
+  }
+  
+
+  /*--------------------------------------------------------- 
+          #Calculator
+  ---------------------------------------------------------*/
+  
+  #calculator {
+    height: 80vh;
+    width: 80vw;
+    max-width: 600px;
+    margin: 5vh auto;
+    padding: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    background: var(--main);
+  }
+  @media (min-width: 600) {
+    #calculator {
+      width: 90vw;
+    }
+  }
+
+     	/*---
+		  #Screen
+		  ---*/ 
+
+  .screen {
+    height: 20%;
+    padding: 20px;
+    background: #fff;
+    box-shadow: var(--box-shadow);;
+    border-radius: 10px;
+  }
+
+  #output-text {
+    text-align: right;
+    min-height: var(--font-size);
+  }
+
+  #old-text {
+    color: darkgrey;
+    min-height: var(--font-size);
+  }
+
+    	/*---
+		  #Keypad
+      ---*/
+      
+  .keypad {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    height: 70%;
+  }
+
+  button {
+    margin: 10px;
+    box-shadow: var(--box-shadow);;
+    border-radius: 10px;
+    background: #fff;
+  }
+  
+  button:hover {
+    background: var(--light);
+  }
+
+
+    /*--------------------------------------------------------- 
+          #Forms
+  ---------------------------------------------------------*/
+
+      	/*---
+		  #Contact form
+      ---*/
+
+  .contact-image {
+    background-image: url(../images/contact-image-50-800x600.png);
+  }
+  
+  #contact-page-form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    height: 60vh;
+    width: 80vw;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--light);
+    box-shadow: var(--box-shadow);
+  }
+
+  #contact-page-form div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #contact-page-form input {
+    border-radius: 10px;
+    min-height: 1.8em;
+  }
+
+  #contact-page-form textarea {
+    border-radius: 10px;
+    min-height: 1.8em;
+  }
+
+  #submit-button {
+    font-size: 1.2em;
+    color: var(--light);
+    background: var(--main);
+  }
+
+
+  /*---
+  #Pricing form
+  ---*/
+
+  .pricing-image {
+    background-image: url(../images/pricing-image-50-900x600.png);
+  }
+
+  #pricing-form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    width: 80%;
+    max-width: 900px;
+    padding: 30px;
+    border-radius: 10px;
+    background: var(--light);
+    box-shadow: var(--box-shadow);
+  }
+
+  #pricing-form div {
+    padding: 10px 0;
+  }
+
+  #checkbox-form-section div {
+    flex-direction: row;
+    align-content: center;
+  }
+
+  #pricing-form input {
+    border-radius: 10px;
+  }
+
+  #pricing-form select {
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  #cost-section p {
+    font-weight: bold;
+  }

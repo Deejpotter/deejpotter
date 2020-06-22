@@ -1,0 +1,22 @@
+{{!-- 
+
+	-----EXAMPLE-----
+	Loaded though the route's render call
+
+	heroSection: {
+      bgColour: "primary",
+      textColour: "light",
+      bgImage: "images/laptop-60-opacity.png",
+      sectionH1: "Deej Potter Designs",
+      sectionP: "Your own personal web designer. Prices start at $100. Contact me now!",
+      otherClasses: "inset-background-cover"
+    }
+
+ --}}
+
+ <section class="jumbotron jumbotron-fluid bg-{{heroSection.bgColour}} text-{{heroSection.textColour}} my-0 {{heroSection.otherClasses}}" style='background-image:url({{heroSection.bgImage}});'>
+	<div class="container text-center">
+		<h1 class="display-1">{{heroSection.sectionH1}}</h1>
+		<p class="lead">{{heroSection.sectionP}}</p>
+	</div>
+</section>

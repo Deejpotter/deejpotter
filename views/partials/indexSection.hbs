@@ -1,0 +1,31 @@
+{{!-- 
+
+	-----EXAMPLE-----
+
+	section: {
+		bgColour = "light",
+		textColour = "dark",
+		bgImage = "",
+		sectionH2 = "Breakout clone",
+		sectionP = "I made this small game to practice Javascript. It's pretty rusty but it was fun to make and it might be interesting to play.",
+		sectionButtonLink = "work/breakout",
+		otherClasses = ""
+	}
+
+ --}}
+
+ <section class="bg-{{section.bgColour}} text-{{section.textColour}} py-4 {{section.otherClasses}}" style='background-image:url({{section.bgImage}});'>
+	<div class="container">
+		<div class="row">
+			<div class="col-10">
+				<h2>{{sectionH2}}</h2>
+				<p class="">{{sectionP}}</p>
+			</div>
+			<div class="col-md-2">
+				<a href= "{{sectionButtonLink}}">
+					<i class="fa fa-chevron-right text-{{textColour}}"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
