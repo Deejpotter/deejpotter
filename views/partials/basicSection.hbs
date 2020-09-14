@@ -1,0 +1,23 @@
+{{!-- 
+
+	-----EXAMPLE-----
+	Loaded though the route's render call
+
+	section: {
+      bgColour: "light",
+      textColour: "dark",
+      bgImage: "",
+      sectionH2: "I’m here to help you",
+      sectionP: "I know there is a lot to learn when it comes to the internet so I’m here to guide you through the whole journey. You’ll have personal contact with me the whole time and I will be happy to answer any questions you have. I also have varying levels of service after your website is finished so you can be sure you will never be left not knowing what to do next.",
+      otherClasses: ""
+    }
+
+--}}
+
+
+<section class="bg-{{section.bgColour}} text-{{section.textColour}} py-5 {{section.otherClasses}}" style='background-image:url({{section.bgImage}});'>
+	<div class="container">
+		<h2>{{section.sectionH2}}</h2>
+		<p class="">{{section.sectionP}}</p>
+	</div>
+</section>

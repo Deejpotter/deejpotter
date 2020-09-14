@@ -1,3 +1,2 @@
-# Deej Potter
-
-This will probably just be my Wordpress theme for now.
+# deejpotterdesigns-node
+This is for the node app version of the Deej Potter Designs website.

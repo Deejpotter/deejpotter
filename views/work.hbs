@@ -1,0 +1,23 @@
+<main id="index">
+
+	{{>hero heroSection=heroSection}}	
+
+	{{#each sections}}
+	<section class="bg-{{this.bgColour}} text-{{this.textColour}} py-4 {{this.otherClasses}}" style='background-image:url({{this.bgImage}});'>
+		<div class="container">
+			<div class="row">
+				<div class="col-10">
+					<h2>{{this.sectionH2}}</h2>
+					<p class="">{{this.sectionP}}</p>
+				</div>
+				<div class="col-md-2">
+					<a href= "{{this.sectionButtonLink}}">
+						<i class="fa fa-chevron-right text-{{this.textColour}}"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	{{/each}}
+	
+</main>
