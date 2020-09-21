@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./index",
-    "devstart": "nodemon ./index",
-    "serverstart": "set DEBUG=deejpotter:* & npm run devstart",
-    "start_local": "node -r dotenv/config server.js"
+    "devstart": "nodemon ./index"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

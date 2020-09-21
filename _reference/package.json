@@ -1,0 +1,39 @@
+{
+  "name": "deejpotter",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./index",
+    "devstart": "nodemon ./index",
+    "serverstart": "set DEBUG=deejpotter:* & npm run devstart",
+    "start_local": "node -r dotenv/config server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-handlebars": "^4.0.4",
+    "hbs": "^4.1.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^5.9.19",
+    "morgan": "~1.9.1",
+    "nodemailer": "^6.4.10"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "description": "This is for the node app version of the Deej Potter Designs website.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deejpotter/deejpotter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deejpotter/deejpotter/issues"
+  },
+  "homepage": "https://github.com/Deejpotter/deejpotter#readme"
+}

@@ -1,3 +1,5 @@
+// Import the env variables
+let envConfig = require('./config');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
