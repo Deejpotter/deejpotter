@@ -7,6 +7,11 @@ const bodyParser = require('body-parser');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
+    meta: {
+      title: "Deej Potter Designs",
+      description: "",
+      canonicalLink: ""
+    },
     heroSection: {
       bgColour: "primary",
       textColour: "light",
