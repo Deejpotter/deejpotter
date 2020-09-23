@@ -19,7 +19,8 @@
     "nodemailer": "^6.4.10"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4"
   },
   "description": "This is for the node app version of the Deej Potter Designs website.",
   "main": "index.js",
