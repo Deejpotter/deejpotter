@@ -8,9 +8,10 @@ const bodyParser = require('body-parser');
 router.get('/', function(req, res, next) {
   res.render('index', { 
     meta: {
-      title: "Deej Potter Designs",
-      description: "",
-      canonicalLink: ""
+      title: "Web and game developer | Deej Potter Designs",
+      description: "I'm a self taught web and game developer and I love what I do.",
+      canonicalLink: "https://deejpotter.com",
+      image: "/public/images/DeejPotterLogo.png"
     },
     heroSection: {
       bgColour: "primary",
@@ -86,7 +87,7 @@ var transporter = nodemailer.createTransport({
 var mailOptions = {
   from: 'deejpotterdesigns@hotmail.com',
   to: 'deejpotter@gmail.com',
-  subject: 'Sending Email using Node.js',
+  subject: 'New contact form entry',
   text: ''
 };
 console.log(mailOptions)
