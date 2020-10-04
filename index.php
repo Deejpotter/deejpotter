@@ -3,7 +3,7 @@ $fileLevel = "";
 $title = "Your personal web designer | Deej Potter Designs";
 $description = "I'm a self taught web and game developer and I love what I do.";
 $link = "https://deejpotter.com";
-$image = "images/DeejPotterLogo.png";
+$image = "https://deejpotter.com/images/DeejPotterLogo.png";
 include "templates/header.php"
 ?>
 
