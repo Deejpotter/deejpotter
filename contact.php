@@ -1,8 +1,8 @@
 <?php
 $fileLevel = "";
-$title = "Your personal web designer | Deej Potter";
-$description = "I'm a self taught web and game developer and I love what I do.";
-$link = "https://deejpotter.com";
+$title = "Contact me | Deej Potter";
+$description = "Contact me if you're looking for information about my work or you just have some feedback for me.";
+$link = "https://deejpotter.com/contact.php";
 $image = "https://deejpotter.com/images/DeejPotterLogo.png";
 include "templates/header.php"
 ?>
