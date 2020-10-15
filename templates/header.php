@@ -48,16 +48,16 @@
 			<div class="collapse navbar-collapse" id="collapsibleNavbar">
 				<ul class="navbar-nav nav-fill ml-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo $fileLevel ?>websites">Websites</a>
+						<a class="nav-link" href="<?php echo $fileLevel ?>websites.php">Websites</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo $fileLevel ?>games">Games</a>
+						<a class="nav-link" href="<?php echo $fileLevel ?>games.php">Games</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo $fileLevel ?>about">About me</a>
+						<a class="nav-link" href="<?php echo $fileLevel ?>about.php">About me</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo $fileLevel ?>contact">Contact me</a>
+						<a class="nav-link" href="<?php echo $fileLevel ?>contact.php">Contact me</a>
 					</li>
 				</ul>
 			</div>
