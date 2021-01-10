@@ -1,0 +1,25 @@
+{
+  "name": "deejpotter",
+  "version": "1.0.0",
+  "description": "This is my personal website.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^5.12.2",
+    "webpack-cli": "^4.3.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deejpotter/deejpotter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deejpotter/deejpotter/issues"
+  },
+  "homepage": "https://github.com/Deejpotter/deejpotter#readme"
+}
