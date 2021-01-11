@@ -1,22 +1,8 @@
-/*--------------------------------------------------------- 
-                    #Index 
----------------------------------------------------------
-  #Global  
-    #Variables
-    #BaseSelectors
-  #MainClasses
-    #GeneralClasses
-    #Header
-    #Footer
-    #IndexSection
-    #Calculator
-    
-*/
-
-/*--------------------------------------------------------- 
-                    #Global 
----------------------------------------------------------*/
-
+// Base styles
+@import "normalize.css";
+@import "base/_variables";
+@import "base/_mixins";
+@import "base/_global";
 
 /*----------
 #Variables
