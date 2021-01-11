@@ -28,7 +28,7 @@ let cssConfig = {
 }
 
 let pages = fse.readdirSync('./app').filter(function(file) {
-  return file.endsWith('.html')
+  return file.endsWith('.php')
 }).map(function(page) {
   return new HtmlWebpackPlugin({
     filename: page,
@@ -64,7 +64,7 @@ if (currentTask == 'dev') {
   }
   config.devServer = {
     before: function(app, server) {
-      server._watch('./app/**/*.html')
+      server._watch('./app/**/*.php')
     },
     contentBase: path.join(__dirname, 'app'),
     hot: true,
