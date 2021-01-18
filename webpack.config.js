@@ -28,7 +28,7 @@ let cssConfig = {
 }
 
 let pages = fse.readdirSync('./app').filter(function(file) {
-  return file.endsWith('.html')
+  return file.endsWith('.hbs')
 }).map(function(page) {
   return new HtmlWebpackPlugin({
     filename: page,
