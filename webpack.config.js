@@ -3,6 +3,7 @@ const path = require('path')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const PhpLoader = require('webpack-php-loader')
 const fse = require('fs-extra')
 
 const postCSSPlugins = [
@@ -28,7 +29,7 @@ let cssConfig = {
 }
 
 let pages = fse.readdirSync('./app').filter(function(file) {
-  return file.endsWith('.html')
+  return file.endsWith('.php')
 }).map(function(page) {
   return new HtmlWebpackPlugin({
     filename: page,
@@ -51,6 +52,10 @@ let config = {
             presets: ['@babel/preset-react', '@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.php$/,
+        use: 'webpack-php-loader'
       }
     ]
   }
