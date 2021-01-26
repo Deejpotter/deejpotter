@@ -1,0 +1,63 @@
+/*--------------------------------------------------------- 
+          #Calculator
+  ---------------------------------------------------------*/
+
+#calculator {
+    height: 80vh;
+    width: 80vw;
+    max-width: 600px;
+    margin: 5vh auto;
+    padding: 10px;
+    box-shadow: $box-shadow;
+    border-radius: 10px;
+    background: $main;
+}
+
+@media (min-width: 600) {
+    #calculator {
+        width: 90vw;
+    }
+}
+
+/*---
+		  #Screen
+		  ---*/
+
+.screen {
+    height: 20%;
+    padding: 20px;
+    background: #fff;
+    box-shadow: $box-shadow;
+    border-radius: 10px;
+}
+
+#output-text {
+    text-align: right;
+    min-height: var(--font-size);
+}
+
+#old-text {
+    color: darkgrey;
+    min-height: var(--font-size);
+}
+
+/*---
+		  #Keypad
+      ---*/
+
+.keypad {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    height: 70%;
+}
+
+button {
+    margin: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    background: #fff;
+}
+
+button:hover {
+    background: var(--light);
+}

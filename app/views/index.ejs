@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+  	<head>
+
+	<!-- Meta data -->
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<meta name="description" content=<%= htmlWebpackPlugin.options.templateParameters.meta.description %>>
+	<link rel="canonical" href=<%= htmlWebpackPlugin.options.templateParameters.meta.canonicalLink %>>
+	<meta name="robots" content="index, follow">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- OG -->
+	<meta property="og:title" content=<%= htmlWebpackPlugin.options.title %>>
+	<meta property="og:description" content=<%= htmlWebpackPlugin.options.templateParameters.meta.description %>>
+	<meta property="og:url" content=<%= htmlWebpackPlugin.options.templateParameters.meta.canonicalLink %>>
+	<meta property="og:type" content="website">
+	<meta property="og:image" content=<%= htmlWebpackPlugin.options.templateParameters.meta.image %>>
+
+		<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+		<!-- Global site tag (gtag.js) - Google Ads: 785399603 -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-785399603"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'AW-785399603');
+			gtag('config', 'UA-126790088-1');
+		</script>
+ 	</head>
+
+
+	<body>
+		
+		<!-- Main header for every page -->
+		<nav class="navbar navbar-expand-md">
+			<div class="container">
+				<!-- Brand -->
+				<a class="navbar-brand" href="/">
+					<img src="./assets/images/DeejPotterLogo.png">
+				</a>
+
+				<!-- Toggler/collapsibe Button -->
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+					<i class="fas fa-bars"></i>
+				</button>
+
+				<!-- Navbar links -->
+				<div class="collapse navbar-collapse" id="collapsibleNavbar">
+					<ul class="navbar-nav nav-fill ml-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="./pricing">Pricing</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="./about">About me</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="./work">My work</a>
+						</li>
+						<li class="nav-item">
+							<a class="btn btn-primary btn-lg shadow" href="./contact">Contact me</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+    
+    
+    <section class="">
+		<div class="container text-center">
+			<h1 class="display-1">Deej Potter</h1>
+			<p class="lead">My personal website</p>
+			<i class="fas fa-chevron-down"></i>
+		</div>
+	</section>
+
+    <section class="">
+        <div class="container">
+            <h2>I&apos;m here to help you</h2>
+            <p class="">I know there is a lot to learn when it comes to the internet so I&apos;m here to guide you through the whole journey. You&apos;ll have personal contact with me the whole time and I will be happy to answer any questions you have. I also have varying levels of service after your website is finished so you can be sure you will never be left not knowing what to do next.</p>
+        </div>
+    </section>
+
+    <section class="bg-secondary text-light py-5 inset-background-right">
+        <div class="container">
+            <h2>An affordable marketing option</h2>
+            <p class="">Every business needs a website. When people are looking for something these days the first place they look is online. So what do people see when they search for you? This is where I come in. I can build you a high quality, responsive website for as little as $100. You can then take your website and you&apos;re free to do whatever you want with it but if you need help with that I offer a few levels of service from as little as $10 per month. You can read more about my prices on my pricing page.</p>
+        </div>
+    </section>
+
+    <section class="bg-light text-dark py-5 ">
+        <div class="container">
+            <h2>Helpful and technological</h2>
+            <p class="">I love working with technology and I love helping people. With web design, I get to do both of those things. I have a wife and 3 kids and they are the main reason I wanted to start my own business, to spend more time with them. If you&apos;d like to know more check out my personal page.</p>
+        </div>
+    </section>
+
+	<!-- Contact section -->
+	<section class="">
+		<div class="container">
+			<h2>Ready to get started?</h2>
+			<p class="">Maybe you just have some questions. Either way, contact me and let me know. I&apos;d love to hear from you.</p>
+			<a class="shadow btn btn-secondary" href= "/contact">Contact me now</a>	
+		</div>
+	</section>
+
+		 <!-- Main footer for every page -->
+     <footer id="main-footer" class= "py-3">	
+		<div class="container">
+			<div class="row">
+				<div class= "col-md">
+					<h3>Feedback</h3>
+					<p>Got some feedback for me?</p>
+					<a class= "btn btn-primary shadow" href= "/contact">Let me know</a>
+				</div>
+				<div class= "col-md text-center">
+					<h3>Connect with me</h3>
+					<a href= "https://www.facebook.com/deejpotterdesigns/">
+						<i class="fab fa-facebook"></i>
+					</a>
+				</div>
+				<div class= "col-md text-right">
+					<h3>Policies</h3>
+					<a href= "/about/privacy-policy">Privacy policy</a>
+					<br>
+					<a href= "/about/terms">Terms and conditions</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+	
+  </body>
+</html>

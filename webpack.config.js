@@ -3,8 +3,8 @@ const path = require('path')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const PhpLoader = require('webpack-php-loader')
 const fse = require('fs-extra')
+const fs = require('fs')
 
 const postCSSPlugins = [
   require('postcss-import'),
@@ -28,18 +28,49 @@ let cssConfig = {
   use: ['css-loader?url=false', {loader: 'postcss-loader', options: {plugins: postCSSPlugins}}]
 }
 
-let pages = fse.readdirSync('./app').filter(function(file) {
-  return file.endsWith('.php')
-}).map(function(page) {
+//* One function for each file directory
+let pages = fse.readdirSync('./app/views').filter(function(file) {
+  return file.endsWith('.ejs')
+}).map(function (page) {
+    // Split names and extension
+    const parts = page.split('.')
+    const name = parts[0]
+    const extension = parts[1]
   return new HtmlWebpackPlugin({
-    filename: page,
-    template: `./app/${page}`
+    title: `Deej Potter | ${name}`,
+    filename: `${name}.html`,
+    template: `./app/views/${page}`,
+    minify: false,
+    templateParameters: require(`./app/data/${name}.json`)
   })
 })
 
+
+//! This one wasn't loading properly for some reason
+// // Our function that generates our html plugins
+// function generateHtmlPlugins (templateDir) {
+//   // Read files in template directory
+//   const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir))
+//   return templateFiles.map(item => {
+//     // Split names and extension
+//     const parts = item.split('.')
+//     const name = parts[0]
+//     const extension = parts[1]
+//     // Create new HTMLWebpackPlugin with options
+//     return new HtmlWebpackPlugin({
+//       filename: `${name}.html`,
+//       template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`)
+//     })
+//   })
+// }
+// // Call our function on our views directory.
+// const htmlPlugins = generateHtmlPlugins('./app')
+
 let config = {
   entry: './app/assets/scripts/App.js',
-  plugins: pages,
+  plugins: [
+    
+  ].concat(pages),
   module: {
     rules: [
       cssConfig,
@@ -54,9 +85,10 @@ let config = {
         }
       },
       {
-        test: /\.php$/,
-        use: 'webpack-php-loader'
-      }
+    test: /\.(jpe?g|png|gif|svg)$/i,
+    include : path.join(__dirname, 'assets/images'),
+    loader  : 'url-loader?limit=30000&name=images/[name].[ext]'
+ }, // inline base64 URLs for <=30k images, direct URLs for the rest
     ]
   }
 }
@@ -69,9 +101,9 @@ if (currentTask == 'dev') {
   }
   config.devServer = {
     before: function(app, server) {
-      server._watch('./app/**/*.html')
+      server._watch('./app/views/**/*.ejs')
     },
-    contentBase: path.join(__dirname, 'app'),
+    contentBase: path.join(__dirname, 'app/views'),
     hot: true,
     port: 3000,
     host: '0.0.0.0'
