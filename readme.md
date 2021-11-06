@@ -5,3 +5,4 @@ I found my passion for writing code around 2013 and since then it has become my 
 My favourite things to do are web application development and object-oriented programming.
 
 I'm also interested in other areas of technology such as game development, web and game design, UX design, 3D modeling, and even filling in spreadsheets.
+
