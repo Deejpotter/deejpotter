@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --blue: #73C2D4;
+    --purple: #3A2C33;
+    --red: #dc3545;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #1E9952;
+    --light: #FDFDFD;
+    --dark: #08080C;
+    --dark-trans: #08080C33;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --bottom-margin: 0 0 15px 0;
+    --bigger-margin: 0 0 30px 0;
+    --box-shadow: 4px 4px 8px 0px var(--dark-trans);
+    --box-shadow-top: 0 0 8px 0px var(--dark-trans);
+    --box-shadow-inset: inset 0px 1px 4px 1px var(--dark-trans);
+    --default-radius: 8px;
+    --font-family-body: -apple-system, BlinkMacSystemFont, "Nunito", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-display: "Fredoka One", "Nunito", "Georgia", "Courier", "Times New Roman";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+    background-color: var(--light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-display);
+    color: var(--purple);
+    font-weight: 100;
+}
+
+p {
+    font-family: var(--font-family-body);
+    font-size: 1.1rem;
+    color: var(--dark);
+}
+
+a {
+    font-family: var(--font-family-display);
+    color: var(--green);
+}
