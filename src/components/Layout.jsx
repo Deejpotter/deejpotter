@@ -1,9 +1,10 @@
 import * as React from 'react';
-import "../styles/styles.css";
-import {
-    container
-} from '../styles/layout.module.css';
+import { StaticImage } from 'gatsby-plugin-image';
+
 import Navigation from './Navigation';
+
+import "../styles/styles.css";
+import { container } from '../styles/util.module.css';
 
 const Layout = ({ pageTitle, children }) => {
     return (

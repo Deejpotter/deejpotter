@@ -2,5 +2,8 @@ module.exports = {
     siteMetadata: {
         title: "Deej Potter",
     },
-    plugins: [],
+    plugins: [
+        "gatsby-plugin-image",
+        "gatsby-plugin-sharp",
+    ],
 };
