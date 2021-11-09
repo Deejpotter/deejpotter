@@ -8,4 +8,6 @@ I'm also interested in other areas of technology such as game development, web a
 
 ## Version 2 of my website, built with gatsby
 
-Look at all my cool projects.
+Look at all my cool projects in style, once I get my site done.
+
+I'm using css modules because they're here and I want to.
