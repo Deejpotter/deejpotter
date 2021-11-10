@@ -2,12 +2,16 @@ import React from "react";
 import { StaticImage } from "gatsby-plugin-image";
 
 import Layout from "../components/Layout";
+import Hero from "../components/Hero";
+import { greenWave } from "../styles/backgrounds.module.css";
 
-function HomePage(props) {
+function HomePage() {
     return (
         <Layout pageTitle="Home Page">
-            <p>First part of the home page.</p>
-            <StaticImage src="../images/wave.svg" alt="A blob." objectFit="cover" />
+            <Hero>
+                <h1>Deej Potter</h1>
+                <p>First part of the home page.</p>
+            </Hero>
         </Layout>
     );
 }

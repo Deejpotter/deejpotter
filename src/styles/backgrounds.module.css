@@ -1,0 +1,7 @@
+.green-wave {
+    min-height: 50vh;
+    background-image: url("../images/wave.svg");
+    background-position-y: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

@@ -1,21 +1,16 @@
 import * as React from 'react';
-import { StaticImage } from 'gatsby-plugin-image';
-
-import Navigation from './Navigation';
 
 import "../styles/styles.css";
-import { container } from '../styles/util.module.css';
+import Header from './Header';
 
 const Layout = ({ pageTitle, children }) => {
     return (
-        <div className={container}>
-            <title>{pageTitle}</title>
-            <Navigation />
+        <>
+            <Header />
             <main>
-                <h1>{pageTitle}</h1>
                 {children}
             </main>
-        </div>
+        </>
     );
 };
 

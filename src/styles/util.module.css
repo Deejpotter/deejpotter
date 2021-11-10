@@ -1,4 +1,17 @@
-.container {
-    margin: auto;
-    max-width: 500px;
+.container-nav {
+    display: flex;
+    justify-content: space-between;
+    max-width: var(--breakpoint-md);
 }
+
+.container-center-align {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: var(--breakpoint-md);
+}
+
+.shadow {}
