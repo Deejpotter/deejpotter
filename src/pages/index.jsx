@@ -1,17 +1,20 @@
 import React from "react";
-import { StaticImage } from "gatsby-plugin-image";
 
 import Layout from "../components/Layout";
-import Hero from "../components/Hero";
-import { greenWave } from "../styles/backgrounds.module.css";
+import HomeHero from "../components/HomeHero";
 
 function HomePage() {
     return (
         <Layout pageTitle="Home Page">
-            <Hero>
+            <HomeHero>
                 <h1>Deej Potter</h1>
-                <p>First part of the home page.</p>
-            </Hero>
+                <p>I make nice websites. I can make one for you too.</p>
+                <p><b>Interested?</b></p>
+                <a href="/contact">Contact me</a>
+            </HomeHero>
+            <section>
+
+            </section>
         </Layout>
     );
 }

@@ -4,7 +4,7 @@ import {
   navLinks,
   navLinkItem,
   navLinkText
-} from '../styles/navigation.module.css';
+} from '../styles/header.module.css';
 
 function Navigation(props) {
   return (

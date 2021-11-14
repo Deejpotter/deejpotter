@@ -1,17 +1,16 @@
-.container-nav {
+.container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     max-width: var(--breakpoint-md);
+    margin: auto;
 }
 
 .container-center-align {
     display: flex;
-    justify-self: center;
-    align-self: center;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     max-width: var(--breakpoint-md);
+    text-align: center;
+    margin: auto;
 }
-
-.shadow {}

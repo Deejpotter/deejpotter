@@ -1,0 +1,16 @@
+.container-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 50vh;
+    max-width: var(--breakpoint-md);
+    margin: auto;
+    padding: 2rem;
+}
+
+.container-hero a {
+    background-color: var(--dark);
+    padding: .5rem;
+    border-radius: .5rem;
+    text-decoration: none;
+}

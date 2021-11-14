@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "cloudinary-react": "^1.7.0",
     "gatsby": "^4.1.0",
     "gatsby-plugin-image": "^2.1.0",
     "gatsby-plugin-postcss": "^5.1.0",

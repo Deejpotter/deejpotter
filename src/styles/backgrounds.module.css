@@ -1,7 +1,54 @@
+.green {
+    background-color: var(--green);
+}
+
+.purple {
+    background-color: var(--purple);
+}
+
+.blue {
+    background-color: var(--blue);
+}
+
+.light {
+    background-color: var(--light);
+}
+
+.dark {
+    background-color: var(--dark);
+}
+
 .green-wave {
-    min-height: 50vh;
-    background-image: url("../images/wave.svg");
+    background-image: url("../images/greenWave.svg");
     background-position-y: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.green-blob {
+    background-image: url("../images/greenBlob.svg");
+    background-position: right;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    overflow: visible;
+}
+
+.green-purple-blobs {
+    background-image: url("../images/greenPurpleBlobs.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.green-wave-top {
+    background-image: url("../images/greenWaveTop.svg");
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.green-wave-top-wide {
+    background-image: url("../images/greenWaveTopWide.svg");
+    background-position: top;
     background-size: cover;
     background-repeat: no-repeat;
 }

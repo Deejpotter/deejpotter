@@ -1,14 +1,16 @@
 import React from "react";
 
+import Container from "./Container";
 import Navigation from './Navigation';
-import { container } from "../styles/util.module.css";
+import Logo from './Logo';
 
 function Header({ pageTitle }) {
   return (
-    <div className={container}>
+    <Container type="nav">
       <title>{pageTitle}</title>
+      <Logo />
       <Navigation />
-    </div>
+    </Container>
   );
 }
 

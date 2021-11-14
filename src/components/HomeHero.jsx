@@ -2,11 +2,11 @@ import React from "react";
 
 import Container from "./Container";
 
-import { greenWave, greenBlob, greenPurpleBlobs } from "../styles/backgrounds.module.css";
+import { greenWaveTopWide } from "../styles/backgrounds.module.css";
 
 function Hero({ children }) {
     return (
-        <section className={greenPurpleBlobs}>
+        <section className={greenWaveTopWide}>
             <Container type="hero">
                 {children}
             </Container>
