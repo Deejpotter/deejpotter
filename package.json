@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "gatsby develop",
-    "build": " gatsby build",
+    "build": "gatsby clean && gatsby build",
     "clean": "gatsby clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
