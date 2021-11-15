@@ -20,6 +20,7 @@
     --box-shadow-top: 0 0 8px 0px var(--dark-trans);
     --box-shadow-inset: inset 0px 1px 4px 1px var(--dark-trans);
     --default-radius: 8px;
+    --default-padding: 0 0 .5rem 0;
     --font-family-body: -apple-system, BlinkMacSystemFont, "Nunito", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-family-display: "Fredoka One", "Nunito", "Georgia", "Courier", "Times New Roman";
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -39,15 +40,18 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-display);
     color: var(--dark);
     font-weight: 100;
+    padding: var(--default-padding);
 }
 
 p {
     font-family: var(--font-family-body);
     font-size: 1.1rem;
     color: var(--dark);
+    padding: var(--default-padding);
 }
 
 a {
     font-family: var(--font-family-display);
     color: var(--green);
+    padding: var(--default-padding);
 }

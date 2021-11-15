@@ -1,11 +1,15 @@
 import React from "react";
 
+import Hero from "../components/Hero";
 import Layout from "../components/Layout";
 
 function ContactPage(props) {
     return (
         <Layout pageTitle="Contact me">
-            <p>Contact me now to get a quote or just ask some questions.</p>
+            <Hero>
+                <h1>Contact me</h1>
+                <p>You can contact me on this page. Scroll down for more info.</p>
+            </Hero>
         </Layout>
     );
 }

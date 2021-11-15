@@ -2,6 +2,7 @@ import React from "react";
 
 import Layout from "../components/Layout";
 import HomeHero from "../components/HomeHero";
+import { Link } from "gatsby";
 
 function HomePage() {
     return (
@@ -10,10 +11,12 @@ function HomePage() {
                 <h1>Deej Potter</h1>
                 <p>I make nice websites. I can make one for you too.</p>
                 <p><b>Interested?</b></p>
-                <a href="/contact">Contact me</a>
+                <Link to="/contact">Contact me</Link>
             </HomeHero>
             <section>
-
+                <h2>Check out my work</h2>
+                <p>Want to see what I can do? Check out the projects I've worked on.</p>
+                <Link to="/projects">See my projects</Link>
             </section>
         </Layout>
     );
