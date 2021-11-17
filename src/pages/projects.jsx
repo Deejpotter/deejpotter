@@ -1,17 +1,16 @@
-import React from "react";
-
 import Hero from "../components/Hero";
 import Layout from "../components/Layout";
+import React from "react";
 
-function AboutPage(props) {
+function ProjectsPage(props) {
     return (
-        <Layout pageTitle="About me">
+        <Layout pageTitle="My projects">
             <Hero>
-                <h1>About me</h1>
-                <p>This page is all about me. Keep reading to learn more.</p>
+                <h1>My projects</h1>
+                <p>This is where I show off the projects that I've made.<br />Scroll down to see more of my stuff.</p>
             </Hero>
         </Layout>
     );
 }
 
-export default AboutPage;
+export default ProjectsPage;
