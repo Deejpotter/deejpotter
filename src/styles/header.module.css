@@ -1,8 +1,11 @@
+.header {
+    box-shadow: var(--box-shadow);
+}
+
 .container-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: var(--breakpoint-md);
     min-height: 10vh;
     padding: .5rem;
     margin: auto;

@@ -22,4 +22,5 @@
     padding: .5rem;
     border-radius: .5rem;
     text-decoration: none;
+    box-shadow: var(--box-shadow);
 }

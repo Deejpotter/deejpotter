@@ -4,6 +4,7 @@ import Container from "./Container";
 import Logo from './Logo';
 import Navigation from './Navigation';
 import React from "react";
+import { header } from "../styles/header.module.css";
 
 function Header({ pageTitle }) {
   const data = useStaticQuery(graphql`
@@ -17,11 +18,13 @@ function Header({ pageTitle }) {
     }
   `);
   return (
-    <Container type="nav">
-      <title>{pageTitle} | {data.site.siteMetadata.title}</title>
-      <Logo />
-      <Navigation />
-    </Container>
+    <header className={header}>
+      <Container type="nav">
+        <title>{pageTitle} | {data.site.siteMetadata.title}</title>
+        <Logo />
+        <Navigation />
+      </Container>
+    </header>
   );
 }
 
