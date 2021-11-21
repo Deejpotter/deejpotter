@@ -15,7 +15,6 @@
     max-width: var(--breakpoint-md);
     margin: auto;
     padding: 2rem;
-    background-clip: padding-box;
 }
 
 .container-hero a {

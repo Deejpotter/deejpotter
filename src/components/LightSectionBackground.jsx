@@ -1,12 +1,12 @@
 import Container from "./Container";
 import React from "react";
-import { StaticImage } from "gatsby-plugin-image";
+import greenBlob from "../images/greenBlob.svg";
 import { lightSection } from "../styles/lightSection.module.css";
 
 function LightSectionBackground({ children, background }) {
     return (
         <section className={lightSection}>
-            <StaticImage src={background} alt="" />
+            <img src={greenBlob} alt="" />
             <Container type="lightSection">
                 {children}
             </Container>
