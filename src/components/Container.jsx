@@ -1,9 +1,9 @@
-import React from "react";
-
 import { container, containerCenterAlign } from "../styles/util.module.css";
-import { containerNav } from "../styles/header.module.css";
-import { containerHero } from "../styles/hero.module.css";
 
+import React from "react";
+import { containerHero } from "../styles/hero.module.css";
+import { containerLightSection } from "../styles/lightSection.module.css";
+import { containerNav } from "../styles/header.module.css";
 
 function Container({ children, type }) {
     switch (type) {
@@ -24,6 +24,12 @@ function Container({ children, type }) {
         case "hero":
             return (
                 <div className={containerHero}>
+                    {children}
+                </div>
+            );
+        case "lightSection":
+            return (
+                <div className={containerLightSection}>
                     {children}
                 </div>
             );

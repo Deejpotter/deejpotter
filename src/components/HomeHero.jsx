@@ -1,12 +1,10 @@
-import React from "react";
-
 import Container from "./Container";
+import React from "react";
+import { heroSection } from "../styles/hero.module.css";
 
-import { greenWaveTopWide } from "../styles/backgrounds.module.css";
-
-function Hero({ children }) {
+function HomeHero({ children }) {
     return (
-        <section className={greenWaveTopWide}>
+        <section className={heroSection}>
             <Container type="hero">
                 {children}
             </Container>
@@ -14,4 +12,4 @@ function Hero({ children }) {
     );
 }
 
-export default Hero;
+export default HomeHero;

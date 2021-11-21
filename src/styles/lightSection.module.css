@@ -1,0 +1,17 @@
+.light-section {
+    display: flex;
+    padding: 1rem;
+}
+
+.container-light-section {
+    display: flex;
+    flex-direction: column;
+    min-height: 20vh;
+    max-width: var(--breakpoint-md);
+    margin: auto;
+    padding: 2rem;
+    background-color: var(--light);
+    border-radius: var(--default-radius);
+}
+
+.container-light-section a {}

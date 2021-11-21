@@ -1,9 +1,9 @@
-import React from "react";
+import { graphql, useStaticQuery } from "gatsby";
 
 import Container from "./Container";
-import Navigation from './Navigation';
 import Logo from './Logo';
-import { graphql, useStaticQuery } from "gatsby";
+import Navigation from './Navigation';
+import React from "react";
 
 function Header({ pageTitle }) {
   const data = useStaticQuery(graphql`

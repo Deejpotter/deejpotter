@@ -1,5 +1,6 @@
 import HomeHero from "../components/HomeHero";
 import Layout from "../components/Layout";
+import LightSectionBackground from "../components/LightSectionBackground";
 import { Link } from "gatsby";
 import React from "react";
 
@@ -12,11 +13,11 @@ function HomePage() {
                 <p><b>Interested?</b></p>
                 <Link to="/contact">Contact me</Link>
             </HomeHero>
-            <section>
+            <LightSectionBackground background="../images/greenBlob.svg">
                 <h2>Check out my work</h2>
                 <p>Want to see what I can do? Check out the projects I've worked on.</p>
                 <Link to="/projects">See my projects</Link>
-            </section>
+            </LightSectionBackground>
         </Layout>
     );
 }
