@@ -1,16 +1,10 @@
+import DeejPotterLogoLightTrans from "../images/DeejPotterLogoLightTrans.svg";
 import React from "react";
-import { StaticImage } from "gatsby-plugin-image";
 import { logo } from '../styles/header.module.css';
 
 function Logo(props) {
     return (
-        <StaticImage
-            src="../images/DeejPotterLogoLightTrans.png"
-            alt="The Deej Potter logo"
-            loading="eager"
-            placeholder="blurred"
-            height="50"
-        />
+        <img src={DeejPotterLogoLightTrans} alt="The Deej Potter logo" className={logo} />
     );
 }
 

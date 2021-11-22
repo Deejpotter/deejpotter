@@ -1,7 +1,7 @@
 .light-section {
     display: flex;
     position: relative;
-    padding: 1rem;
+    padding: 2rem;
 }
 
 .container-light-section {
@@ -14,12 +14,19 @@
     border-radius: var(--default-radius);
     box-shadow: var(--box-shadow);
     z-index: 1;
+    /* Needed to keep it on top of other sections and background images*/
 }
 
-.light-section img {
+.light-section-left {
     height: 30rem;
     position: absolute;
     top: -40%;
-    right: 0%;
-    z-index: 0;
+    left: -60%;
+}
+
+.light-section-right {
+    height: 30rem;
+    position: absolute;
+    top: -40%;
+    right: 30%;
 }

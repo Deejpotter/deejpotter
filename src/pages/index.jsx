@@ -13,7 +13,12 @@ function HomePage() {
                 <p><b>Interested?</b></p>
                 <Link to="/contact">Contact me</Link>
             </HomeHero>
-            <LightSectionBackground background="greenBlob.svg">
+            <LightSectionBackground background="greenBlob">
+                <h2>Check out my work</h2>
+                <p>Want to see what I can do? Check out the projects I've worked on.</p>
+                <Link to="/projects">See my projects</Link>
+            </LightSectionBackground>
+            <LightSectionBackground background="blueBlob">
                 <h2>Check out my work</h2>
                 <p>Want to see what I can do? Check out the projects I've worked on.</p>
                 <Link to="/projects">See my projects</Link>

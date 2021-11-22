@@ -19,7 +19,7 @@
 
 .container-hero a {
     background-color: var(--dark);
-    padding: .5rem;
+    padding: .6rem;
     border-radius: .5rem;
     text-decoration: none;
     box-shadow: var(--box-shadow);
