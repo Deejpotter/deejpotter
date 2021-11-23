@@ -18,15 +18,15 @@
 }
 
 .light-section-left {
-    height: 30rem;
+    height: 25rem;
     position: absolute;
-    top: -40%;
-    left: -60%;
+    top: -20%;
+    left: -20%;
 }
 
 .light-section-right {
-    height: 30rem;
+    height: 20rem;
     position: absolute;
-    top: -40%;
-    right: 30%;
+    top: -20%;
+    right: 0%;
 }

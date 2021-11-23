@@ -19,9 +19,9 @@ function HomePage() {
                 <Link to="/projects">See my projects</Link>
             </LightSectionBackground>
             <LightSectionBackground background="blueBlob">
-                <h2>Check out my work</h2>
-                <p>Want to see what I can do? Check out the projects I've worked on.</p>
-                <Link to="/projects">See my projects</Link>
+                <h2>Want to learn more about me?</h2>
+                <p>If you're interested in me, or want to learn more about what I do, click the link below.</p>
+                <Link to="/about">Learn about me</Link>
             </LightSectionBackground>
         </Layout>
     );

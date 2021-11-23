@@ -23,4 +23,5 @@
     border-radius: .5rem;
     text-decoration: none;
     box-shadow: var(--box-shadow);
+    z-index: 1;
 }
