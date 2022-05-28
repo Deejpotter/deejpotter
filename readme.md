@@ -6,8 +6,7 @@ My favourite things to do are web application development and object-oriented pr
 
 I'm also interested in other areas of technology such as game development, web and game design, UX design, 3D modeling, and even filling in spreadsheets.
 
-## Version 2 of my website, built with gatsby
+## Version 3 of my website, built with Angular
 
 Look at all my cool projects in style, once I get my site done.
 
-I'm using css modules because they're here and I want to.
