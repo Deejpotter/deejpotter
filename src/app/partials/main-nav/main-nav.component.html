@@ -20,7 +20,9 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{title}}</span>
+      <a routerLink="/" class="main-logo">
+        <img src='assets/images/deejPotterLogoOriginal.svg' alt="The Deej Potter logo">
+      </a>
     </mat-toolbar>
     <div class="container">
       <router-outlet></router-outlet>

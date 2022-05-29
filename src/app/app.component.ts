@@ -14,7 +14,11 @@ export class AppComponent implements OnInit {
     this.setTitle("Deej Potter")
   }
 
-  public setTitle(newTitle: string) {
+  public setTitle(newTitle: string): void {
     this.titleService.setTitle(newTitle);
+  }
+
+  public getTitle(): string {
+    return this.titleService.getTitle();
   }
 }

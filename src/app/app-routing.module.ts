@@ -12,11 +12,11 @@ const routes: Routes = [
   {path: 'terms', component: TermsComponent},
   {path: 'privacy', component: PrivacyComponent},
   {path: '', component: HomeComponent},
-  {path: '**', redirectTo:'', pathMatch:'full'}
+  {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

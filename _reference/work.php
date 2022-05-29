@@ -1,7 +1,7 @@
-<?php 
+<?php
 $fileLevel = "";
 $title = "My work";
-include "./templates/header" 
+include "./templates/header"
 ?>
 
 <main id="index">
@@ -13,23 +13,23 @@ include "./templates/header"
 		$textColour = "light";
 		$sectionH1 = "My work";
 		$sectionP = "On this page is a list of projects I have made including a description of what I did during the project
-		and my reasons for the decisions I made where it's applicable. As always, if you have any questions about 
+		and my reasons for the decisions I made where it's applicable. As always, if you have any questions about
 		the things in here feel free to contact me.";
 		$otherClasses = "inset-background-cover";
 		include "templates/hero"
-	?>		
-	
+	?>
+
 	<!-- Index section -->
 	<?php
 		$bgColour = "light";
 		$textColour = "dark";
 		$bgImage = "";
 		$sectionH2 = "Online calculator";
-		$sectionP = "This is something I made for a bit of practice. It's an online calculator. It's pretty self-explanitory, it can do basic math problems.";
+		$sectionP = "This is something I made for a bit of practice. It's an online calculator. It's pretty self-explanatory, it can do basic math problems.";
 		$sectionButtonLink = "work/calculator";
 		$otherClasses = "";
 		include "templates/index-section"
-	?>	
+	?>
 
 	<!-- Index section -->
 	<?php
@@ -41,7 +41,7 @@ include "./templates/header"
 		$sectionButtonLink = "work/breakout";
 		$otherClasses = "";
 		include "templates/index-section"
-	?>	
+	?>
 
 	<!-- Index section -->
 	<?php
@@ -53,8 +53,8 @@ include "./templates/header"
 		$sectionButtonLink = "work/breakout-phaser";
 		$otherClasses = "";
 		include "templates/index-section"
-	?>	
-	
+	?>
+
 </main>
 
 <?php include "./templates/footer" ?>

@@ -16,9 +16,18 @@
   z-index: 1;
 }
 
+/* Padding for main content */
 .container {
   padding: 1rem;
   margin: auto;
   max-width: 1000px;
-  min-height: 50vh;
+  min-height: 70vh;
+}
+
+.main-logo {
+  height: 100%;
+}
+
+.main-logo img {
+  height: 90%;
 }
