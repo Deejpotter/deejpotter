@@ -107,5 +107,7 @@
       }
     }
   },
-  "defaultProject": "deejpotter"
+  "cli": {
+    "analytics": "b055db90-b1dd-48e0-9fad-eb50e340b259"
+  }
 }

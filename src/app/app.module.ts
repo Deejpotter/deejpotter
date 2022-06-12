@@ -20,6 +20,13 @@ import { MatListModule } from '@angular/material/list';
 import { ContactComponent } from './pages/contact/contact.component';
 import { TermsComponent } from './pages/terms/terms.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import { ContactFormComponent } from './partials/contact-form/contact-form.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,7 +38,8 @@ import { PrivacyComponent } from './pages/privacy/privacy.component';
     MainNavComponent,
     ContactComponent,
     TermsComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    ContactFormComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +56,13 @@ import { PrivacyComponent } from './pages/privacy/privacy.component';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [Title],
   bootstrap: [AppComponent]
