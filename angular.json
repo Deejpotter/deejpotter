@@ -24,8 +24,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/custom-theme.scss",
+              "scss/main.scss",
               "src/styles.css"
             ],
             "scripts": [],
@@ -37,7 +36,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "1mb",
                   "maximumError": "5mb"
                 },
                 {
@@ -96,6 +95,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "scss/main.scss",
               "src/styles.css"
             ],
             "scripts": []

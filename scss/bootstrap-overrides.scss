@@ -1,0 +1,330 @@
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+// Color system
+
+$white:    #fff !default;
+// $gray-100: #f8f9fa !default; // $light
+$gray-100: #F4EFF2;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+// $gray-800: #343a40 !default; // $dark
+$gray-800: #181821;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+$grays: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$grays: map-merge(
+  (
+    "100": $gray-100,
+    "200": $gray-200,
+    "300": $gray-300,
+    "400": $gray-400,
+    "500": $gray-500,
+    "600": $gray-600,
+    "700": $gray-700,
+    "800": $gray-800,
+    "900": $gray-900
+  ),
+  $grays
+);
+
+// $blue:    #e1eefc !default; // $info
+$blue:    #59B7CC; // $info               
+$indigo:  #6610f2 !default;
+// $purple:  #6f42c1 !default; // $secondary
+$purple:  #684E5A; // $secondary
+$pink:    #e83e8c !default;
+// $red:     #dc3545 !default; // $danger
+$red:     #f44336; // $danger
+$orange:  #fd7e14 !default;
+// $yellow:  #ffc107 !default; // $warning
+$yellow:  #c0a520; // $warning
+// $green:   #28a745 !default; // $primary
+$green:   #26BF66; // $primary
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$colors: map-merge(
+  (
+    "blue":       $blue,
+    "indigo":     $indigo,
+    "purple":     $purple,
+    "pink":       $pink,
+    "red":        $red,
+    "orange":     $orange,
+    "yellow":     $yellow,
+    "green":      $green,
+    "teal":       $teal,
+    "cyan":       $cyan,
+    "white":      $white,
+    "gray":       $gray-600,
+    "gray-dark":  $gray-800
+  ),
+  $colors
+);
+
+// $primary:       $blue !default;
+$primary:       $green;
+// $secondary:     $gray-600 !default;
+$secondary:     $purple;
+$success:       $green !default;
+// $info:          $cyan !default;
+$info:          $blue;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-800 !default;
+
+$theme-colors: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$theme-colors: map-merge(
+  (
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark
+  ),
+  $theme-colors
+);
+
+// Set a specific jump point for requesting color jumps
+$theme-color-interval:      8% !default;
+
+// The yiq lightness value that determines when the lightness of color changes from "dark" to "light". Acceptable values are between 0 and 255.
+$yiq-contrasted-threshold:  150 !default;
+
+// Customize the light and dark text colors for use in our YIQ color contrast function.
+$yiq-text-dark:             $gray-900 !default;
+$yiq-text-light:            $white !default;
+
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (
+  ("<","%3c"),
+  (">","%3e"),
+  ("#","%23"),
+  ("(","%28"),
+  (")","%29"),
+) !default;
+
+
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+
+$enable-caret:                                true !default;
+$enable-rounded:                              true !default;
+// $enable-shadows:                              false !default;
+$enable-shadows:                              true;
+// $enable-gradients:                            false !default;
+$enable-gradients:                            true;
+$enable-transitions:                          true !default;
+$enable-prefers-reduced-motion-media-query:   true !default;
+$enable-hover-media-query:                    false !default; // Deprecated, no longer affects any compiled CSS
+$enable-grid-classes:                         true !default;
+$enable-pointer-cursor-for-buttons:           true !default;
+$enable-print-styles:                         true !default;
+$enable-responsive-font-sizes:                false !default;
+$enable-validation-icons:                     true !default;
+$enable-deprecation-messages:                 true !default;
+
+
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+// $spacer: 1rem !default;
+$spacer: 2rem;
+$spacers: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$spacers: map-merge(
+  (
+    0: 0,
+    1: ($spacer * .25),
+    2: ($spacer * .5),
+    3: $spacer,
+    4: ($spacer * 1.5),
+    5: ($spacer * 3)
+  ),
+  $spacers
+);
+
+// This variable affects the `.h-*` and `.w-*` classes.
+$sizes: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$sizes: map-merge(
+  (
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+    auto: auto
+  ),
+  $sizes
+);
+
+
+//-----Body
+//
+// Settings for the `<body>` element.
+
+// $body-bg:                   $white !default;
+$body-bg:                   $light;
+$body-color:                $gray-900 !default;
+
+
+//-----Jumbotron
+
+// $jumbotron-padding:                 2rem !default;
+$jumbotron-padding:                 3rem;
+$jumbotron-color:                   null !default;
+$jumbotron-bg:                      $gray-200 !default;
+
+
+//-----Components
+//
+// Define common padding and border radius sizes and more.
+
+$line-height-lg:              1.5 !default;
+$line-height-sm:              1.5 !default;
+
+$border-width:                1px !default;
+$border-color:                $gray-300 !default;
+
+// $border-radius:               .25rem !default;
+$border-radius:               .5rem;
+// $border-radius-lg:            .3rem !default;
+$border-radius-lg:            1rem;
+// $border-radius-sm:            .2rem !default;
+$border-radius-sm:            .3rem;
+
+$rounded-pill:                50rem !default;
+
+$box-shadow-sm:               0 .125rem .25rem rgba($black, .075) !default;
+$box-shadow:                  0 .5rem 1rem rgba($black, .15) !default;
+$box-shadow-lg:               0 1rem 3rem rgba($black, .175) !default;
+
+$component-active-color:      $white !default;
+
+$caret-width:                 .3em !default;
+$caret-vertical-align:        $caret-width * .85 !default;
+$caret-spacing:               $caret-width * .85 !default;
+
+$transition-base:             all .2s ease-in-out !default;
+$transition-fade:             opacity .15s linear !default;
+$transition-collapse:         height .35s ease !default;
+
+
+//-----Typography
+//
+// Font, line-height, and color for body text, headings, and more.
+
+// stylelint-disable value-keyword-case
+$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Nunito", "Raleway", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-display:         "Fredoka One", "Nunito", "Georgia", "Courier", "Times New Roman";
+$font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base:            $font-family-sans-serif !default;
+// stylelint-enable value-keyword-case
+
+// $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
+$font-size-base:              1.1rem; // Assumes the browser default, typically `16px`
+$font-size-lg:                $font-size-base * 1.25 !default;
+$font-size-sm:                $font-size-base * .875 !default;
+
+$font-weight-lighter:         lighter !default;
+$font-weight-light:           300 !default;
+$font-weight-normal:          400 !default;
+$font-weight-bold:            700 !default;
+$font-weight-bolder:          bolder !default;
+
+$font-weight-base:            $font-weight-normal !default;
+$line-height-base:            1.5 !default;
+
+$h1-font-size:                $font-size-base * 2.5 !default;
+$h2-font-size:                $font-size-base * 2 !default;
+$h3-font-size:                $font-size-base * 1.75 !default;
+$h4-font-size:                $font-size-base * 1.5 !default;
+$h5-font-size:                $font-size-base * 1.25 !default;
+$h6-font-size:                $font-size-base !default;
+
+$headings-margin-bottom:      $spacer / 2 !default;
+// $headings-font-family:        null !default;
+$headings-font-family:        $font-family-display;
+$headings-font-weight:        500 !default;
+$headings-line-height:        1.2 !default;
+$headings-color:              null !default;
+
+$display1-size:               6rem !default;
+$display2-size:               5.5rem !default;
+$display3-size:               4.5rem !default;
+$display4-size:               3.5rem !default;
+
+$display1-weight:             300 !default;
+$display2-weight:             300 !default;
+$display3-weight:             300 !default;
+$display4-weight:             300 !default;
+$display-line-height:         $headings-line-height !default;
+
+$lead-font-size:              $font-size-base * 1.25 !default;
+$lead-font-weight:            300 !default;
+
+// Navs
+
+$nav-link-padding-y:                .5rem !default;
+$nav-link-padding-x:                1rem !default;
+$nav-link-disabled-color:           $gray-600 !default;
+
+$nav-divider-color:                 $gray-200 !default;
+$nav-divider-margin-y:              $spacer / 2 !default;
+
+
+// Navbar
+
+$navbar-padding-y:                  $spacer / 2 !default;
+$navbar-padding-x:                  $spacer !default;
+
+$navbar-nav-link-padding-x:         .5rem !default;
+
+$navbar-brand-font-size:            $font-size-lg !default;
+// Compute the navbar-brand padding-y so the navbar-brand will have the same height as navbar-text and nav-link
+$nav-link-height:                   $font-size-base * $line-height-base + $nav-link-padding-y * 2 !default;
+$navbar-brand-height:               $navbar-brand-font-size * $line-height-base !default;
+$navbar-brand-padding-y:            ($nav-link-height - $navbar-brand-height) / 2 !default;
+
+$navbar-toggler-padding-y:          .25rem !default;
+$navbar-toggler-padding-x:          .75rem !default;
+$navbar-toggler-font-size:          $font-size-lg !default;
+
+$navbar-dark-color:                 rgba($white, .5) !default;
+$navbar-dark-hover-color:           rgba($white, .75) !default;
+$navbar-dark-active-color:          $white !default;
+$navbar-dark-disabled-color:        rgba($white, .25) !default;
+$navbar-dark-toggler-icon-bg:       url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-dark-toggler-border-color:  rgba($white, .1) !default;
+
+$navbar-light-color:                rgba($black, .5) !default;
+$navbar-light-hover-color:          rgba($black, .7) !default;
+$navbar-light-active-color:         rgba($black, .9) !default;
+$navbar-light-disabled-color:       rgba($black, .3) !default;
+$navbar-light-toggler-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-light-toggler-border-color: rgba($black, .1) !default;
+
+$navbar-light-brand-color:                $navbar-light-active-color !default;
+$navbar-light-brand-hover-color:          $navbar-light-active-color !default;
+$navbar-dark-brand-color:                 $navbar-dark-active-color !default;
+$navbar-dark-brand-hover-color:           $navbar-dark-active-color !default;
