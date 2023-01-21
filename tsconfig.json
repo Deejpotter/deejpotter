@@ -22,8 +22,7 @@
       "es2020",
       "dom"
     ],
-    "esModuleInterop": true,
-    "isolatedModules": true
+    "esModuleInterop": true
 
   },
   "angularCompilerOptions": {
