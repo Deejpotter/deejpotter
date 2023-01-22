@@ -1,0 +1,161 @@
+h1:focus {
+  outline: none;
+}
+
+/*---------
+#GeneralClasses
+---------*/
+
+.min-height {
+  min-height: 50vh;
+}
+
+.background {
+  background-image: url("/assets/images/white-waves.png");
+  background-attachment: fixed;
+}
+
+.inset {
+  box-shadow: var(--box-shadow-inset);
+}
+
+.inset-background-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  box-shadow: var(--box-shadow-inset);
+}
+
+@media (max-width: 600px) {
+  .display-1 {
+    font-size: 4rem;
+  }
+
+  .inset-background-cover {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+.inset-background-right {
+  background-attachment: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: var(--box-shadow-inset);
+}
+
+@media (max-width: 600px) {
+  .inset-background-right {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+.inset-background-left {
+  background-attachment: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  box-shadow: var(--box-shadow-inset);
+}
+
+@media (max-width: 600px) {
+  .inset-background-left {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+/*---------
+#IndexSection
+---------*/
+
+.index-section i {
+  font-size: 5rem;
+}
+
+@media (max-width: 600px) {
+  .index-section {
+    font-size: 2rem;
+  }
+}
+
+.index-section i:hover {
+  font-size: 6rem;
+}
+
+
+/*---------------------------------------------------------
+          #Calculator
+  ---------------------------------------------------------*/
+
+#calculator {
+  height: 80vh;
+  width: 80vw;
+  max-width: 600px;
+  margin: 5vh auto;
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+  border-radius: 10px;
+  background: var(--primary);
+}
+
+@media (min-width: 600px) {
+  #calculator {
+    width: 90vw;
+  }
+}
+
+/*---
+ #Screen
+ ---*/
+
+.screen {
+  height: 20%;
+  padding: 20px;
+  background: #fff;
+  box-shadow: var(--box-shadow);;
+  border-radius: 10px;
+}
+
+#output-text {
+  text-align: right;
+  min-height: 1.5rem;
+}
+
+#old-text {
+  color: darkgrey;
+  min-height: 1.5rem;
+}
+
+/*---
+  #Keypad
+---*/
+
+.keypad {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  height: 70%;
+}
+
+button {
+  margin: 10px;
+  box-shadow: var(--box-shadow);
+  border-radius: 10px;
+  background: #fff;
+}
+
+button:hover {
+  background: var(--light);
+}
+
+
+/*---------------------------------------------------------
+        #Phaser
+---------------------------------------------------------*/
+
+#game-area canvas {
+  margin: auto;
+}

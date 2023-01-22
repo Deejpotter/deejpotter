@@ -4,12 +4,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './pages/home/home.component';
-import { AboutComponent } from './pages/about/about.component';
+import { AboutPageComponent } from './pages/about/about-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MainNavComponent } from './partials/main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { ContactComponent } from './pages/contact/contact.component';
+import { ContactPageComponent } from './pages/contact/contact-page.component';
 import { TermsComponent } from './pages/terms/terms.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -20,9 +20,9 @@ import { MainFooterComponent } from './partials/main-footer/main-footer.componen
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutComponent,
+    AboutPageComponent,
     MainNavComponent,
-    ContactComponent,
+    ContactPageComponent,
     TermsComponent,
     PrivacyComponent,
     MainFooterComponent

@@ -1,34 +1,34 @@
-<div class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md bg-primary shadow mb-3">
+  <!-- Navbar brand -->
   <div class="container">
-    <!-- Brand -->
-    <a class="navbar-brand" href="">
-      <img src="../../../assets/images/deejPotterLogoOriginal.svg" alt="The Deej Potter logo.">
+    <a class="navbar-brand" routerLink="">
+      <img src="../../../assets/images/deejPotterLogo.svg" alt="The Deej Potter logo.">
     </a>
 
     <!-- Toggle Button -->
-    <button class="navbar-toggler" type="button" (click)="ToggleNavMenu()">
+    <button (click)="ToggleNavMenu()" class="navbar-toggler" type="button">
       <span class="oi oi-menu"></span>
     </button>
 
-    <!-- Navbar links -->
-    <div class="{{NavMenuCssClass}} navbar-collapse" (click)="ToggleNavMenu()">
-      <nav class="navbar-nav nav-fill ml-auto">
+    <!-- Nav -->
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
+      <div class="navbar-nav nav-fill">
         <div class="nav-item">
-          <a class="nav-link" routerLink="/">
-            <span class="oi oi-home" aria-hidden="true"></span> Home
+          <a class="nav-link" routerLink="about" (click)="CloseNavMenu()">
+            <span class="oi oi-person" aria-hidden="true"></span> About me
           </a>
         </div>
         <div class="nav-item">
-          <a class="nav-link" routerLink="/about">
-            <span class="oi oi-person" aria-hidden="true"></span> About
-          </a>
-        </div>
-        <div class="nav-item">
-          <a class="nav-link" routerLink="/portfolio">
+          <a class="nav-link" routerLink="portfolio" (click)="CloseNavMenu()">
             <span class="oi oi-list-rich" aria-hidden="true"></span> Portfolio
           </a>
         </div>
-      </nav>
+        <div class="nav-item">
+          <a class="nav-link" routerLink="contact" (click)="CloseNavMenu()">
+            <span class="oi oi-phone" aria-hidden="true"></span> Contact me
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</nav>

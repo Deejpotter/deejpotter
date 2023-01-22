@@ -5,6 +5,11 @@
     "deejpotter": {
       "projectType": "application",
       "schematics": {
+        "@schematics/angular:component": {
+          "name": "",
+          "style": "scss",
+          "project": ""
+        }
       },
       "root": "",
       "sourceRoot": "src",
@@ -24,8 +29,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "scss/main.scss",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [],
             "serviceWorker": true,
@@ -102,6 +106,11 @@
           }
         }
       }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss"
     }
   },
   "cli": {
