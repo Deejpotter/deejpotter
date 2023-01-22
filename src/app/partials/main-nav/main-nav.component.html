@@ -6,12 +6,12 @@
     </a>
 
     <!-- Toggle Button -->
-    <button class="navbar-toggler" type="button" [@onclick]="ToggleNavMenu">
+    <button class="navbar-toggler" type="button" (click)="ToggleNavMenu()">
       <span class="oi oi-menu"></span>
     </button>
 
     <!-- Navbar links -->
-    <div class="{{NavMenuCssClass}} navbar-collapse" [@onclick]="ToggleNavMenu">
+    <div class="{{NavMenuCssClass}} navbar-collapse" (click)="ToggleNavMenu()">
       <nav class="navbar-nav nav-fill ml-auto">
         <div class="nav-item">
           <a class="nav-link" routerLink="/">
