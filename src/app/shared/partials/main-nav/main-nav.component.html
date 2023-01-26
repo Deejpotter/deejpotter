@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-md bg-primary shadow mb-3">
   <!-- Navbar brand -->
   <div class="container">
-    <a class="navbar-brand" routerLink="">
-      <img src="../../../assets/images/deejPotterLogo.svg" alt="The Deej Potter logo.">
+    <a class="navbar-brand" routerLink="/">
+      <img src="/assets/images/deejPotterLogo.svg" alt="The Deej Potter logo.">
     </a>
 
     <!-- Toggle Button -->
@@ -14,17 +14,17 @@
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
       <div class="navbar-nav nav-fill">
         <div class="nav-item">
-          <a class="nav-link" routerLink="about" (click)="CloseNavMenu()">
+          <a class="nav-link" routerLink="/about" (click)="CloseNavMenu()">
             <span class="oi oi-person" aria-hidden="true"></span> About me
           </a>
         </div>
         <div class="nav-item">
-          <a class="nav-link" routerLink="portfolio" (click)="CloseNavMenu()">
-            <span class="oi oi-list-rich" aria-hidden="true"></span> Portfolio
+          <a class="nav-link" routerLink="/projects" (click)="CloseNavMenu()">
+            <span class="oi oi-project" aria-hidden="true"></span> Projects
           </a>
         </div>
         <div class="nav-item">
-          <a class="nav-link" routerLink="contact" (click)="CloseNavMenu()">
+          <a class="nav-link" routerLink="/contact" (click)="CloseNavMenu()">
             <span class="oi oi-phone" aria-hidden="true"></span> Contact me
           </a>
         </div>

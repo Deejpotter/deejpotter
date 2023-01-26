@@ -7,14 +7,19 @@ import { HomeComponent } from './pages/home/home.component';
 import { AboutPageComponent } from './pages/about/about-page.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { MainNavComponent } from './partials/main-nav/main-nav.component';
+import { MainNavComponent } from './shared/partials/main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ContactPageComponent } from './pages/contact/contact-page.component';
 import { TermsComponent } from './pages/terms/terms.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MainFooterComponent } from './partials/main-footer/main-footer.component';
+import { MainFooterComponent } from './shared/partials/main-footer/main-footer.component';
+import { ProjectsComponent } from './pages/projects/projects.component';
+import { AppsComponent } from './pages/projects/apps/apps.component';
+import { GamesComponent } from './pages/projects/games/games.component';
+import { WebsitesComponent } from './pages/projects/websites/websites.component';
+import { SmallHeroComponent } from './shared/templates/sections/small-hero/small-hero.component';
 
 @NgModule({
   declarations: [
@@ -25,11 +30,15 @@ import { MainFooterComponent } from './partials/main-footer/main-footer.componen
     ContactPageComponent,
     TermsComponent,
     PrivacyComponent,
-    MainFooterComponent
+    MainFooterComponent,
+    ProjectsComponent,
+    AppsComponent,
+    GamesComponent,
+    WebsitesComponent,
+    SmallHeroComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -37,7 +46,8 @@ import { MainFooterComponent } from './partials/main-footer/main-footer.componen
     }),
     LayoutModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    AppRoutingModule
   ],
   providers: [Title],
   bootstrap: [AppComponent]

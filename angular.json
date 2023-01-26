@@ -6,9 +6,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "name": "",
-          "style": "scss",
-          "project": ""
+          "style": "scss"
         }
       },
       "root": "",
