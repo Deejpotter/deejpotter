@@ -10,7 +10,7 @@
         <p>{{errorMsg}}</p>
         <span (click)="closeError()" class="close">✖︎</span>
       </div>
-      <form name="contact" class="card shadow p-2 bg-secondary text-light" netlify netlify-honeypot="bot-field"
+      <form name="contact" method="post" class="card shadow p-2 bg-secondary text-light" netlify netlify-honeypot="bot-field"
             [formGroup]="contactForm">
         <div class="form-group" hidden>
           <label for="bot-field">Don't fill this out if you're human:</label>
