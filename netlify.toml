@@ -1,8 +1,8 @@
 [build]
-  command="ng build"
-  publish="dist"
+  command="npm run prerender"
+  publish="dist/deejpotter/browser"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+#[[redirects]]
+#  from = "/*"
+#  to = "/index.html"
+#  status = 200
