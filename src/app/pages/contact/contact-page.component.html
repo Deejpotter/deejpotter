@@ -6,14 +6,14 @@
         information to contact you about your feedback, I won't share it with anyone or use it for any other reason.</p>
     </div>
     <div class="col-md">
-      <form name="contact" class="card shadow p-2 bg-secondary text-light" data-netlify="true" netlify-honeypot="honey">
+      <form name="contact" method="post" class="card shadow p-2 bg-secondary text-light" data-netlify="true" netlify-honeypot="honey">
         <div class="form-group" hidden>
           <label for="honey">Don't fill this out if you're human:</label>
           <input type="text" id="honey" name="honey">
         </div>
         <div class="form-group pb-2">
           <label for="message">Enter Message (required):</label>
-          <textarea id="message" class="form-control shadow" name="message"></textarea>
+          <textarea id="message" class="form-control shadow" name="message" required></textarea>
         </div>
         <div class="form-group pb-2">
           <label for="email">Enter your email address <br>(optional - if you want a reply):</label>
