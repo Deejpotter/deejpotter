@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {NetlifyFormsService} from 'src/app/shared/services/netlify-forms-service.service';
+import {Observable, throwError} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'app-contact',
@@ -11,8 +13,8 @@ import {NetlifyFormsService} from 'src/app/shared/services/netlify-forms-service
 export class ContactPageComponent {
 
   constructor(private fb: FormBuilder,
-              private router: Router,
-              private netlifyForms: NetlifyFormsService) {
+              private http: HttpClient,
+              private router: Router) {
   }
 
 
@@ -27,8 +29,41 @@ export class ContactPageComponent {
     this.errorMsg = '';
   }
 
+  submitContactForm(contactFormEntry: any): Observable<any> {
+    const entry = new HttpParams({
+      fromObject: {
+        contactFormEntry
+      }
+    });
+
+    return this.submitEntry(entry);
+  }
+
+  private submitEntry(entry: HttpParams): Observable<any> {
+    return this.http.post(
+      '/contact',
+      entry.toString(),
+      {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        responseType: 'text'
+      }
+    ).pipe(catchError(this.handleError));
+  }
+
+  private handleError(err: HttpErrorResponse) {
+    let errMsg = '';
+
+    if (err.error instanceof ErrorEvent) {
+      errMsg = `A client-side error occurred: ${err.error.message}`;
+    } else {
+      errMsg = `A server-side error occurred. Code: ${err.status}. Message: ${err.message}`;
+    }
+
+    return throwError(errMsg);
+  }
+
   onSubmit() {
-    this.netlifyForms.submitContactForm(this.contactForm.value).subscribe(
+    this.submitContactForm(this.contactForm.value).subscribe(
       {
         next: () => {
           this.contactForm.reset();

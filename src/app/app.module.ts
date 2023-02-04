@@ -5,8 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutPageComponent } from './pages/about/about-page.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { MainNavComponent } from './shared/partials/main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ContactPageComponent } from './pages/contact/contact-page.component';
@@ -21,7 +19,6 @@ import { GamesComponent } from './pages/projects/games/games.component';
 import { WebsitesComponent } from './pages/projects/websites/websites.component';
 import { SmallHeroComponent } from './shared/templates/sections/small-hero/small-hero.component';
 import { FunComponent } from './pages/projects/fun/fun.component';
-import {NetlifyFormsService} from "./shared/services/netlify-forms-service.service";
 
 @NgModule({
   declarations: [
@@ -48,7 +45,7 @@ import {NetlifyFormsService} from "./shared/services/netlify-forms-service.servi
     NgbModule,
     AppRoutingModule
   ],
-  providers: [NetlifyFormsService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
