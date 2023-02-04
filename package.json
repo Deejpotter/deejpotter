@@ -3,7 +3,7 @@
   "version": "3.0.1",
   "scripts": {
     "start": "npm run dev:ssr",
-    "build": "ng build",
+    "build": "netlify build",
     "dev": "netlify dev",
     "test": "ng test",
     "dev:ssr": "ng run deejpotter:serve-ssr",
