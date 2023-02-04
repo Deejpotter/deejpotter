@@ -19,6 +19,7 @@ import { GamesComponent } from './pages/projects/games/games.component';
 import { WebsitesComponent } from './pages/projects/websites/websites.component';
 import { SmallHeroComponent } from './shared/templates/sections/small-hero/small-hero.component';
 import { FunComponent } from './pages/projects/fun/fun.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { FunComponent } from './pages/projects/fun/fun.component';
     LayoutModule,
     ReactiveFormsModule,
     NgbModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
