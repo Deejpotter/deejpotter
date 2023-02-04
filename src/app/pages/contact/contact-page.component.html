@@ -10,7 +10,8 @@
         <p>{{errorMsg}}</p>
         <span (click)="closeError()" class="close">✖︎</span>
       </div>
-      <form name="contact" class="card shadow p-2 bg-secondary text-light" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <form name="contact" class="card shadow p-2 bg-secondary text-light" [formGroup]="contactForm"
+            (ngSubmit)="onSubmit()" action="/.netlify/functions/submit-form">
         <div class="form-group pb-2">
           <label for="message">Enter Message (required):</label>
           <textarea id="message" formControlName="message" class="form-control shadow" name="message"></textarea>
@@ -19,6 +20,7 @@
           <label for="email">Enter your email address <br>(optional - if you want a reply):</label>
           <input type="email" id="email" formControlName="email" class="form-control shadow" name="email">
         </div>
+        <input type="hidden" name="form-name" value="contact"/>
         <div class="form-group pb-2">
           <button class="btn btn-info shadow" type="submit" [disabled]="contactForm.invalid">Submit form</button>
         </div>
