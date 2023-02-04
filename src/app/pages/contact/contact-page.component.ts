@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-contact',
@@ -8,22 +7,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class ContactPageComponent {
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
   }
-
-  contactForm: FormGroup = this.fb.group({
-    message: ['', Validators.required],
-    email: ['', Validators.email]
-  });
-
-  errorMsg = '';
-
-  closeError() {
-    this.errorMsg = '';
-  }
-
-  onSubmit() {
-  }
-
 
 }

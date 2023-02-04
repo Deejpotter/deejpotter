@@ -6,15 +6,10 @@
         information to contact you about your feedback, I won't share it with anyone or use it for any other reason.</p>
     </div>
     <div class="col-md">
-      <div class="error" [hidden]="errorMsg.length == 0">
-        <p>{{errorMsg}}</p>
-        <span (click)="closeError()" class="close">✖︎</span>
-      </div>
-      <form name="contact" class="card shadow p-2 bg-secondary text-light" netlify netlify-honeypot="bot-field"
-            [formGroup]="contactForm">
+      <form name="contact" class="card shadow p-2 bg-secondary text-light" data-netlify="true" netlify-honeypot="honey">
         <div class="form-group" hidden>
-          <label for="bot-field">Don't fill this out if you're human:</label>
-          <input type="text" id="bot-field" name="bot-field">
+          <label for="honey">Don't fill this out if you're human:</label>
+          <input type="text" id="honey" name="honey">
         </div>
         <div class="form-group pb-2">
           <label for="message">Enter Message (required):</label>
@@ -25,7 +20,7 @@
           <input type="email" id="email" class="form-control shadow" name="email">
         </div>
         <div class="form-group pb-2">
-          <button class="btn btn-info shadow" formmethod="post" type="submit" [disabled]="contactForm.invalid">Submit form</button>
+          <button class="btn btn-info shadow" type="submit">Submit form</button>
         </div>
       </form>
     </div>

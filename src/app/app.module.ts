@@ -42,10 +42,6 @@ import { FunComponent } from './pages/projects/fun/fun.component';
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
     LayoutModule,
     ReactiveFormsModule,
     NgbModule,
