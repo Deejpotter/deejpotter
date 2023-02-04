@@ -63,7 +63,7 @@ export class ContactPageComponent {
   }
 
   onSubmit(event: Event) {
-    event.preventDefault();
+    console.log(event);
     this.submitContactForm(this.contactForm.value).subscribe(
       {
         next: () => {
