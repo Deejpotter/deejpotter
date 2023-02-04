@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import { NetlifyFormsService } from 'src/app/shared/services/netlify-forms-service.service';
+import {NetlifyFormsService} from 'src/app/shared/services/netlify-forms-service.service';
 
 @Component({
   selector: 'app-contact',
@@ -30,16 +29,17 @@ export class ContactPageComponent {
 
   onSubmit() {
     this.netlifyForms.submitContactForm(this.contactForm.value).subscribe(
-      () => {
-        this.contactForm.reset();
-        this.router.navigateByUrl('/contact');
-      },
-      err => {
-        this.errorMsg = err;
+      {
+        next: () => {
+          this.contactForm.reset();
+          this.router.navigateByUrl('/contact');
+        },
+        error: err => {
+          this.errorMsg = err;
+        }
       }
     );
   }
-
 
 
 }
