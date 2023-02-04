@@ -21,6 +21,7 @@ import { GamesComponent } from './pages/projects/games/games.component';
 import { WebsitesComponent } from './pages/projects/websites/websites.component';
 import { SmallHeroComponent } from './shared/templates/sections/small-hero/small-hero.component';
 import { FunComponent } from './pages/projects/fun/fun.component';
+import {NetlifyFormsService} from "./shared/services/netlify-forms-service.service";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { FunComponent } from './pages/projects/fun/fun.component';
     NgbModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [NetlifyFormsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
