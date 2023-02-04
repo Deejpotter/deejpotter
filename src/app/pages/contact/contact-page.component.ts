@@ -62,7 +62,8 @@ export class ContactPageComponent {
     return throwError(() => new Error(errMsg));
   }
 
-  onSubmit() {
+  onSubmit(event: Event) {
+    event.preventDefault();
     this.submitContactForm(this.contactForm.value).subscribe(
       {
         next: () => {
