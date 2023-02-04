@@ -845,7 +845,7 @@
             module.exports = {
                 name: 'p2',
                 version: '0.7.1',
-                description: 'A JavaScript 2D physics engine.',
+                message: 'A JavaScript 2D physics engine.',
                 author: 'Stefan Hedman <schteppe@gmail.com> (http://steffe.se)',
                 keywords: [
                     'p2.js',

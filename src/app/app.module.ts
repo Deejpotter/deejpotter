@@ -20,6 +20,7 @@ import { AppsComponent } from './pages/projects/apps/apps.component';
 import { GamesComponent } from './pages/projects/games/games.component';
 import { WebsitesComponent } from './pages/projects/websites/websites.component';
 import { SmallHeroComponent } from './shared/templates/sections/small-hero/small-hero.component';
+import { FunComponent } from './pages/projects/fun/fun.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SmallHeroComponent } from './shared/templates/sections/small-hero/small
     AppsComponent,
     GamesComponent,
     WebsitesComponent,
-    SmallHeroComponent
+    SmallHeroComponent,
+    FunComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,7 @@ import { SmallHeroComponent } from './shared/templates/sections/small-hero/small
     NgbModule,
     AppRoutingModule
   ],
-  providers: [Title],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

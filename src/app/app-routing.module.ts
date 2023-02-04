@@ -16,11 +16,11 @@ const routes: Routes = [
   {path: 'contact', component: ContactPageComponent, title: "Contact me"},
   {path: 'terms', component: TermsComponent, title: "Terms and conditions"},
   {path: 'privacy', component: PrivacyComponent, title: "Privacy policy"},
-  {path: 'projects/apps', component: AppsComponent, title: "My apps"},
-  {path: 'projects/websites', component: WebsitesComponent, title: "My websites"},
-  {path: 'projects/games', component: GamesComponent, title: "My games"},
+  {path: 'projects/apps', component: AppsComponent, title: "My apps | Projects"},
+  {path: 'projects/websites', component: WebsitesComponent, title: "My websites | Projects"},
+  {path: 'projects/games', component: GamesComponent, title: "My games | Projects"},
   {path: 'projects', component: ProjectsComponent, title: "My projects"},
-  {path: 'projects/**', redirectTo: 'projects', pathMatch: 'full', title: "Missing Project"},
+  {path: 'projects/**', redirectTo: 'projects', pathMatch: 'full', title: "Missing Project | Projects"},
   {path: '', component: HomeComponent, pathMatch: "full", title: "Home"},
   {path: '**', redirectTo: '', pathMatch: 'full', title: "Missing page"}
 ];
