@@ -11,7 +11,7 @@
         <span (click)="closeError()" class="close">✖︎</span>
       </div>
       <form class="card shadow p-2 bg-secondary text-light" [formGroup]="contactForm"
-            (ngSubmit)="onSubmit()">
+            (ngSubmit)="onSubmit($event)">
         <div class="form-group pb-2">
           <label for="message">Enter Message (required):</label>
           <textarea id="message" formControlName="message" class="form-control shadow" name="message"></textarea>
