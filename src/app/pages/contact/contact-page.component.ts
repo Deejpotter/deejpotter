@@ -59,7 +59,7 @@ export class ContactPageComponent {
       errMsg = `A server-side error occurred. Code: ${err.status}. Message: ${err.message}`;
     }
 
-    return throwError(errMsg);
+    return throwError(() => new Error(errMsg));
   }
 
   onSubmit() {
