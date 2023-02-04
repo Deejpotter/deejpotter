@@ -41,7 +41,7 @@ export class ContactPageComponent {
 
   private submitEntry(entry: HttpParams): Observable<any> {
     return this.http.post(
-      '/contact',
+      '/contact/index.html',
       entry.toString(),
       {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -68,7 +68,7 @@ export class ContactPageComponent {
       {
         next: () => {
           this.contactForm.reset();
-          this.router.navigateByUrl('/contact');
+          this.router.navigateByUrl('/');
         },
         error: err => {
           this.errorMsg = err;
