@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SmallHeroComponent } from './small-hero.component';
+import { BasicSectionComponent } from './basic-section.component';
 
-describe('SmallHeroComponent', () => {
-  let component: SmallHeroComponent;
-  let fixture: ComponentFixture<SmallHeroComponent>;
+describe('BasicSectionComponent', () => {
+  let component: BasicSectionComponent;
+  let fixture: ComponentFixture<BasicSectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SmallHeroComponent ]
+      declarations: [ BasicSectionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SmallHeroComponent);
+    fixture = TestBed.createComponent(BasicSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

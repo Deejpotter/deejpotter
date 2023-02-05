@@ -1,8 +1,75 @@
 //  Mine
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 @import "../scss/bootstrap-overrides";
+@import "../scss/custom-gradients";
 
 //  Default
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/open-iconic/font/css/open-iconic-bootstrap.css";
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+
+/*---------
+#GeneralClasses
+---------*/
+
+.min-height {
+  min-height: 50vh;
+}
+
+.background {
+  background-image: url("/assets/images/white-waves.png");
+  background-attachment: fixed;
+}
+
+.inset {
+  box-shadow: var(--box-shadow-inset);
+}
+
+.inset-background-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  box-shadow: var(--box-shadow-inset);
+}
+
+@media (max-width: 600px) {
+  .display-1 {
+    font-size: 4rem;
+  }
+
+  .inset-background-cover {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+.inset-background-right {
+  background-attachment: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: var(--box-shadow-inset);
+}
+
+@media (max-width: 600px) {
+  .inset-background-right {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+.inset-background-left {
+  background-attachment: fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  box-shadow: var(--box-shadow-inset);
+}
+
+@media (max-width: 600px) {
+  .inset-background-left {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}

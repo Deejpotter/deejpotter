@@ -17,9 +17,11 @@ import { ProjectsComponent } from './pages/projects/projects.component';
 import { AppsComponent } from './pages/projects/apps/apps.component';
 import { GamesComponent } from './pages/projects/games/games.component';
 import { WebsitesComponent } from './pages/projects/websites/websites.component';
-import { SmallHeroComponent } from './shared/templates/sections/small-hero/small-hero.component';
 import { FunComponent } from './pages/projects/fun/fun.component';
 import {HttpClientModule} from "@angular/common/http";
+import { BasicSectionComponent } from './shared/templates/sections/basic-section/basic-section.component';
+import { ShadowHeroSectionComponent } from './shared/templates/sections/shadow-hero-section/shadow-hero-section.component';
+import { GradientHeroSectionComponent } from './shared/templates/sections/gradient-hero-section/gradient-hero-section.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +37,10 @@ import {HttpClientModule} from "@angular/common/http";
     AppsComponent,
     GamesComponent,
     WebsitesComponent,
-    SmallHeroComponent,
-    FunComponent
+    FunComponent,
+    BasicSectionComponent,
+    ShadowHeroSectionComponent,
+    GradientHeroSectionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
