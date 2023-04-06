@@ -39,7 +39,7 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
   }
 }
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled', initialNavigation: 'enabledBlocking' })],
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
   providers: [
     {
