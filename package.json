@@ -9,13 +9,6 @@
     "watchsass": "sass --watch scss/main.scss:src/bootstrap.css",
     "compilesass": "sass scss/main.scss:src/bootstrap.css"
   },
-  "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "Firefox ESR",
-    "not dead",
-    "not IE 11"
-  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.2.6",
@@ -31,6 +24,7 @@
     "@angular/service-worker": "^15.2.6",
     "@netlify/functions": "^1.4.0",
     "@ng-bootstrap/ng-bootstrap": "^14.1.0",
+    "@ngtools/webpack": "^15.2.5",
     "@popperjs/core": "^2.11.7",
     "@schematics/angular": "^15.2.5",
     "bootstrap": "^5.2.3",
