@@ -10,7 +10,7 @@ import {LayoutModule} from '@angular/cdk/layout';
 import {ContactPageComponent} from './pages/contact/contact-page.component';
 import {TermsComponent} from './pages/terms/terms.component';
 import {PrivacyComponent} from './pages/privacy/privacy.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MainFooterComponent} from './shared/partials/main-footer/main-footer.component';
 import {ProjectsComponent} from './pages/projects/projects.component';
@@ -18,7 +18,7 @@ import {AppsComponent} from './pages/projects/apps/apps.component';
 import {GamesComponent} from './pages/projects/games/games.component';
 import {WebsitesComponent} from './pages/projects/websites/websites.component';
 import {FunComponent} from './pages/projects/fun/fun.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BasicSectionComponent} from './shared/templates/sections/basic-section/basic-section.component';
 import {
   ShadowHeroSectionComponent
@@ -26,6 +26,9 @@ import {
 import {
   GradientHeroSectionComponent
 } from './shared/templates/sections/gradient-hero-section/gradient-hero-section.component';
+import {AuthInterceptor} from "./shared/interceptors/auth.interceptor";
+import {AuthComponent} from './shared/partials/auth/auth.component';
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -44,7 +47,8 @@ import {
     FunComponent,
     BasicSectionComponent,
     ShadowHeroSectionComponent,
-    GradientHeroSectionComponent
+    GradientHeroSectionComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -53,9 +57,13 @@ import {
     ReactiveFormsModule,
     NgbModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot(),
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

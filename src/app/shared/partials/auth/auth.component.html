@@ -1,0 +1,12 @@
+<div *ngIf="!authService.isAuthenticated()" class="navbar-nav">
+  <div class="nav-item">
+    <button (click)="onLogin()" class="btn btn-success">Login</button>
+    <button (click)="onSignup()" class="btn btn-primary">Sign up</button>
+  </div>
+</div>
+
+<div *ngIf="authService.isAuthenticated()" class="navbar-nav">
+  <div class="nav-item">
+    <button (click)="onLogout()" class="btn btn-danger">Logout</button>
+  </div>
+</div>

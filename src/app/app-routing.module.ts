@@ -1,15 +1,15 @@
-import {Injectable, NgModule} from '@angular/core';
-import {RouterModule, RouterStateSnapshot, Routes, TitleStrategy} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes, TitleStrategy} from '@angular/router';
 import {HomeComponent} from "./pages/home/home.component";
 import {AboutPageComponent} from "./pages/about/about-page.component";
 import {ContactPageComponent} from "./pages/contact/contact-page.component";
 import {TermsComponent} from "./pages/terms/terms.component";
 import {PrivacyComponent} from "./pages/privacy/privacy.component";
-import {Title} from "@angular/platform-browser";
 import {ProjectsComponent} from "./pages/projects/projects.component";
 import {AppsComponent} from "./pages/projects/apps/apps.component";
 import {WebsitesComponent} from "./pages/projects/websites/websites.component";
 import {GamesComponent} from "./pages/projects/games/games.component";
+import {TemplatePageTitleStrategy} from "./shared/services/template-page-title-strategy";
 
 const routes: Routes = [
   {path: 'about', component: AboutPageComponent, title: "About me"},
@@ -25,19 +25,6 @@ const routes: Routes = [
   {path: '**', redirectTo: '', pathMatch: 'full', title: "Missing page"}
 ];
 
-@Injectable()
-export class TemplatePageTitleStrategy extends TitleStrategy {
-  constructor(private readonly title: Title) {
-    super();
-  }
-
-  override updateTitle(routerState: RouterStateSnapshot) {
-    const title = this.buildTitle(routerState);
-    if (title !== undefined) {
-      this.title.setTitle(`${title} | Deej Potter`);
-    }
-  }
-}
 @NgModule({
   imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule],
@@ -50,4 +37,3 @@ export class TemplatePageTitleStrategy extends TitleStrategy {
 })
 export class AppRoutingModule {
 }
-
