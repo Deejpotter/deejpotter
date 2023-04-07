@@ -9,8 +9,7 @@ import {environment} from "../../../environments/environment";
 export class AuthService {
   constructor() {
     const identityConfig: netlifyIdentity.InitOptions = {
-      locale: 'en',
-      APIUrl: environment.apiUrl,
+      locale: 'en'
     };
 
     netlifyIdentity.init(identityConfig);
