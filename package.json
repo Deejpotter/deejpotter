@@ -9,6 +9,13 @@
     "watchsass": "sass --watch scss/main.scss:src/bootstrap.css",
     "compilesass": "sass scss/main.scss:src/bootstrap.css"
   },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead",
+    "not IE 11"
+  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.2.6",
