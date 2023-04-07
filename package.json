@@ -3,7 +3,7 @@
   "version": "3.0.1",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "watchsass": "sass --watch scss/main.scss:src/bootstrap.css",
