@@ -1,5 +1,5 @@
 [build]
-command = "ng build --configuration production"
+command = "printenv && ng build --configuration production"
 publish = "dist"
 
 [[redirects]]

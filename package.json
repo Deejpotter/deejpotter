@@ -3,7 +3,7 @@
   "version": "3.0.1",
   "scripts": {
     "start": "netlify dev",
-    "build": "ng build --configuration production",
+    "build": "netlify build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "watchsass": "sass --watch scss/main.scss:src/bootstrap.css",
