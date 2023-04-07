@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as netlifyIdentity from 'netlify-identity-widget';
 import {EMPTY, Observable, of} from "rxjs";
-import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
