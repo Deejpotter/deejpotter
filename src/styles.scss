@@ -21,67 +21,19 @@ body {
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 .content-wrapper {
-  flex-grow: 1;
+  flex: 1;
+  position: relative;
 }
 
-.background {
-  background-image: url("/assets/images/white-waves.png");
-  background-attachment: fixed;
-}
-
-.inset {
-  box-shadow: var(--box-shadow-inset);
-}
-
-.inset-background-cover {
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  box-shadow: var(--box-shadow-inset);
-}
-
-@media (max-width: 600px) {
-  .display-1 {
-    font-size: 4rem;
-  }
-
-  .inset-background-cover {
-    background-attachment: scroll;
-    background-size: cover;
-  }
-}
-
-.inset-background-right {
-  background-attachment: fixed;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: right;
-  box-shadow: var(--box-shadow-inset);
-}
-
-@media (max-width: 600px) {
-  .inset-background-right {
-    background-attachment: scroll;
-    background-size: cover;
-  }
-}
-
-.inset-background-left {
-  background-attachment: fixed;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left;
-  box-shadow: var(--box-shadow-inset);
-}
-
-@media (max-width: 600px) {
-  .inset-background-left {
-    background-attachment: scroll;
-    background-size: cover;
-  }
+.route-animations-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
