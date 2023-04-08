@@ -9,8 +9,17 @@
     "watchsass": "sass --watch scss/main.scss:src/bootstrap.css",
     "compilesass": "sass scss/main.scss:src/bootstrap.css"
   },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead",
+    "last 2 Edge versions",
+    "not IE 11"
+  ],
   "private": true,
   "dependencies": {
+    "@angular-devkit/build-angular": "^15.2.5",
     "@angular/animations": "^15.2.6",
     "@angular/cdk": "^15.2.6",
     "@angular/cli": "^15.2.5",
@@ -35,10 +44,9 @@
     "open-iconic": "^1.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.5.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^15.2.5",
     "@angular/compiler-cli": "^15.2.6",
     "@angular/localize": "^15.2.6",
     "@types/jasmine": "~4.3.1",
@@ -48,6 +56,7 @@
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
+    "karma-edge-launcher": "^0.4.2",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "sass": "^1.61.0",

@@ -7,11 +7,7 @@ import {EMPTY, Observable, of} from "rxjs";
 })
 export class AuthService {
   constructor() {
-    const identityConfig: netlifyIdentity.InitOptions = {
-      locale: 'en'
-    };
-
-    netlifyIdentity.init(identityConfig);
+    netlifyIdentity.init();
   }
 
   signUp(): Observable<netlifyIdentity.User | Error> {

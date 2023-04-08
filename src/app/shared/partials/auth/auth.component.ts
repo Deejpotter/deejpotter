@@ -9,8 +9,6 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
-  email: string = '';
-  password: string = '';
 
   constructor(public authService: AuthService, private router: Router, private toastr: ToastrService) {
   }

@@ -29,6 +29,7 @@ import {
 import {AuthInterceptor} from "./shared/interceptors/auth.interceptor";
 import {AuthComponent} from './shared/partials/auth/auth.component';
 import {ToastrModule} from "ngx-toastr";
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {ToastrModule} from "ngx-toastr";
     AppRoutingModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-    FormsModule
+    FormsModule,
+    NgOptimizedImage
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
