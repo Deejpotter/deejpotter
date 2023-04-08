@@ -11,6 +11,7 @@ module.exports = function (config) {
       require('karma-edge-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
+      require('karma-spec-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
@@ -29,17 +30,17 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/deejpotter'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        {type: 'html'},
+        {type: 'text-summary'}
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'spec', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Edge'],
-    singleRun: false,
+    autoWatch: false,
+    browsers: ['Chrome'],
+    singleRun: true,
     restartOnFileChange: true
   });
 };

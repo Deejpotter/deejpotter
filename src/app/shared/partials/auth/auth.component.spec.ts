@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
+import {ToastrService, ToastrModule, ToastNoAnimationModule} from 'ngx-toastr';
 
-import { AuthComponent } from './auth.component';
+describe('ToastrService', () => {
+  let service: ToastrService;
 
-describe('AuthComponent', () => {
-  let component: AuthComponent;
-  let fixture: ComponentFixture<AuthComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ AuthComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(AuthComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ToastrModule.forRoot(),
+        ToastNoAnimationModule.forRoot()
+      ],
+      providers: [
+        ToastrService
+      ]
+    });
+    service = TestBed.inject(ToastrService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 });

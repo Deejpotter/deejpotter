@@ -93,8 +93,7 @@
               "src/assets"
             ],
             "styles": [
-              "scss/main.scss",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
