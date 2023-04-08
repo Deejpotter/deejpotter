@@ -42,10 +42,10 @@ function slideInOutSequenceAnimation(direction: string) {
     query(':leave', animateChild(), {optional: true}),
     group([
       query(':leave', [
-        animate('200ms ease-out', style({[direction]: '100%', opacity: 0})),
+        animate('150ms ease-in', style({[direction]: '100%', opacity: 0})),
       ], {optional: true}),
       query(':enter', [
-        animate('300ms ease-out', style({[direction]: '0%', opacity: 1})),
+        animate('150ms ease-out', style({[direction]: '0%', opacity: 1})),
       ], {optional: true}),
     ]),
   ];
@@ -65,10 +65,10 @@ function fadeInOutSequenceAnimation() {
     query(':leave', animateChild(), {optional: true}),
     sequence([
       query(':leave', [
-        animate('200ms ease-out', style({opacity: 0})),
+        animate('150ms ease-in', style({opacity: 0})),
       ], {optional: true}),
       query(':enter', [
-        animate('300ms ease-in', style({opacity: 1})),
+        animate('150ms ease-out', style({opacity: 1})),
       ], {optional: true}),
     ]),
   ];
