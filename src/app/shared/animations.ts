@@ -6,22 +6,21 @@ import {
   query,
   animateChild,
   group,
+  sequence,
 } from '@angular/animations';
-
 
 export const routeAnimations = trigger('routeAnimations', [
   transition('* <=> slideIn', [
     baseStyle(),
-    ...slideStyles('left'),
-    ...slideAnimation('left'),
+    ...slideInOutSequenceAnimation('left'),
   ]),
   transition('* <=> fadeIn', [
     baseStyle(),
-    ...fadeInOutAnimation(),
+    ...fadeInOutSequenceAnimation(),
   ]),
   transition('* <=> *', [
     baseStyle(),
-    ...fadeInOutAnimation(),
+    ...fadeInOutSequenceAnimation(),
   ]),
 ]);
 
@@ -29,62 +28,48 @@ function baseStyle() {
   return style({position: 'relative'});
 }
 
-function slideStyles(direction: string) {
+function slideInOutSequenceAnimation(direction: string) {
   return [
-    query(
-      ':enter, :leave',
-      [
-        style({
-          position: 'absolute',
-          top: 0,
-          [direction]: 0,
-          width: '100%',
-        }),
-      ],
-      {optional: true}
-    ),
-    query(':enter', [style({[direction]: '-100%'})], {optional: true}),
-  ];
-}
-
-function slideAnimation(direction: string) {
-  return [
+    query(':enter', [
+      style({
+        position: 'absolute',
+        top: 0,
+        [direction]: 0,
+        width: '100%',
+        opacity: 0,
+      }),
+    ], {optional: true}),
     query(':leave', animateChild(), {optional: true}),
     group([
-      query(
-        ':leave',
-        [
-          animate(
-            '200ms ease-out',
-            style({[direction]: '100%', opacity: 0})
-          ),
-        ],
-        {optional: true}
-      ),
-      query(
-        ':enter',
-        [animate('300ms ease-out', style({[direction]: '0%'}))],
-        {optional: true}
-      ),
-      query('@*', animateChild(), {optional: true}),
+      query(':leave', [
+        animate('200ms ease-out', style({[direction]: '100%', opacity: 0})),
+      ], {optional: true}),
+      query(':enter', [
+        animate('300ms ease-out', style({[direction]: '0%', opacity: 1})),
+      ], {optional: true}),
     ]),
   ];
 }
 
-function fadeInOutAnimation() {
+function fadeInOutSequenceAnimation() {
   return [
-    query(':enter, :leave', [style({opacity: 0})], {optional: true}),
-    query(':leave', animateChild(), {optional: true}),
-    group([
-      query(
-        ':leave',
-        [animate('200ms ease-out', style({opacity: 0}))],
-        {optional: true}
-      ),
-      query(':enter', [animate('300ms ease-in', style({opacity: 1}))], {
-        optional: true,
+    query(':enter, :leave', [
+      style({
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        opacity: 0,
       }),
-      query('@*', animateChild(), {optional: true}),
+    ], {optional: true}),
+    query(':leave', animateChild(), {optional: true}),
+    sequence([
+      query(':leave', [
+        animate('200ms ease-out', style({opacity: 0})),
+      ], {optional: true}),
+      query(':enter', [
+        animate('300ms ease-in', style({opacity: 1})),
+      ], {optional: true}),
     ]),
   ];
 }
