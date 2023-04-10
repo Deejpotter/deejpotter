@@ -13,6 +13,7 @@ export class TodoService {
   public todoItems: TodoItem[] = [];
   public todoItemsSubject = new BehaviorSubject<TodoItem[]>([]);
   private pendingActions: Array<() => void> = [];
+  public loadingCompleted: Subject<void> = new Subject<void>();
 
   constructor(
     private todoItemRepository: TodoItemRepository,
@@ -31,6 +32,7 @@ export class TodoService {
           this.todoItemsSubject.next(this.todoItems);
           localStorage.setItem('todoItems', JSON.stringify(items));
           this.updating = false;
+          this.loadingCompleted.next();
           // Once the refresh is done, process any queued actions
           this.processNextAction();
         }),

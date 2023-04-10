@@ -30,6 +30,7 @@ import {AuthComponent} from './shared/partials/auth/auth.component';
 import {ToastrModule} from "ngx-toastr";
 import {NgOptimizedImage} from "@angular/common";
 import {TodoListComponent} from './pages/projects/apps/todo-list/todo-list.component';
+import { LoadingSpinnerComponent } from './shared/partials/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {TodoListComponent} from './pages/projects/apps/todo-list/todo-list.compo
     ShadowHeroSectionComponent,
     GradientHeroSectionComponent,
     AuthComponent,
-    TodoListComponent
+    TodoListComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,4 @@
-import {
-  trigger,
-  style,
-  transition,
-  animate,
-  query,
-  animateChild,
-  group,
-  sequence,
-} from '@angular/animations';
+import {animate, animateChild, group, query, sequence, style, transition, trigger,} from '@angular/animations';
 
 export const routeAnimations = trigger('routeAnimations', [
   transition('* <=> slideIn', [
@@ -23,6 +14,18 @@ export const routeAnimations = trigger('routeAnimations', [
     ...fadeInOutSequenceAnimation(),
   ]),
 ]);
+
+export function basicFadeAnimation() {
+  return trigger('basicFade', [
+    transition(':enter', [
+      style({backgroundColor: 'transparent'}),
+      animate('200ms', style({backgroundColor: '#f5f5f5'}))
+    ]),
+    transition(':leave', [
+      animate('200ms', style({backgroundColor: 'transparent'}))
+    ])
+  ])
+}
 
 function baseStyle() {
   return style({position: 'relative'});
@@ -72,28 +75,4 @@ function fadeInOutSequenceAnimation() {
       ], {optional: true}),
     ]),
   ];
-}
-
-function itemHoverAnimation() {
-  trigger('itemHover', [
-    transition(':enter', [
-      style({backgroundColor: 'transparent'}),
-      animate('200ms', style({backgroundColor: '#f5f5f5'}))
-    ]),
-    transition(':leave', [
-      animate('200ms', style({backgroundColor: 'transparent'}))
-    ])
-  ])
-}
-
-function buttonHoverAnimation() {
-  trigger('buttonHover', [
-    transition(':enter', [
-      style({backgroundColor: '#28a745'}),
-      animate('200ms', style({backgroundColor: '#218838'}))
-    ]),
-    transition(':leave', [
-      animate('200ms', style({backgroundColor: '#28a745'}))
-    ])
-  ])
 }

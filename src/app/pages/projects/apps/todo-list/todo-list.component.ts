@@ -1,20 +1,23 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TodoItem} from 'src/app/shared/models/TodoItem';
 import {TodoService} from 'src/app/shared/services/todo.service';
 import {ToastrService} from 'ngx-toastr';
 import {Subscription} from 'rxjs';
+import {basicFadeAnimation} from "../../../../shared/utils/animations";
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
+  animations: [basicFadeAnimation()],
 })
 export class TodoListComponent implements OnInit, AfterViewInit {
-  @ViewChild('newTodoInput') newTodoInput!: any;
+  @ViewChild('newTodoInput', {static: false}) newTodoInput!: ElementRef;
 
   todoItems: TodoItem[] = [];
   newTodoText = '';
   todoItemsSub!: Subscription;
+  loading: boolean = true;
 
   constructor(
     public todoService: TodoService,
@@ -25,6 +28,9 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.todoItemsSub = this.todoService.todoItemsSubject.subscribe((todoItems) => {
       this.todoItems = todoItems;
+    });
+    this.todoService.loadingCompleted.subscribe(() => {
+      this.loading = false;
     });
   }
 
