@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from 'src/app/shared/services/auth.service';
-import {ToastrService} from "ngx-toastr";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { User } from 'netlify-identity-widget';
 
 @Component({
   selector: 'app-auth',
@@ -9,33 +10,22 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
+  currentUser: User | null;
 
   constructor(public authService: AuthService, private router: Router, private toastr: ToastrService) {
+    this.currentUser = null;
   }
 
   ngOnInit(): void {
+    this.currentUser = this.authService.getCurrentUser();
   }
 
   onLogin(): void {
-    this.authService.login().subscribe({
-      next: () => {
-        this.toastr.success('Logged in successfully', 'Success');
-      },
-      error: (error: Error) => {
-        console.error('Login failed:', error.message);
-      }
-    });
+    this.authService.login();
   }
 
   onSignup(): void {
-    this.authService.signUp().subscribe({
-      next: () => {
-        this.toastr.success('Signed up successfully', 'Success');
-      },
-      error: (error: Error) => {
-        console.error('Signup failed:', error.message);
-      }
-    });
+    this.authService.signUp();
   }
 
   onLogout(): void {
@@ -43,6 +33,7 @@ export class AuthComponent implements OnInit {
       next: (result) => {
         this.router.navigate(['/']);
         this.toastr.success('Logged out successfully', 'Success');
+        this.currentUser = null;
       },
       error: (error) => {
         console.error('Logout error:', error);
@@ -50,5 +41,4 @@ export class AuthComponent implements OnInit {
       },
     });
   }
-
 }

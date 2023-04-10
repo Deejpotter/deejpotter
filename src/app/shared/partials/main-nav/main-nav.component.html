@@ -6,25 +6,34 @@
     </a>
 
     <!-- Toggle Button -->
-    <button (click)="ToggleNavMenu()" class="navbar-toggler" type="button">
+    <button class="navbar-toggler" type="button" (click)="toggleNavMenu()">
       <span class="oi oi-menu"></span>
     </button>
 
     <!-- Nav -->
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
       <div class="navbar-nav nav-fill">
+        <div class="nav-item dropdown" [class.show]="isProjectsDropdownOpen">
+          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleProjectsDropdown()">Projects</a>
+          <div class="dropdown-menu" [class.show]="isProjectsDropdownOpen">
+            <a class="dropdown-item" routerLink="/projects/apps" (click)="closeNavMenu()">Apps</a>
+            <a class="dropdown-item" routerLink="/projects/websites" (click)="closeNavMenu()">Websites</a>
+            <a class="dropdown-item" routerLink="/projects/games" (click)="closeNavMenu()">Games</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown" [class.show]="isAppsDropdownOpen">
+          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleAppsDropdown()">Apps</a>
+          <div class="dropdown-menu" [class.show]="isAppsDropdownOpen">
+            <a class="dropdown-item" routerLink="/projects/apps/todo" (click)="closeNavMenu()">Todo List</a>
+          </div>
+        </div>
         <div class="nav-item">
-          <a class="nav-link" routerLink="/about" (click)="CloseNavMenu()">
+          <a class="nav-link" routerLink="/about" (click)="closeNavMenu()">
             <span class="oi oi-person" aria-hidden="true"></span> About me
           </a>
         </div>
         <div class="nav-item">
-          <a class="nav-link" routerLink="/projects" (click)="CloseNavMenu()">
-            <span class="oi oi-project" aria-hidden="true"></span> Projects
-          </a>
-        </div>
-        <div class="nav-item">
-          <a class="nav-link" routerLink="/contact" (click)="CloseNavMenu()">
+          <a class="nav-link" routerLink="/contact" (click)="closeNavMenu()">
             <span class="oi oi-phone" aria-hidden="true"></span> Contact me
           </a>
         </div>

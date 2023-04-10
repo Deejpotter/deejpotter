@@ -7,6 +7,7 @@
 
 <div *ngIf="authService.isAuthenticated()" class="navbar-nav">
   <div class="nav-item">
+    <span *ngIf="currentUser?.email">User: {{ currentUser?.email }}</span>
     <button (click)="onLogout()" class="btn btn-danger">Logout</button>
   </div>
 </div>

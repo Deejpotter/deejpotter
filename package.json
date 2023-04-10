@@ -38,12 +38,15 @@
     "@schematics/angular": "^15.2.5",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.4",
+    "bson-objectid": "^2.0.4",
+    "mongodb": "^5.2.0",
     "netlify-identity-widget": "^1.9.2",
     "ngx-toastr": "^16.1.0",
     "node-fetch": "^3.3.1",
     "open-iconic": "^1.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.5.0",
+    "uuid": "^9.0.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
@@ -52,6 +55,7 @@
     "@types/jasmine": "~4.3.1",
     "@types/netlify-identity-widget": "^1.9.3",
     "@types/node": "^18.15.11",
+    "@types/uuid": "^9.0.1",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.0",
