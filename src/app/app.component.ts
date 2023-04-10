@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {Router, RouterOutlet, NavigationEnd, NavigationStart, ChildrenOutletContexts} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {routeAnimations} from './shared/animations';
+import {routeAnimations} from './shared/utils/animations';
 
 @Component({
   selector: 'app-root',

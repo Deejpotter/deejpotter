@@ -15,18 +15,6 @@ async function performMongoOperation(collectionName: any, operation: any, ...arg
     console.log('Connected successfully to server');
     const db = client.db('deejpotter');
 
-    // Check if the collection exists
-    const collections = await db.collections();
-    const collectionExists = collections.some((c) => c.collectionName === collectionName);
-
-    console.log(`Collection ${collectionName} exists? ${collectionExists}`);
-
-    // If the collection doesn't exist, create it
-    if (!collectionExists) {
-      await db.createCollection(collectionName);
-      console.log(`Created collection ${collectionName}`);
-    }
-
     const collection = db.collection(collectionName);
     const result = await operation(collection, ...args);
     console.log('Operation completed successfully');

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {TodoItem} from 'src/app/shared/models/TodoItem';
 import {TodoService} from 'src/app/shared/services/todo.service';
 import {ToastrService} from 'ngx-toastr';
@@ -9,7 +9,9 @@ import {Subscription} from 'rxjs';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, AfterViewInit {
+  @ViewChild('newTodoInput') newTodoInput!: any;
+
   todoItems: TodoItem[] = [];
   newTodoText = '';
   todoItemsSub!: Subscription;
@@ -21,11 +23,15 @@ export class TodoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.todoItemsSub = this.todoService
-      .todoItemsSubject
-      .subscribe((todoItems) => {
-        this.todoItems = todoItems;
-      });
+    this.todoItemsSub = this.todoService.todoItemsSubject.subscribe((todoItems) => {
+      this.todoItems = todoItems;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.newTodoInput.nativeElement.focus();
+    }, 0);
   }
 
   addTodo(): void {

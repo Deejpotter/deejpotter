@@ -73,3 +73,27 @@ function fadeInOutSequenceAnimation() {
     ]),
   ];
 }
+
+function itemHoverAnimation() {
+  trigger('itemHover', [
+    transition(':enter', [
+      style({backgroundColor: 'transparent'}),
+      animate('200ms', style({backgroundColor: '#f5f5f5'}))
+    ]),
+    transition(':leave', [
+      animate('200ms', style({backgroundColor: 'transparent'}))
+    ])
+  ])
+}
+
+function buttonHoverAnimation() {
+  trigger('buttonHover', [
+    transition(':enter', [
+      style({backgroundColor: '#28a745'}),
+      animate('200ms', style({backgroundColor: '#218838'}))
+    ]),
+    transition(':leave', [
+      animate('200ms', style({backgroundColor: '#28a745'}))
+    ])
+  ])
+}
