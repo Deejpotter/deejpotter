@@ -37,4 +37,5 @@ export class MainNavComponent {
     this.isAppsDropdownOpen = !this.isAppsDropdownOpen;
     this.isProjectsDropdownOpen = false;
   }
+  
 }

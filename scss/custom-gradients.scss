@@ -1,21 +1,26 @@
 /*--------- #Gradients ---------*/
 
 .primary-light-gradient {
-  background: rgb(30,153,82);
-  background: linear-gradient(180deg, rgba(30,153,82,1) 40%, rgba(30,153,82,0.8) 65%, rgba(253,253,253,0) 100%);
+  background: rgb(30, 153, 82);
+  background: linear-gradient(180deg, rgba(30, 153, 82, 1) 40%, rgba(30, 153, 82, 0.8) 65%, rgba(253, 253, 253, 0) 100%);
 }
 
 .light-primary-gradient {
-  background: rgba(253,253,253,0);
-  background: linear-gradient(180deg, rgba(253,253,253,0) 40%, rgba(30,153,82,0.8) 65%, rgb(30,153,82) 100%);
+  background: rgba(253, 253, 253, 0);
+  background: linear-gradient(180deg, rgba(253, 253, 253, 0) 40%, rgba(30, 153, 82, 0.8) 65%, rgb(30, 153, 82) 100%);
 }
 
 .secondary-light-gradient {
-  background: rgb(58,44,51);
-  background: linear-gradient(180deg, rgba(58,44,51,1) 50%, rgba(58,44,51,0.7960610269498425) 65%, rgba(253,253,253,0) 100%);
+  background: rgb(58, 44, 51);
+  background: linear-gradient(180deg, rgba(58, 44, 51, 1) 50%, rgba(58, 44, 51, 0.7960610269498425) 65%, rgba(253, 253, 253, 0) 100%);
 }
 
 .info-light-gradient {
-  background: rgb(115,194,212);
-  background: linear-gradient(180deg, rgba(115,194,212,1) 50%, rgba(115,194,212,0.7988621473980217) 65%, rgba(253,253,253,0) 100%);
+  background: rgb(115, 194, 212);
+  background: linear-gradient(180deg, rgba(115, 194, 212, 1) 50%, rgba(115, 194, 212, 0.7988621473980217) 65%, rgba(253, 253, 253, 0) 100%);
+}
+
+.primary-transparent-gradient {
+  background: rgb(30, 153, 82);
+  background: linear-gradient(180deg, rgba(30, 153, 82, 0) 0%, rgba(30, 153, 82, 1) 10%, rgba(30, 153, 82, 0.9) 75%, rgba(253, 253, 253, .5) 100%);
 }
