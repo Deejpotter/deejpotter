@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
+import {dropdownAnimation} from "../../utils/animations";
 
 @Component({
   selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
-  styleUrls: ['./main-nav.component.scss']
+  styleUrls: ['./main-nav.component.scss'],
+  animations: [dropdownAnimation()]
 })
 export class MainNavComponent {
   isMenuCollapsed = true;

@@ -1,21 +1,16 @@
 <nav class="navbar navbar-expand-md bg-primary shadow">
-  <!-- Navbar brand -->
   <div class="container">
     <a class="navbar-brand" routerLink="/">
       <img ngSrc="/assets/images/deejPotterLogo.svg" alt="The Deej Potter logo." height="128" width="128">
     </a>
-
-    <!-- Toggle Button -->
     <button class="navbar-toggler" type="button" (click)="toggleNavMenu()">
       <span class="oi oi-menu"></span>
     </button>
-
-    <!-- Nav -->
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
       <div class="navbar-nav nav-fill">
         <div class="nav-item dropdown" [class.show]="isProjectsDropdownOpen">
           <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleProjectsDropdown()">Projects</a>
-          <div class="dropdown-menu" [class.show]="isProjectsDropdownOpen">
+          <div class="dropdown-menu" [@dropdownAnimation]="isProjectsDropdownOpen ? 'visible' : 'hidden'">
             <a class="dropdown-item" routerLink="/projects/apps" (click)="closeNavMenu()">Apps</a>
             <a class="dropdown-item" routerLink="/projects/websites" (click)="closeNavMenu()">Websites</a>
             <a class="dropdown-item" routerLink="/projects/games" (click)="closeNavMenu()">Games</a>
@@ -23,7 +18,7 @@
         </div>
         <div class="nav-item dropdown" [class.show]="isAppsDropdownOpen">
           <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleAppsDropdown()">Apps</a>
-          <div class="dropdown-menu" [class.show]="isAppsDropdownOpen">
+          <div class="dropdown-menu" [@dropdownAnimation]="isAppsDropdownOpen ? 'visible' : 'hidden'">
             <a class="dropdown-item" routerLink="/projects/apps/todo" (click)="closeNavMenu()">Todo List</a>
           </div>
         </div>

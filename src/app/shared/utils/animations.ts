@@ -1,4 +1,4 @@
-import {animate, animateChild, group, query, sequence, style, transition, trigger,} from '@angular/animations';
+import {animate, animateChild, animation, group, keyframes, query, sequence, state, style, transition, trigger, useAnimation,} from '@angular/animations';
 
 export const routeAnimations = trigger('routeAnimations', [
   transition('* <=> slideIn', [
@@ -25,6 +25,45 @@ export function basicFadeAnimation() {
       animate('200ms', style({backgroundColor: 'transparent'}))
     ])
   ])
+}
+
+export function dropdownAnimation() {
+  return trigger('dropdownAnimation', [
+    state('hidden', style({ opacity: 0, transform: 'translateY(-10px)', display: 'none' })),
+    state('visible', style({ opacity: 1, transform: 'translateY(0)', display: 'block' })),
+    transition('hidden => visible', [
+      style({ display: 'block' }),
+      useAnimation(slideFadeInAnimation()),
+    ]),
+    transition('visible => hidden', [
+      useAnimation(slideFadeOutAnimation()),
+      style({ display: 'none' }),
+    ]),
+  ]);
+}
+
+function slideFadeInAnimation() {
+  return animation([
+    animate(
+      '200ms ease-in',
+      keyframes([
+        style({ opacity: 0, transform: 'translateY(-10px)', offset: 0 }),
+        style({ opacity: 1, transform: 'translateY(0)', offset: 1 }),
+      ]),
+    ),
+  ]);
+}
+
+function slideFadeOutAnimation() {
+  return animation([
+    animate(
+      '200ms ease-out',
+      keyframes([
+        style({ opacity: 1, transform: 'translateY(0)', offset: 0 }),
+        style({ opacity: 0, transform: 'translateY(-10px)', offset: 1 }),
+      ]),
+    ),
+  ]);
 }
 
 function baseStyle() {
