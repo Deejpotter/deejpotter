@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { User } from 'netlify-identity-widget';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from 'src/app/shared/services/auth.service';
+import {ToastrService} from 'ngx-toastr';
+import {User} from 'netlify-identity-widget';
 
 @Component({
   selector: 'app-auth',

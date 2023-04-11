@@ -37,7 +37,7 @@ export function dropdownAnimation() {
     ]),
     transition('visible => hidden', [
       useAnimation(slideFadeOutAnimation()),
-      style({ display: 'none' }),
+      style({display: 'none'}),
     ]),
   ]);
 }

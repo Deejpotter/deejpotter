@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule, Title} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -18,19 +18,15 @@ import {AppsComponent} from './pages/projects/apps/apps.component';
 import {GamesComponent} from './pages/projects/games/games.component';
 import {WebsitesComponent} from './pages/projects/websites/websites.component';
 import {FunComponent} from './pages/projects/fun/fun.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {BasicSectionComponent} from './shared/partials/basic-section/basic-section.component';
-import {
-  ShadowHeroSectionComponent
-} from './shared/partials/shadow-hero-section/shadow-hero-section.component';
-import {
-  GradientHeroSectionComponent
-} from './shared/partials/gradient-hero-section/gradient-hero-section.component';
+import {ShadowHeroSectionComponent} from './shared/partials/shadow-hero-section/shadow-hero-section.component';
+import {GradientHeroSectionComponent} from './shared/partials/gradient-hero-section/gradient-hero-section.component';
 import {AuthComponent} from './shared/partials/auth/auth.component';
 import {ToastrModule} from "ngx-toastr";
 import {NgOptimizedImage} from "@angular/common";
 import {TodoListComponent} from './pages/projects/apps/todo-list/todo-list.component';
-import { LoadingSpinnerComponent } from './shared/partials/loading-spinner/loading-spinner.component';
+import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
