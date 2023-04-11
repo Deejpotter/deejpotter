@@ -1,11 +1,6 @@
-<div *ngIf="!authService.isAuthenticated()" class="nav-item">
-  <button (click)="onLogin()" class="btn btn-sm btn-outline-light shadow">Login</button>
-  <button (click)="onSignup()" class="btn btn-sm btn-outline-light shadow">Sign up</button>
-</div>
-
 <div *ngIf="authService.isAuthenticated()" class="nav-item">
   <div class="d-flex align-items-center">
-    <span *ngIf="currentUser?.email" class="">{{ currentUser?.email }}</span>
-    <button (click)="onLogout()" class="btn btn-sm btn-outline-danger shadow-sm ">Logout</button>
+    <img ngxGravatar [email]="currentUser?.email || ''" [size]="32" class="rounded-circle mx-1" alt="The logged in user's Gravatar.">
+    <button (click)="onLogout()" class="btn btn-sm btn-outline-danger shadow">Logout</button>
   </div>
 </div>

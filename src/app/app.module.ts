@@ -27,6 +27,7 @@ import {ToastrModule} from "ngx-toastr";
 import {NgOptimizedImage} from "@angular/common";
 import {TodoListComponent} from './pages/projects/apps/todo-list/todo-list.component';
 import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading-spinner.component';
+import {GravatarModule} from "ngx-gravatar";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading
     HttpClientModule,
     ToastrModule.forRoot(),
     FormsModule,
+    GravatarModule,
     NgOptimizedImage
   ],
   providers: [],

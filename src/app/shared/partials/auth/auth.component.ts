@@ -12,7 +12,11 @@ import {User} from 'netlify-identity-widget';
 export class AuthComponent implements OnInit {
   currentUser: User | null;
 
-  constructor(public authService: AuthService, private router: Router, private toastr: ToastrService) {
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService,
+  ) {
     this.currentUser = null;
   }
 

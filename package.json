@@ -43,6 +43,7 @@
     "lru-cache": "^9.0.0",
     "mongodb": "^5.2.0",
     "netlify-identity-widget": "^1.9.2",
+    "ngx-gravatar": "^13.0.0",
     "ngx-toastr": "^16.1.0",
     "node-fetch": "^3.3.1",
     "open-iconic": "^1.1.1",
