@@ -8,27 +8,39 @@
     </button>
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav nav-fill">
-        <li class="nav-item dropdown" [class.show]="isProjectsDropdownOpen">
-          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleProjectsDropdown()">Projects</a>
-          <div class="dropdown-menu" [@dropdownAnimation]="isProjectsDropdownOpen ? 'visible' : 'hidden'">
-            <a class="dropdown-item" routerLink="/projects/apps" (click)="closeNavMenu()">Apps</a>
-            <a class="dropdown-item" routerLink="/projects/websites" (click)="closeNavMenu()">Websites</a>
-            <a class="dropdown-item" routerLink="/projects/games" (click)="closeNavMenu()">Games</a>
+
+        <li class="nav-item dropdown" [class.show]="isFunDropdownOpen">
+          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleFunDropdown()">Fun stuff</a>
+          <div class="dropdown-menu" [@dropdownAnimation]="isFunDropdownOpen ? 'visible' : 'hidden'">
+            <a class="dropdown-item" routerLink="/fun/todo" (click)="closeNavMenu()">Todo List</a>
+            <a class="dropdown-item" routerLink="/fun" (click)="closeNavMenu()">Fun</a>
           </div>
         </li>
-        <li class="nav-item dropdown" [class.show]="isAppsDropdownOpen">
-          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleAppsDropdown()">Apps</a>
-          <div class="dropdown-menu " [@dropdownAnimation]="isAppsDropdownOpen ? 'visible' : 'hidden'">
-            <a class="dropdown-item" routerLink="/projects/apps/todo" (click)="closeNavMenu()">Todo List</a>
+
+        <li class="nav-item dropdown" [class.show]="isGamesDropdownOpen">
+          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleGamesDropdown()">Games</a>
+          <div class="dropdown-menu " [@dropdownAnimation]="isGamesDropdownOpen ? 'visible' : 'hidden'">
+            <a class="dropdown-item" routerLink="/games" (click)="closeNavMenu()">Games</a>
           </div>
         </li>
+
+        <li class="nav-item dropdown" [class.show]="isWebsitesDropdownOpen">
+          <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" (click)="toggleWebsitesDropdown()">Websites</a>
+          <div class="dropdown-menu " [@dropdownAnimation]="isWebsitesDropdownOpen ? 'visible' : 'hidden'">
+            <a class="dropdown-item" routerLink="/websites" (click)="closeNavMenu()">Websites</a>
+          </div>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link" routerLink="/about" (click)="closeNavMenu()">About me</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact" (click)="closeNavMenu()">Contact me</a>
         </li>
+
         <app-auth></app-auth>
+
       </ul>
     </div>
   </div>

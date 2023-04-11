@@ -9,33 +9,39 @@ import {dropdownAnimation} from "../../utils/animations";
 })
 export class MainNavComponent {
   isMenuCollapsed = true;
-  isProjectsDropdownOpen = false;
-  isAppsDropdownOpen = false;
+  isFunDropdownOpen = false;
+  isWebsitesDropdownOpen = false;
+  isGamesDropdownOpen: boolean = false;
 
   toggleNavMenu(): void {
     this.isMenuCollapsed = !this.isMenuCollapsed;
-    this.isProjectsDropdownOpen = false;
-    this.isAppsDropdownOpen = false;
-  }
-
-  openNavMenu(): void {
-    this.isMenuCollapsed = false;
+    this.isFunDropdownOpen = false;
+    this.isWebsitesDropdownOpen = false;
   }
 
   closeNavMenu(): void {
     this.isMenuCollapsed = true;
-    this.isProjectsDropdownOpen = false;
-    this.isAppsDropdownOpen = false;
+    this.isFunDropdownOpen = false;
+    this.isGamesDropdownOpen = false;
+    this.isWebsitesDropdownOpen = false;
   }
 
-  toggleProjectsDropdown(): void {
-    this.isProjectsDropdownOpen = !this.isProjectsDropdownOpen;
-    this.isAppsDropdownOpen = false;
+  toggleFunDropdown(): void {
+    this.isFunDropdownOpen = !this.isFunDropdownOpen;
+    this.isWebsitesDropdownOpen = false;
+    this.isGamesDropdownOpen = false;
   }
 
-  toggleAppsDropdown(): void {
-    this.isAppsDropdownOpen = !this.isAppsDropdownOpen;
-    this.isProjectsDropdownOpen = false;
+  toggleGamesDropdown(): void {
+    this.isGamesDropdownOpen = !this.isGamesDropdownOpen;
+    this.isFunDropdownOpen = false;
+    this.isWebsitesDropdownOpen = false;
+  }
+
+  toggleWebsitesDropdown(): void {
+    this.isWebsitesDropdownOpen = !this.isWebsitesDropdownOpen;
+    this.isFunDropdownOpen = false;
+    this.isFunDropdownOpen = false;
   }
 
 }

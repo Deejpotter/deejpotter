@@ -13,11 +13,9 @@ import {PrivacyComponent} from './pages/privacy/privacy.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MainFooterComponent} from './shared/partials/main-footer/main-footer.component';
-import {ProjectsComponent} from './pages/projects/projects.component';
-import {AppsComponent} from './pages/projects/apps/apps.component';
-import {GamesComponent} from './pages/projects/games/games.component';
-import {WebsitesComponent} from './pages/projects/websites/websites.component';
-import {FunComponent} from './pages/projects/fun/fun.component';
+import {GamesComponent} from './pages/games/games.component';
+import {WebsitesComponent} from './pages/websites/websites.component';
+import {FunComponent} from './pages/fun/fun.component';
 import {HttpClientModule} from "@angular/common/http";
 import {BasicSectionComponent} from './shared/partials/basic-section/basic-section.component';
 import {ShadowHeroSectionComponent} from './shared/partials/shadow-hero-section/shadow-hero-section.component';
@@ -25,7 +23,7 @@ import {GradientHeroSectionComponent} from './shared/partials/gradient-hero-sect
 import {AuthComponent} from './shared/partials/auth/auth.component';
 import {ToastrModule} from "ngx-toastr";
 import {NgOptimizedImage} from "@angular/common";
-import {TodoListComponent} from './pages/projects/apps/todo-list/todo-list.component';
+import {TodoListComponent} from './pages/fun/todo-list/todo-list.component';
 import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading-spinner.component';
 import {GravatarModule} from "ngx-gravatar";
 
@@ -39,8 +37,6 @@ import {GravatarModule} from "ngx-gravatar";
     TermsComponent,
     PrivacyComponent,
     MainFooterComponent,
-    ProjectsComponent,
-    AppsComponent,
     GamesComponent,
     WebsitesComponent,
     FunComponent,

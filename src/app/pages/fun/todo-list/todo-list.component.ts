@@ -3,7 +3,7 @@ import {TodoItem} from 'src/app/shared/models/TodoItem';
 import {TodoService} from 'src/app/shared/services/todo.service';
 import {ToastrService} from 'ngx-toastr';
 import {Subscription} from 'rxjs';
-import {basicFadeAnimation} from "../../../../shared/utils/animations";
+import {basicFadeAnimation} from "../../../shared/utils/animations";
 
 @Component({
   selector: 'app-todo-list',

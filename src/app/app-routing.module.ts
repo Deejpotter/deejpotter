@@ -5,25 +5,25 @@ import {AboutPageComponent} from "./pages/about/about-page.component";
 import {ContactPageComponent} from "./pages/contact/contact-page.component";
 import {TermsComponent} from "./pages/terms/terms.component";
 import {PrivacyComponent} from "./pages/privacy/privacy.component";
-import {ProjectsComponent} from "./pages/projects/projects.component";
-import {AppsComponent} from "./pages/projects/apps/apps.component";
-import {WebsitesComponent} from "./pages/projects/websites/websites.component";
-import {GamesComponent} from "./pages/projects/games/games.component";
+import {WebsitesComponent} from "./pages/websites/websites.component";
+import {GamesComponent} from "./pages/games/games.component";
 import {TemplatePageTitleStrategy} from "./shared/services/template-page-title-strategy";
-import {TodoListComponent} from "./pages/projects/apps/todo-list/todo-list.component";
+import {TodoListComponent} from "./pages/fun/todo-list/todo-list.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
+import {FunComponent} from "./pages/fun/fun.component";
 
 const routes: Routes = [
   {path: 'about', component: AboutPageComponent, title: "About me", data: {animation: 'about'}},
   {path: 'contact', component: ContactPageComponent, title: "Contact me", data: {animation: 'contact'}},
   {path: 'terms', component: TermsComponent, title: "Terms and conditions", data: {animation: 'terms'}},
   {path: 'privacy', component: PrivacyComponent, title: "Privacy policy", data: {animation: 'privacy'}},
-  {path: 'projects/apps/todo', component: TodoListComponent, title: "My apps | Projects", data: {animation: 'todo'}, canActivate: [AuthGuard],},
-  {path: 'projects/apps', component: AppsComponent, title: "My apps | Projects", data: {animation: 'apps'}},
-  {path: 'projects/websites', component: WebsitesComponent, title: "My websites | Projects", data: {animation: 'websites'}},
-  {path: 'projects/games', component: GamesComponent, title: "My games | Projects", data: {animation: 'games'}},
-  {path: 'projects', component: ProjectsComponent, title: "My projects", data: {animation: 'projects'}},
-  {path: 'projects/**', redirectTo: 'projects', pathMatch: 'full', title: "Missing Project | Projects", data: {animation: 'missingProject'}},
+  {path: 'fun/todo', component: TodoListComponent, title: "Todo list", data: {animation: 'todo'}, canActivate: [AuthGuard],},
+  {path: 'fun', component: FunComponent, title: "Fun projects", data: {animation: 'fun'}},
+  {path: 'fun/**', redirectTo: 'fun', pathMatch: 'full', title: "Missing Project", data: {animation: 'missingProject'}},
+  {path: 'websites', component: WebsitesComponent, title: "My websites", data: {animation: 'websites'}},
+  {path: 'websites/**', redirectTo: 'websites', pathMatch: 'full', title: "Missing Website", data: {animation: 'missingProject'}},
+  {path: 'games', component: GamesComponent, title: "My games", data: {animation: 'games'}},
+  {path: 'games/**', redirectTo: 'fun', pathMatch: 'full', title: "Missing Game", data: {animation: 'missingProject'}},
   {path: '', component: HomeComponent, pathMatch: "full", title: "Home", data: {animation: 'home'}},
   {path: '**', redirectTo: '', pathMatch: 'full', title: "Missing page", data: {animation: 'missing'}}
 ];
