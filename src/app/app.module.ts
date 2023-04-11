@@ -55,7 +55,7 @@ import {GravatarModule} from "ngx-gravatar";
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({timeOut: 3000, positionClass: 'toast-bottom-right', preventDuplicates: true}),
     FormsModule,
     GravatarModule,
     NgOptimizedImage
