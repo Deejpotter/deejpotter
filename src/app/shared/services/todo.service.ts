@@ -1,38 +1,36 @@
-import {Injectable} from '@angular/core';
 import {TodoItemRepository} from 'src/app/shared/repositories/TodoItemRepository';
 import {TodoItem} from '../models/TodoItem';
 import {BehaviorSubject, finalize, Observable, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {AuthService} from './auth.service';
 import {ToastrService} from "ngx-toastr";
+import {BaseService} from "./base.service";
+import {Injectable} from "@angular/core";
 
 @Injectable({
   providedIn: 'root',
 })
-export class TodoService {
+export class TodoService extends BaseService<TodoItem> {
   private updating = false;
-  public todoItems: TodoItem[] = [];
-  public todoItemsSubject = new BehaviorSubject<TodoItem[]>([]);
   private pendingActions: Array<() => void> = [];
-  public loadingCompleted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public override loadingCompleted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
     private todoItemRepository: TodoItemRepository,
-    private authService: AuthService,
+    protected override authService: AuthService,
     private toastr: ToastrService
   ) {
-    this.refreshTodoItems();
+    super(true, authService);
+    this.refreshItems();
   }
 
-  private refreshTodoItems(): void {
-    this.loadingCompleted.next(false); // Add this line
+  private refreshItems(): void {
+    this.loadingCompleted.next(false);
     this.todoItemRepository
       .find({})
       .pipe(
         tap((items) => {
-          this.todoItems = items;
-          this.todoItemsSubject.next(this.todoItems);
-          localStorage.setItem('todoItems', JSON.stringify(items));
+          this.updateItems(items);
           this.updating = false;
           this.loadingCompleted.next(true);
           this.processNextAction();
@@ -60,22 +58,22 @@ export class TodoService {
   }
 
   getAll(): Observable<TodoItem[]> {
-    return this.todoItemsSubject.asObservable();
+    return this.itemsSubject.asObservable();
   }
 
   addItem(text: string): void {
     this.pendingActions.push(() => {
       const item = new TodoItem(text, this.authService.getUserId());
-      const index = this.todoItems.findIndex(i => i._id === item._id);
+      const index = this.items.findIndex(i => i._id === item._id);
       if (index !== -1) {
-        this.todoItems[index] = item;
+        this.items[index] = item;
       } else {
-        this.todoItems.push(item);
+        this.items.push(item);
       }
-      this.todoItemsSubject.next(this.todoItems);
+      this.itemsSubject.next(this.items);
       this.todoItemRepository.add(item).pipe(
         tap(() => {
-          localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
+          localStorage.setItem('items', JSON.stringify(this.items));
           this.toastr.success('Todo item added successfully', 'Success');
         }),
         catchError((error) => {
@@ -98,12 +96,12 @@ export class TodoService {
       return;
     }
     this.updating = true;
-    const index = this.todoItems.findIndex(i => i._id === item._id);
+    const index = this.items.findIndex(i => i._id === item._id);
     if (index !== -1) {
-      this.todoItems[index] = item;
-      this.todoItemsSubject.next(this.todoItems);
+      this.items[index] = item;
+      this.itemsSubject.next(this.items);
       this.todoItemRepository.update(item).subscribe(() => {
-        localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
+        localStorage.setItem('items', JSON.stringify(this.items));
         this.updating = false;
       });
     }
@@ -111,11 +109,11 @@ export class TodoService {
 
   deleteItem(id: string): void {
     this.pendingActions.push(() => {
-      const index = this.todoItems.findIndex(item => item._id === id);
+      const index = this.items.findIndex(item => item._id === id);
       if (index !== -1) {
-        this.todoItems.splice(index, 1);
-        this.todoItemsSubject.next(this.todoItems);
-        localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
+        this.items.splice(index, 1);
+        this.itemsSubject.next(this.items);
+        localStorage.setItem('items', JSON.stringify(this.items));
         this.todoItemRepository.delete(id).subscribe(() => {
           this.updating = false;
           this.processNextAction();
@@ -128,5 +126,8 @@ export class TodoService {
     this.processNextAction();
   }
 
+  protected getCacheKey(): string {
+    return 'todoItems';
+  }
 
 }

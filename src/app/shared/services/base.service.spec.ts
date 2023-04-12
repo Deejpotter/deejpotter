@@ -1,13 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
+import {TodoService} from './todo.service';
+import {TodoItemRepository} from '../repositories/TodoItemRepository';
+import {AuthService} from './auth.service';
+import {ToastrService} from 'ngx-toastr';
 
-import { BaseService } from './base.service';
-
-describe('BaseService', () => {
-  let service: BaseService;
+describe('TodoService', () => {
+  let service: TodoService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(BaseService);
+    TestBed.configureTestingModule({
+      providers: [
+        TodoItemRepository,
+        AuthService,
+        ToastrService
+      ]
+    });
+    service = TestBed.inject(TodoService);
   });
 
   it('should be created', () => {

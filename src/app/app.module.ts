@@ -26,6 +26,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {TodoListComponent} from './pages/fun/todo-list/todo-list.component';
 import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading-spinner.component';
 import {GravatarModule} from "ngx-gravatar";
+import { TodoItemComponent } from './pages/fun/todo-list/todo-item/todo-item.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {GravatarModule} from "ngx-gravatar";
     GradientHeroSectionComponent,
     AuthComponent,
     TodoListComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TodoItemComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,36 @@
 $primary: #1E9952;
 $background: #e9ecef;
+$danger: #f44336;
+$info: #59B7CC;
+$warning: #c0a520;
+
+/*--------- Utils ---------*/
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.route-animations-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
 
 .custom-scrollbar::-webkit-scrollbar {
   width: .6rem;
@@ -24,4 +55,19 @@ $background: #e9ecef;
 .scroll-container {
   scrollbar-color: $background $primary;
   scrollbar-width: thin;
+}
+
+/*--------- Animations ---------*/
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

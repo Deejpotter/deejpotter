@@ -27,19 +27,19 @@ export class TodoListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.todoItemsSub = this.todoService.todoItemsSubject.subscribe((todoItems) => {
-      this.todoItems = todoItems;
+    this.todoItemsSub = this.todoService.itemsSubject.subscribe((items) => {
+      this.todoItems = items;
     });
     this.todoService.loadingCompleted.subscribe((loadingCompleted) => {
       this.loading = !loadingCompleted;
+      setTimeout(() => {
+        this.newTodoInput.nativeElement.focus();
+      }, 1000);
     });
   }
 
   ngAfterViewInit(): void {
-    this.changeDetectorRef.detectChanges(); // Add this line
-    setTimeout(() => {
-      this.newTodoInput.nativeElement.focus();
-    }, 0);
+
   }
 
   addTodo(): void {
