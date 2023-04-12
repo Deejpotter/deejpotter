@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TodoItem} from 'src/app/shared/models/TodoItem';
 import {TodoService} from 'src/app/shared/services/todo.service';
 import {ToastrService} from 'ngx-toastr';
@@ -21,7 +21,8 @@ export class TodoListComponent implements OnInit, AfterViewInit {
 
   constructor(
     public todoService: TodoService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
   }
 
@@ -29,12 +30,13 @@ export class TodoListComponent implements OnInit, AfterViewInit {
     this.todoItemsSub = this.todoService.todoItemsSubject.subscribe((todoItems) => {
       this.todoItems = todoItems;
     });
-    this.todoService.loadingCompleted.subscribe(() => {
-      this.loading = false;
+    this.todoService.loadingCompleted.subscribe((loadingCompleted) => {
+      this.loading = !loadingCompleted;
     });
   }
 
   ngAfterViewInit(): void {
+    this.changeDetectorRef.detectChanges(); // Add this line
     setTimeout(() => {
       this.newTodoInput.nativeElement.focus();
     }, 0);

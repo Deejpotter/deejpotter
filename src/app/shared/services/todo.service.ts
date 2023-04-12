@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {TodoItemRepository} from 'src/app/shared/repositories/TodoItemRepository';
 import {TodoItem} from '../models/TodoItem';
-import {BehaviorSubject, concatMap, finalize, Observable, Subject, take, throwError} from 'rxjs';
+import {BehaviorSubject, finalize, Observable, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {AuthService} from './auth.service';
+import {ToastrService} from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root',
@@ -13,17 +14,18 @@ export class TodoService {
   public todoItems: TodoItem[] = [];
   public todoItemsSubject = new BehaviorSubject<TodoItem[]>([]);
   private pendingActions: Array<() => void> = [];
-  public loadingCompleted: Subject<void> = new Subject<void>();
+  public loadingCompleted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
     private todoItemRepository: TodoItemRepository,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.refreshTodoItems();
   }
 
-
   private refreshTodoItems(): void {
+    this.loadingCompleted.next(false); // Add this line
     this.todoItemRepository
       .find({})
       .pipe(
@@ -32,12 +34,12 @@ export class TodoService {
           this.todoItemsSubject.next(this.todoItems);
           localStorage.setItem('todoItems', JSON.stringify(items));
           this.updating = false;
-          this.loadingCompleted.next();
-          // Once the refresh is done, process any queued actions
+          this.loadingCompleted.next(true);
           this.processNextAction();
         }),
         catchError((error) => {
           console.error('Error fetching todo items:', error);
+          this.loadingCompleted.next(true);
           return throwError(error);
         })
       )
@@ -74,9 +76,11 @@ export class TodoService {
       this.todoItemRepository.add(item).pipe(
         tap(() => {
           localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
+          this.toastr.success('Todo item added successfully', 'Success');
         }),
         catchError((error) => {
           console.error('Error adding todo item:', error);
+          this.toastr.error('Failed to add todo item', 'Error');
           return throwError(error);
         }),
         finalize(() => {

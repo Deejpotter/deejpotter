@@ -45,4 +45,8 @@ export class AuthComponent implements OnInit {
       },
     });
   }
+
+  toastrTest() {
+    this.toastr.success('Logged out successfully', 'Success');
+  }
 }

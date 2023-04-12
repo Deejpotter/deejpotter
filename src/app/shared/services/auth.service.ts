@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import * as netlifyIdentity from 'netlify-identity-widget';
 import {User} from 'netlify-identity-widget';
+import {ToastrService} from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,7 @@ export class AuthService {
   private authEvents = new BehaviorSubject<User | Error | null>(null);
   private currentUser = new BehaviorSubject<User | null>(null);
 
-
-  constructor() {
+  constructor(private toastr: ToastrService) {
     netlifyIdentity.init();
     this.setupEventHandlers();
     const user = netlifyIdentity.currentUser();
@@ -24,12 +24,20 @@ export class AuthService {
     netlifyIdentity.on('login', (user) => {
       this.authEvents.next(user);
       this.currentUser.next(user);
+      this.toastr.success('Logged in successfully', 'Success');
     });
-    netlifyIdentity.on('error', (error) => this.authEvents.next(error));
-    netlifyIdentity.on('close', () =>
-      this.authEvents.next(new Error('The modal was closed before completing'))
-    );
-    netlifyIdentity.on('logout', () => this.currentUser.next(null));
+    netlifyIdentity.on('error', (error) => {
+      this.authEvents.next(error);
+      this.toastr.error('Error occurred during authentication', 'Error');
+    });
+    netlifyIdentity.on('close', () => {
+      this.authEvents.next(new Error('The modal was closed before completing'));
+      this.toastr.warning('Authentication modal closed before completion', 'Warning');
+    });
+    netlifyIdentity.on('logout', () => {
+      this.currentUser.next(null);
+      this.toastr.success('Logged out successfully', 'Success');
+    });
   }
 
   signUp(): void {
