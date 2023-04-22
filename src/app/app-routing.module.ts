@@ -11,6 +11,7 @@ import {TemplatePageTitleStrategy} from "./shared/services/template-page-title-s
 import {TodoListComponent} from "./pages/fun/todo-list/todo-list.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {FunComponent} from "./pages/fun/fun.component";
+import {BaseGameComponent} from "./pages/games/base-game/base-game.component";
 
 const routes: Routes = [
   {path: 'about', component: AboutPageComponent, title: "About me", data: {animation: 'about'}},
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'fun/**', redirectTo: 'fun', pathMatch: 'full', title: "Missing Project", data: {animation: 'missingProject'}},
   {path: 'websites', component: WebsitesComponent, title: "My websites", data: {animation: 'websites'}},
   {path: 'websites/**', redirectTo: 'websites', pathMatch: 'full', title: "Missing Website", data: {animation: 'missingProject'}},
+  {path: 'games/basegame', component: BaseGameComponent, title: "Base Game", data: {animation: 'mindscapes'}},
   {path: 'games', component: GamesComponent, title: "My games", data: {animation: 'games'}},
   {path: 'games/**', redirectTo: 'fun', pathMatch: 'full', title: "Missing Game", data: {animation: 'missingProject'}},
   {path: '', component: HomeComponent, pathMatch: "full", title: "Home", data: {animation: 'home'}},

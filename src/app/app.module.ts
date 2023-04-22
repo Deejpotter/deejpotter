@@ -26,7 +26,9 @@ import {NgOptimizedImage} from "@angular/common";
 import {TodoListComponent} from './pages/fun/todo-list/todo-list.component';
 import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading-spinner.component';
 import {GravatarModule} from "ngx-gravatar";
-import { TodoItemComponent } from './pages/fun/todo-list/todo-item/todo-item.component';
+import {TodoItemComponent} from './pages/fun/todo-list/todo-item/todo-item.component';
+import {MindscapesComponent} from './pages/games/mindscapes/mindscapes.component';
+import {BaseGameComponent} from './pages/games/base-game/base-game.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { TodoItemComponent } from './pages/fun/todo-list/todo-item/todo-item.com
     AuthComponent,
     TodoListComponent,
     LoadingSpinnerComponent,
-    TodoItemComponent
+    TodoItemComponent,
+    MindscapesComponent,
+    BaseGameComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,7 @@ import { TodoItemComponent } from './pages/fun/todo-list/todo-item/todo-item.com
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
-    ToastrModule.forRoot({timeOut: 3000, positionClass: 'toast-bottom-right', preventDuplicates: true}),
+    ToastrModule.forRoot({timeOut: 2000, positionClass: 'toast-bottom-right', preventDuplicates: false}),
     FormsModule,
     GravatarModule,
     NgOptimizedImage

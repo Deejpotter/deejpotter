@@ -9,6 +9,23 @@
 @import "../node_modules/open-iconic/font/css/open-iconic-bootstrap.css";
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
 
+.amorphous-blob path {
+  fill: #f0f0f0;
+  animation: blobAnimation 8s ease-in-out infinite alternate;
+}
+
+@keyframes blobAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(20px, 20px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 /*--------- Bootstrap transitions ---------*/
 
 // Add hover effects and transition to all buttons

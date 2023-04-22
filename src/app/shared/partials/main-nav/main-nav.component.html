@@ -13,14 +13,13 @@
           <a class="nav-link dropdown-toggle" role="button" routerLink="/fun" aria-haspopup="true" aria-expanded="false">Fun stuff</a>
           <div class="dropdown-menu" [@dropdownAnimation]="isFunDropdownOpen ? 'visible' : 'hidden'">
             <a class="dropdown-item" routerLink="/fun/todo" (click)="closeNavMenu()">Todo List</a>
-            <a class="dropdown-item" routerLink="/fun" (click)="closeNavMenu()">Fun</a>
           </div>
         </li>
 
         <li class="nav-item dropdown" [class.show]="isGamesDropdownOpen" (mouseenter)="showDropdown('games')" (mouseleave)="hideDropdowns()" (click)="closeNavMenu()">
           <a class="nav-link dropdown-toggle" role="button" routerLink="/games" aria-haspopup="true" aria-expanded="false">Games</a>
           <div class="dropdown-menu" [@dropdownAnimation]="isGamesDropdownOpen ? 'visible' : 'hidden'">
-            <a class="dropdown-item" routerLink="/games" (click)="closeNavMenu()">Games</a>
+            <a class="dropdown-item" routerLink="/games/basegame" (click)="closeNavMenu()">Base Game</a>
           </div>
         </li>
 
