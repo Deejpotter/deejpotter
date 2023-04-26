@@ -28,7 +28,8 @@ import {LoadingSpinnerComponent} from './shared/partials/loading-spinner/loading
 import {GravatarModule} from "ngx-gravatar";
 import {TodoItemComponent} from './pages/fun/todo-list/todo-item/todo-item.component';
 import {MindscapesComponent} from './pages/games/mindscapes/mindscapes.component';
-import {BaseGameComponent} from './pages/games/base-game/base-game.component';
+import {BasicBasesComponent} from './pages/games/basic-bases/basic-bases.component';
+import { BasicBasesPrivacyComponent } from './pages/games/basic-bases/basic-bases-privacy/basic-bases-privacy.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {BaseGameComponent} from './pages/games/base-game/base-game.component';
     LoadingSpinnerComponent,
     TodoItemComponent,
     MindscapesComponent,
-    BaseGameComponent
+    BasicBasesComponent,
+    BasicBasesPrivacyComponent
   ],
   imports: [
     BrowserModule,
