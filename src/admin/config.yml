@@ -1,8 +1,8 @@
 backend:
   name: git-gateway
-  branch: main
+  branch: master
 
-media_folder: "assets/uploads"
+media_folder: "assets/cms-uploads"
 
 collections:
   - name: "websites"
