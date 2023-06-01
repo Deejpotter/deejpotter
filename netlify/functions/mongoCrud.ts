@@ -1,3 +1,5 @@
+import { Context } from '@netlify/functions/dist/function/context';
+import { Event } from '@netlify/functions/dist/function/event';
 import {MongoClient, ObjectId} from 'mongodb';
 
 const uri = process.env['MONGODB_URI'];
@@ -24,12 +26,12 @@ async function performMongoOperation(collectionName: any, operation: any, ...arg
   }
 }
 
-export async function handler(event: any, context: any) {
+export async function handler(event: Event, context: Context) {
   console.log(`Received ${event.httpMethod} request for ${event.path}`);
 
   const {httpMethod, body, queryStringParameters} = event;
-  const collection = queryStringParameters.collection;
-  const id = queryStringParameters.id;
+  const collection = queryStringParameters['collection'];
+  const id = queryStringParameters['id'];
 
   if (httpMethod === 'GET' && !collection) {
     console.log('Path parameters missing');
