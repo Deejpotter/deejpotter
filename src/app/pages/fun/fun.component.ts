@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./fun.component.scss']
 })
 export class FunComponent {
+projects: any = [];
 
 }
