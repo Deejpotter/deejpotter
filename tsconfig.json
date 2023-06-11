@@ -1,35 +1,46 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "forceConsistentCasingInFileNames": true,
+    // This specifies the ECMAScript target version. "es5" is widely compatible with many browsers.
+    "target": "es5",
+    // This includes type definitions from these libraries.
+    "lib": ["dom", "dom.iterable", "esnext"],
+    // This allows JavaScript files to be compiled.
+    "allowJs": true,
+    // This skips type checking of declaration files.
+    "skipLibCheck": true,
+    // This enables all strict type checking options.
     "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom",
-      "scripthost"
-    ],
+    // This enforces consistent casing in file names.
+    "forceConsistentCasingInFileNames": true,
+    // This prevents emitting output files.
+    "noEmit": true,
+    // This enables compatibility between CommonJS and ES Modules via creation of namespace objects for all imports.
     "esModuleInterop": true,
-    "useDefineForClassFields": false
+    // This specifies the module system for the project. "esnext" uses the latest module system.
+    "module": "esnext",
+    // This sets the module resolution strategy to node.
+    "moduleResolution": "node",
+    // This allows importing JSON modules.
+    "resolveJsonModule": true,
+    // This ensures every file is a separate module.
+    "isolatedModules": true,
+    // This specifies JSX code generation. "preserve" keeps the JSX as part of the output to be further consumed by the bundler.
+    "jsx": "preserve",
+    // This enables incremental compilation by storing information about the project graph from the last compilation.
+    "incremental": true,
+    // This specifies TypeScript plugins to use.
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    // This maps import paths to different locations. Here, it's mapping any import that starts with "@" to the "src" directory.
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  }
+  // This specifies which files TypeScript should include in its checks.
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  // This specifies which files TypeScript should exclude from its checks.
+  "exclude": ["node_modules"]
 }

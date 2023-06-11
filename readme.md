@@ -1,12 +1,21 @@
-# Deejpotter
+# Deej Potter's Portfolio
 
-I found my passion for writing code around 2013 and since then it has become my favourite hobby and hopefully it will be my favourite career. 
+Hey there! I'm Daniel, or Deej, a full-stack developer who used to be a chef. This is the repo for my portfolio website, which I've built with Next.js. 
 
-My favourite things to do are web application development and object-oriented programming.
+## A Bit About Me
 
-I'm also interested in other areas of technology such as game development, web and game design, UX design, 3D modeling, and even filling in spreadsheets.
+I started out working in my parents' restaurant, but I've always been more interested in tech. I eventually started a web design business from home, which led me to dive deeper into coding and become a full-stack developer.
 
-## Version 3 of my website, built with Angular
+## This Project
 
-Look at all my cool projects in style, once I get my site done.
+This portfolio website is my playground where I get to showcase my coding projects and talk about my journey in tech. Here's what you'll find:
 
+1. **About Page**: Just a bit about me and how I ended up in the tech world.
+2. **Contact Page**: A simple contact form built with Netlify Forms. Feel free to drop me a line!
+3. **Website Projects**: Some of the websites I've built. I've used Netlify CMS to manage the content.
+4. **Games**: I've made a few WebGL games, which I've showcased here.
+5. **Technical Apps**: Here, I've showcased some technical apps with dynamic functionality that I've built.
+
+I initially built this project with Angular, but I've recently migrated it to Next.js for the SSG SEO benefits. I'm using Netlify CMS for content management, Netlify Forms for the contact form, and Netlify Identity for user authentication. I'm also using Netlify Functions to handle dynamic functionality. And, it's hosted on Netlify, of course.
+
+Feel free to poke around the code. If you're curious about anything or just want to chat about coding, don't hesitate to reach out!

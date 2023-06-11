@@ -1,6 +1,8 @@
 [build]
-command = "ng build --configuration production"
-publish = "dist"
+# This is the command that Netlify will run to build the site. 
+command = "npm run build"
+# This is the directory that Netlify will publish. 
+publish = "out"
 
 [[redirects]]
 from = "/admin/*"
@@ -13,7 +15,9 @@ to = "/index.html"
 status = 200
 
 [dev]
-command = "ng serve"
-targetPort = 4200
+# This is the command that Netlify Dev will run to start the development server. 
+command = "npm run dev"
+# This is the port that the development server will run on. 
+targetPort = 3000
 publish = "dev"
 autoLaunch = true

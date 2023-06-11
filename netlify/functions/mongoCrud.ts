@@ -1,84 +1,131 @@
-import { Context } from '@netlify/functions/dist/function/context';
-import { Event } from '@netlify/functions/dist/function/event';
-import {MongoClient, ObjectId} from 'mongodb';
+import {Context} from '@netlify/functions/dist/function/context';
+import {Event} from '@netlify/functions/dist/function/event';
+import {Collection, MongoClient, ObjectId} from 'mongodb';
 
-const uri = process.env['MONGODB_URI'];
+// Define an interface for the document that includes the default MongoDB fields.
+// _id, createdAt, updatedAt are optional since they may not be included in every document,
+// and an index signature is added to accommodate any other fields.
+interface Document {
+  _id?: ObjectId;
+  createdAt?: Date;
+  updatedAt?: Date;
 
-async function performMongoOperation(collectionName: any, operation: any, ...args: any[]) {
-  if (!uri) {
-    throw new Error('Missing MONGODB_URI environment variable');
-  }
-
-  const client = new MongoClient(uri);
-
-  try {
-    console.log('Connecting to server');
-    await client.connect();
-    console.log('Connected successfully to server');
-    const db = client.db('deejpotter');
-
-    const collection = db.collection(collectionName);
-    const result = await operation(collection, ...args);
-    console.log('Operation completed successfully');
-    return result;
-  } finally {
-    await client.close();
-  }
+  [key: string]: any;
 }
 
+// URI and database name are fetched from environment variables.
+const uri = process.env['MONGODB_URI'];
+const DB_NAME = process.env['DB_NAME'];
+
+// Check if the URI and database name are available.
+if (!uri) {
+  throw new Error('Missing MONGODB_URI environment variable');
+}
+
+if (!DB_NAME) {
+  throw new Error('Missing DB_NAME environment variable');
+}
+
+// Create a new client.
+const client = new MongoClient(uri);
+
+// This is a helper function to perform MongoDB operations.
+// It creates a connection, performs the operation, and closes the connection.
+async function performMongoOperation<T extends Document>(collectionName: string, operation: (collection: Collection<T>) => Promise<any>): Promise<any> {
+  // Connect to the client.
+  await client.connect();
+  // Select the database.
+  const db = client.db(DB_NAME);
+  // Select the collection and perform the operation.
+  const collection = db.collection<T>(collectionName);
+  return await operation(collection);
+}
+
+// The main handler function is triggered by Netlify.
 export async function handler(event: Event, context: Context) {
-  console.log(`Received ${event.httpMethod} request for ${event.path}`);
-
   const {httpMethod, body, queryStringParameters} = event;
-  const collection = queryStringParameters['collection'];
-  const id = queryStringParameters['id'];
+  const collection = queryStringParameters?.collection;
+  const id = queryStringParameters?.id;
 
-  if (httpMethod === 'GET' && !collection) {
-    console.log('Path parameters missing');
-    return {statusCode: 400, body: 'Path parameters missing'};
+  // Validate collection name.
+  if (typeof collection !== 'string' || collection.length === 0) {
+    return {statusCode: 400, body: 'Invalid or missing collection name'};
+  }
+
+  // Validate the id for PUT and DELETE requests.
+  let objectId: ObjectId | undefined = undefined;
+  if (httpMethod === 'PUT' || httpMethod === 'DELETE') {
+    try {
+      objectId = new ObjectId(id);
+    } catch {
+      return {statusCode: 400, body: 'Invalid or missing id'};
+    }
+  }
+
+  // Validate and parse body for POST and PUT requests.
+  let parsedBody: Document | null = null;
+  if (httpMethod === 'POST' || httpMethod === 'PUT') {
+    try {
+      parsedBody = JSON.parse(body!);
+    } catch {
+      return {statusCode: 400, body: 'Invalid or missing body'};
+    }
   }
 
   try {
-    let result;
-
+    // Depending on the HTTP method, perform the appropriate operation.
     switch (httpMethod) {
       case 'GET':
-        result = await performMongoOperation(
-          collection,
-          (collection: any) => collection.find({}).toArray()
-        );
-        break;
+        // Fetch all documents from the specified collection.
+        return {
+          statusCode: 200,
+          body: JSON.stringify(await performMongoOperation(
+            collection,
+            collection => collection.find({}).toArray()
+          ))
+        };
 
       case 'POST':
-        result = await performMongoOperation(
-          collection,
-          (collection: any) => collection.insertOne(JSON.parse(body))
-        );
-        break;
+        // For a POST request, the createdAt and updatedAt fields are set to the current date and time.
+        parsedBody!.createdAt = new Date();
+        parsedBody!.updatedAt = new Date();
+        // Insert the parsed body as a new document into the specified collection.
+        return {
+          statusCode: 200,
+          body: JSON.stringify(await performMongoOperation(
+            collection,
+            collection => collection.insertOne(parsedBody!)
+          ))
+        };
 
       case 'PUT':
-        result = await performMongoOperation(
-          collection,
-          (collection: any) =>
-            collection.updateOne({_id: id}, {$set: JSON.parse(body)})
-        );
-        break;
+        // For a PUT request, only the updatedAt field is updated to the current date and time.
+        parsedBody!.updatedAt = new Date();
+        // Update the document with the specified id in the specified collection.
+        return {
+          statusCode: 200,
+          body: JSON.stringify(await performMongoOperation(
+            collection,
+            collection => collection.updateOne({_id: objectId}, {$set: parsedBody!})
+          ))
+        };
 
       case 'DELETE':
-        result = await performMongoOperation(
-          collection,
-          (collection: any) => collection.deleteOne({_id: id})
-        );
-        break;
+        // Delete the document with the specified id from the specified collection.
+        return {
+          statusCode: 200,
+          body: JSON.stringify(await performMongoOperation(
+            collection,
+            collection => collection.deleteOne({_id: objectId})
+          ))
+        };
 
       default:
-        console.log('Method not allowed');
+        // Return an error for other HTTP methods.
         return {statusCode: 405, body: 'Method not allowed'};
     }
-
-    console.log(`Returning result: ${JSON.stringify(result)}`);
-    return {statusCode: 200, body: JSON.stringify(result)};
   } catch (error) {
+    // Log the error and return an Internal Server Error response.
     console.error(`Error ${httpMethod.toLowerCase()}ing data`, error);
     return {statusCode: 500, body: `Error ${httpMethod.toLowerCase()}ing data`};
   }
