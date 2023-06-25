@@ -1,7 +1,7 @@
 [build]
-# This is the command that Netlify will run to build the site. 
+# This is the command that Netlify will run to build the site.
 command = "npm run build"
-# This is the directory that Netlify will publish. 
+# This is the directory that Netlify will publish.
 publish = "out"
 
 [[redirects]]
@@ -15,9 +15,13 @@ to = "/index.html"
 status = 200
 
 [dev]
-# This is the command that Netlify Dev will run to start the development server. 
 command = "npm run dev"
-# This is the port that the development server will run on. 
 targetPort = 3000
 publish = "dev"
 autoLaunch = true
+
+# This is to fix the issue with Netlify:
+# The following Node.js modules use dynamic expressions to include files: - mongodb
+#  Because files included with dynamic expressions aren't guaranteed to be available at build time, the build may fail.
+[functions]
+external_node_modules = ["mongodb"]

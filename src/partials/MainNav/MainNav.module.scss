@@ -1,0 +1,16 @@
+.navbar-brand img {
+  height: 2.5rem;
+}
+
+.navbar-toggler {
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+
+  &.collapsed {
+    transform: rotate(0);
+  }
+
+  &:not(.collapsed) {
+    transform: rotate(180deg);
+  }
+}

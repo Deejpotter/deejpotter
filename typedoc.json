@@ -1,0 +1,9 @@
+{
+  "out": "public/docs",
+  "exclude": [
+    "**/*.test.ts"
+  ],
+  "name": "My Project",
+  "theme": "default",
+  "version": true
+}
