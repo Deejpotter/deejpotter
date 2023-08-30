@@ -41,7 +41,7 @@
     "bootstrap-icons": "^1.10.4",
     "bson-objectid": "^2.0.4",
     "lru-cache": "^9.0.0",
-    "mongodb": "^5.2.0",
+    "mongodb": "^5.8.0",
     "netlify-identity-widget": "^1.9.2",
     "ngx-gravatar": "^13.0.0",
     "ngx-toastr": "^16.1.0",
