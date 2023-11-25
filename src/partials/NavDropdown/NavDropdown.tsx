@@ -14,19 +14,14 @@ import {NavLinkProps} from "@/partials/NavLink/NavLinkProps";
 export default function NavDropdown({btnLabel, indexHref, navLinks}: NavDropdownProps): ReactElement {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsOpen(false);
-  };
+  const toggleDropdown = () => setIsOpen(!isOpen);  // For mobile devices
 
   return (
     <li
       className={`nav-item dropdown ${styles.navDropdown}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        onClick={toggleDropdown}
     >
       <Link href={indexHref} className={`nav-link dropdown-toggle`}
             id="navbarDropdown"

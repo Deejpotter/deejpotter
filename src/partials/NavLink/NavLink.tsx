@@ -9,8 +9,8 @@ import {NavLinkProps} from "@/partials/NavLink/NavLinkProps";
  */
 export default function NavLink({href, label}: NavLinkProps): ReactElement {
   return (
-    <Link href={href} className={`nav-link`}>
-      {label}
+    <Link href={href} passHref>
+      <span className="nav-link">{label}</span>
     </Link>
   );
 };

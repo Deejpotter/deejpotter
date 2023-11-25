@@ -1,8 +1,5 @@
-.navbar-brand img {
-  height: 2.5rem;
-}
 
-.navbar-toggler {
+.navbarToggler {
   font-size: 1.25rem;
   transition: transform 0.3s ease;
 
@@ -13,4 +10,13 @@
   &:not(.collapsed) {
     transform: rotate(180deg);
   }
+}
+
+.navbarCollapse {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff00; // Or any color that matches your design
 }
