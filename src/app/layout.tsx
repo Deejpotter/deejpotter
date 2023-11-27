@@ -1,7 +1,7 @@
 import "./globals.scss";
 import { Fredoka, Nunito } from "next/font/google";
 import React from "react";
-import { MainFooter } from "@/partials/MainFooter/MainFooter";
+import MainFooter from "@/partials/MainFooter/MainFooter";
 import MainNav from "@/partials/MainNav/MainNav";
 import { AuthProvider } from "@/contexts/AuthContext";
 
@@ -27,15 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${nunito.variable} ${fredoka.variable}`}>
       <AuthProvider>
-        <body>
+        <body className="custom-scrollbar">
           <MainNav />
-          <div className="page-container">
-            <div className="content-wrapper">
-              <div className="route-animations-wrapper custom-scrollbar">
-                {children}
-              </div>
-            </div>
-          </div>
+          <main>{children}</main>
           <MainFooter />
         </body>
       </AuthProvider>

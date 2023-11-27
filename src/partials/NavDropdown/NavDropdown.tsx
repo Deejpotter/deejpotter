@@ -1,9 +1,7 @@
-'use client';
-import React, {ReactElement, useState} from 'react';
-import styles from './NavDropdown.module.scss';
+"use client";
+import React, { ReactElement, useState } from "react";
+import styles from "./NavDropdown.module.scss";
 import Link from "next/link";
-import DropdownItem from "@/partials/DropdownItem/DropdownItem";
-import {NavLinkProps} from "@/partials/NavLink/NavLinkProps";
 
 /**
  * A dropdown menu to be used in the MainNav.
@@ -11,38 +9,59 @@ import {NavLinkProps} from "@/partials/NavLink/NavLinkProps";
  * @param indexHref - The href for the top level dropdown link.
  * @param navLinks - The NavLinks to be used in the dropdown as an array of NavLinkProps.
  */
-export default function NavDropdown({btnLabel, indexHref, navLinks}: NavDropdownProps): ReactElement {
+export default function NavDropdown({
+  btnLabel,
+  indexHref,
+  navLinks,
+}: NavDropdownProps): ReactElement {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);  // For mobile devices
+  const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <li
-      className={`nav-item dropdown ${styles.navDropdown}`}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-        onClick={toggleDropdown}
+    <div
+      className={`${styles.navItem} ${isOpen ? styles.open : ""}`}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onClick={toggleDropdown}
     >
-      <Link href={indexHref} className={`nav-link dropdown-toggle`}
-            id="navbarDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded={isOpen}
+      <Link
+        href={indexHref}
+        className={`${styles.navLink}`}
+        id="dropdownMenuLink"
+        aria-expanded={isOpen}
       >
         {btnLabel}
       </Link>
+      {/* Uses a shortcut to conditionally render the dropdown menu.
+      If isOpen is true, then render the div, otherwise render nothing. */}
       {isOpen && (
-        <ul className={`dropdown-menu ${styles.dropdownMenu}`} aria-labelledby="navbarDropdown">
+        <div
+          className={`${styles.dropdownMenu}`}
+          aria-labelledby="dropdownMenuLink"
+        >
           {navLinks.map((route, index) => (
-            <DropdownItem key={index} href={route.href} label={route.label}/>
+            <Link
+              key={index}
+              href={route.href}
+              className={`${styles.dropdownItem}`}
+            >
+              {route.label}
+            </Link>
           ))}
-        </ul>
+        </div>
       )}
-    </li>
+    </div>
   );
 }
 
 export interface NavDropdownProps {
   btnLabel: string;
   indexHref: string;
-  navLinks: NavLinkProps[];
+  navLinks: DropdownItemProps[];
+}
+
+export interface DropdownItemProps {
+  href: string;
+  label: string;
 }

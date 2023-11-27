@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, ReactElement } from "react";
 import NavDropdown from "@/partials/NavDropdown/NavDropdown";
-import NavLink from "@/partials/NavLink/NavLink";
 import Auth from "../Auth/Auth";
 import styles from "./MainNav.module.scss";
 import Link from "next/link";
@@ -11,49 +10,53 @@ import Link from "next/link";
  * It utilizes Bootstrap classes for responsiveness and flexbox for alignment.
  */
 export default function MainNav(): ReactElement {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="d-flex justify-content-around bg-primary shadow navbar navbar-expand-md">
-      <Link className="navbar-brand" href={"/"}>
-        <img
-          src="/images/deejPotterLogo.png"
-          alt="The Deej Potter logo."
-          height={64}
-          width={64}
-        />
-      </Link>
-      <nav className={` ${styles.navbar}`}>
-        {/* Toggler button for smaller screens */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <span className="oi oi-menu" />
-        </button>
+    <>
+      {/* Outer navbar container */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-primary">
+        {/* Inner navbar container */}
+        <div className="container-fluid">
+          {/* Link with brand image */}
+          <Link className={`${styles.navbarBrand}`} href={"/"}>
+            <img src="/images/deejPotterLogo.png" alt="The Deej Potter logo." />
+          </Link>
 
-        {/* Collapsible menu items */}
-        <div
-          className={`${isCollapsed ? "collapse" : ""} navbar-collapse ${styles.navbarCollapse}`}
-        >
-          <NavDropdown
-            btnLabel="Websites"
-            indexHref="/websites"
-            navLinks={[{ href: "/websites/deejpotter", label: "Deejpotter" }]}
-          />
-          <NavDropdown
-            btnLabel="Apps"
-            indexHref="/apps"
-            navLinks={[{ href: "/apps/todo-app", label: "Todo App" }]}
-          />
-          <NavLink href="/about" label="About" />
-          <NavLink href="/contact" label="Contact" />
+          {/* Toggler button for smaller screens */}
+          <button
+            className={`navbar-toggler ${isCollapsed ? "" : "collapsed"}`}
+            type="button"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            aria-expanded={!isCollapsed}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          {/* Collapsible menu items */}
+          <div className={`${isCollapsed ? "collapse" : ""} navbar-collapse`}>
+            <NavDropdown
+              btnLabel="Websites"
+              indexHref="/websites"
+              navLinks={[{ href: "/websites/deejpotter", label: "Deejpotter" }]}
+            />
+            <NavDropdown
+              btnLabel="Apps"
+              indexHref="/apps"
+              navLinks={[{ href: "/apps/todo-app", label: "Todo App" }]}
+            />
+            <Link href={"/about"} className={`nav-link`}>
+              About
+            </Link>
+            <Link href={"/contact"} className={`nav-link`}>
+              Contact
+            </Link>
+          </div>
+
+          {/* Auth component aligned to the right */}
+          <Auth />
         </div>
       </nav>
-
-      {/* Auth component aligned to the right */}
-      <Auth />
-    </div>
+    </>
   );
 }
