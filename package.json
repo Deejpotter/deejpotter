@@ -25,6 +25,7 @@
     "bson-objectid": "^2.0.4",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
+    "jest-environment-jsdom": "^29.7.0",
     "md5": "^2.3.0",
     "mongodb": "^5.6.0",
     "netlify-cli": "^15.4.1",

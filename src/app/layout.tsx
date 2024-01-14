@@ -2,8 +2,8 @@ import "./globals.scss";
 import { Fredoka, Nunito } from "next/font/google";
 import React from "react";
 import MainFooter from "@/partials/MainFooter/MainFooter";
-import MainNav from "@/partials/MainNav/MainNav";
 import { AuthProvider } from "@/contexts/AuthContext";
+import Navbar from "@/partials/navbar/Navbar";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -35,7 +35,7 @@ export default function RootLayout({
 			{/* The AuthProvider component is used to provide the authentication context to the components. */}
       <AuthProvider>
         <body className="custom-scrollbar">
-          <MainNav />
+          <Navbar />
           <main>{children}</main>
           <MainFooter />
         </body>
