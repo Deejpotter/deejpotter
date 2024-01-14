@@ -35,35 +35,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<netlifyIdentity.User | null>(null);
 
   useEffect(() => {
-    netlifyIdentity.init(); // Initialize Netlify Identity.
+		netlifyIdentity.init(); // Initialize Netlify Identity.
 
-    // Event listener for successful login.
-    netlifyIdentity.on("login", (user) => {
-      setUser(user); // Update the user state on successful login.
-      netlifyIdentity.close(); // Close the Netlify Identity modal.
-    });
+		// Set the initial user state based on the existing session. currentUser() returns null if no session exists.
+		const currentUser = netlifyIdentity.currentUser();
+		setUser(currentUser); // Set the user state
 
-    // Event listener for logout action.
-    netlifyIdentity.on("logout", () => {
-      setUser(null); // Clear the user state on logout.
-    });
+		// Event listener for successful login.
+		netlifyIdentity.on("login", (user) => {
+			setUser(user); // Update the user state on successful login.
+			netlifyIdentity.close(); // Close the Netlify Identity modal.
+		});
 
-    // Set the initial user if already logged in.
-    setUser(netlifyIdentity.currentUser());
+		// Event listener for logout action.
+		netlifyIdentity.on("logout", () => {
+			setUser(null); // Clear the user state on logout.
+		});
 
-    // Cleanup event listeners on component unmount.
-    return () => {
-      netlifyIdentity.off("login");
-      netlifyIdentity.off("logout");
-    };
-  }, []);
+		// Cleanup event listeners on component unmount.
+		return () => {
+			netlifyIdentity.off("login");
+			netlifyIdentity.off("logout");
+		};
+	}, []);
 
   // Function to open the Netlify Identity login modal.
   const login = () => netlifyIdentity.open("login");
-
   // Function to open the Netlify Identity signup modal.
   const signup = () => netlifyIdentity.open("signup");
-
   // Function to log out the current user.
   const logout = () => netlifyIdentity.logout();
 
