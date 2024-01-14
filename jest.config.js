@@ -18,6 +18,8 @@ module.exports = {
     // The moduleNameMapper property allows us to specify how to handle CSS imports in our tests.
     // We want to mock CSS imports, so we use the identity-obj-proxy package to create a proxy object for CSS imports.
     moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Mocks CSS imports
+        '^@/(.*)$': '<rootDir>/src/$1', // Maps @ to src directory
     },
+
 };
