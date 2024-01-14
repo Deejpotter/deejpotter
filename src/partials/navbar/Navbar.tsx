@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link"; 
-import { useState } from "react"; 
+import React, { useState } from "react"; 
 import Auth from "./Auth"; 
 const Navbar = () => {
 	// State for managing the collapsed state of the navbar. Initially set to true (collapsed).
