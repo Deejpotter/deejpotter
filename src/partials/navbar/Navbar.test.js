@@ -1,69 +1,38 @@
-
-// Importing utilities from React Testing Library and the component
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import Navbar from './Navbar';
+import App from './App'; // Assuming your main app component is named 'App'
 
-describe('Navbar', () => {
-    // Test case 1: Checking if the navbar renders correctly
-    it('renders correctly', () => {
-        render(<Navbar />);
-        // Use screen to query DOM nodes, assert if certain elements are rendered
-        expect(screen.getByText('Brand')).toBeInTheDocument();
-        // Checks if the brand name/link is present in the document
+describe('Portfolio App', () => {
+    // Test the rendering of the main app component
+    it('renders the app correctly', () => {
+        render(<App />);
+        expect(screen.getByText('Your Portfolio Name')).toBeInTheDocument();
     });
 
-    // Test case 2: Testing navbar toggle functionality
-    it('toggles navbar on click', () => {
-        render(<Navbar />);
-        const toggleButton = screen.getByLabelText('Toggle navigation');
-        fireEvent.click(toggleButton);
-        // Simulate a click event on the toggle button
-        // After the click, check if the navbar-collapse has the appropriate class
-        expect(screen.getByClassName('navbar-collapse')).not.toHaveClass('collapse');
-        // The navbar should not have 'collapse' class after being toggled
+    // Test the navbar interactions
+    it.each(['Apps', 'Websites', 'Games'])('shows %s dropdown on hover', (category) => {
+        render(<App />);
+        fireEvent.mouseOver(screen.getByText(category));
+        expect(screen.getByTestId(`${category}-dropdown`)).toBeVisible();
     });
 
-    // Test case 3: Testing dropdown open/close functionality
-    it('opens and closes dropdown menu on click', () => {
-        render(<Navbar />);
-        const dropdownToggle = screen.getByText('More');
-        fireEvent.click(dropdownToggle);
-        // First click: Open the dropdown
-        expect(screen.getByClassName('dropdown-menu')).toHaveClass('show');
-        // The dropdown menu should have 'show' class when open
-
-        fireEvent.click(dropdownToggle);
-        // Second click: Close the dropdown
-        expect(screen.getByClassName('dropdown-menu')).not.toHaveClass('show');
-        // The dropdown menu should not have 'show' class when closed
+    // Test the responsive click behavior of the navbar
+    it.each(['Apps', 'Websites', 'Games'])('toggles %s dropdown on click in mobile view', (category) => {
+        render(<App />);
+        // Simulate mobile view if necessary
+        fireEvent.click(screen.getByText(category));
+        expect(screen.getByTestId(`${category}-dropdown`)).toHaveClass('show');
     });
 
-    // Test case: Dropdown opens on hover (for desktop)
-    it.each([
-        'Apps',
-        'Websites',
-        'Games'
-    ])('opens $dropdownName dropdown on hover', (dropdownName) => {
-        render(<Navbar />);
-        // Simulate hover event
-        fireEvent.mouseOver(screen.getByText(dropdownName));
-        // Expect the dropdown menu to be visible
-        expect(screen.getByTestId(`${dropdownName}-dropdown-menu`)).toBeVisible();
-    });
+    // Test navigation to different sections
+    // Add tests for clicking on navbar items and checking if it navigates to the correct section
 
-    // Test case: Dropdown toggles on click (for smaller screens)
-    it.each([
-        'Apps',
-        'Websites',
-        'Games'
-    ])('toggles $dropdownName dropdown on click', (dropdownName) => {
-        render(<Navbar />);
-        // Simulate click event
-        fireEvent.click(screen.getByText(dropdownName));
-        // Expect the dropdown menu to toggle visibility
-        expect(screen.getByTestId(`${dropdownName}-dropdown-menu`)).toHaveClass('show');
-    });
+    // Test responsive design
+    // Add tests to verify the app layout and functionality at different screen sizes
 
-    // Additional interaction tests can be added here
+    // Test for accessibility and usability
+    // Add tests to check if the app is keyboard navigable and screen reader friendly
+
+    // Additional tests for other specific interactions and functionalities
 });
+
