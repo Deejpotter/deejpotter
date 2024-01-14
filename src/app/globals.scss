@@ -1,12 +1,12 @@
-//Mine
-@import "@/styles/bootstrap-overrides";
-@import "@/styles/custom-gradients";
+// Override bootstrap variables
+@import "@/styles/bootstrap-overrides.scss";
 
-// Default
+// Imports
 @import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/open-iconic/font/css/open-iconic-bootstrap.css";
 @import "node_modules/bootstrap-icons/font/bootstrap-icons.scss";
 
+// My custom styles
+@import "@/styles/custom-gradients";
 /*--------- Base Styles ---------*/
 h1,
 h2,
