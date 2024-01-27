@@ -3,7 +3,7 @@ import { Fredoka, Nunito } from "next/font/google";
 import React from "react";
 import MainFooter from "@/components/MainFooter/MainFooter";
 import { AuthProvider } from "@/contexts/AuthContext";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
 
 const nunito = Nunito({
   subsets: ["latin"],
