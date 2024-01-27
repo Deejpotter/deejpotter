@@ -2,6 +2,8 @@
 import Link from "next/link"; 
 import React, { useState } from "react"; 
 import Auth from "./Auth"; 
+
+
 const Navbar = () => {
 	// State for managing the collapsed state of the navbar. Initially set to true (collapsed).
 	const [isNavCollapsed, setIsNavCollapsed] = useState(true);

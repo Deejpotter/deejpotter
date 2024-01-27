@@ -1,9 +1,9 @@
 import "./globals.scss";
 import { Fredoka, Nunito } from "next/font/google";
 import React from "react";
-import MainFooter from "@/partials/MainFooter/MainFooter";
+import MainFooter from "@/components/MainFooter/MainFooter";
 import { AuthProvider } from "@/contexts/AuthContext";
-import Navbar from "@/partials/navbar/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 
 const nunito = Nunito({
   subsets: ["latin"],

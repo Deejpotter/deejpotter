@@ -3,7 +3,11 @@
     // This specifies the ECMAScript target version. "es5" is widely compatible with many browsers.
     "target": "es5",
     // This includes type definitions from these libraries.
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     // This allows JavaScript files to be compiled.
     "allowJs": true,
     // This skips type checking of declaration files.
@@ -36,12 +40,24 @@
     ],
     // This maps import paths to different locations. Here, it's mapping any import that starts with "@" to the "src" directory.
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   // This specifies which files TypeScript should include in its checks.
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "./**/*.d.ts"
+  ],
   // This specifies which files TypeScript should exclude from its checks.
-  "exclude": ["node_modules"],
-  "types": ["jest"]
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "jest"
+  ]
 }

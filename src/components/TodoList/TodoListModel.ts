@@ -1,4 +1,4 @@
-import {TodoItemModel} from "@/partials/TodoItem/TodoItemModel";
+import {TodoItemModel} from "@/components/TodoItem/TodoItemModel";
 
 export interface TodoListModel {
   _id: string;

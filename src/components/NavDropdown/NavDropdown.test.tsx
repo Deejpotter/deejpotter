@@ -1,5 +1,5 @@
 import {render} from "@testing-library/react";
-import NavDropdown from "@/partials/NavDropdown/NavDropdown";
+import NavDropdown from "@/components/NavDropdown/NavDropdown";
 
 describe("NavDropdown component", () => {
 
