@@ -4,15 +4,12 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "airbnb",
-    "airbnb-typescript",
     "next/core-web-vitals"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  // https://github.com/iamturns/eslint-config-airbnb-typescript/issues/239
   // https://www.npmjs.com/package/eslint-plugin-import
   "settings": {
     "import/resolver": {
@@ -33,7 +30,6 @@
     ],
     // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/main/docs/rules/anchor-is-valid.md#case-i-use-nextjs-and-im-getting-this-error-inside-of-links
     "jsx-a11y/anchor-is-valid": 0,
-    // airbnb config configures stricter rules, change assert to "either".
     // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/718
     "jsx-a11y/label-has-associated-control": [
       2,

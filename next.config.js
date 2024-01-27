@@ -1,4 +1,8 @@
 const path = require("path");
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   sassOptions: {
@@ -7,6 +11,8 @@ const nextConfig = {
   images: {
     domains: ['www.gravatar.com'],
   },
-}
+  // Add MDX support for .md and .mdx files
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+};
 
-module.exports = nextConfig
+module.exports = withMDX(nextConfig);
