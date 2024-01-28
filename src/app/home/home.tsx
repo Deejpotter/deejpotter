@@ -1,7 +1,6 @@
 import {ReactElement} from "react";
 import GradientHeroSection from "@/templates/GradientHeroSection/GradientHeroSection";
 import BasicSection from "@/templates/BasicSection/BasicSection";
-import Modal from "@/components/Modal";
 import { Popover, PopoverContent, PopoverTrigger, PopoverHeading, PopoverDescription, PopoverClose } from "@/components/Popover"
 import { Container } from "react-bootstrap";
 
