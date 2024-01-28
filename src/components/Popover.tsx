@@ -34,18 +34,31 @@ interface PopoverOptions {
 }
 
 /**
- * `usePopover` is a custom hook that manages the state and interactions of the popover.
- * It accepts an options object of type `PopoverOptions`.
- * It returns an object with the following properties:
- * - `open`: a boolean indicating whether the popover is open or not.
- * - `setOpen`: a function to set the `open` state.
- * - `interactions`: an object containing the interactions of the popover.
- * - `data`: an object containing the data of the popover.
- * - `modal`: a boolean indicating whether the popover is modal or not.
- * - `labelId`: a string representing the id of the label of the popover.
- * - `descriptionId`: a string representing the id of the description of the popover.
- * - `setLabelId`: a function to set the `labelId`.
- * - `setDescriptionId`: a function to set the `descriptionId`.
+ * `usePopover` is a custom React hook that manages the state and interactions of a popover.
+ * 
+ * @param {PopoverOptions} options - An optional object of type `PopoverOptions` that can be used to configure the popover. The `PopoverOptions` object can have the following properties:
+ * - `initialOpen`: Initial state of the popover. Default is `false`.
+ * - `placement`: Placement of the popover relative to the anchor. Default is `"bottom"`.
+ * - `modal`: Determines whether the popover should be modal or not. Default is `undefined`.
+ * - `open`: Controlled state of the popover. Default is `undefined`.
+ * - `onOpenChange`: Callback that is called when the popover is opened or closed. Default is `undefined`.
+ * 
+ * @returns {Object} An object with the following properties:
+ * - `open`: A boolean indicating whether the popover is open or not.
+ * - `setOpen`: A function to set the `open` state.
+ * - `interactions`: An object containing the interactions of the popover.
+ * - `data`: An object containing the data of the popover.
+ * - `modal`: A boolean indicating whether the popover is modal or not.
+ * - `labelId`: A string representing the id of the label of the popover.
+ * - `descriptionId`: A string representing the id of the description of the popover.
+ * - `setLabelId`: A function to set the `labelId`.
+ * - `setDescriptionId`: A function to set the `descriptionId`.
+ * 
+ * @example
+ * const popover = usePopover({ initialOpen: true, placement: "top" });
+ * 
+ * @note
+ * If the `open` property in the `PopoverOptions` is defined, the popover's open state will be controlled, meaning you'll need to manage its state manually.
  */
 export function usePopover({
   initialOpen = false,
@@ -107,6 +120,7 @@ export function usePopover({
 
 /**
  * `ContextType` is the type of the context returned by `usePopoverContext`.
+ * It is a union of the popover state and interactions and the functions to set the label and description ids.
  */
 type ContextType =
   | (ReturnType<typeof usePopover> & {
@@ -117,8 +131,15 @@ type ContextType =
     })
   | null;
 
+/**
+ * `PopoverContext` is the context that is used to pass the popover state and interactions to the popover components
+ */
 const PopoverContext = React.createContext<ContextType>(null);
 
+/**
+ * `usePopoverContext` is a custom hook that returns the popover context.
+ * It throws an error if it is used outside of the popover components.
+ */
 export const usePopoverContext = () => {
   const context = React.useContext(PopoverContext);
 
@@ -154,6 +175,12 @@ export function Popover({
   );
 }
 
+/**
+ * The interface for the `PopoverTrigger` component.
+ * `PopoverTriggerProps` are the props that can be passed to `PopoverTrigger`.
+ * `children` is the element that will trigger the popover.
+ * `asChild` is a boolean indicating whether any element can be passed as the anchor.
+ */
 interface PopoverTriggerProps {
   children: React.ReactNode;
   asChild?: boolean;
@@ -190,6 +217,7 @@ export const PopoverTrigger = React.forwardRef<
   return (
     <button
       ref={ref}
+      className="btn btn-primary"
       type="button"
       // The user can style the trigger based on the state
       data-state={context.open ? "open" : "closed"}
@@ -291,6 +319,7 @@ export const PopoverClose = React.forwardRef<
   const { setOpen } = usePopoverContext();
   return (
     <button
+      className="btn btn-primary"
       type="button"
       ref={ref}
       {...props}
