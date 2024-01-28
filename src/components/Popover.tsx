@@ -105,6 +105,9 @@ export function usePopover({
   );
 }
 
+/**
+ * `ContextType` is the type of the context returned by `usePopoverContext`.
+ */
 type ContextType =
   | (ReturnType<typeof usePopover> & {
       setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
