@@ -48,7 +48,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ title, items }) => {
       {isDropdownOpen && (
         // dropdown-menu is another built-in Bootstrap class that styles the dropdown menu.
         // show is a Bootstrap class that makes the dropdown menu visible when added with the dropdown-menu class.
-        <ul className={`dropdown-menu show`}
+        <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}
           role="menu" 
         // Toggle the dropdown when the user clicks or hovers over it.
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -58,8 +58,8 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ title, items }) => {
           {items.map((item, index) => (
             <li key={index.toString()}>
               {/* Use the 'Link' component to create a link for each item. */}
-              <Link href={item.href}>
-                <span className="dropdown-item" role="menuitem">{item.label}</span>
+              <Link className="dropdown-item" role="menuitem" href={item.href}>
+                {item.label} 
               </Link>
             </li>
           ))}
