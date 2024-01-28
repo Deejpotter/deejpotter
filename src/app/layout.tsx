@@ -1,16 +1,11 @@
-// Importing global styles
-import "./globals.scss";
-// Importing the Metadata type from Next.js
-import { Metadata, Viewport } from "next"
-// Importing the Fredoka and Nunito fonts from the next/font/google module
-import { Fredoka, Nunito } from "next/font/google";
-// Importing React
-import React from "react";
-// Importing the MainFooter and Navbar components
+import "./globals.scss"; // Importing global styles
+import { Metadata, Viewport } from "next" // Importing the Metadata type from Next.js
+import { Fredoka, Nunito } from "next/font/google"; // Importing the Fredoka and Nunito fonts from the next/font/google module
+import React from "react"; // Importing React
 import MainFooter from "@/components/MainFooter/MainFooter";
 import Navbar from "@/components/Navbar/Navbar";
-// Importing the AuthProvider from the AuthContext
 import { AuthProvider } from "@/contexts/AuthContext";
+import BootstrapClient from "@/lib/BootstrapClient";
 
 // Initializing the Nunito font with specific options
 const nunito = Nunito({
@@ -79,6 +74,7 @@ export default function RootLayout({
           <Navbar />
           {/* The main content of the page, which will be the children passed to the RootLayout component */}
           <main>{children}</main>
+          <BootstrapClient />
           {/* The Footer component */}
           <MainFooter />
         </body>

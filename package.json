@@ -20,6 +20,7 @@
     "not IE 11"
   ],
   "dependencies": {
+    "@floating-ui/react": "^0.26.7",
     "@mdx-js/loader": "^3.0.0",
     "@next/mdx": "^14.1.0",
     "bootstrap": "^5.3.2",
