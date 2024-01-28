@@ -48,6 +48,70 @@ a {
   }
 }
 
+// _navbar.scss
+
+.navbar {
+  transition: all 0.3s ease;
+
+  &-brand {
+    img {
+      height: 2.5rem; 
+    }
+  }
+
+  &-nav {
+
+    .nav-link {
+      cursor: pointer;
+      align-items: center; 
+    }
+
+  }
+
+  .dropdown {
+
+    &-menu {
+      transform: translateY(-10px);
+      opacity: 0;
+      background: rgb(30, 153, 82);
+      background: linear-gradient(180deg, rgba(30, 153, 82, 0) 0%, rgba(30, 153, 82, 1) 10%, rgba(30, 153, 82, 0.95) 65%, rgba(253, 253, 253, .8) 100%);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: 0 10px 1px 0 rgba(100, 100, 100, 0.1);
+      border: none;
+
+      &.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    &-item {
+      &:hover {
+        background: linear-gradient(-40deg, rgba(253, 253, 253, 0) 0%, rgba(253, 253, 253, .01) 20%, rgba(253, 253, 253, .2) 100%);
+      }
+    }
+
+  }
+
+  &-toggler {
+    font-size: 1.25rem;  
+    transition: transform 0.3s ease;
+
+    &.collapsed {
+      transform: rotate(0);
+    }
+    
+    &:not(.collapsed) {
+      transform: rotate(180deg); 
+    }
+
+  }
+
+}
+
+
+
 /*--------- Utils ---------*/
 
 // Custom scrollbar
@@ -106,3 +170,4 @@ a {
   width: max-content;
   max-width: calc(100vw - 10px);
 }
+
