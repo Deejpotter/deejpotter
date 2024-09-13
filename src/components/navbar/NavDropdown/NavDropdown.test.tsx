@@ -8,13 +8,10 @@ describe("NavDropdown component", () => {
   const props: NavDropdownProps = {
     title: "Test",
     items: [
-      {id: "1", href: "/test", label: "Test 1"},
-      {id: "2", href: "/test/test2", label: "Test 2"},
+      {href: "/test", label: "Test 1"},
+      {href: "/test2", label: "Test 2"},
     ],
   };
-
-  // If NavDropdown has any dependencies, mock them here
-  // jest.mock('dependency-module', () => { /* mock implementation */ });
 
   // Test if the component renders with the provided title
   test("renders with title", () => {
@@ -30,25 +27,48 @@ describe("NavDropdown component", () => {
     });
   });
 
-  // Test if the dropdown opens and closes
-  test("opens and closes dropdown", () => {
+  // Test if the dropdown opens when the title is clicked or hovered over
+  test("opens dropdown on title click or hover", () => {
     render(<NavDropdown {...props} />);
     const titleElement = screen.getByText(props.title);
     fireEvent.click(titleElement);
-    props.items.forEach((item) => {
-      expect(screen.getByText(item.label)).toBeInTheDocument();
-    });
+    expect(screen.getByText(props.items[0].label)).toBeInTheDocument();
+    expect(screen.getByText(props.items[1].label)).toBeInTheDocument();
+  });
+
+  // Test if the dropdown closes when it's clicked or hovered over
+  test("closes dropdown on dropdown click or hover", () => {
+    render(<NavDropdown {...props} />);
+    const titleElement = screen.getByText(props.title);
     fireEvent.click(titleElement);
+    fireEvent.mouseOver(titleElement);
+    expect(screen.queryByText(props.items[0].label)).not.toBeInTheDocument();
+    expect(screen.queryByText(props.items[1].label)).not.toBeInTheDocument();
+  });
+
+  // Test if the dropdown closes when the title is clicked again
+  test("closes dropdown on title click again", () => {
+    render(<NavDropdown {...props} />);
+    const titleElement = screen.getByText(props.title);
+    fireEvent.click(titleElement);
+    fireEvent.click(titleElement);
+    expect(screen.queryByText(props.items[0].label)).not.toBeInTheDocument();
+    expect(screen.queryByText(props.items[1].label)).not.toBeInTheDocument();
+  });
+
+  // Test if the dropdown items have the correct href values
+  test("renders dropdown items with correct href", () => {
+    render(<NavDropdown {...props} />);
     props.items.forEach((item) => {
-      expect(screen.queryByText(item.label)).not.toBeInTheDocument();
+      expect(screen.getByText(item.label).closest('a')).toHaveAttribute('href', item.href);
     });
   });
 
-  // Test edge case where items prop is an empty array
-  test("renders with no items", () => {
-    const emptyProps: NavDropdownProps = {...props, items: []};
-    render(<NavDropdown {...emptyProps} />);
-    expect(screen.queryByText(props.items[0].label)).not.toBeInTheDocument();
-    expect(screen.queryByText(props.items[1].label)).not.toBeInTheDocument();
+  // Test if the dropdown items have the correct label values
+  test("renders dropdown items with correct label", () => {
+    render(<NavDropdown {...props} />);
+    props.items.forEach((item) => {
+      expect(screen.getByText(item.label)).toBeInTheDocument();
+    });
   });
 });

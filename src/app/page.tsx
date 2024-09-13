@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import Home from "@/app/home/home";
+import Home from "@/components/home/home";
 import "@/app/globals.scss";
 import { Modal } from "react-bootstrap";
 

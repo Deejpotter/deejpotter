@@ -24,15 +24,5 @@ describe('Portfolio App', () => {
         expect(screen.getByTestId(`${category}-dropdown`)).toHaveClass('show');
     });
 
-    // Test navigation to different sections
-    // Add tests for clicking on navbar items and checking if it navigates to the correct section
-
-    // Test responsive design
-    // Add tests to verify the app layout and functionality at different screen sizes
-
-    // Test for accessibility and usability
-    // Add tests to check if the app is keyboard navigable and screen reader friendly
-
-    // Additional tests for other specific interactions and functionalities
 });
 

@@ -2,22 +2,18 @@
 # This is the command that Netlify will run to build the site.
 command = "npm run build"
 # This is the directory that Netlify will publish.
-publish = "out"
+publish = ".next"
 
+# All admin requests should go to admin/index because it's a single page app.
 [[redirects]]
 from = "/admin/*"
 to = "/admin/index.html"
 status = 200
 
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
-
 [dev]
 command = "npm run dev"
 targetPort = 3000
-publish = "dev"
+publish = ".next"
 autoLaunch = true
 
 # This is to fix the issue with Netlify:
