@@ -1,14 +1,14 @@
 import {ReactElement} from "react";
 import {Project} from "@/types/Project";
 
-export default function Fun(props: any): ReactElement {
+export default function Engineering(props: any): ReactElement {
   let projects: Project[] = [{
-    name: "Todo list", description: "A todo list app that I made with React and TypeScript. It uses local storage to save the todos."
+    name: "Todo list", description: "A todo list app that I made with React and TypeScript."
   }];
 
   return (<>
-    <h1>Fun</h1>
-    <p>These are some fun things that I&apos;ve made!</p>
+    <h1>Engineering</h1>
+    <p>These are some engineering projects that I&apos;ve made!</p>
     <ul>
       {projects.map((project: Project) => {
         return (<li key={project.name}>

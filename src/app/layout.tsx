@@ -21,16 +21,16 @@ const fredoka = Fredoka({
 
 // Defining the metadata for the website
 export const metadata: Metadata = {
-  metadataBase: new URL("https://deejpotter.com"),
+  metadataBase: new URL("https://deejpotter.com"), // The base URL of the website for absolute URLs.
   title: "Deej Potter", // The title of the website
-  description: "Deej Potter's portfolio site.", // The description of the website
+  description: "Deej Potter's portfolio site.", // The description of the website for meta tags.
   openGraph: {
     title: "Deej Potter",
     description: "Deej Potter's portfolio site.",
     url: "https://deejpotter.com", // The URL of the website
     images: [
       {
-        url: "/images/deejPotterLogo.png", // Must be an absolute URL
+        url: "/images/deejPotterLogo.png", // Must be an absolute URL.
         width: 800,
         height: 600,
       },
@@ -66,7 +66,10 @@ export default function RootLayout({
   return (
     // The root HTML element with language set to English and classes for the fonts
     <html lang="en" className={`${nunito.variable} ${fredoka.variable}`}>
-      {/* The AuthProvider component is used to provide the authentication context to the components. */}
+      {/* The AuthProvider component is used to provide the authentication context to the components. 
+      Context is used to pass data through the component tree without having to pass props down manually at every level.
+      So any child component can access the authentication context.
+      */}
       <AuthProvider>
         {/* The body of the HTML document with a custom scrollbar class */}
         <body className="custom-scrollbar">

@@ -18,7 +18,7 @@ export type NavDropdownProps = {
  * NavDropdown component.
  * This component is used to create a dropdown menu in the navbar component.
  * Most of the styling is done using Bootstrap classes but I had to implement the dropdown functionality myself using React state instead of using Bootstrap's jQuery implementation.
- * This ta
+ * This is because Next.js doesn't support jQuery out of the box. Also, I'm not that good with jQuery.
  *
  * @param {NavDropdownProps} props - The props for the component.
  * @returns {React.Element} The NavDropdown component.
