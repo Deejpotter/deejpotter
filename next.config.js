@@ -13,6 +13,9 @@ const nextConfig = {
   },
   // Add MDX support for .md and .mdx files
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  experimental: {
+    mdxRs: true,
+  },
 };
 
 module.exports = withMDX(nextConfig);

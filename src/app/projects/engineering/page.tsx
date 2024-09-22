@@ -3,7 +3,7 @@ import {Project} from "@/types/Project";
 
 export default function Engineering(props: any): ReactElement {
   let projects: Project[] = [{
-    name: "Todo list", description: "A todo list app that I made with React and TypeScript."
+    name: "Wireless car", description: "I made a car that can be controlled wirelessly using a remote control."
   }];
 
   return (<>
