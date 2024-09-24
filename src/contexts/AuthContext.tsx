@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		// Set the initial user state based on the existing session. currentUser() returns null if no session exists.
 		const currentUser = netlifyIdentity.currentUser();
-		setUser(currentUser); // Set the user state
+		setUser(currentUser); // Set the user state.
 
 		// Event listener for successful login.
 		netlifyIdentity.on("login", (user) => {
