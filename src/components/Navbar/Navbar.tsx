@@ -18,33 +18,35 @@ const Navbar = () => {
           label: "Apps",
           items: [
             { href: '/projects/apps/todo-app', label: 'Todo App' },
-            // Add more app links as you create them
+            // Add more links here.
           ]
         },
         {
           label: "Websites",
           items: [
             { href: '/projects/websites/deejpotter', label: 'Deej Potter' },
-            // Add more website links as you create them
+            // Add more links here.
           ]
         },
 				{
 					label: 'Engineering',
 					items: [
-						{ href: '/projects/engineering/wireless-car', label: 'Wireless Car' },
+            { href: '/projects/engineering/wireless-car', label: 'Wireless Car' },
+            // Add more links here.
 					]
 				},
         {
           label: "Games",
           items: [
             { href: '/projects/games/basic-bases', label: 'Basic Bases' },
-            // Add more game links as you create them
+            // Add more links here.
           ]
         },
       ]
     },
     { href: '/about', label: 'About Me' },
     { href: '/contact', label: 'Contact Me' },
+    // Add more top level links here.
   ];
 
   return (
@@ -76,10 +78,15 @@ const Navbar = () => {
           <ul className="navbar-nav">
             {/* Navigation items, each wrapped in a Next.js Link for client-side routing */}
             {navItems.map((item, index) => 
-              item.items ? (
+              // If there are nested items, render a NavDropdown component.
+              item.items ?
+                (
                 <NavDropdown key={index} title={item.title} items={item.items} />
-              ) : (
-                <li key={index} className="nav-item">
+                )
+                // Otherwise, render a regular link.
+                :
+                (
+                <li key={index} className="nav-item" onClick={() => setIsNavCollapsed(true)}>
                   <Link href={item.href || "#"}>
                     <span className="nav-link">{item.label}</span>
                   </Link>

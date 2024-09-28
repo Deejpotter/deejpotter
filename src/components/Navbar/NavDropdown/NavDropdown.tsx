@@ -75,7 +75,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ title, items, depth = 0 }) =>
               // If it's a regular item, render a link
               <li key={index}>
                 {/* Use the 'Link' component to create a link for each item. */}
-                <Link className="dropdown-item" role="menuitem" href={item.href || '#'}>
+                <Link className="dropdown-item" role="menuitem" href={item.href || '#'} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                   {item.label}
                 </Link>
               </li>
