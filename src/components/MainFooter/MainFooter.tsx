@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-import styles from "./MainFooter.module.scss";
 
 export default function MainFooter(): ReactElement {
   return (
@@ -33,12 +32,8 @@ export default function MainFooter(): ReactElement {
           <div className="col-4 text-center">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <h6 className="my-0">Policies</h6>
-              <Link href="/privacy" className={`${styles.footerLink}`}>
-                Privacy policy
-              </Link>
-              <Link href="/terms" className={`${styles.footerLink}`}>
-                Terms and conditions
-              </Link>
+              <Link href="/privacy">Privacy policy</Link>
+              <Link href="/terms">Terms and conditions</Link>
             </div>
           </div>
         </div>
