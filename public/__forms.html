@@ -1,0 +1,29 @@
+<!-- 
+  This is a static HTML file used for Netlify Forms detection.
+  Netlify scans this file at deploy time to detect form tags and attributes.
+  This file should be placed in the public directory of your Next.js project.
+  Reference: https://docs.netlify.com/frameworks/next-js/overview/#netlify-forms-compatibility
+-->
+
+<html>
+
+<head></head>
+
+<body>
+  <!-- 
+    This form is used for deploy-time form detection by Netlify.
+    The form is hidden and will not be visible to users.
+    Ensure that the form name and field names match those in your React component.
+    Update this form if you add or remove fields in your React component.
+  -->
+  <form name="contact" data-netlify="true" hidden>
+    <!-- Hidden input to specify the form name -->
+    <input type="hidden" name="form-name" value="contact" />
+    <!-- Input field for the message -->
+    <input name="message" type="text" />
+    <!-- Input field for the email address -->
+    <input name="email" type="email" />
+  </form>
+</body>
+
+</html>
