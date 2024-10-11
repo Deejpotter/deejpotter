@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import * as React from "react";
 import {
   useFloating,
@@ -14,7 +14,7 @@ import {
   Placement,
   FloatingPortal,
   FloatingFocusManager,
-  useId
+  useId,
 } from "@floating-ui/react";
 
 /**
@@ -35,14 +35,14 @@ interface PopoverOptions {
 
 /**
  * `usePopover` is a custom React hook that manages the state and interactions of a popover.
- * 
+ *
  * @param {PopoverOptions} options - An optional object of type `PopoverOptions` that can be used to configure the popover. The `PopoverOptions` object can have the following properties:
  * - `initialOpen`: Initial state of the popover. Default is `false`.
  * - `placement`: Placement of the popover relative to the anchor. Default is `"bottom"`.
  * - `modal`: Determines whether the popover should be modal or not. Default is `undefined`.
  * - `open`: Controlled state of the popover. Default is `undefined`.
  * - `onOpenChange`: Callback that is called when the popover is opened or closed. Default is `undefined`.
- * 
+ *
  * @returns {Object} An object with the following properties:
  * - `open`: A boolean indicating whether the popover is open or not.
  * - `setOpen`: A function to set the `open` state.
@@ -53,10 +53,10 @@ interface PopoverOptions {
  * - `descriptionId`: A string representing the id of the description of the popover.
  * - `setLabelId`: A function to set the `labelId`.
  * - `setDescriptionId`: A function to set the `descriptionId`.
- * 
+ *
  * @example
  * const popover = usePopover({ initialOpen: true, placement: "top" });
- * 
+ *
  * @note
  * If the `open` property in the `PopoverOptions` is defined, the popover's open state will be controlled, meaning you'll need to manage its state manually.
  */
@@ -65,7 +65,7 @@ export function usePopover({
   placement = "bottom",
   modal,
   open: controlledOpen,
-  onOpenChange: setControlledOpen
+  onOpenChange: setControlledOpen,
 }: PopoverOptions = {}) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
   const [labelId, setLabelId] = React.useState<string | undefined>();
@@ -86,16 +86,16 @@ export function usePopover({
       flip({
         crossAxis: placement.includes("-"),
         fallbackAxisSideDirection: "end",
-        padding: 5
+        padding: 5,
       }),
-      shift({ padding: 5 })
-    ]
+      shift({ padding: 5 }),
+    ],
   });
 
   const context = data.context;
 
   const click = useClick(context, {
-    enabled: controlledOpen == null
+    enabled: controlledOpen == null,
   });
   const dismiss = useDismiss(context);
   const role = useRole(context);
@@ -112,7 +112,7 @@ export function usePopover({
       labelId,
       descriptionId,
       setLabelId,
-      setDescriptionId
+      setDescriptionId,
     }),
     [open, setOpen, interactions, data, modal, labelId, descriptionId]
   );
@@ -209,7 +209,7 @@ export const PopoverTrigger = React.forwardRef<
         ref,
         ...props,
         ...children.props,
-        "data-state": context.open ? "open" : "closed"
+        "data-state": context.open ? "open" : "closed",
       })
     );
   }
@@ -330,4 +330,3 @@ export const PopoverClose = React.forwardRef<
     />
   );
 });
-

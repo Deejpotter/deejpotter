@@ -1,22 +1,22 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import NavDropdown, { NavDropdownProps } from "@/components/Navbar/NavDropdown/NavDropdown";
+import "@testing-library/jest-dom/extend-expect";
+import NavDropdown, { NavDropdownProps } from "./NavDropdown"; // Adjust the import path as necessary
 
-// Start a test suite for the NavDropdown component
-describe("NavDropdown component", () => {
+describe("NavDropdown Component", () => {
   // Define the props to be used in the tests
   const props: NavDropdownProps = {
-    title: "Test",
+    label: "Test",
     items: [
-      {href: "/test", label: "Test 1"},
-      {href: "/test2", label: "Test 2"},
+      { href: "/test", label: "Test 1" },
+      { href: "/test2", label: "Test 2" },
     ],
   };
 
-  // Test if the component renders with the provided title
-  test("renders with title", () => {
+  // Test if the component renders with the provided label
+  test("renders with label", () => {
     render(<NavDropdown {...props} />);
-    expect(screen.getByText(props.title)).toBeInTheDocument();
+    expect(screen.getByText(props.label)).toBeInTheDocument();
   });
 
   // Test if the dropdown items are rendered
@@ -27,11 +27,11 @@ describe("NavDropdown component", () => {
     });
   });
 
-  // Test if the dropdown opens when the title is clicked or hovered over
-  test("opens dropdown on title click or hover", () => {
+  // Test if the dropdown opens when the label is clicked or hovered over
+  test("opens dropdown on label click or hover", () => {
     render(<NavDropdown {...props} />);
-    const titleElement = screen.getByText(props.title);
-    fireEvent.click(titleElement);
+    const labelElement = screen.getByText(props.label);
+    fireEvent.click(labelElement);
     expect(screen.getByText(props.items[0].label)).toBeInTheDocument();
     expect(screen.getByText(props.items[1].label)).toBeInTheDocument();
   });
@@ -39,19 +39,19 @@ describe("NavDropdown component", () => {
   // Test if the dropdown closes when it's clicked or hovered over
   test("closes dropdown on dropdown click or hover", () => {
     render(<NavDropdown {...props} />);
-    const titleElement = screen.getByText(props.title);
-    fireEvent.click(titleElement);
-    fireEvent.mouseOver(titleElement);
+    const labelElement = screen.getByText(props.label);
+    fireEvent.click(labelElement);
+    fireEvent.mouseOver(labelElement);
     expect(screen.queryByText(props.items[0].label)).not.toBeInTheDocument();
     expect(screen.queryByText(props.items[1].label)).not.toBeInTheDocument();
   });
 
-  // Test if the dropdown closes when the title is clicked again
-  test("closes dropdown on title click again", () => {
+  // Test if the dropdown closes when the label is clicked again
+  test("closes dropdown on label click again", () => {
     render(<NavDropdown {...props} />);
-    const titleElement = screen.getByText(props.title);
-    fireEvent.click(titleElement);
-    fireEvent.click(titleElement);
+    const labelElement = screen.getByText(props.label);
+    fireEvent.click(labelElement);
+    fireEvent.click(labelElement);
     expect(screen.queryByText(props.items[0].label)).not.toBeInTheDocument();
     expect(screen.queryByText(props.items[1].label)).not.toBeInTheDocument();
   });
@@ -60,7 +60,10 @@ describe("NavDropdown component", () => {
   test("renders dropdown items with correct href", () => {
     render(<NavDropdown {...props} />);
     props.items.forEach((item) => {
-      expect(screen.getByText(item.label).closest('a')).toHaveAttribute('href', item.href);
+      expect(screen.getByText(item.label).closest("a")).toHaveAttribute(
+        "href",
+        item.href
+      );
     });
   });
 

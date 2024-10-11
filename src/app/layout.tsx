@@ -66,21 +66,25 @@ export default function RootLayout({
 }) {
   return (
     // The root HTML element with language set to English and classes for the fonts
-    <html lang="en" className={`${nunito.variable} ${fredoka.variable}`}>
+    // Added 'h-100' class to ensure the HTML element takes up the full viewport height
+    <html lang="en" className={`${nunito.variable} ${fredoka.variable} h-100`}>
       {/* The AuthProvider component is used to provide the authentication context to the components. 
       Context is used to pass data through the component tree without having to pass props down manually at every level.
       So any child component can access the authentication context.
       */}
       <AuthProvider>
         <NavbarProvider>
-          {/* The body of the HTML document with a custom scrollbar class */}
-          <body className="custom-scrollbar">
+          {/* The body of the HTML document with custom scrollbar class and Bootstrap classes for flexbox layout */}
+          {/* 'd-flex flex-column h-100' creates a flex container that takes up the full height of the viewport */}
+          <body className="custom-scrollbar d-flex flex-column h-100">
             {/* The Navbar component */}
             <Navbar />
             {/* The main content of the page, which will be the children passed to the RootLayout component */}
-            <main>{children}</main>
+            {/* 'flex-grow-1' allows the main content to grow and push the footer down */}
+            <main className="flex-grow-1">{children}</main>
             <BootstrapClient />
             {/* The Footer component */}
+            {/* No additional classes needed here as we'll style it in the component itself */}
             <MainFooter />
           </body>
         </NavbarProvider>

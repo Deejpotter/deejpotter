@@ -8,5 +8,5 @@ export default function App(): ReactElement {
     <>
       <Home />;
     </>
-  )
+  );
 }

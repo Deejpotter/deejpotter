@@ -8,7 +8,7 @@ import React, {
   useReducer,
 } from "react";
 
-// Define the shape of a navigation item which 
+// Define the shape of a navigation item which
 export type NavItem = {
   href?: string;
   label: string;
@@ -105,7 +105,7 @@ const navbarReducer = (
 ): NavbarState => {
   // This return statement returns the new state for NavbarState based on the action type which is used as the switch case.
   switch (action.type) {
-    case "TOGGLE_DROPDOWN":
+    case "TOGGLE_DROPDOWN": {
       // Check if the action label is already in the openDropdowns array.
       const newOpenDropdowns = state.openDropdowns.includes(action.label)
         ? // If it is, remove it from the array.
@@ -114,7 +114,7 @@ const navbarReducer = (
           [...state.openDropdowns, action.label];
       // Then return the new state with the updated openDropdowns array.
       return { ...state, openDropdowns: newOpenDropdowns };
-
+    }
     case "CLOSE_ALL_DROPDOWNS":
       return {
         // ... is the spread operator. It copies the properties of an object into a new object essentially creating a copy of the object.

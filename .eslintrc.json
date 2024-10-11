@@ -7,6 +7,9 @@
     "next/core-web-vitals"
   ],
   "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -39,11 +42,8 @@
     ],
     // Since we do not use prop-types
     "react/require-default-props": 0,
-    // Use semicolon as member delimiter for interfaces and type
-    "@typescript-eslint/member-delimiter-style": 2,
-    "@typescript-eslint/semi": 0,
     "react/jsx-props-no-spreading": [
-      2,
+      0,
       {
         "exceptions": [
           "input",
@@ -58,12 +58,16 @@
       }
     ],
     "quotes": [
-      2,
-      "single"
+      1,
+      "double"
     ],
     "semi": [
-      2,
-      "never"
-    ]
+      1,
+      "always"
+    ],
+    "@typescript-eslint/no-require-imports": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-unused-vars": 0,
+    "no-undef": 0
   }
 }

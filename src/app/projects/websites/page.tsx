@@ -1,6 +1,5 @@
-import {ReactElement} from "react";
+import { ReactElement } from "react";
 
 export default function Websites(): ReactElement {
-  return (<p>These are websites that I&apos;ve made!</p>)
+  return <p>These are websites that I&apos;ve made!</p>;
 }
-

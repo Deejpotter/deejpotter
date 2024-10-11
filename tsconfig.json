@@ -22,7 +22,7 @@
     "esModuleInterop": true,
     // This specifies the module system for the project. "esnext" uses the latest module system.
     "module": "esnext",
-    // This sets the module resolution strategy to node.
+    // This sets the module resolution strategy to node because I'm using Node.js.
     "moduleResolution": "node",
     // This allows importing JSON modules.
     "resolveJsonModule": true,
@@ -47,7 +47,7 @@
   },
   // This specifies which files TypeScript should include in its checks.
   "include": [
-    "next-env.d.ts",
+    "**/*.js",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
@@ -55,9 +55,10 @@
   ],
   // This specifies which files TypeScript should exclude from its checks.
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "mdx.js",
+    "**/*.text.js",
   ],
-
   "types": [
     "jest"
   ]

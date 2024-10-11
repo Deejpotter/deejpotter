@@ -97,34 +97,35 @@
  Nextjs code:
  */
 
-import {ReactElement} from "react";
+import { ReactElement } from "react";
 
 export default function TodoList(): ReactElement | null {
-
-  return (<div className="container">
-    <div className="row justify-content-center">
-      <div className="col-md-8">
-        <div className="card mt-5">
-          <div className="card-header bg-primary text-white">
-            <h2 className="mb-0">Todo List</h2>
-          </div>
-          <div className="card-body shadow">
-            <ul className="list-group">
-              <li className="list-group-item d-flex justify-content-between align-items-center py-1 mb-1">
-                <span>Item 1</span>
-                <div>
-                  <button className="btn btn-warning me-1">
-                    <i className="bi bi-pencil"></i>
-                  </button>
-                  <button className="btn btn-danger">
-                    <i className="bi bi-trash"></i>
-                  </button>
-                </div>
-              </li>
-            </ul>
+  return (
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card mt-5">
+            <div className="card-header bg-primary text-white">
+              <h2 className="mb-0">Todo List</h2>
+            </div>
+            <div className="card-body shadow">
+              <ul className="list-group">
+                <li className="list-group-item d-flex justify-content-between align-items-center py-1 mb-1">
+                  <span>Item 1</span>
+                  <div>
+                    <button className="btn btn-warning me-1">
+                      <i className="bi bi-pencil"></i>
+                    </button>
+                    <button className="btn btn-danger">
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>)
+  );
 }
