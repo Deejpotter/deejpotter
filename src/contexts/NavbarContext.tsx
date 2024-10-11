@@ -8,7 +8,7 @@ import React, {
   useReducer,
 } from "react";
 
-// Define the shape of a navigation item
+// Define the shape of a navigation item which 
 export type NavItem = {
   href?: string;
   label: string;

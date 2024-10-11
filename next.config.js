@@ -9,7 +9,7 @@ const nextConfig = {
     includePaths: [path.join(__dirname, 'src/styles')],
   },
   images: {
-    remotePatterns: ['www.gravatar.com'],
+    domains: ['www.gravatar.com'],
   },
   // Add MDX support for .md and .mdx files
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
