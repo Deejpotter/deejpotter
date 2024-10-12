@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "docs": "typedoc",
-    "prebuild": "npm run docs",
+    "prebuild": "yarn docs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
