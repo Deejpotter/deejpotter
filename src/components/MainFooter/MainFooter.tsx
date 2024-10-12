@@ -26,11 +26,19 @@ export default function MainFooter(): ReactElement {
           <div className="col-4 text-center">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <h6 className="my-0">Connect with me</h6>
+              {/* Facebook link */}
               <Link
                 href="https://www.facebook.com/deej.potter.7/"
                 target="_blank"
               >
                 <span className="bi bi-facebook fs-3" aria-hidden="true" />
+              </Link>
+              {/* LinkedIn link */}
+              <Link
+                href="https://www.linkedin.com/in/daniel-potter-5224a4119"
+                target="_blank"
+              >
+                <span className="bi bi-linkedin fs-3" aria-hidden="true" />
               </Link>
             </div>
           </div>
