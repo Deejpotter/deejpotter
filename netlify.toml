@@ -1,6 +1,6 @@
 [build]
 # This is the command that Netlify will run to build the site.
-command = "npm run build"
+command = "yarn build"
 # This is the directory that Netlify will publish.
 publish = ".next"
 
@@ -11,12 +11,12 @@ to = "/admin/index.html"
 status = 200
 
 [dev]
-command = "npm run dev"
+command = "yarn dev"
 targetPort = 3000
 publish = ".next"
 autoLaunch = true
 
-# This is to fix the issue with Netlify:
+# This is to fix an issue with Netlify:
 # The following Node.js modules use dynamic expressions to include files: - mongodb
 #  Because files included with dynamic expressions aren't guaranteed to be available at build time, the build may fail.
 [functions]
