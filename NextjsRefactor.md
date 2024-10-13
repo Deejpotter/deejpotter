@@ -1,4 +1,4 @@
-Setup Next.js Environment
+# Setup Next.js Environment
 
 Install Next.js and create a new project.
 Install Node.js and npm (if not already installed).
@@ -37,7 +37,7 @@ Install sass.
 Run npm install sass.
 Convert all global styles to SCSS and import them in _app.js.
 Rename global.css to global.scss.
-Import the new global.scss file in _app.js.
+Import the new global.scss file in_app.js.
 Convert component-specific styles to CSS modules with SCSS.
 Verify all pages and components to ensure styles are correctly applied.
 Setup Netlify CMS

@@ -19,12 +19,16 @@ export default function Home(): ReactElement {
         subtitle="A pretty good developer."
         gradientFrom="primary"
         gradientTo="light"
-        textColour={"dark"}
+        textColour="dark"
       />
+
       <BasicSection
         heading="Basic section heading"
         paragraph="Basic section paragraph."
+        backgroundColour="light"
+        textColour="dark"
       />
+
       <Container>
         <Popover>
           <PopoverTrigger>Test Popover</PopoverTrigger>

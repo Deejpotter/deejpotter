@@ -84,7 +84,6 @@ export default function RootLayout({
             <main className="flex-grow-1">{children}</main>
             <BootstrapClient />
             {/* The Footer component */}
-            {/* No additional classes needed here as we'll style it in the component itself */}
             <MainFooter />
           </body>
         </NavbarProvider>

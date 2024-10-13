@@ -4,7 +4,6 @@ import "@popperjs/core/dist/umd/popper.min.js";
 
 /**
  * This component loads the bootstrap bundle on the client side so we can use the bootstrap javascript in our other components.
- * @returns Null, it just loads the bootstrap bundle.
  */
 function BootstrapClient() {
   useEffect(() => {

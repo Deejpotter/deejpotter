@@ -3,9 +3,7 @@ import Link from "next/link";
 
 export default function MainFooter(): ReactElement {
   return (
-    // Added 'mt-auto' to push the footer to the bottom when content is short
-    // Kept existing 'py-1' for padding and 'shadow-lg' for shadow effect
-    // Added 'bg-light' for a light background (adjust as needed for your design)
+    // The mt-auto class is used to push the footer to the bottom of the page. It makes the margin-top property of the footer auto, which interacts with the d-flex on the body element and the flex-grow-1 on the main element to push the footer to the bottom of the page.
     <footer id="main-footer" className="mt-auto py-1 shadow-lg bg-light">
       <div className="container">
         <div className="row justify-content-between">
