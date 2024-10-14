@@ -98,7 +98,29 @@
  */
 
 import { ReactElement } from "react";
+import { TodoItemModel } from "@/components/TodoList/TodoItem/TodoItem";
 
+//
+export type TodoListModel = {
+  _id: string;
+  name: string;
+  items: TodoItemModel[];
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+/**
+ * Handles the rendering of the todo list mini app. This component is responsible for rendering the todo list and its items.
+ * Uses the TodoItem component to render each todo item.
+ * Can add new todo items, delete existing todo items, and update existing todo items.
+ * Todo: Need to finish the implementation of this component.
+ * Todo: Should only be accessed by authenticated users and should only display the todo list items for the currently authenticated user.
+ * Todo: Also needs to handle loading states and display a loading spinner while the todo list items are being fetched.
+ * Todo: Needs to handle errors and display an error message if the todo list items fail to load.
+ * Todo: Needs to handle empty states and display a message if there are no todo list items to display or if the user is not authenticated.
+ * Todo: Should have some kind of middle service to make the updates fast then sync with the server.
+ */
 export default function TodoList(): ReactElement | null {
   return (
     <div className="container">
