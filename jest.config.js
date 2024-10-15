@@ -11,8 +11,21 @@ module.exports = {
     // The transform property is used to specify which files Babel should process.
     // We want to process all JavaScript and TypeScript files, so we use a regular expression to match all files that end with .js, .jsx, .ts, or .tsx.
     transform: {
+        // This regular expression matches any string that ends with .js, .jsx, .ts, or .tsx.
+        // ^        : Asserts position at the start of the string
+        // .+       : Matches one or more of any character except line terminators
+        // \\.      : Escapes the period character to match a literal dot. A double backslash is used because the backslash is already an escape character in javascript string literals so it also needs to be escaped.
+        // (js|jsx|ts|tsx) : Matches any of the specified file extensions (js, jsx, ts, tsx)
+        // $        : Asserts position at the end of the string
+        // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#escaping
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet
         "^.+\\.(js|jsx|ts|tsx)$": ["<rootDir>/node_modules/babel-jest", {
-            presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
+            // Use Babel to transform files with the specified extensions
+            presets: [
+                "@babel/preset-env",    // Transpile ES6+ syntax to ES5
+                "@babel/preset-react",  // Transpile JSX syntax
+                "@babel/preset-typescript" // Transpile TypeScript syntax
+            ],
         }],
     },
     // The moduleNameMapper property is used to specify how to handle CSS imports in our tests.
