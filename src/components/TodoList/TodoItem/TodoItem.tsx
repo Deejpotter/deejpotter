@@ -65,11 +65,21 @@
 
 import React, { useState, useRef, useEffect, ReactElement } from "react";
 
-interface TodoItemProps {
+export type TodoItemModel = {
+  _id: string;
+  text: string;
+  listId: string;
+  completed: boolean;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type TodoItemProps = {
   item: { id: string; text: string };
   update: (item: { id: string; text: string }) => void;
   delete: (id: string) => void;
-}
+};
 
 export default function TodoItem(props: TodoItemProps): ReactElement | null {
   const [editing, setEditing] = useState(false);
