@@ -44,7 +44,7 @@
     "@babel/preset-typescript": "^7.23.3",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@netlify/functions": "^1.6.0",
+    "@netlify/functions": "^2.8.2",
     "@next/mdx": "^14.2.13",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
