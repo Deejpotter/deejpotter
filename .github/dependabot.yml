@@ -9,8 +9,10 @@ updates:
   - package-ecosystem: "npm"
     # Look for `package.json` and `lock` files in the `root` directory.
     directory: "/"
-    # Check for updates once a week. Could be "daily" or "monthly".
+    # Check for updates every day. Could be "daily", "weekly" or "monthly".
     schedule:
-      interval: "weekly"
+      interval: "daily"      
+      # Target the dev branch.
+      target-branch: "dev"
     # Set a limit for pull requests.
     open-pull-requests-limit: 10
