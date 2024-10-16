@@ -12,7 +12,7 @@ updates:
     # Check for updates every day. Could be "daily", "weekly" or "monthly".
     schedule:
       interval: "daily"      
-      # Target the dev branch.
-      target-branch: "dev"
+    # Target the dev branch.
+    target-branch: "dev"
     # Set a limit for pull requests.
     open-pull-requests-limit: 10
