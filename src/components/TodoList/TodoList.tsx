@@ -1,184 +1,180 @@
+/*
+ Angular class code:
+ @ViewChild('newTodoInput', {static: false}) newTodoInput!: ElementRef;
+
+ todoItems: TodoItem[] = [];
+ newTodoText = '';
+ todoItemsSub!: Subscription;
+ loading: boolean = true;
+
+ constructor(
+ public todoService: TodoService,
+ private toastr: ToastrService,
+ private changeDetectorRef: ChangeDetectorRef
+ ) {
+ }
+
+ ngOnInit(): void {
+ this.todoItemsSub = this.todoService.itemsSubject.subscribe((items) => {
+ this.todoItems = items;
+ });
+ this.todoService.loadingCompleted.subscribe((loadingCompleted) => {
+ this.loading = !loadingCompleted;
+ setTimeout(() => {
+ this.newTodoInput.nativeElement.focus();
+ }, 1000);
+ });
+ }
+
+ ngAfterViewInit(): void {
+
+ }
+
+ addTodo(): void {
+ if (!this.newTodoText.trim()) {
+ return;
+ }
+ this.todoService.addItem(this.newTodoText.trim());
+ this.newTodoText = '';
+ }
+
+ deleteTodoItem(id: string): void {
+ this.todoService.deleteItem(id);
+ }
+
+ updateTodoItem(item: TodoItem): void {
+ this.todoService.updateItem(item);
+ }
+
+ ngOnDestroy(): void {
+ this.todoItemsSub.unsubscribe();
+ }
+
+ Angular template code:
+ <div class="container">
+ <div class="row justify-content-center">
+ <div class="col-md-8">
+ <div class="card mt-5">
+ <div class="card-header bg-primary text-white">
+ <h2 class="mb-0">Todo List</h2>
+ </div>
+ <div class="card-body shadow">
+ <ng-container *ngIf="!loading; else loadingTemplate">
+ <ul class="list-group">
+ <ng-container *ngIf="todoService.items.length > 0; else noItems">
+ <app-TodoItem *ngFor="let item of todoService.items"
+ [item]="item"
+ (delete)="deleteTodoItem($event)"
+ (update)="updateTodoItem(item)">
+ </app-TodoItem>
+ </ng-container>
+
+ <ng-template #noItems>
+ <div class="text-muted text-center my-3">
+ No items found. Add a new todo item.
+ </div>
+ </ng-template>
+ </ul>
+ </ng-container>
+
+ <form class="mt-3" (submit)="addTodo(); todoInput.focus()">
+ <div class="input-group">
+ <input #todoInput class="form-control" [(ngModel)]="newTodoText" name="newTodoText" placeholder="Enter a new todo item"/>
+ <div class="input-group-append">
+ <button class="btn btn-success" type="submit">Add</button>
+ </div>
+ </div>
+ </form>
+ <ng-template #loadingTemplate>
+ <app-loading-spinner [isLoading]="loading"></app-loading-spinner>
+ </ng-template>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ Nextjs code:
+ */
+
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { TodoItemModel } from "@/components/TodoList/TodoItem/TodoItem";
-import bson from "bson";
-import TodoItem from "@/components/TodoList/TodoItem/TodoItem";
-
-// The model for the todo list.
-export type TodoListModel = {
-  _id: bson.ObjectId;
-  name: string;
-  items: TodoItemModel[];
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-// Simulated API functions - replace these with actual API calls
-const api = {
-  fetchTodos: async (): Promise<TodoItemModel[]> => {
-    // Fetch todos from MongoDB
-    return [];
-  },
-  addTodo: async (todo: TodoItemModel): Promise<void> => {
-    // Add todo to MongoDB
-  },
-  updateTodo: async (todo: TodoItemModel): Promise<void> => {
-    // Update todo in MongoDB
-  },
-  deleteTodo: async (id: string): Promise<void> => {
-    // Delete todo from MongoDB
-  },
-};
-
-type QueueItem = {
-  action: "add" | "update" | "delete";
-  todo: TodoItemModel;
-};
+import React, { useState, useEffect, useRef, ReactElement } from "react";
+import TodoItem, {
+  TodoItemModel,
+} from "@/components/TodoList/TodoItem/TodoItem";
+import { useTodo } from "@/contexts/TodoContext";
 
 /**
- * Handles the rendering of the todo list mini app. This component is responsible for rendering the todo list and its items.
- * Uses the TodoItem component to render each todo item.
- * Can add new todo items, delete existing todo items, and update existing todo items.
- * Implements local state management with optimistic updates and background syncing with MongoDB.
+ * TodoList Component
+ *
+ * This component is responsible for rendering the todo list and managing todo items.
+ * It uses the TodoContext to access and manipulate todo data.
  */
-export default function TodoList(): React.ReactElement {
-  const [todos, setTodos] = useState<TodoItemModel[]>([]);
-  const [queue, setQueue] = useState<QueueItem[]>([]);
-  const [syncing, setSyncing] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [newTodoText, setNewTodoText] = useState("");
+export default function TodoList(): ReactElement {
+  // State for the new todo text input
+  // This is similar to the 'newTodoText' property in the Angular component
+  const [newTodoText, setNewTodoText] = useState<string>("");
+
+  // Reference to the new todo input element
+  // This is similar to the @ViewChild('newTodoInput') in the Angular component
   const newTodoInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch initial todos
+  // Use the todo context to access todo-related data and functions
+  // This replaces the injected TodoService in the Angular component
+  const { todos, isLoading, addTodo, updateTodo, deleteTodo, fetchTodos } =
+    useTodo();
+
+  /**
+   * useEffect hook to fetch todos when the component mounts.
+   */
   useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const fetchedTodos = await api.fetchTodos();
-        setTodos(fetchedTodos);
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to load todo items. Please try again later.");
-        setLoading(false);
-      }
-    };
     fetchTodos();
-  }, []);
+  }, [fetchTodos]);
 
-  // Process queue
+  /**
+   * useEffect hook to focus the new todo input when loading is completed.
+   */
   useEffect(() => {
-    const processQueue = async () => {
-      if (queue.length > 0 && !syncing) {
-        setSyncing(true);
-        const item = queue[0];
-        try {
-          switch (item.action) {
-            case "add":
-              await api.addTodo(item.todo);
-              break;
-            case "update":
-              await api.updateTodo(item.todo);
-              break;
-            case "delete":
-              await api.deleteTodo(item.todo._id);
-              break;
-          }
-          setQueue(queue.slice(1));
-        } catch (error) {
-          console.error("Sync failed:", error);
-          // Implement retry logic here
-        }
-        setSyncing(false);
-      }
-    };
-    processQueue();
-  }, [queue, syncing]);
-
-  // Periodic consistency check
-  useEffect(() => {
-    const consistencyCheck = async () => {
-      try {
-        const serverTodos = await api.fetchTodos();
-        setTodos((prevTodos) => {
-          // Merge server state with local state, preferring local changes
-          const mergedTodos = serverTodos.map((serverTodo) => {
-            const localTodo = prevTodos.find((t) => t._id === serverTodo._id);
-            return localTodo || serverTodo;
-          });
-          // Add any local todos that don't exist on the server
-          prevTodos.forEach((localTodo) => {
-            if (!serverTodos.some((t) => t._id === localTodo._id)) {
-              mergedTodos.push(localTodo);
-            }
-          });
-          return mergedTodos;
-        });
-      } catch (error) {
-        console.error("Consistency check failed:", error);
-      }
-    };
-    const interval = setInterval(consistencyCheck, 60000); // Check every minute
-    return () => clearInterval(interval);
-  }, []);
-
-  // Focus on input after loading
-  useEffect(() => {
-    if (!loading && newTodoInputRef.current) {
-      newTodoInputRef.current.focus();
+    if (!isLoading && newTodoInputRef.current) {
+      newTodoInputRef.current?.focus();
     }
-  }, [loading]);
+  }, [isLoading]);
 
-  const addTodo = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!newTodoText.trim()) return;
+  /**
+   * Function to add a new todo
+   * This is similar to the addTodo method in the Angular component
+   *
+   * @param {React.FormEvent} e - The form submit event
+   */
+  const handleAddTodo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTodoText.trim()) {
+      return;
+    }
+    addTodo(newTodoText.trim());
+    setNewTodoText("");
+  };
 
-      const newTodo: TodoItemModel = {
-        _id: new bson.ObjectId().toHexString(),
-        text: newTodoText.trim(),
-        listId: "1", // Replace with actual list ID
-        completed: false,
-        userId: "1", // Replace with actual user ID
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+  /**
+   * Function to delete a todo item
+   * This is similar to the deleteTodoItem method in the Angular component
+   *
+   * @param {string} id - The id of the todo item to delete
+   */
+  const handleDeleteTodo = (id: string) => {
+    deleteTodo(id);
+  };
 
-      setTodos((prevTodos) => [...prevTodos, newTodo]);
-      setQueue((prevQueue) => [...prevQueue, { action: "add", todo: newTodo }]);
-      setNewTodoText("");
-    },
-    [newTodoText]
-  );
-
-  const updateTodoItem = useCallback((updatedItem: TodoItemModel) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((item) =>
-        item._id === updatedItem._id ? updatedItem : item
-      )
-    );
-    setQueue((prevQueue) => [
-      ...prevQueue,
-      { action: "update", todo: updatedItem },
-    ]);
-  }, []);
-
-  const deleteTodoItem = useCallback((id: string) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
-    setQueue((prevQueue) => [
-      ...prevQueue,
-      { action: "delete", todo: { _id: id } as TodoItemModel },
-    ]);
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>; // Replace with your loading spinner component
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  /**
+   * Function to update a todo item
+   * This is similar to the updateTodoItem method in the Angular component
+   *
+   * @param {TodoItemModel} item - The updated todo item
+   */
+  const handleUpdateTodo = (item: TodoItemModel) => {
+    updateTodo(item);
+  };
 
   return (
     <div className="container">
@@ -189,38 +185,63 @@ export default function TodoList(): React.ReactElement {
               <h2 className="mb-0">Todo List</h2>
             </div>
             <div className="card-body shadow">
-              {todos.length > 0 ? (
-                <ul className="list-group">
-                  {todos.map((todo) => (
-                    <TodoItem
-                      key={todo._id}
-                      item={todo}
-                      delete={deleteTodoItem}
-                      update={updateTodoItem}
-                    />
-                  ))}
-                </ul>
+              {/* 
+                Conditional rendering based on loading state
+                This replaces the *ngIf="!loading; else loadingTemplate" in the Angular template
+              */}
+              {!isLoading ? (
+                <>
+                  <ul className="list-group">
+                    {/* 
+                      Conditional rendering based on the presence of todo items
+                      This replaces the *ngIf="todoService.items.length > 0; else noItems" in the Angular template
+                    */}
+                    {todos.length > 0 ? (
+                      todos.map((item) => (
+                        <TodoItem
+                          key={item._id.toString()}
+                          item={item}
+                          delete={() => handleDeleteTodo(item._id.toString())}
+                          update={handleUpdateTodo}
+                        />
+                      ))
+                    ) : (
+                      <div className="text-muted text-center my-3">
+                        No items found. Add a new todo item.
+                      </div>
+                    )}
+                  </ul>
+
+                  {/* 
+                    Form for adding new todo items
+                    This replaces the form in the Angular template
+                  */}
+                  <form className="mt-3" onSubmit={handleAddTodo}>
+                    <div className="input-group">
+                      <input
+                        ref={newTodoInputRef}
+                        className="form-control"
+                        value={newTodoText}
+                        onChange={(e) => setNewTodoText(e.target.value)}
+                        placeholder="Enter a new todo item"
+                      />
+                      <div className="input-group-append">
+                        <button className="btn btn-success" type="submit">
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </>
               ) : (
-                <div className="text-muted text-center my-3">
-                  No items found. Add a new todo item.
-                </div>
-              )}
-              <form className="mt-3" onSubmit={addTodo}>
-                <div className="input-group">
-                  <input
-                    ref={newTodoInputRef}
-                    className="form-control"
-                    value={newTodoText}
-                    onChange={(e) => setNewTodoText(e.target.value)}
-                    placeholder="Enter a new todo item"
-                  />
-                  <div className="input-group-append">
-                    <button className="btn btn-success" type="submit">
-                      Add
-                    </button>
+                // Loading spinner
+                // This replaces the <app-loading-spinner> in the Angular template
+                <div className="text-center">
+                  <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
                   </div>
                 </div>
-              </form>
+              )}
             </div>
           </div>
         </div>

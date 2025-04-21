@@ -1,7 +1,76 @@
-import React, { useState, useRef, useEffect, ReactElement } from "react";
+/*
+ angular code:
+ <li class="list-group-item d-flex justify-content-between align-items-center py-1 mb-1" (click)="startEditing()">
+ <span *ngIf="!editing">{{ item.text }}</span>
+ <ng-container *ngIf="editing">
+ <input #editInput *ngIf="editing" class="form-control" [(ngModel)]="updatedText" (blur)="finishEditing()" (keyup.enter)="finishEditing()" />
+ <button class="btn btn-primary ml-2" (click)="finishEditing()">
+ Save
+ </button>
+ </ng-container>
+ <div>
+ <button class="btn btn-warning me-1" (click)="startEditing()" *ngIf="!editing">
+ <i class="bi bi-pencil"></i>
+ </button>
+ <button class="btn btn-danger" (click)="delete.emit(item._id)">
+ <i class="bi bi-trash"></i>
+ </button>
+ </div>
+ </li>
 
+ 
+  /*
+   Angular code:
+   @Input() item!: TodoItem;
+   @Output() delete: EventEmitter<string> = new EventEmitter();
+   @Output() update: EventEmitter<TodoItem> = new EventEmitter();
+   @ViewChildren('editInput') editInputs!: QueryList<ElementRef>;
+
+   editing = false;
+   updatedText!: string;
+
+   constructor() {
+   }
+
+   ngAfterViewChecked(): void {
+   if (this.editing) {
+   setTimeout(() => {
+   this.focusUpdateInput();
+   }, 0);
+   }
+   }
+
+   startEditing(): void {
+   this.editing = true;
+   this.updatedText = this.item.text;
+   }
+
+   finishEditing(): void {
+   this.editing = false;
+   if (this.updatedText.trim() !== this.item.text.trim()) {
+   this.item.text = this.updatedText;
+   this.update.emit(this.item);
+   }
+   }
+
+   private focusUpdateInput(): void {
+   const inputElement = this.editInputs.first;
+   if (inputElement) {
+   inputElement.nativeElement.focus();
+   }
+   }
+
+ nextjs code:
+ */
+
+"use client";
+
+import React, { useState, useRef, useEffect, ReactElement } from "react";
+import bson from "bson";
+
+// The model for the todo item stored in the database.
 export type TodoItemModel = {
-  _id: string;
+  _id: bson.ObjectId;
   text: string;
   listId: string;
   completed: boolean;
@@ -10,10 +79,16 @@ export type TodoItemModel = {
   updatedAt: Date;
 };
 
+// The model for the todo item used in interface code.
+export type TodoInterfaceModel = {
+  _id: bson.ObjectId;
+  text: string;
+};
+
 type TodoItemProps = {
-  item: { _id: string; text: string };
-  update: (item: { id: string; text: string }) => void;
-  delete: (id: string) => void;
+  item: { _id: bson.ObjectId; text: string };
+  update: (item: { _id: bson.ObjectId; text: string }) => void;
+  delete: (_id: bson.ObjectId) => void;
 };
 
 export default function TodoItem(props: TodoItemProps): ReactElement | null {
@@ -54,7 +129,7 @@ export default function TodoItem(props: TodoItemProps): ReactElement | null {
   // Create a function to handle the click event on the delete button.
   const deleteItem = () => {
     // Emit the delete event with the id of the item.
-    props.delete(props.item.id);
+    props.delete(props.item._id);
   };
 
   // Create a function to handle the change event on the input.
