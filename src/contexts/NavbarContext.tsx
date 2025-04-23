@@ -57,13 +57,15 @@ const initialState: NavbarState = {
       items: [
         {
           label: "Apps",
+          // Apps section is now empty but maintains structure for future additions
           items: [
-            { href: "/projects/apps/todo-app", label: "Todo App" },
-            // Add more links here.
+            { href: "#", label: "Placeholder" },
+            // { href: "/projects/apps/app-name", label: "App Name" },
           ],
         },
         {
           label: "Websites",
+          href: "/projects/websites",
           items: [
             { href: "/projects/websites/deejpotter", label: "Deej Potter" },
             // Add more links here.
@@ -71,6 +73,7 @@ const initialState: NavbarState = {
         },
         {
           label: "Engineering",
+          href: "/projects/engineering",
           items: [
             {
               href: "/projects/engineering/wireless-car",
@@ -81,6 +84,7 @@ const initialState: NavbarState = {
         },
         {
           label: "Games",
+          href: "/projects/games",
           items: [
             { href: "/projects/games/basic-bases", label: "Basic Bases" },
             // Add more links here.
