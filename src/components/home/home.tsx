@@ -1,14 +1,6 @@
 import { ReactElement } from "react";
 import GradientHeroSection from "@/templates/GradientHeroSection/GradientHeroSection";
 import BasicSection from "@/templates/BasicSection/BasicSection";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverHeading,
-  PopoverDescription,
-  PopoverClose,
-} from "@/components/Popover";
 import { Container } from "react-bootstrap";
 import Link from "next/link";
 import Script from "next/script";
@@ -101,7 +93,7 @@ export default function Home(): ReactElement {
                   Explore my various projects across web development, apps,
                   games, and engineering.
                 </p>
-                <div className="d-flex gap-2">
+                <div className="d-flex gap-2 flex-wrap">
                   <Link
                     href="/projects/websites"
                     className="btn btn-sm btn-primary"
@@ -117,7 +109,25 @@ export default function Home(): ReactElement {
                   >
                     Games
                   </Link>
+                  <Link
+                    href="/projects/engineering"
+                    className="btn btn-sm btn-warning"
+                  >
+                    Engineering
+                  </Link>
                 </div>
+              </div>
+            </div>
+            <div className="card mb-3">
+              <div className="card-body">
+                <h3 className="h5">Services</h3>
+                <p>Professional services for hobbyists and small businesses.</p>
+                <Link
+                  href="/projects/services/3d-printing"
+                  className="btn btn-sm btn-outline-primary"
+                >
+                  3D Printing Service
+                </Link>
               </div>
             </div>
             <Link href="/contact" className="btn btn-primary">
@@ -125,17 +135,6 @@ export default function Home(): ReactElement {
             </Link>
           </div>
         </div>
-      </Container>
-
-      <Container className="mb-4">
-        <Popover>
-          <PopoverTrigger>Test Popover</PopoverTrigger>
-          <PopoverContent className="Popover">
-            <PopoverHeading>Test popover heading</PopoverHeading>
-            <PopoverDescription>Test popover description</PopoverDescription>
-            <PopoverClose>Close</PopoverClose>
-          </PopoverContent>
-        </Popover>
       </Container>
     </>
   );
