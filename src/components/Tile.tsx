@@ -29,8 +29,13 @@ const Tile: React.FC<TileProps> = ({
         <div className="card-body">
           <h3 className="card-title">{title}</h3>
           <p className="card-text">{description}</p>
-          <Link href={link} passHref>
-            <button className="btn btn-outline-secondary">{linkText}</button>
+          {/* Use Link styled as a button instead of button inside Link for valid HTML and better accessibility */}
+          <Link 
+            href={link} 
+            className="btn btn-outline-secondary"
+            aria-label={`Learn more about ${title}`}
+          >
+            {linkText}
           </Link>
         </div>
       </div>
