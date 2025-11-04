@@ -1,20 +1,16 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
-import netlifyIdentity from "netlify-identity-widget";
+import React, { createContext, useContext, ReactNode } from "react";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 // The AuthContextType interface defines the shape of the context object for authentication.
 interface AuthContextType {
-  user: netlifyIdentity.User | null; // Represents the current user object or null if no user is logged in.
+  user: any | null; // Represents the current user object or null if no user is logged in.
   login: () => void; // Function to initiate the login process.
   signup: () => void; // Function to initiate the signup process.
   logout: () => void; // Function to log out the current user.
+  isLoaded: boolean; // Whether Clerk has loaded
+  isSignedIn: boolean; // Whether user is signed in
 }
 
 // The default value for the AuthContext, used when initializing the context.
@@ -23,6 +19,8 @@ const defaultAuthContextValue: AuthContextType = {
   login: () => {},
   signup: () => {},
   logout: () => {},
+  isLoaded: false,
+  isSignedIn: false,
 };
 
 // Creating the AuthContext with the default value.
@@ -32,43 +30,28 @@ export const AuthContext = createContext<AuthContextType>(
 
 // AuthProvider component that will wrap the application components and provide authentication context.
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<netlifyIdentity.User | null>(null);
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { openSignIn, openSignUp, signOut } = useClerk();
 
-  useEffect(() => {
-		netlifyIdentity.init(); // Initialize Netlify Identity.
-
-		// Set the initial user state based on the existing session. currentUser() returns null if no session exists.
-		const currentUser = netlifyIdentity.currentUser();
-		setUser(currentUser); // Set the user state.
-
-		// Event listener for successful login.
-		netlifyIdentity.on("login", (user) => {
-			setUser(user); // Update the user state on successful login.
-			netlifyIdentity.close(); // Close the Netlify Identity modal.
-		});
-
-		// Event listener for logout action.
-		netlifyIdentity.on("logout", () => {
-			setUser(null); // Clear the user state on logout.
-		});
-
-		// Cleanup event listeners on component unmount.
-		return () => {
-			netlifyIdentity.off("login");
-			netlifyIdentity.off("logout");
-		};
-	}, []);
-
-  // Function to open the Netlify Identity login modal.
-  const login = () => netlifyIdentity.open("login");
-  // Function to open the Netlify Identity signup modal.
-  const signup = () => netlifyIdentity.open("signup");
+  // Function to open the Clerk sign-in modal.
+  const login = () => openSignIn();
+  // Function to open the Clerk sign-up modal.
+  const signup = () => openSignUp();
   // Function to log out the current user.
-  const logout = () => netlifyIdentity.logout();
+  const logout = () => signOut();
 
   // Providing the authentication context to the children components.
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        signup,
+        logout,
+        isLoaded,
+        isSignedIn: isSignedIn ?? false,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
