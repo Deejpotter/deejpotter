@@ -7,6 +7,16 @@ export default function Websites(): ReactElement {
   // Define the website project data
   const websiteProjects = [
     {
+      id: "cnc-tools",
+      name: "CNC Tools Application",
+      description:
+        "A comprehensive technical resource hub with 12+ calculators, tools, and AI assistant for CNC enthusiasts. Features role-based authentication and admin panel.",
+      technologies: ["Next.js", "TypeScript", "MongoDB", "Clerk", "Bootstrap"],
+      image: "/images/deejPotterLogo.svg",
+      link: "https://cnctools.deejpotter.com",
+      external: true,
+    },
+    {
       id: "deejpotter",
       name: "Deej Potter Portfolio",
       description:
@@ -14,6 +24,7 @@ export default function Websites(): ReactElement {
       technologies: ["Next.js", "React", "TypeScript", "Bootstrap", "SCSS"],
       image: "/images/deejPotterLogo.svg",
       link: "/projects/websites/deejpotter",
+      external: false,
     },
     // Note: You can add more website projects here as they are developed
   ];
@@ -89,9 +100,20 @@ export default function Websites(): ReactElement {
                   </div>
                 </div>
                 <div className="card-footer bg-transparent border-top-0">
-                  <Link href={project.link} className="btn btn-primary w-100">
-                    View Project
-                  </Link>
+                  {project.external ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary w-100"
+                    >
+                      Visit Site <span className="bi bi-box-arrow-up-right ms-1"></span>
+                    </a>
+                  ) : (
+                    <Link href={project.link} className="btn btn-primary w-100">
+                      View Project
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
