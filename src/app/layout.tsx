@@ -4,7 +4,7 @@ import { Fredoka, Nunito } from "next/font/google"; // Importing the Fredoka and
 import React from "react"; // Importing React
 import MainFooter from "@/components/MainFooter/MainFooter";
 import Navbar from "@/components/Navbar/Navbar";
-import { AuthProvider } from "@/contexts/AuthContext";
+import AuthProvider from "@/contexts/AuthProvider"; // Client component wrapper
 import BootstrapClient from "@/lib/BootstrapClient";
 import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";

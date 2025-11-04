@@ -115,7 +115,7 @@ export default function Services(): ReactElement {
           <Col className="text-center">
             <h2>Looking for a custom service?</h2>
             <p className="mb-4">
-              Have a project in mind but don't see the specific service listed?
+              Have a project in mind but don&apos;t see the specific service listed?
               Contact me to discuss your needs!
             </p>
             <Link href="/contact" className="btn btn-primary">
