@@ -8,9 +8,10 @@ export default function About(props: any): ReactElement {
         <div className="col-12 mb-4">
           <h1>About Me</h1>
           <p className="lead">
-            I&apos;m married with 3 kids and they&apos;re all my favourite people in the world, 
-            but my original love was technology. I have always loved the dynamic problem 
-            solving that working with tech requires.
+            I&apos;m married with 3 kids and they&apos;re all my favourite
+            people in the world, but my original love was technology. I have
+            always loved the dynamic problem solving that working with tech
+            requires.
           </p>
         </div>
       </div>
@@ -21,28 +22,35 @@ export default function About(props: any): ReactElement {
             <span className="bi bi-briefcase me-2"></span>My Journey
           </h2>
           <p>
-            When I was younger, I worked at my parents&apos; small family restaurant 
-            and followed a career as a chef, but I was never passionate about it. After 
-            completing a Certificate in IT in 2013, I realized I had found my calling.
+            When I was younger, I worked at my parents&apos; small family
+            restaurant and followed a career as a chef, but I was never
+            passionate about it. After completing a Certificate in IT in 2013, I
+            realized I had found my calling.
           </p>
           <p>
-            I discovered I have an <strong>INTP personality type</strong>, which lends itself 
-            better to researching and problem-solving than the personal skills required by hospitality. 
-            Although working as a chef forced me to develop skills I wasn&apos;t initially comfortable 
-            with - clear communication, teamwork, leadership, and stress management - skills that now 
-            complement my technical abilities.
+            I discovered I have an <strong>INTP personality type</strong>, which
+            lends itself better to researching and problem-solving than the
+            personal skills required by hospitality. Although working as a chef
+            forced me to develop skills I wasn&apos;t initially comfortable with
+            - clear communication, teamwork, leadership, and stress management -
+            skills that now complement my technical abilities.
           </p>
           <p>
-            I transitioned to technology by starting my own web design business, 
-            <strong>Deej Potter Designs</strong>, where I provided end-to-end website development 
-            from ideation to deployment. Later, I worked as a <strong>Junior Full-Stack Developer 
-            at One Alpha Tech</strong> in Melbourne, working on an airport slot coordination 
-            application using .NET Core and Angular with Azure/Kubernetes hosting.
+            I transitioned to technology by starting my own web design business,
+            <strong>Deej Potter Designs</strong>, where I provided end-to-end
+            website development from ideation to deployment. Later, I worked as
+            a <strong>Junior Full-Stack Developer at One Alpha Tech</strong> in
+            Melbourne, working on an airport slot coordination application using
+            .NET Core and Angular with Azure/Kubernetes hosting.
           </p>
           <p>
-            Currently, I&apos;m working at <strong>Maker Store</strong> while studying 
-            <strong> Software Development part-time at Torrens University</strong>, 
-            specializing in AI and Data Science.
+            Currently, I&apos;m working at <strong>Maker Store</strong> while
+            studying
+            <strong>
+              {" "}
+              Software Development part-time at Torrens University
+            </strong>
+            , specializing in AI and Data Science.
           </p>
         </div>
       </div>
@@ -53,14 +61,16 @@ export default function About(props: any): ReactElement {
             <span className="bi bi-cpu me-2"></span>My Passion for Technology
           </h2>
           <p>
-            From a young age, I was interested in learning about all kinds of electronic 
-            devices. I grew up with the internet and have spent a lot of time learning about 
-            how it works. I enjoy sharing my knowledge with others and am happy to help when 
-            I can, especially if it allows me to practice my skills.
+            From a young age, I was interested in learning about all kinds of
+            electronic devices. I grew up with the internet and have spent a lot
+            of time learning about how it works. I enjoy sharing my knowledge
+            with others and am happy to help when I can, especially if it allows
+            me to practice my skills.
           </p>
           <p>
-            I&apos;m passionate about AI and machine learning, and I want to learn about everything - 
-            from global food and education equality to environmental sustainability.
+            I&apos;m passionate about AI and machine learning, and I want to
+            learn about everything - from global food and education equality to
+            environmental sustainability.
           </p>
         </div>
         <div className="col-12 col-md-6">

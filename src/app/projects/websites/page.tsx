@@ -107,7 +107,8 @@ export default function Websites(): ReactElement {
                       rel="noopener noreferrer"
                       className="btn btn-primary w-100"
                     >
-                      Visit Site <span className="bi bi-box-arrow-up-right ms-1"></span>
+                      Visit Site{" "}
+                      <span className="bi bi-box-arrow-up-right ms-1"></span>
                     </a>
                   ) : (
                     <Link href={project.link} className="btn btn-primary w-100">
