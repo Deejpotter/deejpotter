@@ -7,16 +7,24 @@ import { z } from "zod";
 
 // Contact form validation schema using Zod
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be less than 100 characters"),
   email: z.string().email("Please enter a valid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters"),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be less than 1000 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 // The contact page component with React Hook Form integration
 export default function Contact(): ReactElement {
-  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [formStatus, setFormStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
@@ -35,10 +43,11 @@ export default function Contact(): ReactElement {
 
     try {
       // TODO: Replace with actual backend URL from environment variable
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+      const backendUrl =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
       const response = await fetch(`${backendUrl}/api/contact`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -50,7 +59,9 @@ export default function Contact(): ReactElement {
       } else {
         const errorData = await response.json().catch(() => ({}));
         setFormStatus("error");
-        setErrorMessage(errorData.message || "Failed to submit the form. Please try again.");
+        setErrorMessage(
+          errorData.message || "Failed to submit the form. Please try again."
+        );
       }
     } catch (error) {
       setFormStatus("error");
@@ -82,20 +93,24 @@ export default function Contact(): ReactElement {
               <input
                 type="text"
                 id="name"
-                className={`form-control shadow ${errors.name ? "is-invalid" : ""}`}
+                className={`form-control shadow ${
+                  errors.name ? "is-invalid" : ""
+                }`}
                 {...register("name")}
               />
               {errors.name && (
                 <div className="invalid-feedback">{errors.name.message}</div>
               )}
             </div>
-            
+
             <div className="form-group pb-2">
               <label htmlFor="email">Email address (required):</label>
               <input
                 type="email"
                 id="email"
-                className={`form-control shadow ${errors.email ? "is-invalid" : ""}`}
+                className={`form-control shadow ${
+                  errors.email ? "is-invalid" : ""
+                }`}
                 {...register("email")}
               />
               {errors.email && (
@@ -107,7 +122,9 @@ export default function Contact(): ReactElement {
               <label htmlFor="message">Message (required):</label>
               <textarea
                 id="message"
-                className={`form-control shadow ${errors.message ? "is-invalid" : ""}`}
+                className={`form-control shadow ${
+                  errors.message ? "is-invalid" : ""
+                }`}
                 rows={5}
                 {...register("message")}
               />
@@ -117,8 +134,8 @@ export default function Contact(): ReactElement {
             </div>
 
             <div className="form-group pb-2">
-              <button 
-                className="btn btn-info shadow" 
+              <button
+                className="btn btn-info shadow"
                 type="submit"
                 disabled={formStatus === "submitting"}
               >
@@ -126,7 +143,7 @@ export default function Contact(): ReactElement {
               </button>
             </div>
           </form>
-          
+
           {/* Display success or error message based on form submission status */}
           {formStatus === "success" && (
             <div className="alert alert-success mt-3">
