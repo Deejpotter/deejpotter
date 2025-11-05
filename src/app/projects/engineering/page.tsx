@@ -11,14 +11,7 @@ export default function Engineering(): ReactElement {
       name: "ESP32 Wireless Car",
       description:
         "Precision-controlled wireless RC car with dual motor control, encoder feedback, and PID speed control. Features Wi-Fi web interface for real-time monitoring and control.",
-      technologies: [
-        "ESP32",
-        "C++",
-        "Arduino",
-        "PWM",
-        "PID Control",
-        "Wi-Fi",
-      ],
+      technologies: ["ESP32", "C++", "Arduino", "PWM", "PID Control", "Wi-Fi"],
       image: "/images/deejPotterLogo.svg",
       link: "/projects/engineering/wireless-car",
       external: false,
@@ -182,12 +175,12 @@ export default function Engineering(): ReactElement {
                 constraints, resource management
               </li>
               <li>
-                <strong>Sensor integration:</strong> Encoders, IMUs,
-                ultrasonic, temperature, etc.
+                <strong>Sensor integration:</strong> Encoders, IMUs, ultrasonic,
+                temperature, etc.
               </li>
               <li>
-                <strong>Communication protocols:</strong> UART, I2C, SPI,
-                Wi-Fi, Bluetooth
+                <strong>Communication protocols:</strong> UART, I2C, SPI, Wi-Fi,
+                Bluetooth
               </li>
               <li>
                 <strong>Testing & debugging:</strong> Oscilloscope, logic

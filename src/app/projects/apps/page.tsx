@@ -154,8 +154,8 @@ export default function Apps(): ReactElement {
                 runtime errors
               </li>
               <li>
-                <strong>API design:</strong> RESTful endpoints with proper
-                error handling
+                <strong>API design:</strong> RESTful endpoints with proper error
+                handling
               </li>
               <li>
                 <strong>State management:</strong> React hooks, context, and
@@ -213,8 +213,8 @@ export default function Apps(): ReactElement {
                         functions
                       </li>
                       <li>
-                        <strong>MongoDB:</strong> Document database for
-                        flexible data
+                        <strong>MongoDB:</strong> Document database for flexible
+                        data
                       </li>
                       <li>
                         <strong>Clerk:</strong> User authentication and

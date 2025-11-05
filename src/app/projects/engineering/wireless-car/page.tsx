@@ -103,8 +103,8 @@ export default function WirelessCar(): ReactElement {
                         <strong>Speed Control:</strong> PWM (0-255 values)
                       </li>
                       <li>
-                        <strong>Direction:</strong> Independent
-                        forward/reverse per motor
+                        <strong>Direction:</strong> Independent forward/reverse
+                        per motor
                       </li>
                       <li>
                         <strong>Power:</strong> 5V logic, 12V motor supply
@@ -229,15 +229,14 @@ export default function WirelessCar(): ReactElement {
                   <div className="accordion-body">
                     <p>
                       The ESP32 has 16 hardware PWM channels. I use 4 of them
-                      for motor control (2 motors × 2 directions). PWM
-                      frequency is set to 1kHz with 8-bit resolution (0-255
-                      speed values).
+                      for motor control (2 motors × 2 directions). PWM frequency
+                      is set to 1kHz with 8-bit resolution (0-255 speed values).
                     </p>
                     <p>
                       <strong>Motor speed function:</strong> Takes a motor
-                      identifier and speed value (-255 to +255). Negative
-                      values reverse direction. The function sets direction
-                      pins HIGH/LOW and writes PWM duty cycle to control speed.
+                      identifier and speed value (-255 to +255). Negative values
+                      reverse direction. The function sets direction pins
+                      HIGH/LOW and writes PWM duty cycle to control speed.
                     </p>
                     <p>
                       <strong>Movement primitives:</strong> Forward, backward,
@@ -268,9 +267,9 @@ export default function WirelessCar(): ReactElement {
                 >
                   <div className="accordion-body">
                     <p>
-                      Encoders use interrupt service routines (ISRs) attached
-                      to GPIO pins. The ISR fires on every encoder pulse change
-                      and increments/decrements a counter based on the phase
+                      Encoders use interrupt service routines (ISRs) attached to
+                      GPIO pins. The ISR fires on every encoder pulse change and
+                      increments/decrements a counter based on the phase
                       relationship between encoder channels A and B.
                     </p>
                     <p>
@@ -281,15 +280,15 @@ export default function WirelessCar(): ReactElement {
                     </p>
                     <p>
                       <strong>Speed measurement:</strong> Sample encoder counts
-                      every 100ms, calculate delta, convert to RPM using:
-                      (delta / 960) × (60000 / time_ms). This provides
-                      real-time wheel speed for PID control.
+                      every 100ms, calculate delta, convert to RPM using: (delta
+                      / 960) × (60000 / time_ms). This provides real-time wheel
+                      speed for PID control.
                     </p>
                     <p>
-                      <strong>Challenges solved:</strong> Encoder noise
-                      filtered with 0.1µF capacitors and INPUT_PULLUP mode.
-                      ISRs kept minimal (just counting) with IRAM_ATTR for
-                      faster execution to prevent watchdog timer resets.
+                      <strong>Challenges solved:</strong> Encoder noise filtered
+                      with 0.1µF capacitors and INPUT_PULLUP mode. ISRs kept
+                      minimal (just counting) with IRAM_ATTR for faster
+                      execution to prevent watchdog timer resets.
                     </p>
                   </div>
                 </div>
@@ -362,10 +361,10 @@ export default function WirelessCar(): ReactElement {
                 >
                   <div className="accordion-body">
                     <p>
-                      ESP32 operates in Access Point (AP) mode, creating its
-                      own Wi-Fi network (&quot;ESP32-Car&quot;). Connect any
-                      device to this network and navigate to the ESP32&apos;s
-                      IP address (typically 192.168.4.1) to access the control
+                      ESP32 operates in Access Point (AP) mode, creating its own
+                      Wi-Fi network (&quot;ESP32-Car&quot;). Connect any device
+                      to this network and navigate to the ESP32&apos;s IP
+                      address (typically 192.168.4.1) to access the control
                       interface.
                     </p>
                     <p>
@@ -444,8 +443,7 @@ export default function WirelessCar(): ReactElement {
                     <p className="card-text">
                       <strong>Solution:</strong> Added 0.1µF capacitors across
                       encoder outputs, used INPUT_PULLUP mode, implemented
-                      software debouncing in ISR (ignore pulses &lt; 1ms
-                      apart).
+                      software debouncing in ISR (ignore pulses &lt; 1ms apart).
                     </p>
                   </div>
                 </div>
@@ -462,8 +460,7 @@ export default function WirelessCar(): ReactElement {
                     <p className="card-text">
                       <strong>Solution:</strong> Implemented PID control for
                       each motor using encoder feedback. Real-time adjustments
-                      compensate for motor differences and battery voltage
-                      drop.
+                      compensate for motor differences and battery voltage drop.
                     </p>
                   </div>
                 </div>
@@ -510,8 +507,8 @@ export default function WirelessCar(): ReactElement {
             <h2 className="h3 mb-3">Future Improvements</h2>
             <ul>
               <li>
-                <strong>Bluetooth Control:</strong> Lower latency alternative
-                to Wi-Fi for faster response
+                <strong>Bluetooth Control:</strong> Lower latency alternative to
+                Wi-Fi for faster response
               </li>
               <li>
                 <strong>Obstacle Avoidance:</strong> Add ultrasonic sensors and
@@ -530,8 +527,8 @@ export default function WirelessCar(): ReactElement {
                 voltage, display in interface, low-battery warning
               </li>
               <li>
-                <strong>Mobile App:</strong> Native iOS/Android app for
-                improved control ergonomics
+                <strong>Mobile App:</strong> Native iOS/Android app for improved
+                control ergonomics
               </li>
             </ul>
           </section>
@@ -563,9 +560,7 @@ export default function WirelessCar(): ReactElement {
               <div className="col-md-6">
                 <div className="card">
                   <div className="card-body">
-                    <h3 className="h5 card-title">
-                      Simple Drawbot Software
-                    </h3>
+                    <h3 className="h5 card-title">Simple Drawbot Software</h3>
                     <p className="card-text">
                       G-code generator for pen plotters and CNC drawing
                       machines. Similar motor control concepts applied to
@@ -594,8 +589,8 @@ export default function WirelessCar(): ReactElement {
               communication simultaneously without blocking. Encoder feedback is
               essential for precision movement—without it, you&apos;re just
               guessing where your robot is. PID control compensates for
-              real-world inconsistencies that simple on/off control
-              can&apos;t handle.
+              real-world inconsistencies that simple on/off control can&apos;t
+              handle.
             </p>
             <p className="mb-0">
               This project taught me that embedded systems programming requires
