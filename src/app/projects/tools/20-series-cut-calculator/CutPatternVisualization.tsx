@@ -6,7 +6,6 @@ import styles from "./CutCalculator.module.scss";
 
 type CutPatternVisualizationProps = {
   pattern: CutPattern;
-  stockLength: number;
 };
 
 const COLORS = [
@@ -24,7 +23,6 @@ const COLORS = [
 
 export default function CutPatternVisualization({
   pattern,
-  stockLength,
 }: CutPatternVisualizationProps): ReactElement {
   const getColorForIndex = (index: number): string => {
     return COLORS[index % COLORS.length];
@@ -34,7 +32,7 @@ export default function CutPatternVisualization({
     <div className={styles.visualization}>
       <div className={styles.stockBar}>
         {pattern.cuts.map((cut, index) => {
-          const widthPercent = (cut / stockLength) * 100;
+          const widthPercent = (cut / pattern.stockLength) * 100;
           return (
             <div
               key={index}
@@ -53,10 +51,13 @@ export default function CutPatternVisualization({
           <div
             className={`${styles.cutSegment} ${styles.wasteSegment}`}
             style={{
-              width: `${(pattern.waste / stockLength) * 100}%`,
+              width: `${(pattern.waste / pattern.stockLength) * 100}%`,
               backgroundColor: "#6c757d",
             }}
-            title={`Waste: ${pattern.waste}mm (${((pattern.waste / stockLength) * 100).toFixed(1)}%)`}
+            title={`Waste: ${pattern.waste}mm (${(
+              (pattern.waste / pattern.stockLength) *
+              100
+            ).toFixed(1)}%)`}
           >
             <span className={styles.cutLabel}>Waste</span>
           </div>

@@ -90,6 +90,17 @@ const initialState: NavbarState = {
             // Add more links here.
           ],
         },
+        {
+          label: "Tools",
+          href: "/projects/tools",
+          items: [
+            {
+              href: "/projects/tools/20-series-cut-calculator",
+              label: "20 Series Cut Calculator",
+            },
+            // Add more tools here.
+          ],
+        },
       ],
     },
     { href: "/blog", label: "Blog" },

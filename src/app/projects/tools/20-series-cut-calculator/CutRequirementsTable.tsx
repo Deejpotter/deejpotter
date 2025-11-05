@@ -88,7 +88,11 @@ export default function CutRequirementsTable({
                       type="number"
                       value={req.length || ""}
                       onChange={(e) =>
-                        handleUpdateRequirement(req.id, "length", e.target.value)
+                        handleUpdateRequirement(
+                          req.id,
+                          "length",
+                          e.target.value
+                        )
                       }
                       placeholder="Cut length"
                       min="1"

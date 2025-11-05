@@ -7,16 +7,20 @@ import CutPatternVisualization from "./CutPatternVisualization";
 
 type ResultsDisplayProps = {
   result: CalculationResult;
-  stockLength: number;
 };
 
 export default function ResultsDisplay({
   result,
-  stockLength,
 }: ResultsDisplayProps): ReactElement {
   const formatNumber = (num: number, decimals = 1): string => {
     return num.toFixed(decimals);
   };
+
+  // Calculate total stock length used
+  const totalStockLength = result.patterns.reduce(
+    (sum, p) => sum + p.stockLength,
+    0
+  );
 
   return (
     <div>
@@ -68,9 +72,103 @@ export default function ResultsDisplay({
         </Card.Body>
       </Card>
 
+      {/* Cost Breakdown Card */}
+      <Card className="shadow-sm mb-4">
+        <Card.Header className="bg-success text-white">
+          <h5 className="mb-0">Cost Breakdown</h5>
+        </Card.Header>
+        <Card.Body>
+          <Row className="mb-3">
+            <Col>
+              <h3 className="text-center text-success mb-0">
+                ${result.totalCost.toFixed(2)}
+              </h3>
+              <p className="text-center text-muted small mb-0">Total Cost</p>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6} className="text-center mb-2 mb-md-0">
+              <div className="border rounded p-2">
+                <h5 className="text-primary mb-0">
+                  ${result.totalSetupFees.toFixed(2)}
+                </h5>
+                <small className="text-muted">Setup Fees</small>
+                <div className="small text-muted">
+                  ({result.costByLength.length} unique length
+                  {result.costByLength.length !== 1 ? "s" : ""} × $3)
+                </div>
+              </div>
+            </Col>
+            <Col md={6} className="text-center">
+              <div className="border rounded p-2">
+                <h5 className="text-info mb-0">
+                  ${result.totalCuttingCosts.toFixed(2)}
+                </h5>
+                <small className="text-muted">Cutting Costs</small>
+                <div className="small text-muted">
+                  (
+                  {result.costByLength.reduce((sum, c) => sum + c.totalCuts, 0)}{" "}
+                  cuts × $2)
+                </div>
+              </div>
+            </Col>
+          </Row>
+
+          <div className="table-responsive">
+            <table className="table table-sm table-hover mb-0">
+              <thead className="table-light">
+                <tr>
+                  <th>Stock Length</th>
+                  <th className="text-center">Pieces Used</th>
+                  <th className="text-center">Total Cuts</th>
+                  <th className="text-end">Setup Fee</th>
+                  <th className="text-end">Cutting Cost</th>
+                  <th className="text-end">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.costByLength.map((cost) => (
+                  <tr key={cost.stockLength}>
+                    <td>
+                      <strong>{cost.stockLength}mm</strong>
+                    </td>
+                    <td className="text-center">{cost.quantity}</td>
+                    <td className="text-center">{cost.totalCuts}</td>
+                    <td className="text-end">${cost.setupFee.toFixed(2)}</td>
+                    <td className="text-end">${cost.cuttingCost.toFixed(2)}</td>
+                    <td className="text-end">
+                      <strong>${cost.totalCost.toFixed(2)}</strong>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot className="table-light">
+                <tr>
+                  <td colSpan={3}>
+                    <strong>Total</strong>
+                  </td>
+                  <td className="text-end">
+                    <strong>${result.totalSetupFees.toFixed(2)}</strong>
+                  </td>
+                  <td className="text-end">
+                    <strong>${result.totalCuttingCosts.toFixed(2)}</strong>
+                  </td>
+                  <td className="text-end">
+                    <strong>${result.totalCost.toFixed(2)}</strong>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </Card.Body>
+      </Card>
+
       <Card className="shadow-sm">
         <Card.Header className="bg-dark text-white">
-          <h5 className="mb-0">Cutting Patterns ({result.patterns.length} pieces)</h5>
+          <h5 className="mb-0">
+            Cutting Patterns ({result.patterns.length} pieces)
+          </h5>
         </Card.Header>
         <Card.Body>
           <ListGroup variant="flush">
@@ -82,14 +180,14 @@ export default function ResultsDisplay({
                       Stock #{pattern.stockIndex}
                     </strong>
                     <div className="small text-muted">
+                      {pattern.stockLength}mm stock
+                    </div>
+                    <div className="small text-muted">
                       {pattern.cuts.length} cuts
                     </div>
                   </Col>
                   <Col lg={7} md={6} className="mb-2 mb-md-0">
-                    <CutPatternVisualization
-                      pattern={pattern}
-                      stockLength={stockLength}
-                    />
+                    <CutPatternVisualization pattern={pattern} />
                   </Col>
                   <Col lg={3} md={3}>
                     <div className="d-flex flex-wrap gap-2">
@@ -97,7 +195,11 @@ export default function ResultsDisplay({
                         <i className="bi bi-speedometer2 me-1"></i>
                         {formatNumber(pattern.utilization)}%
                       </Badge>
-                      <Badge bg="warning" text="dark" className="d-flex align-items-center">
+                      <Badge
+                        bg="warning"
+                        text="dark"
+                        className="d-flex align-items-center"
+                      >
                         <i className="bi bi-exclamation-triangle me-1"></i>
                         {pattern.waste}mm waste
                       </Badge>
@@ -116,18 +218,16 @@ export default function ResultsDisplay({
             <Col md={6}>
               <small>
                 <strong>Material Efficiency:</strong> Using {result.totalStock}{" "}
-                stock pieces with{" "}
-                {formatNumber(result.averageUtilization)}% average utilization
+                stock pieces with {formatNumber(result.averageUtilization)}%
+                average utilization
               </small>
             </Col>
             <Col md={6} className="text-md-end">
               <small>
                 <strong>Waste:</strong> {result.totalWaste.toLocaleString()}mm
                 total (~
-                {formatNumber(
-                  (result.totalWaste / (result.totalStock * stockLength)) * 100
-                )}
-                % of material)
+                {formatNumber((result.totalWaste / totalStockLength) * 100)}% of
+                material)
               </small>
             </Col>
           </Row>

@@ -1,49 +1,54 @@
 /**
  * 1D Cutting Stock Problem Optimizer
  *
- * Implements First Fit Decreasing (FFD) and Best Fit Decreasing (BFD) algorithms
- * for optimizing linear material cuts with minimal waste.
+ * Implements Best Fit Decreasing (BFD) algorithm for optimizing linear material cuts
+ * with minimal waste. Supports multiple stock lengths and kerf (blade width) consideration.
  *
  * References:
  * - Johnson, D.S. (1973) "Near-optimal bin packing algorithms" MIT PhD Thesis
- * - Dósa, György (2007) Tight bound proof: FFD ≤ (11/9) * OPT + 6/9
- * - Wikipedia: https://en.wikipedia.org/wiki/First-fit-decreasing_bin_packing
+ * - Dósa, György (2007) Tight bound proof: BFD ≤ (11/9) * OPT + 6/9
+ * - Wikipedia: https://en.wikipedia.org/wiki/Bin_packing_problem
  *
  * @see http://bookstack.deejpotter.com/books/deejpottercom/page/20-series-cut-calculator-implementation-guide
  */
 
 import type {
   CutRequirement,
+  StockItem,
   CalculationResult,
   CutPattern,
   CutCalculatorInput,
-  AlgorithmType,
+  StockLengthCost,
 } from "@/types/cutCalculator";
 
 /**
- * First Fit Decreasing Algorithm for 1D Cutting Stock Problem
+ * Best Fit Decreasing Algorithm for 1D Cutting Stock Problem with Multiple Stock Lengths
  *
  * Strategy:
  * 1. Sort all required cuts in descending order (largest first)
- * 2. For each cut, place it in the first bin (stock piece) where it fits
- * 3. If no existing bin has space, open a new bin
+ * 2. For each cut, find the best stock piece:
+ *    - Prefer stock pieces that already have cuts (minimize new stock usage)
+ *    - Among viable stocks, choose the one with smallest remainder after cut + kerf
+ * 3. Account for kerf (blade width) between cuts
+ * 4. Try shorter stock lengths first when opening new stock pieces
  *
- * Time Complexity: O(n log n) where n = total number of cuts
- * Space Complexity: O(n)
+ * Time Complexity: O(n² * m) where n = total cuts, m = number of stock pieces
+ * Space Complexity: O(n + m)
  * Approximation Ratio: ≤ (11/9) * OPT + 6/9
  *
- * @param stockLength - Length of stock material in millimeters
+ * @param stockItems - Array of available stock items with lengths and quantities
  * @param requirements - Array of cut requirements
+ * @param kerfWidth - Kerf width (blade thickness) in millimeters
  * @returns Calculation result with patterns and statistics
  */
-export function firstFitDecreasing(
-  stockLength: number,
-  requirements: CutRequirement[]
+export function bestFitDecreasing(
+  stockItems: StockItem[],
+  requirements: CutRequirement[],
+  kerfWidth: number
 ): CalculationResult {
   const startTime = performance.now();
 
   // Step 1: Expand requirements into individual cuts
-  // Convert {length: 450, quantity: 3} into [450, 450, 450]
   const allCuts: number[] = [];
   requirements.forEach((req) => {
     for (let i = 0; i < req.quantity; i++) {
@@ -52,149 +57,168 @@ export function firstFitDecreasing(
   });
 
   // Step 2: Sort cuts in descending order (largest first)
-  // This is the "Decreasing" part of First Fit Decreasing
-  // Larger items are placed first for better bin utilization
   allCuts.sort((a, b) => b - a);
 
-  // Step 3: Initialize data structures for bins (stock pieces)
-  const bins: number[][] = []; // Each bin contains array of cut lengths
-  const binRemainingSpace: number[] = []; // Track remaining space in each bin
+  // Step 3: Sort stock items by length (ascending - prefer shorter stock)
+  const sortedStockItems = [...stockItems].sort((a, b) => a.length - b.length);
 
-  // Step 4: Place each cut using First Fit strategy
-  for (const cut of allCuts) {
-    let placed = false;
-
-    // Try to fit in existing bins (first fit - use first available)
-    for (let i = 0; i < bins.length; i++) {
-      if (binRemainingSpace[i] >= cut) {
-        // Cut fits in this bin
-        bins[i].push(cut);
-        binRemainingSpace[i] -= cut;
-        placed = true;
-        break; // First fit - stop at first available
-      }
-    }
-
-    // If no existing bin can accommodate this cut, open a new bin
-    if (!placed) {
-      bins.push([cut]);
-      binRemainingSpace.push(stockLength - cut);
-    }
-  }
-
-  // Step 5: Calculate statistics and format results
-  const patterns: CutPattern[] = bins.map((cuts, index) => {
-    const waste = binRemainingSpace[index];
-    const usedLength = stockLength - waste;
-    const utilization = (usedLength / stockLength) * 100;
-
-    return {
-      stockIndex: index + 1, // 1-indexed for user display
-      cuts,
-      waste,
-      utilization: Math.round(utilization * 10) / 10, // Round to 1 decimal
-    };
-  });
-
-  const totalWaste = binRemainingSpace.reduce((sum, waste) => sum + waste, 0);
-  const averageUtilization =
-    patterns.reduce((sum, p) => sum + p.utilization, 0) / patterns.length;
-
-  const executionTime = performance.now() - startTime;
-
-  return {
-    patterns,
-    totalStock: bins.length,
-    totalWaste,
-    averageUtilization: Math.round(averageUtilization * 10) / 10,
-    executionTime: Math.round(executionTime * 100) / 100,
+  // Step 4: Initialize bins (stock pieces being used)
+  type Bin = {
+    stockLength: number;
+    cuts: number[];
+    usedLength: number; // Includes cuts + kerf
+    remainingSpace: number;
   };
-}
 
-/**
- * Best Fit Decreasing Algorithm for 1D Cutting Stock Problem
- *
- * Strategy:
- * 1. Sort all required cuts in descending order (largest first)
- * 2. For each cut, place it in the bin with the LEAST remaining space that still fits
- * 3. If no existing bin has space, open a new bin
- *
- * Difference from FFD: Instead of first available bin, choose best fitting bin
- * This can result in tighter packing but is slower to compute
- *
- * Time Complexity: O(n² log n) where n = total number of cuts
- * Space Complexity: O(n)
- * Approximation Ratio: ≤ (11/9) * OPT + 6/9 (same as FFD)
- *
- * @param stockLength - Length of stock material in millimeters
- * @param requirements - Array of cut requirements
- * @returns Calculation result with patterns and statistics
- */
-export function bestFitDecreasing(
-  stockLength: number,
-  requirements: CutRequirement[]
-): CalculationResult {
-  const startTime = performance.now();
+  const bins: Bin[] = [];
+  const stockUsageCount = new Map<number, number>(); // Track stock usage by length
 
-  // Step 1 & 2: Expand and sort (same as FFD)
-  const allCuts: number[] = [];
-  requirements.forEach((req) => {
-    for (let i = 0; i < req.quantity; i++) {
-      allCuts.push(req.length);
-    }
+  // Initialize stock usage tracking
+  sortedStockItems.forEach((stock) => {
+    stockUsageCount.set(stock.length, 0);
   });
 
-  allCuts.sort((a, b) => b - a);
-
-  // Step 3: Initialize bins
-  const bins: number[][] = [];
-  const binRemainingSpace: number[] = [];
-
-  // Step 4: Place each cut using Best Fit strategy
+  // Step 5: Place each cut using Best Fit strategy with kerf consideration
   for (const cut of allCuts) {
     let bestBinIndex = -1;
     let smallestRemainder = Infinity;
 
-    // Find bin with smallest remainder that still fits the cut
-    // This is the "Best Fit" strategy - pack as tightly as possible
+    // First, try to fit in existing bins (minimizes new stock)
     for (let i = 0; i < bins.length; i++) {
-      if (
-        binRemainingSpace[i] >= cut &&
-        binRemainingSpace[i] < smallestRemainder
-      ) {
-        bestBinIndex = i;
-        smallestRemainder = binRemainingSpace[i];
+      const bin = bins[i];
+      // Calculate space needed: cut + kerf (except for first cut which doesn't need leading kerf)
+      const spaceNeeded = bin.cuts.length > 0 ? cut + kerfWidth : cut;
+
+      if (bin.remainingSpace >= spaceNeeded) {
+        const remainderAfter = bin.remainingSpace - spaceNeeded;
+
+        // Choose bin with smallest remainder (tightest fit)
+        if (remainderAfter < smallestRemainder) {
+          bestBinIndex = i;
+          smallestRemainder = remainderAfter;
+        }
       }
     }
 
     if (bestBinIndex !== -1) {
-      // Found a bin - place cut there
-      bins[bestBinIndex].push(cut);
-      binRemainingSpace[bestBinIndex] -= cut;
+      // Found existing bin - place cut there
+      const bin = bins[bestBinIndex];
+      const spaceNeeded = bin.cuts.length > 0 ? cut + kerfWidth : cut;
+
+      bin.cuts.push(cut);
+      bin.usedLength += spaceNeeded;
+      bin.remainingSpace -= spaceNeeded;
     } else {
-      // No bin fits - open new bin
-      bins.push([cut]);
-      binRemainingSpace.push(stockLength - cut);
+      // No existing bin fits - need new stock piece
+      // Find shortest stock that can fit this cut
+      let newStock: StockItem | null = null;
+
+      for (const stock of sortedStockItems) {
+        const currentUsage = stockUsageCount.get(stock.length) || 0;
+
+        // Check if stock is long enough and we have quantity available
+        if (stock.length >= cut && currentUsage < stock.quantity) {
+          newStock = stock;
+          break; // Use shortest available stock
+        }
+      }
+
+      if (!newStock) {
+        // No stock available that can fit this cut
+        throw new Error(
+          `Cannot fit cut of ${cut}mm - no stock pieces available or long enough. ` +
+            `Longest available stock: ${Math.max(
+              ...sortedStockItems.map((s) => s.length)
+            )}mm`
+        );
+      }
+
+      // Create new bin with this stock
+      bins.push({
+        stockLength: newStock.length,
+        cuts: [cut],
+        usedLength: cut,
+        remainingSpace: newStock.length - cut,
+      });
+
+      stockUsageCount.set(
+        newStock.length,
+        (stockUsageCount.get(newStock.length) || 0) + 1
+      );
     }
   }
 
-  // Step 5: Calculate statistics (same as FFD)
-  const patterns: CutPattern[] = bins.map((cuts, index) => {
-    const waste = binRemainingSpace[index];
-    const usedLength = stockLength - waste;
-    const utilization = (usedLength / stockLength) * 100;
+  // Step 6: Calculate statistics and format results
+  const patterns: CutPattern[] = bins.map((bin, index) => {
+    const utilization = (bin.usedLength / bin.stockLength) * 100;
 
     return {
       stockIndex: index + 1,
-      cuts,
-      waste,
+      stockLength: bin.stockLength,
+      cuts: bin.cuts,
+      waste: bin.remainingSpace,
       utilization: Math.round(utilization * 10) / 10,
     };
   });
 
-  const totalWaste = binRemainingSpace.reduce((sum, waste) => sum + waste, 0);
+  const totalWaste = bins.reduce((sum, bin) => sum + bin.remainingSpace, 0);
   const averageUtilization =
     patterns.reduce((sum, p) => sum + p.utilization, 0) / patterns.length;
+
+  // Step 7: Calculate costs
+  // Cost structure:
+  // - $3 setup fee per unique stock length used
+  // - $2 per cut across all stock pieces
+
+  // Group patterns by stock length to calculate costs
+  const stockLengthMap = new Map<
+    number,
+    {
+      quantity: number;
+      totalCuts: number;
+    }
+  >();
+
+  patterns.forEach((pattern) => {
+    const existing = stockLengthMap.get(pattern.stockLength) || {
+      quantity: 0,
+      totalCuts: 0,
+    };
+
+    stockLengthMap.set(pattern.stockLength, {
+      quantity: existing.quantity + 1,
+      totalCuts: existing.totalCuts + pattern.cuts.length,
+    });
+  });
+
+  // Calculate cost breakdown by length
+  const costByLength = Array.from(stockLengthMap.entries())
+    .map(([stockLength, data]) => {
+      const setupFee = 3; // $3 per unique length
+      const cuttingCost = data.totalCuts * 2; // $2 per cut
+      const totalCost = setupFee + cuttingCost;
+
+      return {
+        stockLength,
+        quantity: data.quantity,
+        setupFee,
+        totalCuts: data.totalCuts,
+        cuttingCost,
+        totalCost,
+      };
+    })
+    .sort((a, b) => a.stockLength - b.stockLength); // Sort by length for display
+
+  // Calculate totals
+  const totalSetupFees = costByLength.reduce(
+    (sum, cost) => sum + cost.setupFee,
+    0
+  );
+  const totalCuttingCosts = costByLength.reduce(
+    (sum, cost) => sum + cost.cuttingCost,
+    0
+  );
+  const totalCost = totalSetupFees + totalCuttingCosts;
 
   const executionTime = performance.now() - startTime;
 
@@ -204,24 +228,54 @@ export function bestFitDecreasing(
     totalWaste,
     averageUtilization: Math.round(averageUtilization * 10) / 10,
     executionTime: Math.round(executionTime * 100) / 100,
+    costByLength,
+    totalSetupFees,
+    totalCuttingCosts,
+    totalCost,
   };
 }
 
 /**
- * Main calculation function with algorithm selection and validation
+ * Main calculation function with validation
  *
- * Validates inputs and delegates to appropriate algorithm implementation.
+ * Validates inputs and delegates to Best Fit Decreasing algorithm.
  *
- * @param input - Complete calculation input with algorithm selection
+ * @param input - Complete calculation input with stock items, requirements, and kerf
  * @returns Calculation result with patterns and statistics
  * @throws Error if validation fails
  */
 export function calculateOptimalCuts(
   input: CutCalculatorInput
 ): CalculationResult {
-  // Validation: Stock length
-  if (input.stockLength <= 0) {
-    throw new Error("Stock length must be greater than 0");
+  // Validation: At least one stock item
+  if (input.stockItems.length === 0) {
+    throw new Error("At least one stock item is required");
+  }
+
+  // Validation: All stock lengths must be positive
+  const invalidStockLengths = input.stockItems.filter(
+    (stock) => stock.length <= 0
+  );
+
+  if (invalidStockLengths.length > 0) {
+    throw new Error(
+      `All stock lengths must be greater than 0. Invalid: ${invalidStockLengths
+        .map((s) => s.length)
+        .join(", ")}`
+    );
+  }
+
+  // Validation: All stock quantities must be positive
+  const invalidStockQuantities = input.stockItems.filter(
+    (stock) => stock.quantity <= 0 || !Number.isInteger(stock.quantity)
+  );
+
+  if (invalidStockQuantities.length > 0) {
+    throw new Error(
+      `All stock quantities must be positive integers. Invalid: ${invalidStockQuantities
+        .map((s) => s.quantity)
+        .join(", ")}`
+    );
   }
 
   // Validation: At least one requirement
@@ -229,7 +283,7 @@ export function calculateOptimalCuts(
     throw new Error("At least one cut requirement is needed");
   }
 
-  // Validation: All cuts must be positive
+  // Validation: All cut lengths must be positive
   const invalidLengths = input.requirements.filter((req) => req.length <= 0);
 
   if (invalidLengths.length > 0) {
@@ -253,33 +307,35 @@ export function calculateOptimalCuts(
     );
   }
 
-  // Validation: No cut can be longer than stock
+  // Validation: No cut can be longer than longest stock
+  const maxStockLength = Math.max(...input.stockItems.map((s) => s.length));
   const tooLongCuts = input.requirements.filter(
-    (req) => req.length > input.stockLength
+    (req) => req.length > maxStockLength
   );
 
   if (tooLongCuts.length > 0) {
     throw new Error(
-      `Some cuts are longer than stock length (${
-        input.stockLength
-      }mm): ${tooLongCuts.map((c) => c.length).join(", ")}mm`
+      `Some cuts are longer than longest available stock (${maxStockLength}mm): ${tooLongCuts
+        .map((c) => c.length)
+        .join(", ")}mm`
     );
   }
 
-  // Execute selected algorithm
-  switch (input.algorithm) {
-    case "FFD":
-      return firstFitDecreasing(input.stockLength, input.requirements);
-    case "BFD":
-      return bestFitDecreasing(input.stockLength, input.requirements);
-    default:
-      // TypeScript should catch this, but failsafe for runtime
-      throw new Error(`Unknown algorithm: ${input.algorithm}`);
+  // Validation: Kerf width must be non-negative
+  if (input.kerfWidth < 0) {
+    throw new Error("Kerf width must be non-negative");
   }
+
+  // Execute Best Fit Decreasing algorithm
+  return bestFitDecreasing(
+    input.stockItems,
+    input.requirements,
+    input.kerfWidth
+  );
 }
 
 /**
- * Utility function to calculate waste percentage
+ * Utility function to calculate waste percentage for a pattern
  *
  * @param waste - Waste length in millimeters
  * @param stockLength - Stock length in millimeters
@@ -311,7 +367,7 @@ export function formatCutLength(length: number): string {
 export function describeCutPattern(pattern: CutPattern): string {
   const cutsList = pattern.cuts.map(formatCutLength).join(" + ");
   const wasteStr = formatCutLength(pattern.waste);
-  return `Stock #${pattern.stockIndex}: ${cutsList} | Waste: ${wasteStr} (${
-    100 - pattern.utilization
-  }%)`;
+  return `Stock #${pattern.stockIndex} (${
+    pattern.stockLength
+  }mm): ${cutsList} | Waste: ${wasteStr} (${100 - pattern.utilization}%)`;
 }
