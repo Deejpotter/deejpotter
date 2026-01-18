@@ -7,6 +7,10 @@
  * - Edge cases
  * - Performance characteristics
  *
+ * Note: This implementation uses only Best Fit Decreasing (BFD) algorithm.
+ * Previous references to First Fit Decreasing (FFD) and AlgorithmType have been removed
+ * as the implementation now focuses on BFD which provides better optimization results.
+ *
  * @see http://bookstack.deejpotter.com/books/deejpottercom/page/20-series-cut-calculator-implementation-guide
  */
 
