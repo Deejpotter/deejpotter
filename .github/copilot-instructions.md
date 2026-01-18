@@ -28,7 +28,7 @@ Update my current files instead of making new ones and copying them over.
 
 - Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/*.scss`.
 - MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
-- Tests use Jest + React Testing Library + `jest-axe`. See `jest.config.js` and `jest.setup.js`.
+- Tests use Vitest + React Testing Library. See `vitest.config.ts` and `vitest.setup.ts`. (Previously Jest; migration completed.)
 - Alias imports use `@/` mapped to `src/` (jest mapping in `jest.config.js`).
 - CSS and theme overrides: `src/styles/bootstrap-overrides.scss` and `dark-bootstrap-overrides.scss` — follow the existing variables and class names.
 
@@ -49,7 +49,7 @@ Tip: Netlify development (functions and identity) may require the Netlify CLI (`
 ## Integration Points & Environment
 
 - Netlify hosting — see `netlify.toml` for build and function settings (external_node_modules includes `mongodb`). Note: the project is migrating away from Netlify; see `.github/hosting-eval.md` and `.github/TODOs.md` for details.
-- Netlify Identity: used in `src/contexts/AuthContext.tsx` via `netlify-identity-widget` (login/signup/logout handled in the client). Decide whether to keep that service externally or migrate to a provider of your choice.
+- Auth: currently implemented with Clerk (`@clerk/nextjs`) in `src/contexts/AuthContext.tsx` (login/signup/logout handled client-side). If you prefer a different provider (Auth0/Supabase), outline migration steps and update `AuthContext` accordingly.
 - Netlify Forms: contact form is wired through the site (see contact page in `src/app/contact` and `public/__forms.html`). If leaving Netlify, replace form handling with Next.js route handlers.
 - Serverless functions: `netlify/functions/mongoCrud.ts` has been replaced by `src/app/api/mongo-crud/route.ts` which uses Next.js Route Handlers and environment variables `MONGODB_URI` and `DB_NAME`.
 - Local env example: see `.env.example` for required environment variables to run local dev and deploy to new hosts.

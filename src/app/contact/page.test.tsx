@@ -5,12 +5,14 @@ import Contact from './page';
 describe('Contact form', () => {
   beforeEach(() => {
     // @ts-ignore
-    global.fetch = jest.fn(() => Promise.resolve({ ok: true }));
+    global.fetch = vi.fn(() => Promise.resolve({ ok: true }));
   });
 
   afterEach(() => {
     // @ts-ignore
-    global.fetch.mockRestore && global.fetch.mockRestore();
+    if (global.fetch && typeof (global.fetch as any).mockRestore === 'function') {
+      (global.fetch as any).mockRestore();
+    }
   });
 
   test('submits form and shows success message', async () => {
