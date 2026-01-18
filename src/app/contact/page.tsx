@@ -42,10 +42,25 @@ export default function Contact(): ReactElement {
     setErrorMessage(null);
 
     try {
-      // TODO: Replace with actual backend URL from environment variable
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
-      const response = await fetch(`${backendUrl}/api/contact`, {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      
+      // Validate backend URL is configured in production
+      if (!backendUrl) {
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        if (!isDevelopment) {
+          setFormStatus("error");
+          setErrorMessage(
+            "Contact form is not configured. Please contact the site administrator."
+          );
+          return;
+        }
+        // In development, default to localhost
+        const developmentUrl = "http://localhost:3001";
+        console.warn(`NEXT_PUBLIC_BACKEND_URL not set, using ${developmentUrl}`);
+      }
+      
+      const finalUrl = backendUrl || "http://localhost:3001";
+      const response = await fetch(`${finalUrl}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
