@@ -42,6 +42,9 @@ Todo
 - CI/CD & config work: update/remove `netlify.toml`, ensure `yarn build`/`prebuild` still valid, and prepare deployment scripts for chosen host. ⚠️ (CI workflow added; netlify.toml still present until full migration)
 - Dependencies & cleanup: identify Netlify-specific packages (e.g., `@netlify/functions`, `netlify-identity-widget` if replaced) and plan safe removal after rollout. ✅ (unused dependencies removed from `package.json`; keep `netlify-identity-widget` until auth plan)
 - Staging & rollout tasks: deploy to staging on the chosen host, run E2E/integration tests, then deprecate `netlify/functions/*` and remove leftover config. 🔲 (pending)
+- Security: address GitHub-reported vulnerabilities (dependabot suggested upgrades). 🔲 (pending)
+- Integration tests: add an integration test suite for API routes that runs against a test MongoDB (e.g., testcontainers or a temporary Atlas DB). 🔲 (pending)
+- Docs: update README deployment instructions with steps for chosen host and add a short rollback plan. 🔲 (pending)
 
 - Implement API route handler replacement for mongoCrud ✅
 	- `src/app/api/mongo-crud/route.ts` added using Next.js Route Handlers (GET/POST/PUT/DELETE).
@@ -52,6 +55,7 @@ Todo
 
 - Netlify Forms hardening and tests ✅
 	- Playwright E2E test added to simulate contact form submission against a running dev server (intercepts `/__forms.html` and asserts success UI). ✅
+	- CI runs Playwright E2E tests against a built site (`.github/workflows/ci.yml` e2e job). ✅
 	- Confirm `public/__forms.html` stays in sync with UI fields and honeypot name (netlify-honeypot="bot-field"). ✅ (unit test added to assert client POST behavior)
 
 - CI pipeline
