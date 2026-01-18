@@ -38,28 +38,29 @@ Todo
 - Audit repo for Netlify-specific usage: search for `/.netlify/functions/`, `netlify-identity-widget`, `netlify.toml` redirects, and `public/__forms.html`. Document all call sites and update this TODO with findings.
 - Prototype migration: convert `netlify/functions/mongoCrud.ts` → `src/app/api/mongo-crud/route.ts` (Next.js route handler), add Jest tests that mirror current behavior, and update TypeDoc output. ✅ (route + validation unit tests added)
 - Evaluate hosting options (Coolify, Render, Vercel): document tradeoffs, required environment variables, and deployment steps for each. ✅ (see `.github/hosting-eval.md`)
-- Auth plan: decide whether to keep Netlify Identity as an external service or migrate to Auth0/Clerk/Supabase; list necessary code changes and tests. 🔲 (still needed)
+- Auth plan: decide whether to keep Netlify Identity as an external service or migrate to Auth0/Clerk/Supabase; list necessary code changes and tests. ✅ (Clerk chosen and integrated on `dev` branch; see `src/contexts/AuthContext.tsx`, `middleware.ts`, and `.env.local.example`)
 - CI/CD & config work: update/remove `netlify.toml`, ensure `yarn build`/`prebuild` still valid, and prepare deployment scripts for chosen host. ⚠️ (CI workflow added; netlify.toml still present until full migration)
 - Dependencies & cleanup: identify Netlify-specific packages (e.g., `@netlify/functions`, `netlify-identity-widget` if replaced) and plan safe removal after rollout. ✅ (unused dependencies removed from `package.json`; keep `netlify-identity-widget` until auth plan)
 - Staging & rollout tasks: deploy to staging on the chosen host, run E2E/integration tests, then deprecate `netlify/functions/*` and remove leftover config. 🔲 (pending)
 
-- Implement API route handler replacement for mongoCrud
-	- Create `src/app/api/mongo-crud/route.ts` using Next.js Route Handlers (docs: https://nextjs.org/docs/14/app/building-your-application/routing/route-handlers) with parity for GET/POST/PUT/DELETE.
-	- Use a shared MongoClient with connection caching to avoid reconnecting on hot reload in dev (Mongo best practice).
-	- Add input validation (e.g., zod) and an allowlist of collections to prevent arbitrary collection access.
-	- If staying with Netlify Identity, validate a bearer token (JWT) on mutating ops; otherwise integrate chosen auth provider.
-	- Add Jest unit tests to mirror current Netlify function behavior and edge cases (invalid id/body/collection).
+- Implement API route handler replacement for mongoCrud ✅
+	- `src/app/api/mongo-crud/route.ts` added using Next.js Route Handlers (GET/POST/PUT/DELETE).
+	- Uses a shared MongoClient with connection caching to avoid reconnecting on hot reload.
+	- Input validation added with `zod` and an environment-based allowlist (`ALLOWED_COLLECTIONS`). ✅
+	- Server-side auth validation added for mutating operations using Clerk (`auth()` from `@clerk/nextjs`) — POST/PUT/DELETE require authenticated user. ✅
+	- Unit tests added (Vitest) for validation and auth edge cases. ✅
 
-- Netlify Forms hardening and tests
-	- Add a basic E2E test (Playwright/Cypress) for submitting the contact form against `netlify dev` locally; assert Netlify captures the submission. 🔲 (pending)
-	- Confirm public/__forms.html stays in sync with UI fields and honeypot name (currently: netlify-honeypot="bot-field"). ✅ (unit test added to assert client POST behavior)
+- Netlify Forms hardening and tests ✅
+	- Playwright E2E test added to simulate contact form submission against a running dev server (intercepts `/__forms.html` and asserts success UI). ✅
+	- Confirm `public/__forms.html` stays in sync with UI fields and honeypot name (netlify-honeypot="bot-field"). ✅ (unit test added to assert client POST behavior)
 
 - CI pipeline
 	- Add a GitHub Actions workflow to run: install, lint, test, TypeDoc, and build on pushes and PRs.
 	- Upload build output and TypeDoc as artifacts for debugging.
 
-- Dependency audit
-	- Verify usage and remove if unused: `react-chartjs-2`, `chart.js`, `react-dropzone`, `react-paginate`, `open-iconic`.
+- Dependency audit ✅
+	- Removed `react-dropzone` and `react-paginate` from `package.json` (no usages in `src/`).
+	- Remaining likely-unused packages (`react-chartjs-2`, `chart.js`, `open-iconic`) were left in lockfiles but not in `package.json`; plan to remove if truly unused in follow-up PRs.
 	- Keep `bson-objectid`, `md5`, and MongoDB driver (used).
 
 - Docs & internal guides
@@ -84,6 +85,8 @@ Completed (last 10)
 - Add GitHub Actions CI workflow for lint/test/docs/build (2026-01-18)
 - Add `.env.example` and hosting evaluation note `.github/hosting-eval.md` (2026-01-18)
 - Remove unused client deps and `@netlify/functions` dev dep from `package.json` (2026-01-18)
+- Add input validation and collection allowlist to API, and add server-side Clerk auth for mutating ops (2026-01-18)
+- Add Playwright E2E test for contact form (2026-01-18)
 
 
 Notes

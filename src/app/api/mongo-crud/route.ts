@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server';
 import { MongoClient, ObjectId, Collection } from 'mongodb';
+import { z } from 'zod';
+import { auth } from '@clerk/nextjs';
 
 type Document = { _id?: ObjectId; createdAt?: Date; updatedAt?: Date; [key: string]: any };
 
 const DB_NAME = process.env['DB_NAME'];
 const uri = process.env['MONGODB_URI'];
+const ALLOWED_COLLECTIONS = (process.env['ALLOWED_COLLECTIONS'] || 'todos,messages,projects,users').split(',').map(s => s.trim()).filter(Boolean);
+
+// Basic schema for POST/PUT bodies - ensure an object is provided
+const bodySchema = z.record(z.any());
 
 if (!uri) {
   console.warn('MONGODB_URI is not set. Database operations will fail until it is provided.');
@@ -38,7 +44,14 @@ function validateCollection(collection: string | null) {
     return false;
   }
   // Basic allowlist pattern: letters, numbers, dashes, underscores
-  return /^[a-zA-Z0-9_-]+$/.test(collection);
+  if (!/^[a-zA-Z0-9_-]+$/.test(collection)) return false;
+
+  // Check against explicit allowlist
+  if (ALLOWED_COLLECTIONS.length > 0 && !ALLOWED_COLLECTIONS.includes(collection)) {
+    return false;
+  }
+
+  return true;
 }
 
 export async function GET(request: Request) {
@@ -66,11 +79,23 @@ export async function POST(request: Request) {
     return NextResponse.json('Invalid or missing collection name', { status: 400 });
   }
 
+  // Require authenticated user for mutating operations
+  const { userId } = auth();
+  if (!userId) {
+    return NextResponse.json('Unauthorized', { status: 401 });
+  }
+
   let parsedBody: Document | null = null;
   try {
     parsedBody = await request.json();
   } catch (e) {
     return NextResponse.json('Invalid or missing body', { status: 400 });
+  }
+
+  // Validate body shape using zod
+  const parseResult = bodySchema.safeParse(parsedBody);
+  if (!parseResult.success) {
+    return NextResponse.json('Invalid body shape', { status: 400 });
   }
 
   parsedBody.createdAt = new Date();
@@ -105,11 +130,22 @@ export async function PUT(request: Request) {
     return NextResponse.json('Invalid or missing id', { status: 400 });
   }
 
+  // Require authenticated user for mutating operations
+  const { userId } = auth();
+  if (!userId) {
+    return NextResponse.json('Unauthorized', { status: 401 });
+  }
+
   let parsedBody: Document | null = null;
   try {
     parsedBody = await request.json();
   } catch (e) {
     return NextResponse.json('Invalid or missing body', { status: 400 });
+  }
+
+  const parseResult = bodySchema.safeParse(parsedBody);
+  if (!parseResult.success) {
+    return NextResponse.json('Invalid body shape', { status: 400 });
   }
 
   parsedBody.updatedAt = new Date();
@@ -141,6 +177,12 @@ export async function DELETE(request: Request) {
     objectId = new ObjectId(id);
   } catch (e) {
     return NextResponse.json('Invalid or missing id', { status: 400 });
+  }
+
+  // Require authenticated user for mutating operations
+  const { userId } = auth();
+  if (!userId) {
+    return NextResponse.json('Unauthorized', { status: 401 });
   }
 
   try {

@@ -11,7 +11,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test --project=chromium"
   },
   "browserslist": [
     "> 0.5%",
@@ -35,9 +36,7 @@
     "next": "^14.2.15",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.0",
-    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.66.0",
-    "react-paginate": "^8.2.0",
     "react-dom": "18.3.1",
     "supports-color": "^9.4.0",
     "zod": "^4.1.12"
@@ -72,6 +71,7 @@
     "typedoc": "^0.26.9",
     "typescript": "^5.6.3",
     "vitest": "^1.0.0",
+    "playwright": "^1.35.0",
     "webpack": "^5.95.0"
   },
   "packageManager": "yarn@4.5.0"
