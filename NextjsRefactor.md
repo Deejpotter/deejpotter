@@ -95,3 +95,14 @@ Run git add ., git commit -m "message", and git push.
 Trigger a deploy on Netlify.
 This could be done automatically by pushing to a certain branch, or manually in the Netlify dashboard.
 Test the live site and fix any issues.
+
+---
+
+## App Router & Modern Next guidance
+
+- This project uses the App Router (`src/app`) — prefer `route.ts` route handlers for server APIs instead of pages/api. Example: see `src/app/api/mongo-crud/route.ts` that replaces the legacy Netlify function.
+- Keep UI logic in client components (`use client`) and server logic in route handlers or server components.
+- For auth, the repository currently uses `src/contexts/AuthContext.tsx` (Netlify Identity widget). If you migrate hosting, update `AuthContext` to use the chosen provider's client SDK or keep Netlify Identity as an external auth service.
+- For forms, replace Netlify Forms if you leave Netlify: create POST handlers (`src/app/api/your-form/route.ts`) to accept form submissions and persist or forward as needed.
+
+> Note: The above reflects the current structure and migration plan: move serverless logic into Next.js route handlers for easier hosting portability.

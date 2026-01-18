@@ -2,6 +2,9 @@
 
 Hi, I'm Daniel, or Deej, a full-stack developer who used to be a chef. This is the repo for my portfolio website, which I've built with Next.js.
 
+> 📚 **Complete Documentation**: For comprehensive project documentation, architecture details, and development guidelines, visit our [BookStack Documentation](http://bookstack.deejpotter.com/books/deejpottercom).
+Private link. Access permission required.
+
 ## A Bit About Me
 
 I started out working in my parents' restaurant, but I've always been more interested in tech. I eventually started a web design business from home, which led me to dive deeper into coding and become a full-stack developer.
@@ -26,13 +29,54 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 - **Netlify CMS**: For managing the content of the website.
 - **Netlify Forms**: For handling the contact form submissions.
 - **Netlify Identity**: For user authentication.
-- **Netlify Functions**: For handling dynamic functionality.
+- **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify Functions in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
 - **Bootstrap**: For styling the website.
 - **React**: For building the user interface components.
 
 ## Code style
 
-- **Exmplain things in comments**: I like to use comments to easily explain what a block of code does for future reference because I will definitely forget.
+- **Explain things in comments**: I like to use comments to easily explain what a block of code does for future reference because I will definitely forget.
 - **Types**: I use TypeScript for type-checking and I like to use types over interfaces.
 - **Formatting**: I use Prettier for code formatting.
 - **File structure**: I have all my app code in the app folder and all the other stuff, like components and styles, above that in the src folder.
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+Visit `http://localhost:3000` to view the application.
+
+For detailed setup instructions, see the [Setup & Installation](http://bookstack.deejpotter.com/books/deejpottercom/page/setup-installation) guide in BookStack.
+
+## Documentation
+
+This README provides a high-level overview. For detailed documentation, please visit our **[BookStack Documentation](http://bookstack.deejpotter.com/books/deejpottercom)** which includes:
+
+- 📋 [AI Assistant Guidelines](http://bookstack.deejpotter.com/books/deejpottercom/page/ai-assistant-guidelines) - For AI assistants and contributors
+- ✅ [TODO & Roadmap](http://bookstack.deejpotter.com/books/deejpottercom/page/todo-roadmap) - Current tasks and future plans
+- 🏗️ [Technical Documentation](http://bookstack.deejpotter.com/books/deejpottercom/chapter/technical-documentation) - Architecture and setup guides
+- ⚡ [Features & Implementation](http://bookstack.deejpotter.com/books/deejpottercom/chapter/features-implementation) - Feature documentation
+
+## Contributing
+
+When contributing to this project:
+
+1. Review the [AI Assistant Guidelines](http://bookstack.deejpotter.com/books/deejpottercom/page/ai-assistant-guidelines)
+2. Check the [TODO & Roadmap](http://bookstack.deejpotter.com/books/deejpottercom/page/todo-roadmap)
+3. Follow conventional commit messages
+4. Update BookStack documentation for any changes
+5. Test thoroughly before submitting
+
+## License
+
+This project is personal portfolio work. Please contact for usage inquiries.
+

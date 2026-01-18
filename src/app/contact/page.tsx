@@ -1,47 +1,84 @@
 "use client";
 
 import { ReactElement, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-// The contact page component. Has a form to submit feedback.
-// The form uses Netlify forms for form submission.
+// Contact form validation schema using Zod
+const contactFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be less than 100 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be less than 1000 characters"),
+});
 
-// The Next.js Runtime v5 and above does not support Netlify forms out of the box because
-// it does not generate fully-static HTML pages. Instead, relevant pages are pre-rendered
-// at build time and stored in Next.js’ own cache for serving. This means that form tags
-// and attributes are not written to static HTML files at deployment, and cannot be the
-// form’s target page. Any Netlify Forms-related attributes set in these pages have no effect.
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
-// To work around this, we can use the __forms.html endpoint to handle form submissions.
-// Reference: https://docs.netlify.com/frameworks/next-js/overview/#netlify-forms-compatibility
+// The contact page component with React Hook Form integration
 export default function Contact(): ReactElement {
-  // State variables to track form submission status
-  const [formStatus, setFormStatus] = useState<string | null>(null); // null, "success", or "error".
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Error message if any.
+  const [formStatus, setFormStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+  });
 
   // Function to handle form submission
-  const handleFormSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    const formData = new FormData(event.target as HTMLFormElement); // Collect form data
+  const onSubmit = async (data: ContactFormData) => {
+    setFormStatus("submitting");
+    setErrorMessage(null);
 
     try {
-      // Send form data to the server
-      const response = await fetch("/__forms.html", {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const appEnv = process.env.NEXT_PUBLIC_ENV;
+      const isDevelopment = appEnv === "development";
+      
+      // Validate backend URL is configured in production
+      if (!backendUrl) {
+        if (!isDevelopment) {
+          setFormStatus("error");
+          setErrorMessage(
+            "Contact form is not configured. Please contact the site administrator."
+          );
+          return;
+        }
+        // In development, default to localhost and warn developer
+        console.warn("NEXT_PUBLIC_BACKEND_URL not set, using http://localhost:3001");
+      }
+      
+      const finalUrl = backendUrl || "http://localhost:3001";
+      const response = await fetch(`${finalUrl}/api/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        // Handle success notification here
         setFormStatus("success");
-        setErrorMessage(null);
+        reset(); // Clear the form
       } else {
-        // Handle server error notification here
+        const errorData = await response.json().catch(() => ({}));
         setFormStatus("error");
-        setErrorMessage("Failed to submit the form. Please try again.");
+        setErrorMessage(
+          errorData.message || "Failed to submit the form. Please try again."
+        );
       }
     } catch (error) {
-      // Handle network error notification here
       setFormStatus("error");
       setErrorMessage(
         "An error occurred while submitting the form. Please check your internet connection and try again."
@@ -63,51 +100,69 @@ export default function Contact(): ReactElement {
         </div>
         <div className="col-md">
           <form
-            name="contact"
-            method="post"
+            onSubmit={handleSubmit(onSubmit)}
             className="card shadow p-2 bg-secondary text-light"
-            onSubmit={handleFormSubmit}
-            data-netlify="true"
-            netlify-honeypot="bot-field"
           >
-            <div className="form-group" hidden>
-              <label htmlFor="bot-field">
-                Don&apos;t fill this out if you&apos;re human:
-              </label>
-              <input type="text" id="bot-field" name="bot-field"></input>
-            </div>
-            <input type="hidden" name="form-name" value="contact"></input>
             <div className="form-group pb-2">
-              <label htmlFor="message">Enter Message (required):</label>
-              <textarea
-                required
-                id="message"
-                className="form-control shadow"
-                name="message"
-              ></textarea>
+              <label htmlFor="name">Name (required):</label>
+              <input
+                type="text"
+                id="name"
+                className={`form-control shadow ${
+                  errors.name ? "is-invalid" : ""
+                }`}
+                {...register("name")}
+              />
+              {errors.name && (
+                <div className="invalid-feedback">{errors.name.message}</div>
+              )}
             </div>
+
             <div className="form-group pb-2">
-              <label htmlFor="email">
-                Enter your email address <br></br>(optional - if you want a
-                reply):
-              </label>
+              <label htmlFor="email">Email address (required):</label>
               <input
                 type="email"
                 id="email"
-                className="form-control shadow"
-                name="email"
-              ></input>
+                className={`form-control shadow ${
+                  errors.email ? "is-invalid" : ""
+                }`}
+                {...register("email")}
+              />
+              {errors.email && (
+                <div className="invalid-feedback">{errors.email.message}</div>
+              )}
             </div>
+
             <div className="form-group pb-2">
-              <button className="btn btn-info shadow" type="submit">
-                Submit form
+              <label htmlFor="message">Message (required):</label>
+              <textarea
+                id="message"
+                className={`form-control shadow ${
+                  errors.message ? "is-invalid" : ""
+                }`}
+                rows={5}
+                {...register("message")}
+              />
+              {errors.message && (
+                <div className="invalid-feedback">{errors.message.message}</div>
+              )}
+            </div>
+
+            <div className="form-group pb-2">
+              <button
+                className="btn btn-info shadow"
+                type="submit"
+                disabled={formStatus === "submitting"}
+              >
+                {formStatus === "submitting" ? "Submitting..." : "Submit form"}
               </button>
             </div>
           </form>
+
           {/* Display success or error message based on form submission status */}
           {formStatus === "success" && (
             <div className="alert alert-success mt-3">
-              Form submitted successfully!
+              Form submitted successfully! I&apos;ll get back to you soon.
             </div>
           )}
           {formStatus === "error" && errorMessage && (

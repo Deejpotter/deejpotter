@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "foxundermoon.next-js",
+    "github.copilot",
+    "github.copilot-chat",
+    "eamodio.gitlens",
+    "bradlc.vscode-tailwindcss"
+  ],
+  "unwantedRecommendations": [
+    "platformio.platformio-ide",
+    "marlinfirmware.auto-build",
+    "ms-vscode.cpptools",
+    "rust-lang.rust-analyzer",
+    "ms-dotnettools.csdevkit",
+    "ms-toolsai.jupyter"
+  ]
+}
