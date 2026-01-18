@@ -1,9 +1,10 @@
 {
   "out": "public/docs",
   "exclude": [
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ],
-  "name": "My Project",
+  "name": "Deej Potter's Portfolio",
   "theme": "default",
   "version": true
 }

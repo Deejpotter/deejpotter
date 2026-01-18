@@ -29,13 +29,13 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 - **Netlify CMS**: For managing the content of the website.
 - **Netlify Forms**: For handling the contact form submissions.
 - **Netlify Identity**: For user authentication.
-- **Netlify Functions**: For handling dynamic functionality.
+- **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify Functions in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
 - **Bootstrap**: For styling the website.
 - **React**: For building the user interface components.
 
 ## Code style
 
-- **Exmplain things in comments**: I like to use comments to easily explain what a block of code does for future reference because I will definitely forget.
+- **Explain things in comments**: I like to use comments to easily explain what a block of code does for future reference because I will definitely forget.
 - **Types**: I use TypeScript for type-checking and I like to use types over interfaces.
 - **Formatting**: I use Prettier for code formatting.
 - **File structure**: I have all my app code in the app folder and all the other stuff, like components and styles, above that in the src folder.

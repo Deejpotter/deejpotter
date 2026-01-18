@@ -40,6 +40,9 @@ next-env.d.ts
 # Local Netlify folder
 .netlify
 
+# Clerk configuration (can include secrets)
+/.clerk/
+
 # Idea folder
 .idea/
 
