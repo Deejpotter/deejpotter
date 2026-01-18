@@ -2,7 +2,6 @@
  * Unit tests for 1D Cutting Stock Problem Optimizer
  *
  * Tests cover:
- * - First Fit Decreasing (FFD) algorithm
  * - Best Fit Decreasing (BFD) algorithm
  * - Input validation
  * - Edge cases
