@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import Script from "next/script";
 

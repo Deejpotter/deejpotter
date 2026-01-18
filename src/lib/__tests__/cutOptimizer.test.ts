@@ -11,129 +11,35 @@
  * @see http://bookstack.deejpotter.com/books/deejpottercom/page/20-series-cut-calculator-implementation-guide
  */
 
-import { describe, it, expect } from "@jest/globals";
+import { describe, it, expect } from "vitest";
 import {
-  firstFitDecreasing,
   bestFitDecreasing,
   calculateOptimalCuts,
   calculateWastePercentage,
   formatCutLength,
   describeCutPattern,
 } from "../cutOptimizer";
-import type { CutRequirement, AlgorithmType } from "@/types/cutCalculator";
-
-describe("Cut Optimizer - First Fit Decreasing", () => {
-  describe("firstFitDecreasing", () => {
-    it("should handle perfect fit with no waste", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 500, quantity: 2 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      expect(result.totalStock).toBe(1);
-      expect(result.totalWaste).toBe(0);
-      expect(result.averageUtilization).toBe(100);
-      expect(result.patterns).toHaveLength(1);
-      expect(result.patterns[0].cuts).toEqual([500, 500]);
-    });
-
-    it("should minimize bins for varied cuts", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 450, quantity: 2 },
-        { id: "2", length: 250, quantity: 2 },
-        { id: "3", length: 150, quantity: 1 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      // FFD should pack these efficiently
-      expect(result.totalStock).toBeLessThanOrEqual(3);
-      expect(result.patterns).toHaveLength(result.totalStock);
-
-      // Verify all cuts are present
-      const totalCuts = result.patterns.flatMap((p) => p.cuts);
-      expect(totalCuts).toHaveLength(5); // 2+2+1
-    });
-
-    it("should sort items by size descending", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 100, quantity: 1 },
-        { id: "2", length: 500, quantity: 1 },
-        { id: "3", length: 300, quantity: 1 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      // First bin should contain largest item (500)
-      expect(result.patterns[0].cuts[0]).toBe(500);
-    });
-
-    it("should handle single cut requirement", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 300, quantity: 1 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      expect(result.totalStock).toBe(1);
-      expect(result.totalWaste).toBe(700);
-      expect(result.patterns[0].utilization).toBe(30);
-    });
-
-    it("should handle many small cuts", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 100, quantity: 50 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      expect(result.totalStock).toBe(5); // 10 cuts per bin, 50 total
-      expect(result.totalWaste).toBe(0); // Perfect fit
-    });
-
-    it("should calculate utilization correctly", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 750, quantity: 1 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      expect(result.patterns[0].utilization).toBe(75);
-      expect(result.patterns[0].waste).toBe(250);
-    });
-
-    it("should track execution time", () => {
-      const requirements: CutRequirement[] = [
-        { id: "1", length: 450, quantity: 10 },
-      ];
-
-      const result = firstFitDecreasing(1000, requirements);
-
-      expect(result.executionTime).toBeGreaterThanOrEqual(0);
-      expect(result.executionTime).toBeLessThan(100); // Should be fast
-    });
-  });
-});
+import type { CutRequirement, StockItem } from "@/types/cutCalculator";
 
 describe("Cut Optimizer - Best Fit Decreasing", () => {
   describe("bestFitDecreasing", () => {
-    it("should produce same or better results than FFD", () => {
+    it("should handle multiple stock items and requirements", () => {
       const requirements: CutRequirement[] = [
         { id: "1", length: 450, quantity: 3 },
         { id: "2", length: 250, quantity: 2 },
         { id: "3", length: 150, quantity: 4 },
       ];
 
-      const ffdResult = firstFitDecreasing(1000, requirements);
-      const bfdResult = bestFitDecreasing(1000, requirements);
+      const stockItems: StockItem[] = [
+        { id: "s1", length: 1000, quantity: 10 },
+      ];
 
-      // BFD should use same or fewer bins
-      expect(bfdResult.totalStock).toBeLessThanOrEqual(ffdResult.totalStock);
+      const bfdResult = bestFitDecreasing(stockItems, requirements, 0);
 
       // Verify all cuts are present
       const bfdTotalCuts = bfdResult.patterns.flatMap((p) => p.cuts);
       expect(bfdTotalCuts).toHaveLength(9); // 3+2+4
+      expect(bfdResult.totalStock).toBeGreaterThan(0);
     });
 
     it("should handle perfect fit", () => {
@@ -141,7 +47,11 @@ describe("Cut Optimizer - Best Fit Decreasing", () => {
         { id: "1", length: 500, quantity: 2 },
       ];
 
-      const result = bestFitDecreasing(1000, requirements);
+      const stockItems: StockItem[] = [
+        { id: "s1", length: 1000, quantity: 10 },
+      ];
+
+      const result = bestFitDecreasing(stockItems, requirements, 0);
 
       expect(result.totalStock).toBe(1);
       expect(result.totalWaste).toBe(0);
@@ -156,7 +66,11 @@ describe("Cut Optimizer - Best Fit Decreasing", () => {
         { id: "3", length: 300, quantity: 1 },
       ];
 
-      const result = bestFitDecreasing(1000, requirements);
+      const stockItems: StockItem[] = [
+        { id: "s1", length: 1000, quantity: 10 },
+      ];
+
+      const result = bestFitDecreasing(stockItems, requirements, 0);
 
       // Should fit in 2 bins: [600, 400] and [300]
       expect(result.totalStock).toBe(2);
@@ -166,32 +80,42 @@ describe("Cut Optimizer - Best Fit Decreasing", () => {
 
 describe("Cut Optimizer - Main Function", () => {
   describe("calculateOptimalCuts", () => {
+    it("should throw error for empty stock items", () => {
+      expect(() => {
+        calculateOptimalCuts({
+          stockItems: [],
+          requirements: [{ id: "1", length: 100, quantity: 1 }],
+          kerfWidth: 0,
+        });
+      }).toThrow("At least one stock item is required");
+    });
+
     it("should throw error for zero stock length", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 0,
+          stockItems: [{ id: "s1", length: 0, quantity: 1 }],
           requirements: [{ id: "1", length: 100, quantity: 1 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
-      }).toThrow("Stock length must be greater than 0");
+      }).toThrow("All stock lengths must be greater than 0");
     });
 
     it("should throw error for negative stock length", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: -500,
+          stockItems: [{ id: "s1", length: -500, quantity: 1 }],
           requirements: [{ id: "1", length: 100, quantity: 1 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
-      }).toThrow("Stock length must be greater than 0");
+      }).toThrow("All stock lengths must be greater than 0");
     });
 
     it("should throw error for empty requirements", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 1000,
+          stockItems: [{ id: "s1", length: 1000, quantity: 1 }],
           requirements: [],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
       }).toThrow("At least one cut requirement is needed");
     });
@@ -199,19 +123,19 @@ describe("Cut Optimizer - Main Function", () => {
     it("should throw error for cut longer than stock", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 500,
+          stockItems: [{ id: "s1", length: 500, quantity: 1 }],
           requirements: [{ id: "1", length: 600, quantity: 1 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
-      }).toThrow("Some cuts are longer than stock length");
+      }).toThrow("Some cuts are longer than longest available stock");
     });
 
     it("should throw error for zero length cut", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 1000,
+          stockItems: [{ id: "s1", length: 1000, quantity: 1 }],
           requirements: [{ id: "1", length: 0, quantity: 1 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
       }).toThrow("All cut lengths must be greater than 0");
     });
@@ -219,9 +143,9 @@ describe("Cut Optimizer - Main Function", () => {
     it("should throw error for negative length cut", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 1000,
+          stockItems: [{ id: "s1", length: 1000, quantity: 1 }],
           requirements: [{ id: "1", length: -100, quantity: 1 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
       }).toThrow("All cut lengths must be greater than 0");
     });
@@ -229,9 +153,9 @@ describe("Cut Optimizer - Main Function", () => {
     it("should throw error for zero quantity", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 1000,
+          stockItems: [{ id: "s1", length: 1000, quantity: 1 }],
           requirements: [{ id: "1", length: 100, quantity: 0 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
       }).toThrow("All quantities must be positive integers");
     });
@@ -239,29 +163,18 @@ describe("Cut Optimizer - Main Function", () => {
     it("should throw error for fractional quantity", () => {
       expect(() => {
         calculateOptimalCuts({
-          stockLength: 1000,
+          stockItems: [{ id: "s1", length: 1000, quantity: 1 }],
           requirements: [{ id: "1", length: 100, quantity: 1.5 }],
-          algorithm: "FFD",
+          kerfWidth: 0,
         });
       }).toThrow("All quantities must be positive integers");
     });
 
-    it("should execute FFD algorithm when selected", () => {
+    it("should execute BFD algorithm", () => {
       const result = calculateOptimalCuts({
-        stockLength: 1000,
+        stockItems: [{ id: "s1", length: 1000, quantity: 10 }],
         requirements: [{ id: "1", length: 500, quantity: 2 }],
-        algorithm: "FFD",
-      });
-
-      expect(result.totalStock).toBe(1);
-      expect(result.executionTime).toBeGreaterThanOrEqual(0);
-    });
-
-    it("should execute BFD algorithm when selected", () => {
-      const result = calculateOptimalCuts({
-        stockLength: 1000,
-        requirements: [{ id: "1", length: 500, quantity: 2 }],
-        algorithm: "BFD",
+        kerfWidth: 0,
       });
 
       expect(result.totalStock).toBe(1);
@@ -322,10 +235,14 @@ describe("Cut Optimizer - Real World Scenarios", () => {
       { id: "3", length: 150, quantity: 8 }, // Small brackets
     ];
 
+    const stockItems: StockItem[] = [
+      { id: "s1", length: 1000, quantity: 10 },
+    ];
+
     const result = calculateOptimalCuts({
-      stockLength: 1000,
+      stockItems,
       requirements,
-      algorithm: "FFD",
+      kerfWidth: 0,
     });
 
     // Verify all cuts are present
@@ -344,10 +261,14 @@ describe("Cut Optimizer - Real World Scenarios", () => {
       { id: "4", length: 100, quantity: 10 },
     ];
 
+    const stockItems: StockItem[] = [
+      { id: "s1", length: 1000, quantity: 20 },
+    ];
+
     const result = calculateOptimalCuts({
-      stockLength: 1000,
+      stockItems,
       requirements,
-      algorithm: "BFD", // Use BFD for complex scenarios
+      kerfWidth: 0,
     });
 
     // Verify all cuts are present
@@ -364,10 +285,14 @@ describe("Cut Optimizer - Real World Scenarios", () => {
       { id: "1", length: 200, quantity: 15 },
     ];
 
+    const stockItems: StockItem[] = [
+      { id: "s1", length: 1000, quantity: 10 },
+    ];
+
     const result = calculateOptimalCuts({
-      stockLength: 1000,
+      stockItems,
       requirements,
-      algorithm: "FFD",
+      kerfWidth: 0,
     });
 
     expect(result.totalStock).toBe(3); // 5 cuts per stock = 3 stocks for 15 cuts
@@ -379,10 +304,14 @@ describe("Cut Optimizer - Real World Scenarios", () => {
       { id: "1", length: 950, quantity: 5 },
     ];
 
+    const stockItems: StockItem[] = [
+      { id: "s1", length: 1000, quantity: 10 },
+    ];
+
     const result = calculateOptimalCuts({
-      stockLength: 1000,
+      stockItems,
       requirements,
-      algorithm: "FFD",
+      kerfWidth: 0,
     });
 
     expect(result.totalStock).toBe(5); // One cut per stock
@@ -398,11 +327,15 @@ describe("Cut Optimizer - Performance", () => {
       { id: "3", length: 300, quantity: 100 },
     ];
 
+    const stockItems: StockItem[] = [
+      { id: "s1", length: 1000, quantity: 100 },
+    ];
+
     const startTime = performance.now();
     const result = calculateOptimalCuts({
-      stockLength: 1000,
+      stockItems,
       requirements,
-      algorithm: "FFD",
+      kerfWidth: 0,
     });
     const endTime = performance.now();
 
@@ -414,34 +347,25 @@ describe("Cut Optimizer - Performance", () => {
     expect(totalCuts).toHaveLength(300);
   });
 
-  it("should have FFD faster than BFD", () => {
+  it("should execute efficiently with BFD algorithm", () => {
     const requirements: CutRequirement[] = [
       { id: "1", length: 450, quantity: 20 },
       { id: "2", length: 250, quantity: 20 },
       { id: "3", length: 150, quantity: 20 },
     ];
 
-    // Measure FFD
-    const ffdStart = performance.now();
-    const ffdResult = calculateOptimalCuts({
-      stockLength: 1000,
-      requirements,
-      algorithm: "FFD",
-    });
-    const ffdTime = performance.now() - ffdStart;
+    const stockItems: StockItem[] = [
+      { id: "s1", length: 1000, quantity: 20 },
+    ];
 
-    // Measure BFD
-    const bfdStart = performance.now();
-    const bfdResult = calculateOptimalCuts({
-      stockLength: 1000,
+    const result = calculateOptimalCuts({
+      stockItems,
       requirements,
-      algorithm: "BFD",
+      kerfWidth: 0,
     });
-    const bfdTime = performance.now() - bfdStart;
 
-    // FFD should be faster (though both should be fast)
-    // This test might be flaky on slow systems, so we just verify both complete
-    expect(ffdResult.executionTime).toBeGreaterThanOrEqual(0);
-    expect(bfdResult.executionTime).toBeGreaterThanOrEqual(0);
+    // BFD should complete and produce valid results
+    expect(result.executionTime).toBeGreaterThanOrEqual(0);
+    expect(result.totalStock).toBeGreaterThan(0);
   });
 });

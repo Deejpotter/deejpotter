@@ -16,7 +16,7 @@ export type BlogPostMetadata = Omit<BlogPost, "content">;
  * Calculate estimated read time based on word count
  * Average reading speed: 200 words per minute
  */
-function calculateReadTime(text: string): number {
+export function calculateReadTime(text: string): number {
   const wordsPerMinute = 200;
   const wordCount = text.trim().split(/\s+/).length;
   const readTime = Math.ceil(wordCount / wordsPerMinute);
