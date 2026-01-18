@@ -20,6 +20,8 @@ jobs:
 
       - name: Install
         run: yarn install --frozen-lockfile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Lint
         run: yarn lint
@@ -53,6 +55,8 @@ jobs:
 
       - name: Install
         run: yarn install --frozen-lockfile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright deps and browsers
         run: npx playwright install --with-deps
