@@ -1,7 +1,8 @@
 import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 
-// Provide a sensible default zod mock to avoid z import errors in dynamic mocks below
-vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) } }));
+// Provide a sensible, configurable default zod mock to avoid z import errors
+let zMockSuccess = true;
+vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: zMockSuccess }) }), any: () => ({}) } }));
 
 function makeRequest(url: string, options: any = {}) {
   // Ensure body is a Readable stream compatible with Request when provided
@@ -115,7 +116,7 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
-    vi.doMock('zod', () => ({ record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) }));
+    vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: false }) }), any: () => ({}) } }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'abc' });
