@@ -17,7 +17,7 @@ module.exports = [
     files: ["**/*.{ts,tsx}"],
     ignores: [".next/**", "out/**", "node_modules/**"],
     languageOptions: {
-      parser: require.resolve("@typescript-eslint/parser"),
+      parser: require("@typescript-eslint/parser"),
       parserOptions: {
         ecmaVersion: 2023,
         sourceType: "module",
