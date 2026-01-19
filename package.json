@@ -8,7 +8,7 @@
     "prebuild": "yarn docs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage",
