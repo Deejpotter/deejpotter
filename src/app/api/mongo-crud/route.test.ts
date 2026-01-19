@@ -29,6 +29,7 @@ describe('mongo-crud route validation', () => {
 
   test('POST returns 400 for missing body when authenticated', async () => {
     // Re-mock Clerk to be authenticated for this test and re-import the route handlers
+    vi.resetModules();
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user123' }) }));
     const route = await import('./route');
 

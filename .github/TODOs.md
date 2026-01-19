@@ -79,7 +79,7 @@ Todo
 
 In Progress
 
-- (none)
+- Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
 
 Completed (last 10)
 

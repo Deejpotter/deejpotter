@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthProvider as AuthProviderBase } from "@deejpotter/ui-components";
+import AuthProviderBase from "@/components/ui/auth/AuthProvider";
 import { ReactNode } from "react";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {

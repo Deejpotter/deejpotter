@@ -44,7 +44,7 @@ export default function Contact(): ReactElement {
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const appEnv = process.env.NEXT_PUBLIC_ENV;
-      const isDevelopment = appEnv === "development";
+      const isDevelopment = appEnv === "development" || process.env.NODE_ENV === "test";
       
       // Validate backend URL is configured in production
       if (!backendUrl) {
@@ -55,7 +55,7 @@ export default function Contact(): ReactElement {
           );
           return;
         }
-        // In development, default to localhost and warn developer
+        // In development and test, default to localhost and warn developer
         console.warn("NEXT_PUBLIC_BACKEND_URL not set, using http://localhost:3001");
       }
       
