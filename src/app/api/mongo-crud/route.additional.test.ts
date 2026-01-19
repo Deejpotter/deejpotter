@@ -3,10 +3,13 @@ import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 // Use the real `zod` implementation for deterministic validation in tests
 // (No module mocking for `zod` to avoid import-time race conditions)
 
-function makeRequest(url: string, options: any = {}) {
+function makeRequest(url: string, options: RequestInit = {}) {
   // Ensure body is a Readable stream compatible with Request when provided
-  const init: any = { ...options };
-  if (options.body && typeof options.body === 'string') init.body = options.body;
+  const init: RequestInit = { ...options };
+  if (options.body && typeof options.body === 'string') {
+    // Type assertion is safe here as we're explicitly handling the string case
+    (init as any).body = options.body;
+  }
   return new Request(url, init);
 }
 
@@ -115,8 +118,11 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
-    // Per-test zod mock to ensure schema validates during module import
-    vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) } }));
+    // Use real zod implementation with importActual to ensure proper validation behavior
+    vi.doMock('zod', async () => {
+      const actual = await vi.importActual('zod');
+      return actual;
+    });
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'abc' });

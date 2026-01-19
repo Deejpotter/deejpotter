@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: "Portfolio Website | Deej Potter",
     description:
       "Explore Deej Potter's portfolio, projects, and technical blog posts about web engineering and embedded systems.",
+    type: "website",
     url: "https://deejpotter.com/projects/websites/deejpotter",
     images: ["/images/og/portfolio-deejpotter.png"],
   },

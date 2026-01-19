@@ -38,7 +38,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage || ''
+          path: coverage
+          if-no-files-found: ignore
 
       - name: Build docs
         run: yarn docs

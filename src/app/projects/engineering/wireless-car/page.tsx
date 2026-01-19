@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: "ESP32 Wireless Car | Deej Potter",
     description:
       "Precision-controlled wireless RC car built with ESP32, featuring encoders, PID control, and a web interface.",
+    type: "article",
     url: "https://deejpotter.com/projects/engineering/wireless-car",
     images: ["/images/og/esp32-wireless-car.png"],
   },
