@@ -102,18 +102,32 @@ export function usePopover({
 
   const interactions = useInteractions([click, dismiss, role]);
 
-  // Return an object directly; avoids brittle manual memoization rules and keeps behavior predictable.
-  return {
-    open,
-    setOpen,
-    ...interactions,
-    ...data,
-    modal,
-    labelId,
-    descriptionId,
-    setLabelId,
-    setDescriptionId,
-  };
+  const value = React.useMemo(
+    () => ({
+      open,
+      setOpen,
+      ...interactions,
+      ...data,
+      modal,
+      labelId,
+      descriptionId,
+      setLabelId,
+      setDescriptionId,
+    }),
+    [
+      open,
+      setOpen,
+      interactions,
+      data,
+      modal,
+      labelId,
+      descriptionId,
+      setLabelId,
+      setDescriptionId,
+    ]
+  );
+
+  return value;
 }
 
 /**
@@ -209,10 +223,8 @@ export const PopoverTrigger = React.forwardRef<
       'aria-expanded': context.open,
     });
 
-    // The ref is intentionally passed to the cloned child when using `asChild`.
-    // This may trigger a lint warning about reading refs during render, but
-    // it is the intended behavior for forwarding the reference to the anchor
-    // element provided by the consumer.
+    // The merged ref is intentionally forwarded to the cloned child when using
+    // `asChild`, so the consumer-provided element becomes the popover anchor.
     // eslint-disable-next-line react-hooks/refs
     return React.cloneElement(children, { ref, ...referenceProps });
   }
