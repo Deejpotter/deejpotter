@@ -6,7 +6,6 @@ module.exports = [
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: "module",
-      ecmaFeatures: { jsx: true },
     },
     ignores: [".next/**", "out/**", "node_modules/**"],
     rules: {
