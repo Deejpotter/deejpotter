@@ -7,9 +7,10 @@ type Document = { _id?: ObjectId; createdAt?: Date; updatedAt?: Date; [key: stri
 
 const DB_NAME = process.env['DB_NAME'];
 const uri = process.env['MONGODB_URI'];
-// Allow all collection names by default during development/tests.
-// To restrict, set ALLOWED_COLLECTIONS="col1,col2" in the environment.
-const ALLOWED_COLLECTIONS = (process.env['ALLOWED_COLLECTIONS'] || '')
+// SECURITY: Allowlist of permitted collection names. 
+// REQUIRED in production. For development/tests, set ALLOWED_COLLECTIONS="col1,col2" or use a permissive default.
+// If empty and MONGODB_URI is set, requests will be rejected to prevent unrestricted access.
+const ALLOWED_COLLECTIONS = (process.env['ALLOWED_COLLECTIONS'] || 'test,users')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);

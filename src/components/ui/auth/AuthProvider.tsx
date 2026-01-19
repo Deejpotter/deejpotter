@@ -60,7 +60,7 @@ export interface AuthProviderProps {
  * @example
  * ```tsx
  * import { ClerkProvider } from '@clerk/nextjs';
- * import { AuthProvider } from '@deejpotter/ui-components';
+ * import AuthProvider from '@/components/ui/auth/AuthProvider';
  * 
  * export default function RootLayout({ children }) {
  *   return (
