@@ -205,6 +205,8 @@ export const PopoverTrigger = React.forwardRef<
       ...props,
       ...children.props,
       "data-state": context.open ? "open" : "closed",
+      // Expose accessible state
+      'aria-expanded': context.open,
     });
 
     // The ref is intentionally passed to the cloned child when using `asChild`.

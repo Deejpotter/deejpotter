@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "ESP32 Wireless Car | Deej Potter",
   description:
     "Precision-controlled wireless RC car built with ESP32, featuring dual motor control with encoders, PID speed control, and Wi-Fi web interface. Technical deep-dive into motor control, encoder integration, and wireless communication.",
+  openGraph: {
+    title: "ESP32 Wireless Car | Deej Potter",
+    description:
+      "Precision-controlled wireless RC car built with ESP32, featuring encoders, PID control, and a web interface.",
+    url: "https://deejpotter.com/projects/engineering/wireless-car",
+    images: ["/images/og/esp32-wireless-car.png"],
+  },
 };
 
 export default function WirelessCar(): ReactElement {

@@ -42,6 +42,12 @@ Todo
 - Harden tests and mocks (High priority) — replace ad-hoc zod mocks with safe partial mocks (vi.mock(importOriginal...)) or use real zod where suitable.
   - Owner: @dev
   - Acceptance: No tests rely on global zod mocks; tests use partial mocks or the real library and pass reliably.
+- Accessibility audit & fixes (High priority)
+  - Owner: @dev
+  - Acceptance: Add automated axe checks (Playwright) for critical pages and fix top accessibility violations (modal focus trap, aria attributes, heading order). Include tests and QA notes in PR.
+- Metadata & social previews (Medium priority)
+  - Owner: @dev
+  - Acceptance: Add OpenGraph/Twitter metadata and canonical URLs for project and blog pages; include a script to auto-generate OG images for posts when possible.
 - Integration tests for API routes (Medium priority) — add Mongo-backed integration tests via MongoMemoryServer or Testcontainers.
   - Owner: @dev
   - Acceptance: CI includes an integration job that can run against a test DB; migrations/cleanup documented.
@@ -101,6 +107,7 @@ Todo
 In Progress
 
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
+- ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration)
 
 Completed (last 10)
 

@@ -7,15 +7,21 @@ const Modal = () => {
   const openButtonRef = useRef<HTMLButtonElement>(null);
 
   // Lock body scroll when modal is open
+  // Also mark main content as aria-hidden for screen readers while modal is open
   useEffect(() => {
+    const main = document.querySelector('main');
+
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
+      if (main) main.setAttribute('aria-hidden', 'true');
     } else {
       document.body.style.overflow = "unset";
+      if (main) main.removeAttribute('aria-hidden');
     }
 
     return () => {
       document.body.style.overflow = "unset";
+      if (main) main.removeAttribute('aria-hidden');
     };
   }, [isModalOpen]);
 

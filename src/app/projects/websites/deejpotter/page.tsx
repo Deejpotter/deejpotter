@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Portfolio Website | Deej Potter",
   description:
     "Technical details about my portfolio website - built with Next.js, TypeScript, and Bootstrap. Three major migrations from PHP to Angular to Next.js.",
+  openGraph: {
+    title: "Portfolio Website | Deej Potter",
+    description:
+      "Explore Deej Potter's portfolio, projects, and technical blog posts about web engineering and embedded systems.",
+    url: "https://deejpotter.com/projects/websites/deejpotter",
+    images: ["/images/og/portfolio-deejpotter.png"],
+  },
 };
 
 export default function Deejpotter(): ReactElement {
