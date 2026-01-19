@@ -1,10 +1,19 @@
 import { ReactElement } from "react";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "ESP32 Wireless Car | Deej Potter",
   description:
     "Precision-controlled wireless RC car built with ESP32, featuring dual motor control with encoders, PID speed control, and Wi-Fi web interface. Technical deep-dive into motor control, encoder integration, and wireless communication.",
+  openGraph: {
+    title: "ESP32 Wireless Car | Deej Potter",
+    description:
+      "Precision-controlled wireless RC car built with ESP32, featuring encoders, PID control, and a web interface.",
+    type: "article",
+    url: "https://deejpotter.com/projects/engineering/wireless-car",
+    images: ["/images/og/esp32-wireless-car.png"],
+  },
 };
 
 export default function WirelessCar(): ReactElement {
@@ -605,9 +614,9 @@ export default function WirelessCar(): ReactElement {
           <div className="alert alert-secondary" role="alert">
             <strong>Want more details?</strong> Read the full technical
             write-up:{" "}
-            <a href="/blog/esp32-wireless-car" className="alert-link">
+            <Link href="/blog/esp32-wireless-car" className="alert-link">
               ESP32 Wireless Car: Motor Control and Encoder Integration
-            </a>
+            </Link>
           </div>
         </div>
       </div>

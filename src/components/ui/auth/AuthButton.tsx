@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useAuth } from "./AuthProvider";
 import md5 from "md5";
 
@@ -29,13 +30,12 @@ const Gravatar: React.FC<GravatarProps> = ({
 	const url = `https://www.gravatar.com/avatar/${hash}?d=identicon&s=${size}`;
 
 	return (
-		<img
+		<Image
 			src={url}
 			alt="User Avatar"
 			className={className}
 			width={size}
 			height={size}
-			style={{ width: size, height: size }}
 		/>
 	);
 };

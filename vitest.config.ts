@@ -6,8 +6,14 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
+    testTimeout: 20000,
     coverage: {
+      provider: 'v8',
       reporter: ['text', 'lcov'],
+      statements: 80,
+      branches: 70,
+      functions: 80,
+      lines: 80,
     },
   },
 });
