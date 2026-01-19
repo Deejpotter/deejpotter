@@ -8,8 +8,12 @@ module.exports = [
       sourceType: "module",
     },
     ignores: [".next/**", "out/**", "node_modules/**"],
+    plugins: {
+      react: require("eslint-plugin-react"),
+    },
     rules: {
       // No-op base rules for JS/JSX
+      "react/jsx-props-no-spreading": "off",
     },
   },
   {
@@ -26,9 +30,11 @@ module.exports = [
     },
     plugins: {
       "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
+      react: require("eslint-plugin-react"),
     },
     rules: {
       // No-op TypeScript rules, prefer enabling rules explicitly later
+      "react/jsx-props-no-spreading": "off",
     },
   },
 ];
