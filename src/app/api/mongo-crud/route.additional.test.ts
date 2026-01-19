@@ -115,6 +115,8 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    // Per-test zod mock to ensure schema validates during module import
+    vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) } }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'abc' });
@@ -143,6 +145,8 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    // Per-test zod mock to ensure schema validates during module import
+    vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) } }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'abc' });
@@ -155,6 +159,8 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    // Per-test zod mock to ensure schema validates during module import
+    vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) } }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'updated' });
