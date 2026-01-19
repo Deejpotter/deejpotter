@@ -19,6 +19,14 @@ const Modal = () => {
     };
   }, [isModalOpen]);
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Return focus to the button that opened the modal
+    if (openButtonRef.current) {
+      openButtonRef.current.focus();
+    }
+  };
+
   // Focus management and keyboard handling
   useEffect(() => {
     if (!isModalOpen) return;
@@ -74,14 +82,6 @@ const Modal = () => {
       document.removeEventListener("keydown", handleTab);
     };
   }, [isModalOpen]);
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    // Return focus to the button that opened the modal
-    if (openButtonRef.current) {
-      openButtonRef.current.focus();
-    }
-  };
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     // Close modal if clicking on the overlay (not the modal content)

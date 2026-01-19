@@ -102,20 +102,18 @@ export function usePopover({
 
   const interactions = useInteractions([click, dismiss, role]);
 
-  return React.useMemo(
-    () => ({
-      open,
-      setOpen,
-      ...interactions,
-      ...data,
-      modal,
-      labelId,
-      descriptionId,
-      setLabelId,
-      setDescriptionId,
-    }),
-    [open, setOpen, interactions, data, modal, labelId, descriptionId]
-  );
+  // Return an object directly; avoids brittle manual memoization rules and keeps behavior predictable.
+  return {
+    open,
+    setOpen,
+    ...interactions,
+    ...data,
+    modal,
+    labelId,
+    descriptionId,
+    setLabelId,
+    setDescriptionId,
+  };
 }
 
 /**
@@ -198,20 +196,23 @@ export const PopoverTrigger = React.forwardRef<
   React.HTMLProps<HTMLElement> & PopoverTriggerProps
 >(function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
   const context = usePopoverContext();
-  const childrenRef = (children as any).ref;
-  const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
+  // Do not access child refs during render; merge only the necessary refs.
+  const ref = useMergeRefs([context.refs.setReference, propRef]);
 
   // `asChild` allows the user to pass any element as the anchor
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(
-      children,
-      context.getReferenceProps({
-        ref,
-        ...props,
-        ...children.props,
-        "data-state": context.open ? "open" : "closed",
-      })
-    );
+    const referenceProps = context.getReferenceProps({
+      ...props,
+      ...children.props,
+      "data-state": context.open ? "open" : "closed",
+    });
+
+    // The ref is intentionally passed to the cloned child when using `asChild`.
+    // This may trigger a lint warning about reading refs during render, but
+    // it is the intended behavior for forwarding the reference to the anchor
+    // element provided by the consumer.
+    // eslint-disable-next-line react-hooks/refs
+    return React.cloneElement(children, { ref, ...referenceProps });
   }
 
   return (

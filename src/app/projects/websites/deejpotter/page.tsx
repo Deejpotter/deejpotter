@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Portfolio Website | Deej Potter",
@@ -321,9 +322,9 @@ export default function Deejpotter(): ReactElement {
               <h3 className="h5 mb-2">Read the full migration story</h3>
               <p className="mb-0">
                 Check out my{" "}
-                <a href="/blog/portfolio-migration">
+                <Link href="/blog/portfolio-migration">
                   Portfolio Migration blog post
-                </a>{" "}
+                </Link>{" "}
                 for detailed technical insights about the journey from PHP to
                 Angular to Next.js.
               </p>

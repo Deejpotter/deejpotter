@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "ESP32 Wireless Car | Deej Potter",
@@ -605,9 +606,9 @@ export default function WirelessCar(): ReactElement {
           <div className="alert alert-secondary" role="alert">
             <strong>Want more details?</strong> Read the full technical
             write-up:{" "}
-            <a href="/blog/esp32-wireless-car" className="alert-link">
+            <Link href="/blog/esp32-wireless-car" className="alert-link">
               ESP32 Wireless Car: Motor Control and Encoder Integration
-            </a>
+            </Link>
           </div>
         </div>
       </div>
