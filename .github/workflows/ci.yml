@@ -26,9 +26,6 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test
-
       - name: Coverage
         run: yarn vitest run --coverage
         env:
