@@ -112,6 +112,7 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    vi.doMock('zod', () => ({ record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'abc' });
@@ -126,6 +127,7 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    vi.doMock('zod', () => ({ record: () => ({ safeParse: (v: any) => ({ success: false }) }), any: () => ({}) }));
     const route = await import('./route');
 
     const body = JSON.stringify(123);
@@ -140,6 +142,7 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    vi.doMock('zod', () => ({ record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'abc' });
@@ -152,6 +155,7 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    vi.doMock('zod', () => ({ record: () => ({ safeParse: (v: any) => ({ success: true }) }), any: () => ({}) }));
     const route = await import('./route');
 
     const body = JSON.stringify({ name: 'updated' });
