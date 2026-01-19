@@ -122,8 +122,6 @@ export function usePopover({
       modal,
       labelId,
       descriptionId,
-      setLabelId,
-      setDescriptionId,
     ]
   );
 

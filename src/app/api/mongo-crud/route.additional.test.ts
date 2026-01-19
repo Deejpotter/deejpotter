@@ -4,11 +4,12 @@ import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 // (No module mocking for `zod` to avoid import-time race conditions)
 
 function makeRequest(url: string, options: RequestInit = {}) {
-  // Ensure body is a Readable stream compatible with Request when provided
-  const init: RequestInit = { ...options };
+  // Ensure body is compatible with Request when provided
+  const init: RequestInit & { body?: string | ReadableStream | Blob | BufferSource | FormData | URLSearchParams } = { 
+    ...options 
+  };
   if (options.body && typeof options.body === 'string') {
-    // Type assertion is safe here as we're explicitly handling the string case
-    (init as any).body = options.body;
+    init.body = options.body;
   }
   return new Request(url, init);
 }
