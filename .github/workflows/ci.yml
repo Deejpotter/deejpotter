@@ -29,6 +29,17 @@ jobs:
       - name: Test
         run: yarn test
 
+      - name: Coverage
+        run: yarn vitest run --coverage
+        env:
+          NODE_ENV: test
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage || ''
+
       - name: Build docs
         run: yarn docs
 
