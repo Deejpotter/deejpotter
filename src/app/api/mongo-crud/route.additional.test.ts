@@ -66,7 +66,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('GET returns docs when collection valid', async () => {
     const mock = createMongoMock({});
-    vi.mock('mongodb', () => ({
+    vi.doMock('mongodb', () => ({
       MongoClient: mock.FakeClient,
       ObjectId: class {
         constructor(id: string) { if (id === 'invalid') throw new Error('bad'); }
@@ -87,7 +87,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('GET rejects disallowed collection when ALLOWED_COLLECTIONS set', async () => {
     const mock = createMongoMock({});
-    vi.mock('mongodb', () => ({ MongoClient: mock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     setAllowedCollections('allowed');
     const route = await import('./route');
@@ -100,7 +100,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('GET returns 500 when db throws', async () => {
     const mock = createMongoMock({ find: async () => { throw new Error('boom'); } });
-    vi.mock('mongodb', () => ({ MongoClient: mock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     const route = await import('./route');
     const res = await route.GET(makeRequest('http://localhost/api/mongo-crud?collection=test'));
@@ -109,7 +109,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('POST succeeds when authenticated and body valid', async () => {
     const mongoMock = createMongoMock({});
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
     const route = await import('./route');
@@ -123,7 +123,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('POST returns 400 for invalid body shape', async () => {
     const mongoMock = createMongoMock({});
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
     const route = await import('./route');
@@ -137,7 +137,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('POST returns 500 when insert throws', async () => {
     const mongoMock = createMongoMock({ insertOne: async () => { throw new Error('insert fail'); } });
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
     const route = await import('./route');
@@ -149,7 +149,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('PUT updates when authenticated with valid id', async () => {
     const mongoMock = createMongoMock({ updateOne: async () => ({ matchedCount: 1, modifiedCount: 1 }) });
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
     const route = await import('./route');
@@ -163,7 +163,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('PUT returns 400 for invalid id parse', async () => {
     const mongoMock = createMongoMock({});
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
 
     const route = await import('./route');
     const res = await route.PUT(makeRequest('http://localhost/api/mongo-crud?collection=test&id=invalid', { method: 'PUT', body: '{}' }));
@@ -174,7 +174,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('DELETE deletes when authenticated with valid id', async () => {
     const mongoMock = createMongoMock({ deleteOne: async () => ({ deletedCount: 1 }) });
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) { if (id === 'invalid') throw new Error('bad'); } } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
     const route = await import('./route');
@@ -187,7 +187,7 @@ describe('mongo-crud route - additional scenarios', () => {
 
   test('DELETE returns 400 for missing id', async () => {
     const mongoMock = createMongoMock({});
-    vi.mock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     const route = await import('./route');
     const res = await route.DELETE(makeRequest('http://localhost/api/mongo-crud?collection=test', { method: 'DELETE' }));
