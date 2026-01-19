@@ -7,7 +7,12 @@ type Document = { _id?: ObjectId; createdAt?: Date; updatedAt?: Date; [key: stri
 
 const DB_NAME = process.env['DB_NAME'];
 const uri = process.env['MONGODB_URI'];
-const ALLOWED_COLLECTIONS = (process.env['ALLOWED_COLLECTIONS'] || 'todos,messages,projects,users').split(',').map(s => s.trim()).filter(Boolean);
+// Allow all collection names by default during development/tests.
+// To restrict, set ALLOWED_COLLECTIONS="col1,col2" in the environment.
+const ALLOWED_COLLECTIONS = (process.env['ALLOWED_COLLECTIONS'] || '')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
 
 // Basic schema for POST/PUT bodies - ensure an object is provided
 const bodySchema = z.record(z.any());

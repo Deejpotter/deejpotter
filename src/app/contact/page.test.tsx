@@ -18,14 +18,18 @@ describe('Contact form', () => {
   test('submits form and shows success message', async () => {
     render(<Contact />);
 
-    const textarea = screen.getByLabelText(/Enter Message/i);
+    const name = screen.getByLabelText(/Name \(required\)/i);
+    const email = screen.getByLabelText(/Email address \(required\)/i);
+    const textarea = screen.getByLabelText(/Message \(required\)/i);
     const submit = screen.getByRole('button', { name: /Submit form/i });
 
-    fireEvent.change(textarea, { target: { value: 'hello' } });
+    fireEvent.change(name, { target: { value: 'John Doe' } });
+    fireEvent.change(email, { target: { value: 'john@example.com' } });
+    fireEvent.change(textarea, { target: { value: 'hello there world' } });
     fireEvent.click(submit);
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
-    expect(global.fetch).toHaveBeenCalledWith('/__forms.html', expect.objectContaining({ method: 'POST' }));
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringMatching(/\/api\/contact$/), expect.objectContaining({ method: 'POST' }));
 
     // successful submission shows alert
     await waitFor(() => expect(screen.getByText(/Form submitted successfully!/i)).toBeInTheDocument());
