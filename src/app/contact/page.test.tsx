@@ -29,7 +29,10 @@ describe('Contact form', () => {
     fireEvent.click(submit);
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
-    expect(global.fetch).toHaveBeenCalledWith(expect.stringMatching(/\/api\/contact$/), expect.objectContaining({ method: 'POST' }));
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringMatching(/http:\/\/localhost:3001\/api\/contact$/),
+      expect.objectContaining({ method: 'POST' })
+    );
 
     // successful submission shows alert
     await waitFor(() => expect(screen.getByText(/Form submitted successfully!/i)).toBeInTheDocument());
