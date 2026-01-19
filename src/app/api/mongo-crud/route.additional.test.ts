@@ -131,6 +131,8 @@ describe('mongo-crud route - additional scenarios', () => {
     vi.doMock('mongodb', () => ({ MongoClient: mongoMock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
 
     vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
+    // Per-test zod mock: treat non-objects as invalid to simulate bodySchema behavior
+    vi.doMock('zod', () => ({ z: { record: () => ({ safeParse: (v: any) => ({ success: typeof v === 'object' && v !== null }) }), any: () => ({}) } }));
     const route = await import('./route');
 
     const body = JSON.stringify(123);
