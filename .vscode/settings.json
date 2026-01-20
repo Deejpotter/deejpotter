@@ -19,5 +19,21 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#1E9952",
-    "compile-hero.disable-compile-files-on-did-save-code": true
+    "compile-hero.disable-compile-files-on-did-save-code": true,
+
+    // Reduce file watcher load to avoid EMFILE errors from extensions (e.g., Copilot Chat)
+    "files.watcherExclude": {
+        "**/node_modules/**": true,
+        "**/.git/**": true,
+        "**/.next/**": true,
+        "public/basicBases/Build/**": true
+    },
+
+    // Also avoid searching these heavy folders by default
+    "search.exclude": {
+        "**/node_modules/**": true,
+        "**/.git/**": true,
+        "**/.next/**": true,
+        "public/basicBases/Build/**": true
+    }
 }
