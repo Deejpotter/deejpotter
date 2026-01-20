@@ -65,33 +65,33 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
+  const inner = (
+    <AuthProvider>
+      <NavbarProvider>
+        {/* The body of the HTML document with custom scrollbar class and Bootstrap classes for flexbox layout */}
+        {/* 'd-flex flex-column h-100' creates a flex container that takes up the full height of the viewport */}
+        <body className="custom-scrollbar d-flex flex-column h-100">
+          {/* The Navbar component */}
+          <Navbar />
+          {/* The main content of the page, which will be the children passed to the RootLayout component */}
+          {/* 'flex-grow-1' allows the main content to grow and push the footer down */}
+          <main className="flex-grow-1">{children}</main>
+          <BootstrapClient />
+          {/* The Footer component */}
+          <MainFooter />
+        </body>
+      </NavbarProvider>
+    </AuthProvider>
+  );
+
   return (
     // The root HTML element with language set to English and classes for the fonts
     // Added 'h-100' class to ensure the HTML element takes up the full viewport height
     <html lang="en" className={`${nunito.variable} ${fredoka.variable} h-100`}>
-      {/* ClerkProvider wraps the entire app to provide authentication context */}
-      <ClerkProvider>
-        {/* The AuthProvider component is used to provide the authentication context to the components. 
-        Context is used to pass data through the component tree without having to pass props down manually at every level.
-        So any child component can access the authentication context.
-        */}
-        <AuthProvider>
-          <NavbarProvider>
-            {/* The body of the HTML document with custom scrollbar class and Bootstrap classes for flexbox layout */}
-            {/* 'd-flex flex-column h-100' creates a flex container that takes up the full height of the viewport */}
-            <body className="custom-scrollbar d-flex flex-column h-100">
-              {/* The Navbar component */}
-              <Navbar />
-              {/* The main content of the page, which will be the children passed to the RootLayout component */}
-              {/* 'flex-grow-1' allows the main content to grow and push the footer down */}
-              <main className="flex-grow-1">{children}</main>
-              <BootstrapClient />
-              {/* The Footer component */}
-              <MainFooter />
-            </body>
-          </NavbarProvider>
-        </AuthProvider>
-      </ClerkProvider>
+      {/* Only initialize Clerk in environments with a publishable key configured */}
+      {hasClerk ? <ClerkProvider>{inner}</ClerkProvider> : inner}
     </html>
   );
 }

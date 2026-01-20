@@ -1,7 +1,17 @@
 import { NextResponse } from 'next/server';
 import { MongoClient, ObjectId, Collection } from 'mongodb';
 import { z } from 'zod';
-import { auth } from '@clerk/nextjs';
+// Use a safe, runtime-resolved auth getter to avoid static ESM resolution issues
+let getAuth: () => { userId?: string | null } = () => ({ userId: null });
+try {
+  // Use require to avoid build-time static import resolution that may fail with certain Clerk builds
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const _clerk = require('@clerk/nextjs');
+  getAuth = _clerk?.auth ?? _clerk?.getAuth ?? (() => ({ userId: null }));
+} catch (e) {
+  // If Clerk isn't available at build/test time, fall back to a no-op auth getter
+  getAuth = () => ({ userId: null });
+}
 
 type Document = { _id?: ObjectId; createdAt?: Date; updatedAt?: Date; [key: string]: any };
 
@@ -16,7 +26,7 @@ const ALLOWED_COLLECTIONS = (process.env['ALLOWED_COLLECTIONS'] || 'test,users')
   .filter(Boolean);
 
 // Basic schema for POST/PUT bodies - ensure an object is provided
-const bodySchema = z.record(z.any());
+const bodySchema = z.record(z.string(), z.any());
 
 if (!uri) {
   console.warn('MONGODB_URI is not set. Database operations will fail until it is provided.');
@@ -29,7 +39,9 @@ if (!DB_NAME) {
 let cachedClient: MongoClient | null = null;
 
 async function getClient(): Promise<MongoClient> {
-  if (cachedClient && cachedClient.topology && (cachedClient as any).isConnected?.()) {
+  // Use runtime checks to avoid depending on internal/private properties on the
+  // MongoClient type (keeps TypeScript happy while still providing caching).
+  if (cachedClient && (cachedClient as any).isConnected?.()) {
     return cachedClient;
   }
   const client = new MongoClient(uri!);
@@ -86,7 +98,7 @@ export async function POST(request: Request) {
   }
 
   // Require authenticated user for mutating operations
-  const { userId } = auth();
+  const { userId } = getAuth();
   if (!userId) {
     return NextResponse.json('Unauthorized', { status: 401 });
   }
@@ -104,8 +116,8 @@ export async function POST(request: Request) {
     return NextResponse.json('Invalid body shape', { status: 400 });
   }
 
-  parsedBody.createdAt = new Date();
-  parsedBody.updatedAt = new Date();
+  parsedBody!.createdAt = new Date();
+  parsedBody!.updatedAt = new Date();
 
   try {
     const result = await performMongoOperation(collection!, (c) => c.insertOne(parsedBody!));
@@ -137,7 +149,7 @@ export async function PUT(request: Request) {
   }
 
   // Require authenticated user for mutating operations
-  const { userId } = auth();
+  const { userId } = getAuth();
   if (!userId) {
     return NextResponse.json('Unauthorized', { status: 401 });
   }
@@ -154,7 +166,7 @@ export async function PUT(request: Request) {
     return NextResponse.json('Invalid body shape', { status: 400 });
   }
 
-  parsedBody.updatedAt = new Date();
+  parsedBody!.updatedAt = new Date();
 
   try {
     const result = await performMongoOperation(collection!, (c) => c.updateOne({ _id: objectId }, { $set: parsedBody! }));
@@ -186,7 +198,7 @@ export async function DELETE(request: Request) {
   }
 
   // Require authenticated user for mutating operations
-  const { userId } = auth();
+  const { userId } = getAuth();
   if (!userId) {
     return NextResponse.json('Unauthorized', { status: 401 });
   }

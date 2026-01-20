@@ -29,7 +29,7 @@
     // This ensures every file is a separate module.
     "isolatedModules": true,
     // This specifies JSX code generation. "preserve" keeps the JSX as part of the output to be further consumed by the bundler.
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     // This enables incremental compilation by storing information about the project graph from the last compilation.
     "incremental": true,
     // This specifies TypeScript plugins to use.
@@ -51,13 +51,14 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "./**/*.d.ts"
+    "./**/*.d.ts",
+    ".next/dev/types/**/*.ts"
   ],
   // This specifies which files TypeScript should exclude from its checks.
   "exclude": [
     "node_modules",
     "mdx.js",
-    "**/*.text.js",
+    "**/*.text.js"
   ],
   "types": [
     "jest"

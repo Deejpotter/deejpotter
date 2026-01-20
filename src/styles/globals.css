@@ -6,6 +6,7 @@
 :root {
   --tw-font-nunito: var(--font-nunito);
   --tw-font-fredoka: var(--font-fredoka);
+  --color-primary: #1E9952;
 }
 
 @layer base {
@@ -22,19 +23,30 @@
 }
 
 @layer components {
-  /* Buttons: transition + subtle shadow */
+  /* Buttons: transition + subtle shadow (use explicit properties to avoid @apply issues) */
   .btn {
-    @apply transition-all duration-300 ease-in-out shadow-sm;
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   }
-  .btn:hover { @apply text-white shadow-lg; }
+  .btn:hover {
+    color: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  }
 
   /* Navbar helpers ported from bootstrap overrides */
-  .navbar-brand img { @apply h-10; }
-  .navbar-nav .nav-link { @apply cursor-pointer items-center; }
+  .navbar-brand img { height: 2.5rem; }
+  .navbar-nav .nav-link { cursor: pointer; display: inline-flex; align-items: center; }
 
   /* Popover component container */
   .Popover {
-    @apply bg-white shadow rounded border px-2 py-1 text-sm;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 10, 20, 0.1);
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
     box-sizing: border-box;
     width: max-content;
     max-width: calc(100vw - 10px);
@@ -42,7 +54,7 @@
 
   /* Scrollbar utilities (non-standard, keep as-is) */
   .custom-scrollbar::-webkit-scrollbar { width: 0.6rem; background-color: var(--tw-color-gray-100); }
-  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: theme('colors.primary'); border-radius: 5px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--color-primary); border-radius: 5px; }
 }
 
 @layer utilities {

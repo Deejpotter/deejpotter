@@ -203,14 +203,14 @@ export const PopoverTrigger = React.forwardRef<
 
   // `asChild` allows the user to pass any element as the anchor
   if (asChild && React.isValidElement(children)) {
+    const child = children as React.ReactElement;
     return React.cloneElement(
-      children,
+      child,
       context.getReferenceProps({
         ref,
         ...props,
-        ...children.props,
-        "data-state": context.open ? "open" : "closed",
-      })
+        ["data-state"]: context.open ? "open" : "closed",
+      } as any)
     );
   }
 

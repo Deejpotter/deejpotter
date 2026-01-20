@@ -14,7 +14,6 @@ import { calculateOptimalCuts } from "@/lib/cutOptimizer";
 import {
   CutRequirement,
   CalculationResult,
-  AlgorithmType,
   ValidationError,
 } from "@/types/cutCalculator";
 import CutRequirementsTable from "./CutRequirementsTable";
@@ -23,7 +22,7 @@ import styles from "./CutCalculator.module.scss";
 
 export default function CutCalculatorPage(): ReactElement {
   const [stockLength, setStockLength] = useState<string>("6000");
-  const [algorithm, setAlgorithm] = useState<AlgorithmType>("FFD");
+  const [algorithm, setAlgorithm] = useState<string>("FFD");
   const [requirements, setRequirements] = useState<CutRequirement[]>([
     { id: "1", length: 450, quantity: 4 },
   ]);
@@ -42,9 +41,11 @@ export default function CutCalculatorPage(): ReactElement {
 
     try {
       const calculationResult = calculateOptimalCuts({
-        stockLength: stockLengthNum,
+        stockItems: [
+          { id: "default", length: stockLengthNum, quantity: 1000 },
+        ],
         requirements,
-        algorithm,
+        kerfWidth: 0,
       });
       setResult(calculationResult);
     } catch (err) {
@@ -117,7 +118,7 @@ export default function CutCalculatorPage(): ReactElement {
                     <Form.Select
                       value={algorithm}
                       onChange={(e) =>
-                        setAlgorithm(e.target.value as AlgorithmType)
+                        setAlgorithm(e.target.value as string)
                       }
                       aria-label="Select packing algorithm"
                     >
@@ -182,10 +183,7 @@ export default function CutCalculatorPage(): ReactElement {
       {result && (
         <Row>
           <Col>
-            <ResultsDisplay
-              result={result}
-              stockLength={parseFloat(stockLength)}
-            />
+            <ResultsDisplay result={result} />
           </Col>
         </Row>
       )}
