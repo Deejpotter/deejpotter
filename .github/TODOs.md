@@ -97,3 +97,28 @@ Notes
 
 - Do not introduce new dependencies without explicit need.
 - Use git diffs before/after to verify scope of changes.
+
+---
+
+## Recent Update (2026-01-20) ✅
+
+- Build & TypeScript fixes:
+  - Resolved the blocking TypeScript errors (removed missing `AlgorithmType`, aligned `calculateOptimalCuts` call to `CutCalculatorInput`, fixed `Popover` prop spreads and Vitest coverage config).
+  - Added a Clerk fallback in `AuthProvider`/`layout` so prerendering won't fail when `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is missing.
+  - Local production build now completes after these fixes.
+
+- Tailwind migration status:
+  - Tailwind base and `postcss` config are in place; many unknown `@apply` utilities were replaced with explicit rules to unblock build.
+  - Per-component SCSS modules remain and are being migrated incrementally (next priority).
+
+- Cleanup performed (2026-01-20):
+  - Removed generated agent and prompt markdowns and one obsolete issue that were imported for Next.js/MCP experiments: `.github/prompts/*`, `.github/agents/*`, `.github/ISSUES/007-tailwind-migration.md`.
+
+- Next steps (priority):
+  1. Finish per-component SCSS → Tailwind conversions and remove legacy SCSS imports. 🔧
+  2. Run visual regression / Playwright snapshots to confirm parity. 🧪
+  3. Finalize deployment plan & remove remaining Netlify-specific artifacts once ready. 🚀
+  4. Confirm CI (lint/tests/a11y/e2e) passes and open PRs for incremental migrations.
+
+> If you'd like, I can also remove related dev dependencies that were specifically added for MCP experiments — I didn't find new package additions tied to those markdowns, so nothing required there unless you want to prune additional unused packages.
+
