@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base & typography defaults (map from previous SCSS) */
+:root {
+  --tw-font-nunito: var(--font-nunito);
+  --tw-font-fredoka: var(--font-fredoka);
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-fredoka);
+    font-weight: 700;
+  }
+
+  body {
+    font-family: var(--font-nunito);
+  }
+
+  a { text-decoration: none; }
+}
+
+@layer components {
+  /* Buttons: transition + subtle shadow */
+  .btn {
+    @apply transition-all duration-300 ease-in-out shadow-sm;
+  }
+  .btn:hover { @apply text-white shadow-lg; }
+
+  /* Navbar helpers ported from bootstrap overrides */
+  .navbar-brand img { @apply h-10; }
+  .navbar-nav .nav-link { @apply cursor-pointer items-center; }
+
+  /* Popover component container */
+  .Popover {
+    @apply bg-white shadow rounded border px-2 py-1 text-sm;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: calc(100vw - 10px);
+  }
+
+  /* Scrollbar utilities (non-standard, keep as-is) */
+  .custom-scrollbar::-webkit-scrollbar { width: 0.6rem; background-color: var(--tw-color-gray-100); }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background-color: theme('colors.primary'); border-radius: 5px; }
+}
+
+@layer utilities {
+  .fade-in { animation: fade-in 0.5s ease-in; }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+}
