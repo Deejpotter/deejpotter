@@ -8,6 +8,7 @@ import AuthProvider from "@/contexts/AuthProvider"; // Client component wrapper
 import BootstrapClient from "@/lib/BootstrapClient";
 import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";
+import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 
 // Initializing the Nunito font with specific options
 const nunito = Nunito({
@@ -72,8 +73,9 @@ export default function RootLayout({
       <NavbarProvider>
         {/* The body of the HTML document with custom scrollbar class and Bootstrap classes for flexbox layout */}
         {/* 'd-flex flex-column h-100' creates a flex container that takes up the full height of the viewport */}
-        <body className="custom-scrollbar d-flex flex-column h-100">
-          {/* The Navbar component */}
+        <body suppressHydrationWarning className="custom-scrollbar d-flex flex-column h-100">
+          {/* Client-only cleanup removes extension-injected attributes that break hydration */}
+          <BodyAttributesCleaner />
           <Navbar />
           {/* The main content of the page, which will be the children passed to the RootLayout component */}
           {/* 'flex-grow-1' allows the main content to grow and push the footer down */}
