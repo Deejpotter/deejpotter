@@ -218,7 +218,6 @@ export const PopoverTrigger = React.forwardRef<
     const child = children as React.ReactElement;
 
     const referenceProps = context.getReferenceProps({
-      ref,
       ...child.props,
       ...props,
       "data-state": context.open ? "open" : "closed",
@@ -229,7 +228,7 @@ export const PopoverTrigger = React.forwardRef<
     // The merged ref is intentionally forwarded to the cloned child when using
     // `asChild`, so the consumer-provided element becomes the popover anchor.
     // eslint-disable-next-line react-hooks/refs
-    return React.cloneElement(child, referenceProps);
+    return React.cloneElement(child, { ref, ...referenceProps });
   }
 
   return (
