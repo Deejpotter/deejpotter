@@ -40,6 +40,19 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 - **Formatting**: I use Prettier for code formatting.
 - **File structure**: I have all my app code in the app folder and all the other stuff, like components and styles, above that in the src folder.
 
+## Yarn (optional)
+
+This project prefers Yarn 4 for local installs and CI. If you'd like to use Yarn 4 locally, enable Corepack and activate the pinned version:
+
+```bash
+corepack enable
+corepack prepare yarn@4.5.0 --activate
+```
+
+If you cannot enable Corepack, `npm install` works as an alternative but may produce a different lockfile; prefer Yarn 4 when possible.
+
+---
+
 ## Quick Start
 
 ```bash
