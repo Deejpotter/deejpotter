@@ -38,7 +38,7 @@ const Navbar = () => {
         </Link>
 
         <button
-          className="navbar-toggler ml-auto"
+          className="navbar-toggler ml-auto lg:hidden"
           type="button"
           onClick={toggleNavCollapse}
           aria-expanded={!isLocalCollapsed}
@@ -47,8 +47,8 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className={`${isLocalCollapsed ? "hidden" : "flex"} navbar-collapse flex-1 justify-center`} id="navbarNav">
-          <ul className="flex space-x-4">
+        <div className={`${isLocalCollapsed ? "hidden" : "flex"} navbar-collapse flex-1 justify-center lg:flex`} id="navbarNav">
+          <ul className="flex space-x-4 items-center">
             {navItems.map((item, index) =>
               item.items ? (
                 <NavDropdown key={index} label={item.label} items={item.items} />
