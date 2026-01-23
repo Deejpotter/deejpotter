@@ -23,16 +23,33 @@
 }
 
 @layer components {
-  /* Buttons: transition + subtle shadow (use explicit properties to avoid @apply issues) */
+  /* Buttons: use Tailwind utilities to match Bootstrap look */
   .btn {
-    transition-property: all;
-    transition-duration: 300ms;
-    transition-timing-function: ease-in-out;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-bs shadow-bs-sm transition-all duration-300 ease-in-out;
   }
+
+  .btn-primary {
+    @apply bg-primary text-white;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white;
+  }
+
+  .btn:focus {
+    @apply outline-none ring-2 ring-primary/40;
+  }
+
   .btn:hover {
-    color: white;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    @apply shadow-bs;
+  }
+
+  /* Additional button variants */
+  .btn-outline {
+    @apply border border-gray-300 text-gray-700 bg-white;
+  }
+  .btn-outline.btn-primary {
+    @apply border-primary text-primary bg-transparent;
   }
 
   /* Navbar helpers ported from bootstrap overrides */
