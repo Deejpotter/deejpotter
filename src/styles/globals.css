@@ -52,6 +52,47 @@
     @apply border-primary text-primary bg-transparent;
   }
 
+  /* Bootstrap-compatible button variants */
+  .btn-success { @apply bg-green-600 text-white; }
+  .btn-warning { @apply bg-warning text-white; }
+  .btn-danger { @apply bg-danger text-white; }
+
+  .btn-outline-success { @apply border-green-600 text-green-600 bg-transparent; }
+  .btn-outline-warning { @apply border-warning text-warning bg-transparent; }
+  .btn-outline-danger { @apply border-danger text-danger bg-transparent; }
+
+  /* Simple shadow utility compatibility */
+  .shadow { @apply shadow; }
+
+  /* Spacing helpers (Bootstrap-like shorthand used across the codebase) */
+  .me-1 { margin-inline-end: 0.25rem; }
+  .me-2 { margin-inline-end: 0.5rem; }
+  .me-3 { margin-inline-end: 1rem; }
+  .ms-1 { margin-inline-start: 0.25rem; }
+  .mx-1 { margin-left: 0.25rem; margin-right: 0.25rem; }
+  .mx-2 { margin-left: 0.5rem; margin-right: 0.5rem; }
+  .ml-2 { margin-left: 0.5rem; }
+  .mr-1 { margin-right: 0.25rem; }
+
+  /* Form controls mapping to Tailwind */
+  .form-control, input.form-control, textarea.form-control, select.form-control {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-bs bg-white text-gray-900;
+    box-sizing: border-box;
+  }
+  .form-control:focus {
+    @apply outline-none ring-2 ring-primary/40;
+  }
+
+  /* Navbar compatibility - basic visual mapping and collapse utility */
+  .navbar { @apply flex items-center justify-between px-spacer py-4 bg-primary text-white; }
+  .navbar-brand { @apply inline-flex items-center text-lg font-bold; }
+  .navbar-toggler { @apply inline-flex items-center justify-center p-2 bg-transparent border border-transparent rounded; }
+  .navbar-toggler-icon { width: 1.25rem; height: 1.25rem; display: inline-block; background-size: contain; background-repeat: no-repeat; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); }
+  .navbar-collapse { @apply flex items-center; }
+  .collapse { display: none; }
+  .collapse.show { display: flex; }
+
+
   /* Navbar helpers ported from bootstrap overrides */
   .navbar-brand img { height: 2.5rem; }
   .navbar-nav .nav-link { cursor: pointer; display: inline-flex; align-items: center; }
