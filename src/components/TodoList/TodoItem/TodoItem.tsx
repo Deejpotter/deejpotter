@@ -131,28 +131,28 @@ export default function TodoItem(props: TodoItemProps): ReactElement | null {
   return (
     // Each item will be a list item with a button to edit and a button to delete. The text of the item will be displayed in a span. When the edit button is
     // clicked, the span will be replaced with an input and a save button. When the save button is clicked, the input will be replaced with a span.
-    <li className="list-group-item d-flex justify-content-between align-items-center py-1 mb-1">
+    <li className="flex justify-between items-center py-1 mb-1 border-b border-gray-200">
       {editing ? (
         <input
           ref={editInputRef}
           value={updatedText}
           onChange={updateText}
-          className="form-control me-2"
+          className="form-control mr-2"
         />
       ) : (
         <span>{props.item.text}</span>
       )}
-      <div>
+      <div className="flex items-center">
         {editing ? (
-          <button className="btn btn-success me-1" onClick={finishEditing}>
+          <button className="btn btn-sm btn-success mr-1" onClick={finishEditing}>
             <i className="bi bi-check"></i>
           </button>
         ) : (
-          <button className="btn btn-warning me-1" onClick={startEditing}>
+          <button className="btn btn-sm btn-warning mr-1" onClick={startEditing}>
             <i className="bi bi-pencil"></i>
           </button>
         )}
-        <button className="btn btn-danger" onClick={deleteItem}>
+        <button className="btn btn-sm btn-danger" onClick={deleteItem}>
           <i className="bi bi-trash"></i>
         </button>
       </div>
