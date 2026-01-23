@@ -222,7 +222,7 @@ export const PopoverTrigger = React.forwardRef<
       ...props,
       "data-state": context.open ? "open" : "closed",
       // Expose accessible state
-      'aria-expanded': context.open,
+      "aria-expanded": context.open,
     } as any);
 
     // The merged ref is intentionally forwarded to the cloned child when using
