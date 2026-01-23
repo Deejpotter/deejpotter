@@ -63,7 +63,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install
-        run: yarn install --frozen-lockfile
+        run: npm ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -71,18 +71,18 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Start server
         run: |
-          nohup yarn start &
+          nohup npm run start &
           # wait for server to be ready
           for i in {1..30}; do
             curl -sSf http://localhost:3000 && break || sleep 1
           done
 
       - name: Run Playwright tests
-        run: yarn test:e2e
+        run: npm run test:e2e
 
       - name: Stop server
         run: pkill -f 'next start' || true
