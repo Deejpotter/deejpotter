@@ -2,9 +2,6 @@
 
 Hi, I'm Daniel, or Deej, a full-stack developer who used to be a chef. This is the repo for my portfolio website, which I've built with Next.js.
 
-> 📚 **Complete Documentation**: For comprehensive project documentation, architecture details, and development guidelines, visit our [BookStack Documentation](http://bookstack.deejpotter.com/books/deejpottercom).
-Private link. Access permission required.
-
 ## A Bit About Me
 
 I started out working in my parents' restaurant, but I've always been more interested in tech. I eventually started a web design business from home, which led me to dive deeper into coding and become a full-stack developer.
@@ -26,11 +23,14 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 ## Technologies and Tools
 
 - **Next.js**: The main framework used for building the website.
-- **Netlify CMS**: For managing the content of the website.
-- **Netlify Forms**: For handling the contact form submissions.
-- **Netlify Identity**: For user authentication.
-- **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify Functions in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Bootstrap**: For styling the website.
+
+- **Netlify CMS**: For managing the content of the website.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+- **Netlify Forms**: For handling the contact form submissions.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+- **Netlify Identity**: For user authentication.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+- **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+
+- **Bootstrap**: For styling the website.⚠️ This project is migrating away from Bootstrap in favor of Tailwind CSS (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+
 - **React**: For building the user interface components.
 
 ## Code style
@@ -79,4 +79,3 @@ When contributing to this project:
 ## License
 
 This project is personal portfolio work. Please contact for usage inquiries.
-
