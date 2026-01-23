@@ -4623,6 +4623,7 @@ __metadata:
     bson-objectid: "npm:^2.0.4"
     eslint: "npm:^9.39.2"
     eslint-config-next: "npm:^16.1.3"
+    eslint-plugin-react-hooks: "npm:^7.0.1"
     gray-matter: "npm:^4.0.3"
     identity-obj-proxy: "npm:^3.0.0"
     jsdom: "npm:^27.4.0"
@@ -5200,7 +5201,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:^7.0.0":
+"eslint-plugin-react-hooks@npm:^7.0.0, eslint-plugin-react-hooks@npm:^7.0.1":
   version: 7.0.1
   resolution: "eslint-plugin-react-hooks@npm:7.0.1"
   dependencies:

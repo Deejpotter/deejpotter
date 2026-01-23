@@ -1,40 +1,28 @@
-// Minimal flat ESLint config to keep CI lint step working.
-// TODO: Replace with a complete config (extend Next.js recommended rules in flat format).
+// Next.js flat ESLint config: extend the Next.js recommended rules and add repo overrides.
+// This uses `eslint-config-next` as the baseline and applies a few project-specific overrides.
+const nextConfig = require('eslint-config-next');
+
 module.exports = [
+  // spread the Next.js-provided flat config entries first
+  ...(Array.isArray(nextConfig) ? nextConfig : [nextConfig]),
+  // project-specific overrides
   {
-    files: ["**/*.{js,jsx}"],
-    languageOptions: {
-      ecmaVersion: 2023,
-      sourceType: "module",
-    },
-    ignores: [".next/**", "out/**", "node_modules/**"],
+    ignores: ['node_modules/**', '.next/**', 'public/**'],
     plugins: {
-      react: require("eslint-plugin-react"),
+      'react-hooks': require('eslint-plugin-react-hooks'),
     },
     rules: {
-      // No-op base rules for JS/JSX
-      "react/jsx-props-no-spreading": "off",
+      // Allow prop spreading in JSX where it's intentionally used in existing components
+      'react/jsx-props-no-spreading': 'off',
+      // Lower severity of a few strict/react-compiler rules during migration
+      'react-hooks/immutability': 'warn',
+      'react-hooks/preserve-manual-memoization': 'warn',
+      'react-hooks/refs': 'warn',
     },
-  },
-  {
-    files: ["**/*.{ts,tsx}"],
-    ignores: [".next/**", "out/**", "node_modules/**"],
-    languageOptions: {
-      parser: require("@typescript-eslint/parser"),
-      parserOptions: {
-        ecmaVersion: 2023,
-        sourceType: "module",
-        ecmaFeatures: { jsx: true },
-        project: "./tsconfig.json",
+    settings: {
+      react: {
+        version: 'detect',
       },
-    },
-    plugins: {
-      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
-      react: require("eslint-plugin-react"),
-    },
-    rules: {
-      // No-op TypeScript rules, prefer enabling rules explicitly later
-      "react/jsx-props-no-spreading": "off",
     },
   },
 ];

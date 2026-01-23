@@ -26,9 +26,6 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test
-
       - name: Coverage
         run: yarn vitest run --coverage
         env:
@@ -38,7 +35,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage || ''
+          path: coverage
+          if-no-files-found: ignore
 
       - name: Build docs
         run: yarn docs
@@ -85,6 +83,45 @@ jobs:
 
       - name: Run Playwright tests
         run: yarn test:e2e
+
+      - name: Stop server
+        run: pkill -f 'next start' || true
+
+  a11y:
+    name: Accessibility tests (Playwright + axe)
+    runs-on: ubuntu-latest
+    needs: build
+    # Non-blocking: continue-on-error so early adoption won't break PRs
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Playwright deps and browsers
+        run: npx playwright install --with-deps
+
+      - name: Build
+        run: yarn build
+
+      - name: Start server
+        run: |
+          nohup yarn start &
+          # wait for server to be ready
+          for i in {1..30}; do
+            curl -sSf http://localhost:3000 && break || sleep 1
+          done
+
+      - name: Run accessibility tests
+        run: yarn test:a11y
 
       - name: Stop server
         run: pkill -f 'next start' || true

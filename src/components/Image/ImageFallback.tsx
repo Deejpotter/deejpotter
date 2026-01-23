@@ -19,7 +19,7 @@ export default function ImageFallback(props: Props) {
   }, [src]);
   return (
     <Image
-      /* eslint-disable-next-line react/jsx-props-no-spreading */
+       
       {...rest}
       alt={rest.alt ?? ""}
       src={imgSrc}

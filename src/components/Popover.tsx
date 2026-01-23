@@ -102,7 +102,7 @@ export function usePopover({
 
   const interactions = useInteractions([click, dismiss, role]);
 
-  return React.useMemo(
+  const value = React.useMemo(
     () => ({
       open,
       setOpen,
@@ -114,8 +114,20 @@ export function usePopover({
       setLabelId,
       setDescriptionId,
     }),
-    [open, setOpen, interactions, data, modal, labelId, descriptionId]
+    [
+      open,
+      setOpen,
+      interactions,
+      data,
+      modal,
+      labelId,
+      descriptionId,
+      setLabelId,
+      setDescriptionId,
+    ]
   );
+
+  return value;
 }
 
 /**
@@ -198,20 +210,26 @@ export const PopoverTrigger = React.forwardRef<
   React.HTMLProps<HTMLElement> & PopoverTriggerProps
 >(function PopoverTrigger({ children, asChild = false, ...props }, propRef) {
   const context = usePopoverContext();
-  const childrenRef = (children as any).ref;
-  const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
+  // Do not access child refs during render; merge only the necessary refs.
+  const ref = useMergeRefs([context.refs.setReference, propRef]);
 
   // `asChild` allows the user to pass any element as the anchor
   if (asChild && React.isValidElement(children)) {
     const child = children as React.ReactElement;
-    return React.cloneElement(
-      child,
-      context.getReferenceProps({
-        ref,
-        ...props,
-        ["data-state"]: context.open ? "open" : "closed",
-      } as any)
-    );
+
+    const referenceProps = context.getReferenceProps({
+      ref,
+      ...child.props,
+      ...props,
+      "data-state": context.open ? "open" : "closed",
+      // Expose accessible state
+      'aria-expanded': context.open,
+    } as any);
+
+    // The merged ref is intentionally forwarded to the cloned child when using
+    // `asChild`, so the consumer-provided element becomes the popover anchor.
+    // eslint-disable-next-line react-hooks/refs
+    return React.cloneElement(child, referenceProps);
   }
 
   return (
