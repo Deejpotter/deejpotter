@@ -109,7 +109,15 @@ In Progress
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
 - ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration)
 - Migrate SCSS to modern `@use` / `@forward` and fix Sass deprecation warnings — **In Progress** (started 2026-01-24)
-- Replace deprecated `map-merge` with `sass:map` `map.merge` (2026-01-24) ✅
+  - Create an internal `SCSS-MIGRATION-PLAN.md` documenting the steps — **In Progress** (2026-01-24)
+  - Replace `map-merge` with `sass:map` `map.merge` — **Completed** (2026-01-24) ✅
+  - Replace deprecated `darken()`, `red()`,`green()`,`blue()`, and `if()` usages in local overrides — **Todo**
+  - Split overrides into `_variables.scss`, `_theme.scss`, `_mixins.scss` and `@forward` them from a main entry — **Todo**
+
+- Add visual regression snapshots for Hero and Navbar + Playwright coverage — **Todo**
+- Add an automated a11y check (Playwright + axe) for header and dropdown interactions — **Todo**
+- Audit components for hard-coded colors and replace with Bootstrap variables (e.g., `text-info` -> `text-primary`) — **Completed** (2026-01-24) ✅
+
 
 Completed (last 10)
 
