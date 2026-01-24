@@ -6,8 +6,10 @@ const z: any = (zod as any).z ?? (zod as any).default ?? (zod as any);
 async function getAuthAsync() {
   try {
     const _clerk = await import("@clerk/nextjs");
+    // Some Clerk package shapes expose `auth`, others `getAuth`. Use a safe any-cast
+    // so TypeScript doesn't fail during builds when a shape is missing.
     const getter =
-      _clerk?.auth ?? _clerk?.getAuth ?? (() => ({ userId: null }));
+      (_clerk as any)?.auth ?? (_clerk as any)?.getAuth ?? (() => ({ userId: null }));
     return getter();
   } catch (e) {
     // If Clerk isn't available at build/test time, return no-op auth
