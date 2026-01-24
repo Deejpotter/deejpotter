@@ -1,0 +1,29 @@
+// Module to initialize Bootstrap using project tokens via the @use ... with syntax
+// This ensures Bootstrap variables are configured using our `tokens` module and
+// avoids using global @import overrides.
+@use "./tokens" as tokens;
+
+@use "../../node_modules/bootstrap/scss/bootstrap" with (
+  // Colors
+  $primary: tokens.$primary,
+  $secondary: tokens.$secondary,
+  $success: tokens.$success,
+  $info: tokens.$info,
+  $warning: tokens.$warning,
+  $danger: tokens.$danger,
+  $light: tokens.$light,
+  $dark: tokens.$dark,
+
+  // Spacing
+  $spacer: tokens.$spacer,
+  $spacers: tokens.$spacers,
+
+  // Body / layout
+  $body-bg: tokens.$body-bg,
+  $body-color: tokens.$body-color,
+
+  // Misc
+  $border-radius: tokens.$border-radius,
+  $box-shadow-sm: tokens.$box-shadow-sm,
+
+);
