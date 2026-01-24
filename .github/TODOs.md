@@ -139,6 +139,14 @@ Notes
   - Tailwind base and `postcss` config are in place; many unknown `@apply` utilities were replaced with explicit rules to unblock build.
   - Per-component SCSS modules remain and are being migrated incrementally (next priority).
 
+Tailwind Migration Todo (feature/tailwind branch)
+- Convert `GradientHeroSection` to Tailwind `bg-gradient-to-b from-<color> to-<color>` and update usage to accept color tokens (done)
+- Replace dropdown gradient background in `TopNavbar` with `bg-gradient-to-b` using Tailwind utilities (done)
+- Add safelist entries to `tailwind.config.cjs` for `from-` / `to-` classes used dynamically (done)
+- Add Playwright visual snapshot baselines for hero + navbar and confirm parity (todo)
+- Replace remaining custom gradients and popover styles with Tailwind utilities where appropriate (todo)
+- Remove unused SCSS and update migration docs after visual tests pass (todo)
+
 - Cleanup performed (2026-01-20):
   - Removed generated agent and prompt markdowns and one obsolete issue that were imported for Next.js/MCP experiments: `.github/prompts/*`, `.github/agents/*`, `.github/ISSUES/007-tailwind-migration.md`.
 

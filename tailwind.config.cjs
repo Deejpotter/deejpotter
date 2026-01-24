@@ -6,7 +6,9 @@ module.exports = {
     './src/app/**/*.{ts,tsx,js,jsx,mdx}'
   ],
   safelist: [
-    'px-1', 'px-2', 'px-3', 'px-4', 'py-1', 'py-2', 'text-sm', 'text-lg', 'border-gray-300', 'border-gray-400', 'border-gray-500'
+    'px-1', 'px-2', 'px-3', 'px-4', 'py-1', 'py-2', 'text-sm', 'text-lg', 'border-gray-300', 'border-gray-400', 'border-gray-500',
+    /* gradient utility safelist for dynamic usage */
+    'bg-gradient-to-b', 'from-primary', 'to-primary', 'from-light', 'to-light', 'from-secondary', 'to-secondary', 'from-info', 'to-info', 'from-dark', 'to-dark', 'from-primary/0', 'from-primary/10', 'to-primary/95'
   ],
   theme: {
     extend: {

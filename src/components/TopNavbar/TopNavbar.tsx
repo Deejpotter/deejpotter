@@ -78,7 +78,7 @@ export default function TopNavbar() {
                   <div
                     onMouseEnter={() => setOpenMenu(item.label)}
                     onMouseLeave={() => setOpenMenu(null)}
-                    className="absolute left-0 right-0 top-full mt-2 bg-gray-900 bg-opacity-95 border-t border-gray-800 shadow-md"
+                    className="absolute left-0 right-0 top-full mt-2 bg-gradient-to-b from-primary/0 to-primary border-t border-primary/20 shadow-md"
                     style={{ zIndex: 50 }}
                   >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">

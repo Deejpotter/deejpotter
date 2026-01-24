@@ -24,14 +24,14 @@ export default function GradientHeroSection({
   textColour,
   title,
 }: GradientHeroSectionProps): ReactElement {
-  // As with BasicSection, the full class names for gradients must be passed in.
-  // The custom gradient classes are defined in `src/styles/custom-gradients.scss`
-  // and will need to be converted to Tailwind's gradient utilities or kept as custom CSS.
-  // For now, we assume the parent passes the correct, full gradient class name.
+  // Use Tailwind gradient utilities. `gradientFrom` and `gradientTo` should be
+  // color keys (e.g., "primary", "light", "info"). We map them to Tailwind
+  // `from-...` and `to-...` utility classes so the classes are explicit in the file.
+  const fromClass = `from-${gradientFrom}`;
+  const toClass = `to-${gradientTo}`;
+
   return (
-    <section
-      className={`${gradientFrom}-${gradientTo}-gradient ${textColour} py-20`}
-    >
+    <section className={`bg-gradient-to-b ${fromClass} ${toClass} ${textColour} py-20`}>
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-6xl font-extrabold">{title}</h1>
         <p className="mt-4 text-xl">{subtitle}</p>
