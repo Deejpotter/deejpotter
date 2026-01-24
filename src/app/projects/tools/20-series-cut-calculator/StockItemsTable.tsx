@@ -49,7 +49,7 @@ export default function StockItemsTable({
 
   return (
     <Card className="shadow-sm">
-      <Card.Header className="bg-info text-white d-flex justify-content-between align-items-center">
+      <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
         <h5 className="mb-0">Available Stock</h5>
         <Button
           variant="light"

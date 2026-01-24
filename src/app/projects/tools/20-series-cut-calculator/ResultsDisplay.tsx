@@ -25,7 +25,7 @@ export default function ResultsDisplay({
   return (
     <div>
       <Card className="shadow-sm mb-4">
-        <Card.Header className="bg-info text-white">
+        <Card.Header className="bg-primary text-white">
           <h5 className="mb-0">Results Summary</h5>
         </Card.Header>
         <Card.Body>
@@ -102,7 +102,7 @@ export default function ResultsDisplay({
             </Col>
             <Col md={6} className="text-center">
               <div className="border rounded p-2">
-                <h5 className="text-info mb-0">
+                <h5 className="text-primary mb-0">
                   ${result.totalCuttingCosts.toFixed(2)}
                 </h5>
                 <small className="text-muted">Cutting Costs</small>

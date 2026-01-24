@@ -100,7 +100,7 @@ export default function Home(): ReactElement {
                   >
                     Websites
                   </Link>
-                  <Link href="/projects/apps" className="btn btn-sm btn-info">
+                  <Link href="/projects/apps" className="btn btn-sm btn-primary">
                     Apps
                   </Link>
                   <Link

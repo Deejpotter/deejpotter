@@ -150,7 +150,7 @@ export default function Contact(): ReactElement {
 
             <div className="form-group pb-2">
               <button
-                className="btn btn-info shadow"
+                className="btn btn-primary shadow"
                 type="submit"
                 disabled={formStatus === "submitting"}
               >
