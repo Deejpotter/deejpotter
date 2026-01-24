@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link"; // Next.js Link component for client-side routing
 import React, { useEffect, useState } from "react"; // We need React for this component
-import Auth from "./Auth"; // My custom Auth component
+import AuthButton from "@/components/ui/auth/AuthButton"; // Use AuthButton component
 import NavDropdown from "./NavDropdown/NavDropdown"; // My custom NavDropdown component
 import Image from "next/image";
 import { useNavbar } from "@/contexts/NavbarContext";
@@ -110,7 +110,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden lg:block ml-4">
-          <Auth />
+          <AuthButton buttonSize="sm" />
         </div>
       </div>
     </nav>
