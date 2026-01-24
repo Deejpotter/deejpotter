@@ -9,6 +9,8 @@
   so you can easily see what variables are being overridden.
 */
 
+@use "sass:map";
+
 // Variables
 
 // Color system
@@ -29,7 +31,7 @@ $black: #000 !default;
 
 $grays: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
-$grays: map-merge(
+$grays: map.merge(
     (
       "100": $gray-100,
       "200": $gray-200,
@@ -62,7 +64,7 @@ $cyan: #73C2D4 !default;
 
 $colors: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
-$colors: map-merge(
+$colors: map.merge(
     (
       "blue": $blue,
       "indigo": $indigo,
@@ -96,7 +98,7 @@ $dark: $gray-800 !default;
 
 $theme-colors: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
-$theme-colors: map-merge(
+$theme-colors: map.merge(
     (
       "primary": $primary,
       "secondary": $secondary,
@@ -159,7 +161,7 @@ $enable-deprecation-messages: true !default;
 $spacer: 2rem;
 $spacers: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
-$spacers: map-merge(
+$spacers: map.merge(
     (
       0: 0,
       1: ($spacer * .25),
@@ -174,7 +176,7 @@ $spacers: map-merge(
 // This variable affects the `.h-*` and `.w-*` classes.
 $sizes: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
-$sizes: map-merge(
+$sizes: map.merge(
     (
       25: 25%,
       50: 50%,

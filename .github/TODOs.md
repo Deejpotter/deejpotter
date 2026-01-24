@@ -109,6 +109,7 @@ In Progress
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
 - ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration)
 - Migrate SCSS to modern `@use` / `@forward` and fix Sass deprecation warnings — **In Progress** (started 2026-01-24)
+- Replace deprecated `map-merge` with `sass:map` `map.merge` (2026-01-24) ✅
 
 Completed (last 10)
 
