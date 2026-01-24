@@ -156,8 +156,8 @@ export default function Apps(): ReactElement {
             pain points
           </li>
           <li>
-            <strong>Clean architecture:</strong> Separation of concerns,
-            modular components
+            <strong>Clean architecture:</strong> Separation of concerns, modular
+            components
           </li>
           <li>
             <strong>Type safety:</strong> TypeScript throughout for fewer
@@ -176,12 +176,10 @@ export default function Apps(): ReactElement {
             optimized renders
           </li>
           <li>
-            <strong>Testing:</strong> Unit tests, integration tests, manual
-            QA
+            <strong>Testing:</strong> Unit tests, integration tests, manual QA
           </li>
           <li>
-            <strong>Documentation:</strong> Code comments, API docs, user
-            guides
+            <strong>Documentation:</strong> Code comments, API docs, user guides
           </li>
         </ul>
       </section>
@@ -215,8 +213,7 @@ export default function Apps(): ReactElement {
                 code
               </li>
               <li>
-                <strong>Netlify Functions:</strong> Serverless API
-                endpoints
+                <strong>Netlify Functions:</strong> Serverless API endpoints
               </li>
               <li>
                 <strong>MongoDB:</strong> NoSQL database for flexible data

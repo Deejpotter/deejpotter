@@ -7,7 +7,8 @@ import { useNavbar } from "@/contexts/NavbarContext";
 import AuthButton from "@/components/ui/auth/AuthButton";
 
 export default function TopNavbar() {
-  const { navItems, openDropdowns, toggleDropdown, closeAllDropdowns } = useNavbar();
+  const { navItems, openDropdowns, toggleDropdown, closeAllDropdowns } =
+    useNavbar();
   const pathname = usePathname() || "/";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -35,7 +36,10 @@ export default function TopNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left: links */}
-          <nav className="hidden lg:flex lg:items-center lg:space-x-4" aria-label="Primary">
+          <nav
+            className="hidden lg:flex lg:items-center lg:space-x-4"
+            aria-label="Primary"
+          >
             {navItems.map((item) => (
               <div key={item.label} className="relative">
                 {item.items ? (
@@ -44,16 +48,26 @@ export default function TopNavbar() {
                     onMouseLeave={() => setOpenMenu(null)}
                     onFocus={() => setOpenMenu(item.label)}
                     onBlur={() => setOpenMenu(null)}
-                    onClick={() => setOpenMenu((s) => (s === item.label ? null : item.label))}
-                    className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 ${pathname.startsWith(item.href || "") ? "text-primary" : "text-gray-200"}`}
+                    onClick={() =>
+                      setOpenMenu((s) => (s === item.label ? null : item.label))
+                    }
+                    className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                      pathname.startsWith(item.href || "")
+                        ? "text-primary"
+                        : "text-gray-200"
+                    }`}
                     aria-expanded={openMenu === item.label}
                   >
                     {item.label}
                   </button>
                 ) : (
                   <Link
-                    href={item.href || '#'}
-                    className={`px-3 py-2 rounded text-sm font-medium hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 ${pathname.startsWith(item.href || "") ? "text-primary" : "text-gray-200"}`}
+                    href={item.href || "#"}
+                    className={`px-3 py-2 rounded text-sm font-medium hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                      pathname.startsWith(item.href || "")
+                        ? "text-primary"
+                        : "text-gray-200"
+                    }`}
                   >
                     {item.label}
                   </Link>
@@ -72,7 +86,7 @@ export default function TopNavbar() {
                         {item.items.map((sub) => (
                           <Link
                             key={sub.label}
-                            href={sub.href || '#'}
+                            href={sub.href || "#"}
                             className="text-sm text-gray-200 hover:text-primary px-2 py-1 rounded"
                           >
                             {sub.label}
@@ -89,8 +103,15 @@ export default function TopNavbar() {
           {/* Center: logo */}
           <div className="flex-1 flex items-center justify-center lg:justify-center">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/images/deejPotterLogo.svg" alt="Logo" width={40} height={40} />
-              <span className="hidden sm:inline font-bold text-lg text-white">Deej Potter</span>
+              <Image
+                src="/images/deejPotterLogo.svg"
+                alt="Logo"
+                width={40}
+                height={40}
+              />
+              <span className="hidden sm:inline font-bold text-lg text-white">
+                Deej Potter
+              </span>
             </Link>
           </div>
 
@@ -105,7 +126,19 @@ export default function TopNavbar() {
               onClick={() => setMobileOpen((s) => !s)}
               aria-label="Toggle menu"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -113,14 +146,31 @@ export default function TopNavbar() {
 
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 bg-black/50 z-40" onClick={() => setMobileOpen(false)}>
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setMobileOpen(false)}
+        >
           <div className="absolute left-0 top-0 right-0 bg-gray-900 p-4">
             <div className="flex items-center justify-between mb-4">
-              <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3">
-                <Image src="/images/deejPotterLogo.svg" alt="Logo" width={36} height={36} />
+              <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3"
+              >
+                <Image
+                  src="/images/deejPotterLogo.svg"
+                  alt="Logo"
+                  width={36}
+                  height={36}
+                />
                 <span className="font-bold text-white">Deej Potter</span>
               </Link>
-              <button onClick={() => setMobileOpen(false)} className="text-white">Close</button>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="text-white"
+              >
+                Close
+              </button>
             </div>
             <nav>
               <ul className="space-y-2">
@@ -128,17 +178,31 @@ export default function TopNavbar() {
                   <li key={item.label}>
                     {item.items ? (
                       <details>
-                        <summary className="text-white py-2">{item.label}</summary>
+                        <summary className="text-white py-2">
+                          {item.label}
+                        </summary>
                         <ul className="pl-4">
                           {item.items.map((sub) => (
                             <li key={sub.label}>
-                              <Link href={sub.href || '#'} onClick={() => setMobileOpen(false)} className="block py-1 text-gray-200">{sub.label}</Link>
+                              <Link
+                                href={sub.href || "#"}
+                                onClick={() => setMobileOpen(false)}
+                                className="block py-1 text-gray-200"
+                              >
+                                {sub.label}
+                              </Link>
                             </li>
                           ))}
                         </ul>
                       </details>
                     ) : (
-                      <Link href={item.href || '#'} onClick={() => setMobileOpen(false)} className="block py-2 text-white">{item.label}</Link>
+                      <Link
+                        href={item.href || "#"}
+                        onClick={() => setMobileOpen(false)}
+                        className="block py-2 text-white"
+                      >
+                        {item.label}
+                      </Link>
                     )}
                   </li>
                 ))}

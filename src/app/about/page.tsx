@@ -7,7 +7,7 @@ export default function About(props: any): ReactElement {
       <section className="mb-12">
         <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">About Me</h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          I'm married with 3 kids and they're all my favourite people in the
+          I&apos;m married with 3 kids and they&apos;re all my favourite people in the
           world, but my original love was technology. I have always loved the
           dynamic problem solving that working with tech requires.
         </p>
@@ -21,27 +21,24 @@ export default function About(props: any): ReactElement {
           <p>
             When I was younger, I worked at my parents&apos; small family
             restaurant and followed a career as a chef, but I was never
-            passionate about it. After completing a Certificate in IT in 2013,
-            I realized I had found my calling.
+            passionate about it. After completing a Certificate in IT in 2013, I
+            realized I had found my calling.
           </p>
           <p>
-            I discovered I have an <strong>INTP personality type</strong>,
-            which lends itself better to researching and problem-solving than
-            the personal skills required by hospitality. Although working as a
-            chef forced me to develop skills I wasn&apos;t initially
-            comfortable with - clear communication, teamwork, leadership, and
-            stress management - skills that now complement my technical
-            abilities.
+            I discovered I have an <strong>INTP personality type</strong>, which
+            lends itself better to researching and problem-solving than the
+            personal skills required by hospitality. Although working as a chef
+            forced me to develop skills I wasn&apos;t initially comfortable with
+            - clear communication, teamwork, leadership, and stress management -
+            skills that now complement my technical abilities.
           </p>
           <p>
-            I transitioned to technology by starting my own web design
-            business,
+            I transitioned to technology by starting my own web design business,
             <strong>Deej Potter Designs</strong>, where I provided end-to-end
-            website development from ideation to deployment. Later, I worked
-            as a{" "}
-            <strong>Junior Full-Stack Developer at One Alpha Tech</strong> in
-            Melbourne, working on an airport slot coordination application
-            using .NET Core and Angular with Azure/Kubernetes hosting.
+            website development from ideation to deployment. Later, I worked as
+            a <strong>Junior Full-Stack Developer at One Alpha Tech</strong> in
+            Melbourne, working on an airport slot coordination application using
+            .NET Core and Angular with Azure/Kubernetes hosting.
           </p>
           <p>
             Currently, I&apos;m working at <strong>Maker Store</strong> while
@@ -65,8 +62,8 @@ export default function About(props: any): ReactElement {
               From a young age, I was interested in learning about all kinds of
               electronic devices. I grew up with the internet and have spent a
               lot of time learning about how it works. I enjoy sharing my
-              knowledge with others and am happy to help when I can,
-              especially if it allows me to practice my skills.
+              knowledge with others and am happy to help when I can, especially
+              if it allows me to practice my skills.
             </p>
             <p>
               I&apos;m passionate about AI and machine learning, and I want to
@@ -81,8 +78,8 @@ export default function About(props: any): ReactElement {
           </h2>
           <div className="space-y-4 text-gray-800 dark:text-gray-300">
             <p>
-              I first completed a certificate in IT in 2013, but much of what
-              I know about web design has been self-taught. The rules and
+              I first completed a certificate in IT in 2013, but much of what I
+              know about web design has been self-taught. The rules and
               practices in web design are constantly changing, so it&apos;s
               important for a good web developer to be constantly learning and
               adapting. I have also used online courses, such as LinkedIn
@@ -102,8 +99,8 @@ export default function About(props: any): ReactElement {
             </p>
             <p>
               Most of the time when I&apos;m not working, I&apos;m studying to
-              improve my skills as a web developer because there is always
-              more to learn.
+              improve my skills as a web developer because there is always more
+              to learn.
             </p>
           </div>
         </div>
@@ -114,8 +111,8 @@ export default function About(props: any): ReactElement {
           <div className="space-y-4 text-gray-800 dark:text-gray-300">
             <p>
               If you have any other questions about me, don&apos;t hesitate to
-              reach out. I&apos;d be happy to answer them. Just click the
-              button below to contact me.
+              reach out. I&apos;d be happy to answer them. Just click the button
+              below to contact me.
             </p>
             <Link
               href="/contact"

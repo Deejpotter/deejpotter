@@ -43,10 +43,10 @@ export default function Home(): ReactElement {
           Welcome to My Portfolio
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          I'm a web developer focused on creating high-quality, user-friendly
-          websites and applications. With expertise in modern frameworks like
-          React and Next.js, I build solutions that are both beautiful and
-          functional.
+          I&apos;m a web developer focused on creating high-quality,
+          user-friendly websites and applications. With expertise in modern
+          frameworks like React and Next.js, I build solutions that are both
+          beautiful and functional.
         </p>
       </section>
 
@@ -71,7 +71,8 @@ export default function Home(): ReactElement {
               Performance Optimization
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Ensuring websites load quickly and function smoothly on all devices.
+              Ensuring websites load quickly and function smoothly on all
+              devices.
             </p>
           </div>
         </div>
@@ -83,8 +84,8 @@ export default function Home(): ReactElement {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
             <h3 className="text-xl font-semibold mb-2">Portfolio Projects</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Explore my various projects across web development, apps, games, and
-              engineering.
+              Explore my various projects across web development, apps, games,
+              and engineering.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link

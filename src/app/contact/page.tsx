@@ -44,8 +44,9 @@ export default function Contact(): ReactElement {
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const appEnv = process.env.NEXT_PUBLIC_ENV;
-      const isDevelopment = appEnv === "development" || process.env.NODE_ENV === "test";
-      
+      const isDevelopment =
+        appEnv === "development" || process.env.NODE_ENV === "test";
+
       // Validate backend URL is configured in production
       if (!backendUrl) {
         if (!isDevelopment) {
@@ -56,9 +57,11 @@ export default function Contact(): ReactElement {
           return;
         }
         // In development and test, default to localhost and warn developer
-        console.warn("NEXT_PUBLIC_BACKEND_URL not set, using http://localhost:3001");
+        console.warn(
+          "NEXT_PUBLIC_BACKEND_URL not set, using http://localhost:3001"
+        );
       }
-      
+
       const finalUrl = backendUrl || "http://localhost:3001";
       const response = await fetch(`${finalUrl}/api/contact`, {
         method: "POST",
@@ -93,8 +96,8 @@ export default function Contact(): ReactElement {
           Get in Touch
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          Have some questions or feedback for me? Fill in the form and I'll
-          get back to you as soon as I can.
+          Have some questions or feedback for me? Fill in the form and I'll get
+          back to you as soon as I can.
         </p>
       </section>
 
@@ -118,9 +121,7 @@ export default function Contact(): ReactElement {
               {...register("name")}
             />
             {errors.name && (
-              <p className="text-red-500 text-sm mt-2">
-                {errors.name.message}
-              </p>
+              <p className="text-red-500 text-sm mt-2">{errors.name.message}</p>
             )}
           </div>
 
