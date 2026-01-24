@@ -5,6 +5,9 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{ts,tsx,js,jsx,mdx}'
   ],
+  safelist: [
+    'px-1', 'px-2', 'px-3', 'px-4', 'py-1', 'py-2', 'text-sm', 'text-lg', 'border-gray-300', 'border-gray-400', 'border-gray-500'
+  ],
   theme: {
     extend: {
       colors: {

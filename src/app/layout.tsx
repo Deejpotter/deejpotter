@@ -3,12 +3,11 @@ import { Metadata, Viewport } from "next"; // Importing the Metadata type from N
 import { Fredoka, Nunito } from "next/font/google"; // Importing the Fredoka and Nunito fonts from the next/font/google module
 import React from "react"; // Importing React
 import MainFooter from "@/components/MainFooter/MainFooter";
-import Navbar from "@/components/Navbar/Navbar";
 import AuthProvider from "@/contexts/AuthProvider"; // Client component wrapper
-import BootstrapClient from "@/lib/BootstrapClient";
 import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
+import TopNavbar from "@/components/TopNavbar/TopNavbar";
 
 // Initializing the Nunito font with specific options
 const nunito = Nunito({
@@ -71,18 +70,19 @@ export default function RootLayout({
   const inner = (
     <AuthProvider>
       <NavbarProvider>
-        {/* The body of the HTML document with custom scrollbar class and Bootstrap classes for flexbox layout */}
-        {/* 'd-flex flex-column h-100' creates a flex container that takes up the full height of the viewport */}
-        <body suppressHydrationWarning className="custom-scrollbar d-flex flex-column h-100">
+        <body
+          suppressHydrationWarning
+          className="custom-scrollbar bg-light text-dark dark:bg-dark dark:text-light"
+        >
           {/* Client-only cleanup removes extension-injected attributes that break hydration */}
           <BodyAttributesCleaner />
-          <Navbar />
-          {/* The main content of the page, which will be the children passed to the RootLayout component */}
-          {/* 'flex-grow-1' allows the main content to grow and push the footer down */}
-          <main className="flex-grow-1">{children}</main>
-          <BootstrapClient />
-          {/* The Footer component */}
-          <MainFooter />
+          <div>
+            <TopNavbar />
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              {children}
+              <MainFooter />
+            </main>
+          </div>
         </body>
       </NavbarProvider>
     </AuthProvider>
@@ -90,8 +90,8 @@ export default function RootLayout({
 
   return (
     // The root HTML element with language set to English and classes for the fonts
-    // Added 'h-100' class to ensure the HTML element takes up the full viewport height
-    <html lang="en" className={`${nunito.variable} ${fredoka.variable} h-100`}>
+    // Removed h-100 as min-h-screen on body is sufficient
+    <html lang="en" className={`${nunito.variable} ${fredoka.variable}`}>
       {/* Only initialize Clerk in environments with a publishable key configured */}
       {hasClerk ? <ClerkProvider>{inner}</ClerkProvider> : inner}
     </html>

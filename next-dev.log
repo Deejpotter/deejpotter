@@ -1,0 +1,97 @@
+nohup: ignoring input
+yarn run v1.22.22
+warning ..\package.json: No license field
+$ next dev
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\Deej\Repos\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Deej\Repos\deejpotter\package-lock.json
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.0.0.13:3000
+- Environments: .env.development, .env
+- Experiments (use with caution):
+  ✓ mdxRs
+
+✓ Starting...
+✓ Ready in 894ms
+Error: Cannot apply unknown utility class `px-4`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [2m[at onInvalidCandidate (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:1314)][0m
+    [2m[at Te (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:16:36652)][0m
+    [2m[at C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:355][0m
+    [2m[at Rr (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1718)][0m
+    [2m[at _ (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1377)][0m
+    [2m[at $e (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:172)][0m
+    [2m[at un (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:294)][0m
+    [2m[at process.processTicksAndRejections (node:internal/process/task_queues:105:5)][0m
+    [2m[at async cn (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:631)][0m
+    [2m[at async Xr (C:\Users\Deej\Repos\deejpotter\node_modules\@tailwindcss\node\dist\index.js:10:3417)][0m
+⨯ ./deejpotter/src/styles/globals.css
+Error evaluating Node.js code
+CssSyntaxError: tailwindcss: C:\Users\Deej\Repos\deejpotter\src\styles\globals.css:1:1: Cannot apply unknown utility class `px-4`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [at Input.error (turbopack:///[project]/deejpotter/node_modules/postcss/lib/input.js:135:16)]
+    [at Root.error (turbopack:///[project]/deejpotter/node_modules/postcss/lib/node.js:146:32)]
+    [at Object.Once (C:\Users\Deej\Repos\deejpotter\node_modules\@tailwindcss\postcss\dist\index.js:10:6911)]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
+    [at async LazyResult.runAsync (turbopack:///[project]/deejpotter/node_modules/postcss/lib/lazy-result.js:293:11)]
+    [at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34)]
+    [at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23)]
+
+Import trace:
+  Client Component Browser:
+    ./deejpotter/src/styles/globals.css [Client Component Browser]
+    ./deejpotter/src/app/layout.tsx [Server Component]
+
+
+ GET / 500 in 4.0s (compile: 3.8s, render: 150ms)
+Error: Cannot apply unknown utility class `border-gray-300`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [2m[at onInvalidCandidate (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:1314)][0m
+    [2m[at Te (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:16:36652)][0m
+    [2m[at C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:355][0m
+    [2m[at Rr (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1718)][0m
+    [2m[at _ (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1377)][0m
+    [2m[at $e (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:172)][0m
+    [2m[at un (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:294)][0m
+    [2m[at process.processTicksAndRejections (node:internal/process/task_queues:105:5)][0m
+    [2m[at async cn (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:631)][0m
+    [2m[at async Xr (C:\Users\Deej\Repos\deejpotter\node_modules\@tailwindcss\node\dist\index.js:10:3417)][0m
+Error: Cannot apply unknown utility class `text-sm`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [2m[at onInvalidCandidate (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:1314)][0m
+    [2m[at Te (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:16:36652)][0m
+    [2m[at C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:355][0m
+    [2m[at Rr (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1718)][0m
+    [2m[at _ (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1377)][0m
+    [2m[at $e (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:172)][0m
+    [2m[at un (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:294)][0m
+    [2m[at process.processTicksAndRejections (node:internal/process/task_queues:105:5)][0m
+    [2m[at async cn (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:631)][0m
+    [2m[at async Xr (C:\Users\Deej\Repos\deejpotter\node_modules\@tailwindcss\node\dist\index.js:10:3417)][0m
+Error: Cannot apply unknown utility class `px-3`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [2m[at onInvalidCandidate (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:1314)][0m
+    [2m[at Te (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:16:36652)][0m
+    [2m[at C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:355][0m
+    [2m[at Rr (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1718)][0m
+    [2m[at _ (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1377)][0m
+    [2m[at $e (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:172)][0m
+    [2m[at un (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:294)][0m
+    [2m[at process.processTicksAndRejections (node:internal/process/task_queues:105:5)][0m
+    [2m[at async cn (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:631)][0m
+    [2m[at async Xr (C:\Users\Deej\Repos\deejpotter\node_modules\@tailwindcss\node\dist\index.js:10:3417)][0m
+Error: Cannot apply unknown utility class `text-lg`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [2m[at onInvalidCandidate (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:1314)][0m
+    [2m[at Te (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:16:36652)][0m
+    [2m[at C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:355][0m
+    [2m[at Rr (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1718)][0m
+    [2m[at _ (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:3:1377)][0m
+    [2m[at $e (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:21:172)][0m
+    [2m[at un (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:294)][0m
+    [2m[at process.processTicksAndRejections (node:internal/process/task_queues:105:5)][0m
+    [2m[at async cn (C:\Users\Deej\Repos\deejpotter\node_modules\tailwindcss\dist\lib.js:38:631)][0m
+    [2m[at async Xr (C:\Users\Deej\Repos\deejpotter\node_modules\@tailwindcss\node\dist\index.js:10:3417)][0m
+✓ Compiled in 851ms
+[?25h
+error Command failed with exit code 4294967295.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

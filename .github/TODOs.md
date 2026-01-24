@@ -111,6 +111,7 @@ In Progress
 
 Completed (last 10)
 
+- Integrate `TopNavbar` into root `layout` and replace Sidebar for desktop nav (2026-01-24)
 - Update TypeDoc config name and exclude *.test.tsx from docs (2026-01-18)
 - Fix README typo ("Explain things in comments") (2026-01-18)
 - Add `src/app/api/mongo-crud/route.ts` and validation unit tests (2026-01-18)

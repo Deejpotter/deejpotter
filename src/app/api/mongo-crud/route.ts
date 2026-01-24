@@ -6,8 +6,14 @@ const z: any = (zod as any).z ?? (zod as any).default ?? (zod as any);
 async function getAuthAsync() {
   try {
     const _clerk = await import("@clerk/nextjs");
+    // Use runtime checks and `any` to avoid TypeScript errors during build when Clerk types differ
+    const anyClerk = _clerk as any;
     const getter =
-      _clerk?.auth ?? _clerk?.getAuth ?? (() => ({ userId: null }));
+      (typeof anyClerk?.auth === 'function'
+        ? anyClerk.auth
+        : typeof anyClerk?.getAuth === 'function'
+        ? anyClerk.getAuth
+        : () => ({ userId: null }));
     return getter();
   } catch (e) {
     // If Clerk isn't available at build/test time, return no-op auth

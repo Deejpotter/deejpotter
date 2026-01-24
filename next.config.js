@@ -1,8 +1,4 @@
 const path = require("path");
-const withMDX = require("@next/mdx")({
-  extension: /\.mdx?$/
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   sassOptions: {
@@ -18,10 +14,7 @@ const nextConfig = {
     ],
   },
   // Add MDX support for .md and .mdx files
-  pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
-  experimental: {
-    mdxRs: true,
-  },
+  pageExtensions: ["js", "jsx", "ts", "tsx"],
 };
 
-module.exports = withMDX(nextConfig);
+module.exports = nextConfig;

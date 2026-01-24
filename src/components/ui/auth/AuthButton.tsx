@@ -69,20 +69,27 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 	// Show loading state while Clerk is initializing
 	if (!isLoaded) {
 		return (
-			<div className={`navbar-nav ${className}`}>
-				<div className="nav-item">
-					<span className="text-muted">Loading...</span>
-				</div>
+			<div className={`flex items-center ${className}`}>
+				<div className="h-6 w-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
 			</div>
 		);
 	}
 
-	const btnSizeClass = `btn-${buttonSize}`;
+	const sizeClasses = {
+		sm: "py-1 px-2 text-sm",
+		md: "py-2 px-3 text-base",
+		lg: "py-3 px-4 text-lg",
+	};
+
+	const btnClasses = (variant = "solid") =>
+		variant === "solid"
+			? `bg-primary text-white font-semibold ${sizeClasses[buttonSize] || sizeClasses.md} rounded-full shadow`
+			: `bg-transparent border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 ${sizeClasses[buttonSize] || sizeClasses.md} rounded-full`;
 
 	return (
 		<div className={`flex items-center ${className}`}>
 			{isSignedIn && user ? (
-				<div className="flex items-center">
+				<div className="flex items-center gap-3">
 					{showGravatar && (
 						<Gravatar
 							email={
@@ -91,28 +98,19 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 								""
 							}
 							size={gravatarSize}
-							className="rounded-circle mx-1 shadow"
+							className="rounded-full"
 						/>
 					)}
-					<button
-						onClick={logout}
-						className={`btn ${btnSizeClass} btn-outline-danger shadow`}
-					>
+					<button onClick={logout} className={`${btnClasses("solid")}`}>
 						Logout
 					</button>
 				</div>
 			) : (
-				<div className="flex items-center">
-					<button
-						onClick={login}
-						className={`btn ${btnSizeClass} btn-outline-secondary shadow mx-1`}
-					>
+				<div className="flex items-center gap-2">
+					<button onClick={login} className={`${btnClasses("solid")}`}>
 						Login
 					</button>
-					<button
-						onClick={signup}
-						className={`btn ${btnSizeClass} btn-outline-secondary shadow`}
-					>
+					<button onClick={signup} className={`${btnClasses("outline")}`}>
 						Sign up
 					</button>
 				</div>

@@ -1,13 +1,9 @@
-// Override bootstrap variables
-@import "@/styles/bootstrap-overrides.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-// Imports
-@import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/bootstrap-icons/font/bootstrap-icons.scss";
-
-// My custom styles
-@import "@/styles/custom-gradients";
 @import "@/styles/blog";
+
 /*--------- Base Styles ---------*/
 h1,
 h2,
@@ -16,175 +12,32 @@ h4,
 h5,
 h6 {
   font-family: var(--font-fredoka);
-  font-weight: 700;
 }
 
 body {
   font-family: var(--font-nunito);
 }
 
-// Override bootstrap font classes
-.display-1,
-.display-2,
-.display-3,
-.display-4 {
-  font-family: var(--font-fredoka);
-  font-weight: 700;
-}
-
 a {
   text-decoration: none;
 }
 
-/*--------- Bootstrap transitions ---------*/
-
-// Add hover effects and transition to all buttons
-.btn {
-  transition: all 0.3s ease;
-  box-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.15);
-
-  &:hover {
-    color: #fff;
-    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.15);
-  }
+/* Custom Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1e9952 #181821;
 }
-
-// Navbar stuff
-
-.navbar {
-  transition: all 0.3s ease;
-
-  &-brand {
-    img {
-      height: 2.5rem;
-    }
-  }
-
-  &-nav {
-    .nav-link {
-      cursor: pointer;
-      align-items: center;
-    }
-  }
-
-  .dropdown {
-    &-menu {
-      background: rgb(30, 153, 82);
-      background: linear-gradient(
-        180deg,
-        rgba(30, 153, 82, 0) 0%,
-        rgba(30, 153, 82, 1) 10%,
-        rgba(30, 153, 82, 0.95) 65%,
-        rgba(253, 253, 253, 0.8) 100%
-      );
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      box-shadow: 0 10px 1px 0 rgba(100, 100, 100, 0.1);
-      border: none;
-    }
-
-    &-item {
-      &:hover {
-        background: linear-gradient(
-          -40deg,
-          rgba(253, 253, 253, 0) 0%,
-          rgba(253, 253, 253, 0.01) 20%,
-          rgba(253, 253, 253, 0.2) 100%
-        );
-      }
-    }
-  }
-}
-
-// Dropdown styles for smaller screens
-.dropdown-submenu {
-  .dropdown-menu {
-    position: static;
-    float: none;
-    width: auto;
-    margin-top: 0;
-    background-color: transparent;
-    border: 0;
-    box-shadow: none;
-  }
-}
-
-@media (min-width: 992px) {
-  .dropdown-submenu {
-    position: relative;
-
-    &:hover > .dropdown-menu {
-      display: block;
-    }
-
-    & > .dropdown-menu {
-      top: 0;
-      left: 95%;
-      margin-top: -0.5rem;
-      margin-left: 0.1rem;
-      border-radius: 0 0.25rem 0.25rem 0.25rem;
-    }
-
-    & > .dropdown-toggle::after {
-      transform: rotate(-90deg);
-    }
-  }
-}
-
-/*--------- Utils ---------*/
-
-// Custom scrollbar
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 0.6rem;
-  background-color: $light;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: $primary;
-  border-radius: 5px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: darken($primary, 10);
+  width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  border-radius: 5px;
-  background-color: $light;
+  background: #181821;
 }
 
-/* For Firefox */
-.scroll-container {
-  scrollbar-color: $light $primary;
-  scrollbar-width: thin;
-}
-
-/*--------- Animations ---------*/
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/*--------- Custom classes ---------*/
-// Popover styles
-.Popover {
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 10, 20, 0.1);
-  border: 1px solid #ddd;
-  font-size: 90%;
-  padding: 4px 8px;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #1e9952;
   border-radius: 4px;
-  box-sizing: border-box;
-  width: max-content;
-  max-width: calc(100vw - 10px);
+  border: 2px solid #181821;
 }

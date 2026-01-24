@@ -1,8 +1,10 @@
 import React from "react";
-import Feedback from "react-bootstrap/Feedback";
-
 export default function FormError(props: { message?: string }) {
   const { message } = props;
 
-  return message && <Feedback type="invalid">{message}</Feedback>;
+  return (
+    message && (
+      <p className="mt-2 text-sm text-red-600 dark:text-red-500">{message}</p>
+    )
+  );
 }

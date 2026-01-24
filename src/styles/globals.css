@@ -25,52 +25,64 @@
 @layer components {
   /* Buttons: use Tailwind utilities to match Bootstrap look */
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-bs shadow-bs-sm transition-all duration-300 ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: 0.5rem; /* rounded-bs */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* shadow-bs-sm */
+    transition: all 300ms ease-in-out;
   }
 
   .btn-primary {
-    @apply bg-primary text-white;
+    background-color: var(--color-primary);
+    color: white;
   }
 
   .btn-secondary {
-    @apply bg-secondary text-white;
+    background-color: #3A2C33;
+    color: white;
   }
 
   .btn:focus {
-    @apply outline-none ring-2 ring-primary/40;
+    outline: none;
+    box-shadow: 0 0 0 6px rgba(30,153,82,0.16); /* ring-primary/40 approximation */
   }
 
   .btn:hover {
-    @apply shadow-bs;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12); /* shadow-bs */
   }
 
   /* Additional button variants */
   .btn-outline {
-    @apply border border-gray-300 text-gray-700 bg-white;
+    border: 1px solid #d1d5db; /* gray-300 */
+    color: #374151; /* gray-700 */
+    background: white;
   }
   .btn-outline.btn-primary {
-    @apply border-primary text-primary bg-transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: transparent;
   }
 
   /* Bootstrap-compatible button variants */
-  .btn-success { @apply bg-green-600 text-white; }
-  .btn-warning { @apply bg-warning text-white; }
-  .btn-danger { @apply bg-danger text-white; }
+  .btn-success { background-color: #1E9952; color: white; }
+  .btn-warning { background-color: #c0a520; color: white; }
+  .btn-danger { background-color: #f44336; color: white; }
 
-  .btn-outline-success { @apply border-green-600 text-green-600 bg-transparent; }
-  .btn-outline-warning { @apply border-warning text-warning bg-transparent; }
-  .btn-outline-danger { @apply border-danger text-danger bg-transparent; }
-
+  .btn-outline-success { border: 1px solid #1E9952; color: #1E9952; background: transparent; }
+  .btn-outline-warning { border: 1px solid #c0a520; color: #c0a520; background: transparent; }
+  .btn-outline-danger { border: 1px solid #f44336; color: #f44336; background: transparent; }
   /* Button sizes */
-  .btn-sm { @apply text-sm px-3 py-1 rounded-sm; }
-  .btn-md { @apply text-base px-4 py-2 rounded-bs; }
-  .btn-lg { @apply text-lg px-5 py-3 rounded-bs-lg; }
+  .btn-sm { font-size: 0.875rem; padding: 0.25rem 0.75rem; border-radius: 0.2rem; }
+  .btn-md { font-size: 1rem; padding: 0.5rem 1rem; border-radius: 0.5rem; }
+  .btn-lg { font-size: 1.125rem; padding: 0.75rem 1.25rem; border-radius: 1rem; }
 
   /* Rounded utilities */
-  .rounded-circle { @apply rounded-full; }
+  .rounded-circle { border-radius: 9999px; }
 
   /* Simple shadow utility compatibility */
-  .shadow { @apply shadow; }
+  .shadow { box-shadow: 0 .5rem 1rem rgba(0,0,0,0.15); }
 
   /* Spacing helpers (Bootstrap-like shorthand used across the codebase) */
   .me-1 { margin-inline-end: 0.25rem; }
@@ -84,19 +96,34 @@
 
   /* Form controls mapping to Tailwind */
   .form-control, input.form-control, textarea.form-control, select.form-control {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-bs bg-white text-gray-900;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem; /* py-2 px-3 */
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    background: white;
+    color: #111827; /* gray-900 */
     box-sizing: border-box;
   }
   .form-control:focus {
-    @apply outline-none ring-2 ring-primary/40;
+    outline: none;
+    box-shadow: 0 0 0 6px rgba(30,153,82,0.16);
   }
 
   /* Navbar compatibility - basic visual mapping and collapse utility */
-  .navbar { @apply flex items-center justify-between px-spacer py-4 bg-primary text-white; }
-  .navbar-brand { @apply inline-flex items-center text-lg font-bold; }
-  .navbar-toggler { @apply inline-flex items-center justify-center p-2 bg-transparent border border-transparent rounded; }
+  .navbar { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding-inline: 2rem; /* spacer */
+    padding-block: 1rem; /* py-4 */
+    background-color: var(--color-primary);
+    color: white;
+  }
+  .navbar-brand { display:inline-flex; align-items:center; font-size: 1.125rem; font-weight: 700; }
+  .navbar-toggler { display:inline-flex; align-items:center; justify-content:center; padding: 0.5rem; background: transparent; border: none; border-radius: 0.25rem; }
   .navbar-toggler-icon { width: 1.25rem; height: 1.25rem; display: inline-block; background-size: contain; background-repeat: no-repeat; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); }
-  .navbar-collapse { @apply flex items-center; }
+  .navbar-collapse { display:flex; align-items:center; }
   .collapse { display: none; }
   .collapse.show { display: flex; }
 
