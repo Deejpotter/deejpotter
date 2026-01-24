@@ -112,9 +112,9 @@ In Progress
   - Create an internal `SCSS-MIGRATION-PLAN.md` documenting the steps — **In Progress** (2026-01-24)
   - Replace `map-merge` with `sass:map` `map.merge` — **Completed** (2026-01-24) ✅
   - Replace deprecated `darken()`, `red()`,`green()`,`blue()`, and `if()` usages in local overrides — **Todo**
-  - Split overrides into `_variables.scss`, `_theme.scss`, `_mixins.scss` and `@forward` them from a main entry — **Todo**
+  - Split overrides into `_variables.scss`, `_theme.scss`, `_mixins.scss` and `@forward` them from a main entry — **In Progress** (create `_variables.scss`)
 
-- Add visual regression snapshots for Hero and Navbar + Playwright coverage — **Todo**
+- Add visual regression snapshots for Hero and Navbar + Playwright coverage — **In Progress** (create `e2e/visual.spec.ts`)
 - Add an automated a11y check (Playwright + axe) for header and dropdown interactions — **Todo**
 - Audit components for hard-coded colors and replace with Bootstrap variables (e.g., `text-info` -> `text-primary`) — **Completed** (2026-01-24) ✅
 

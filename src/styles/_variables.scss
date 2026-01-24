@@ -1,0 +1,62 @@
+// Project SCSS variables (migration target)
+// Purpose: centralize theme tokens to be `@use`d by override and theme modules.
+
+// Color system
+$white: #fff !default;
+$gray-100: #FDFDFD;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #181821;
+$gray-900: #08080C !default;
+$black: #000 !default;
+
+// Core colors
+$blue: #59B7CC; // info
+$purple: #3A2C33; // secondary
+$red: #f44336; // danger
+$orange: #fd7e14 !default;
+$yellow: #c0a520; // warning
+$green: #1E9952; // primary
+$teal: #20c997 !default;
+$cyan: #73C2D4 !default;
+
+// Theme tokens
+$primary: $green;
+$secondary: $purple;
+$success: $green !default;
+$info: $blue;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-200;
+$dark: $gray-800 !default;
+
+// Spacing
+$spacer: 2rem;
+$spacers: (
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3)
+) !default;
+
+// Sizes
+$sizes: (
+  25: 25%,
+  50: 50%,
+  75: 75%,
+  100: 100%,
+  auto: auto
+) !default;
+
+// Navbar and body defaults
+$body-bg: $light;
+$body-color: $gray-900 !default;
+$jumbotron-padding: 3rem;
+$border-radius: .5rem;
+$box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
