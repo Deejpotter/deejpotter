@@ -61,14 +61,6 @@
   .btn-outline-warning { @apply border-warning text-warning bg-transparent; }
   .btn-outline-danger { @apply border-danger text-danger bg-transparent; }
 
-  /* Button sizes */
-  .btn-sm { @apply text-sm px-3 py-1 rounded-sm; }
-  .btn-md { @apply text-base px-4 py-2 rounded-bs; }
-  .btn-lg { @apply text-lg px-5 py-3 rounded-bs-lg; }
-
-  /* Rounded utilities */
-  .rounded-circle { @apply rounded-full; }
-
   /* Simple shadow utility compatibility */
   .shadow { @apply shadow; }
 

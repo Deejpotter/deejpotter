@@ -80,9 +80,9 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 	const btnSizeClass = `btn-${buttonSize}`;
 
 	return (
-		<div className={`flex items-center ${className}`}>
+		<div className={`navbar-nav ${className}`}>
 			{isSignedIn && user ? (
-				<div className="flex items-center">
+				<div className="nav-item d-flex align-items-center">
 					{showGravatar && (
 						<Gravatar
 							email={
@@ -102,7 +102,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 					</button>
 				</div>
 			) : (
-				<div className="flex items-center">
+				<div className="nav-item">
 					<button
 						onClick={login}
 						className={`btn ${btnSizeClass} btn-outline-secondary shadow mx-1`}
