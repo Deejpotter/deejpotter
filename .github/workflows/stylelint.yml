@@ -1,0 +1,20 @@
+name: "Stylelint (SCSS)"
+
+on:
+  pull_request:
+  push:
+    branches: ["dev", "main", "master"]
+
+jobs:
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Run stylelint
+        run: yarn lint:scss

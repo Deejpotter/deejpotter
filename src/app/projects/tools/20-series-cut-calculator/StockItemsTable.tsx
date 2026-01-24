@@ -81,7 +81,8 @@ export default function StockItemsTable({
             {stockItems.length === 0 ? (
               <tr>
                 <td colSpan={4} className="text-center text-muted py-4">
-                  No stock items added. Click &quot;Add Stock Length&quot; to start.
+                  No stock items added. Click &quot;Add Stock Length&quot; to
+                  start.
                 </td>
               </tr>
             ) : (
@@ -95,7 +96,11 @@ export default function StockItemsTable({
                       type="number"
                       value={stock.length || ""}
                       onChange={(e) =>
-                        handleUpdateStockItem(stock.id, "length", e.target.value)
+                        handleUpdateStockItem(
+                          stock.id,
+                          "length",
+                          e.target.value
+                        )
                       }
                       placeholder="Stock length"
                       min="1"
@@ -140,9 +145,9 @@ export default function StockItemsTable({
       </Card.Body>
       <Card.Footer className="text-muted">
         <small>
-          Total stock pieces: {stockItems.reduce((sum, s) => sum + s.quantity, 0)} |
-          Total stock length available:{" "}
-          {totalStockLength.toLocaleString()}mm
+          Total stock pieces:{" "}
+          {stockItems.reduce((sum, s) => sum + s.quantity, 0)} | Total stock
+          length available: {totalStockLength.toLocaleString()}mm
         </small>
       </Card.Footer>
     </Card>

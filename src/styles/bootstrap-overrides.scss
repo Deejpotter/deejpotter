@@ -31,18 +31,18 @@ $black: tokens.$black !default;
 $grays: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
 $grays: map.merge(
-    (
-      "100": $gray-100,
-      "200": $gray-200,
-      "300": $gray-300,
-      "400": $gray-400,
-      "500": $gray-500,
-      "600": $gray-600,
-      "700": $gray-700,
-      "800": $gray-800,
-      "900": $gray-900
-    ),
-    $grays
+  (
+    "100": $gray-100,
+    "200": $gray-200,
+    "300": $gray-300,
+    "400": $gray-400,
+    "500": $gray-500,
+    "600": $gray-600,
+    "700": $gray-700,
+    "800": $gray-800,
+    "900": $gray-900,
+  ),
+  $grays
 );
 
 // $blue:    #e1eefc !default; // $info
@@ -64,22 +64,22 @@ $cyan: tokens.$cyan !default;
 $colors: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
 $colors: map.merge(
-    (
-      "blue": $blue,
-      "indigo": $indigo,
-      "purple": $purple,
-      "pink": $pink,
-      "red": $red,
-      "orange": $orange,
-      "yellow": $yellow,
-      "green": $green,
-      "teal": $teal,
-      "cyan": $cyan,
-      "white": $white,
-      "gray": $gray-600,
-      "gray-dark": $gray-800
-    ),
-    $colors
+  (
+    "blue": $blue,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "red": $red,
+    "orange": $orange,
+    "yellow": $yellow,
+    "green": $green,
+    "teal": $teal,
+    "cyan": $cyan,
+    "white": $white,
+    "gray": $gray-600,
+    "gray-dark": $gray-800,
+  ),
+  $colors
 );
 
 // $primary:       $blue !default;
@@ -98,17 +98,17 @@ $dark: tokens.$dark !default;
 $theme-colors: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
 $theme-colors: map.merge(
-    (
-      "primary": $primary,
-      "secondary": $secondary,
-      "success": $success,
-      "info": $info,
-      "warning": $warning,
-      "danger": $danger,
-      "light": $light,
-      "dark": $dark
-    ),
-    $theme-colors
+  (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+  ),
+  $theme-colors
 );
 
 // Set a specific jump point for requesting color jumps
@@ -123,11 +123,11 @@ $yiq-text-light: $white !default;
 
 // Characters which are escaped by the escape-svg function
 $escaped-characters: (
-    ("<", "%3c"),
-    (">", "%3e"),
-    ("#", "%23"),
-    ("(", "%28"),
-    (")", "%29"),
+  ("<", "%3c"),
+  (">", "%3e"),
+  ("#", "%23"),
+  ("(", "%28"),
+  (")", "%29")
 ) !default;
 
 // Options
@@ -193,23 +193,23 @@ $border-radius: tokens.$border-radius !default;
 // $border-radius-lg:            .3rem !default;
 $border-radius-lg: 1rem;
 // $border-radius-sm:            .2rem !default;
-$border-radius-sm: .3rem;
+$border-radius-sm: 0.3rem;
 
 $rounded-pill: 50rem !default;
 
 $box-shadow-sm: tokens.$box-shadow-sm !default;
-$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
-$box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
+$box-shadow: 0 0.5rem 1rem rgba($black, 0.15) !default;
+$box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
 
 $component-active-color: $white !default;
 
-$caret-width: .3em !default;
-$caret-vertical-align: $caret-width * .85 !default;
-$caret-spacing: $caret-width * .85 !default;
+$caret-width: 0.3em !default;
+$caret-vertical-align: $caret-width * 0.85 !default;
+$caret-spacing: $caret-width * 0.85 !default;
 
-$transition-base: all .2s ease-in-out !default;
-$transition-fade: opacity .15s linear !default;
-$transition-collapse: height .35s ease !default;
+$transition-base: all 0.2s ease-in-out !default;
+$transition-fade: opacity 0.15s linear !default;
+$transition-collapse: height 0.35s ease !default;
 
 //-----Typography
 //
@@ -218,7 +218,7 @@ $transition-collapse: height .35s ease !default;
 // $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
 $font-size-base: 1.1rem; // Slightly bigger to make it easier to read
 $font-size-lg: $font-size-base * 1.25 !default;
-$font-size-sm: $font-size-base * .875 !default;
+$font-size-sm: $font-size-base * 0.875 !default;
 
 $font-weight-lighter: lighter !default;
 $font-weight-light: 300 !default;
@@ -257,7 +257,7 @@ $lead-font-weight: 300 !default;
 
 // Navs
 
-$nav-link-padding-y: .5rem !default;
+$nav-link-padding-y: 0.5rem !default;
 $nav-link-padding-x: 1rem !default;
 $nav-link-disabled-color: $gray-600 !default;
 
@@ -269,31 +269,33 @@ $nav-divider-margin-y: calc($spacer / 2) !default;
 $navbar-padding-y: calc($spacer / 2) !default;
 $navbar-padding-x: $spacer !default;
 
-$navbar-nav-link-padding-x: .5rem !default;
+$navbar-nav-link-padding-x: 0.5rem !default;
 
 $navbar-brand-font-size: $font-size-lg !default;
 // Compute the navbar-brand padding-y so the navbar-brand will have the same height as navbar-text and NavLink
 $nav-link-height: $font-size-base * $line-height-base + $nav-link-padding-y * 2 !default;
 $navbar-brand-height: $navbar-brand-font-size * $line-height-base !default;
-$navbar-brand-padding-y: calc(($nav-link-height - $navbar-brand-height) / 2) !default;
+$navbar-brand-padding-y: calc(
+  ($nav-link-height - $navbar-brand-height) / 2
+) !default;
 
-$navbar-toggler-padding-y: .25rem !default;
-$navbar-toggler-padding-x: .75rem !default;
+$navbar-toggler-padding-y: 0.25rem !default;
+$navbar-toggler-padding-x: 0.75rem !default;
 $navbar-toggler-font-size: $font-size-lg !default;
 
-$navbar-dark-color: rgba($white, .5) !default;
-$navbar-dark-hover-color: rgba($white, .75) !default;
+$navbar-dark-color: rgba($white, 0.5) !default;
+$navbar-dark-hover-color: rgba($white, 0.75) !default;
 $navbar-dark-active-color: $white !default;
-$navbar-dark-disabled-color: rgba($white, .25) !default;
+$navbar-dark-disabled-color: rgba($white, 0.25) !default;
 $navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
-$navbar-dark-toggler-border-color: rgba($white, .1) !default;
+$navbar-dark-toggler-border-color: rgba($white, 0.1) !default;
 
-$navbar-light-color: rgba($black, .5) !default;
-$navbar-light-hover-color: rgba($black, .7) !default;
-$navbar-light-active-color: rgba($black, .9) !default;
-$navbar-light-disabled-color: rgba($black, .3) !default;
+$navbar-light-color: rgba($black, 0.5) !default;
+$navbar-light-hover-color: rgba($black, 0.7) !default;
+$navbar-light-active-color: rgba($black, 0.9) !default;
+$navbar-light-disabled-color: rgba($black, 0.3) !default;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
-$navbar-light-toggler-border-color: rgba($black, .1) !default;
+$navbar-light-toggler-border-color: rgba($black, 0.1) !default;
 
 $navbar-light-brand-color: $navbar-light-active-color !default;
 $navbar-light-brand-hover-color: $navbar-light-active-color !default;

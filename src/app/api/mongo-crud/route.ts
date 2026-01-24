@@ -9,7 +9,9 @@ async function getAuthAsync() {
     // Some Clerk package shapes expose `auth`, others `getAuth`. Use a safe any-cast
     // so TypeScript doesn't fail during builds when a shape is missing.
     const getter =
-      (_clerk as any)?.auth ?? (_clerk as any)?.getAuth ?? (() => ({ userId: null }));
+      (_clerk as any)?.auth ??
+      (_clerk as any)?.getAuth ??
+      (() => ({ userId: null }));
     return getter();
   } catch (e) {
     // If Clerk isn't available at build/test time, return no-op auth

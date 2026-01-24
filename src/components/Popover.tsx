@@ -229,7 +229,10 @@ export const PopoverTrigger = React.forwardRef<
     // `asChild`, so the consumer-provided element becomes the popover anchor.
     // eslint-disable-next-line react-hooks/refs
     // Cast to any so TypeScript accepts ref injection on arbitrary child elements
-    return React.cloneElement(child as React.ReactElement<any>, ({ ref, ...(referenceProps as any) } as any));
+    return React.cloneElement(
+      child as React.ReactElement<any>,
+      { ref, ...(referenceProps as any) } as any
+    );
   }
 
   return (

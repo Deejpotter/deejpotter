@@ -8,8 +8,13 @@
 
 // Imports
 // Import Bootstrap icon fonts via explicit relative path
-@import "../../node_modules/bootstrap-icons/font/bootstrap-icons.scss"; 
-/*--------- Base Styles ---------*/
+/* stylelint-disable at-rule-disallowed-list */
+/* stylelint-disable scss/load-partial-extension */
+@import "../../node_modules/bootstrap-icons/font/bootstrap-icons"; /* icons are not a Sass module */
+/* stylelint-enable scss/load-partial-extension */
+/* stylelint-enable at-rule-disallowed-list */
+
+/* --------- Base Styles --------- */
 h1,
 h2,
 h3,
@@ -37,16 +42,16 @@ a {
   text-decoration: none;
 }
 
-/*--------- Bootstrap transitions ---------*/
+/* --------- Bootstrap transitions --------- */
 
 // Add hover effects and transition to all buttons
 .btn {
   transition: all 0.3s ease;
-  box-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0.1rem 0.1rem 0.2rem rgb(0 0 0 / 15%);
 
   &:hover {
     color: #fff;
-    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgb(0 0 0 / 15%);
   }
 }
 
@@ -70,17 +75,17 @@ a {
 
   .dropdown {
     &-menu {
-      background: rgb(30, 153, 82);
+      background: rgb(30 153 82);
       background: linear-gradient(
         180deg,
-        rgba(30, 153, 82, 0) 0%,
-        rgba(30, 153, 82, 1) 10%,
-        rgba(30, 153, 82, 0.95) 65%,
-        rgba(253, 253, 253, 0.8) 100%
+        rgb(30 153 82 / 0%) 0%,
+        rgb(30 153 82 / 100%) 10%,
+        rgb(30 153 82 / 95%) 65%,
+        rgb(253 253 253 / 80%) 100%
       );
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      box-shadow: 0 10px 1px 0 rgba(100, 100, 100, 0.1);
+      box-shadow: 0 10px 1px 0 rgb(100 100 100 / 10%);
       border: none;
     }
 
@@ -88,9 +93,9 @@ a {
       &:hover {
         background: linear-gradient(
           -40deg,
-          rgba(253, 253, 253, 0) 0%,
-          rgba(253, 253, 253, 0.01) 20%,
-          rgba(253, 253, 253, 0.2) 100%
+          rgb(253 253 253 / 0%) 0%,
+          rgb(253 253 253 / 1%) 20%,
+          rgb(253 253 253 / 20%) 100%
         );
       }
     }
@@ -110,7 +115,7 @@ a {
   }
 }
 
-@media (min-width: 992px) {
+@media (width >= 992px) {
   .dropdown-submenu {
     position: relative;
 
@@ -123,7 +128,7 @@ a {
       left: 95%;
       margin-top: -0.5rem;
       margin-left: 0.1rem;
-      border-radius: 0 0.25rem 0.25rem 0.25rem;
+      border-radius: 0 0.25rem 0.25rem;
     }
 
     & > .dropdown-toggle::after {
@@ -132,7 +137,7 @@ a {
   }
 }
 
-/*--------- Utils ---------*/
+/* --------- Utils --------- */
 
 // Custom scrollbar
 
@@ -161,11 +166,12 @@ a {
   scrollbar-width: thin;
 }
 
-/*--------- Animations ---------*/
+/* --------- Animations --------- */
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
 
+/* stylelint-disable keyframes-name-pattern */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -175,12 +181,14 @@ a {
     opacity: 1;
   }
 }
+/* stylelint-enable keyframes-name-pattern */
 
-/*--------- Custom classes ---------*/
+/* --------- Custom classes --------- */
 // Popover styles
+/* stylelint-disable selector-class-pattern */
 .Popover {
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 10, 20, 0.1);
+  box-shadow: 0 2px 4px rgb(0 10 20 / 10%);
   border: 1px solid #ddd;
   font-size: 90%;
   padding: 4px 8px;
@@ -189,3 +197,4 @@ a {
   width: max-content;
   max-width: calc(100vw - 10px);
 }
+/* stylelint-enable selector-class-pattern */
