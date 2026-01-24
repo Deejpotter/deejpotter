@@ -1,4 +1,4 @@
-import "@/styles/globals.css"; // Tailwind base & project utilities (migrated from SCSS)
+import "./globals.scss"; // Importing global styles
 import { Metadata, Viewport } from "next"; // Importing the Metadata type from Next.js
 import { Fredoka, Nunito } from "next/font/google"; // Importing the Fredoka and Nunito fonts from the next/font/google module
 import React from "react"; // Importing React
