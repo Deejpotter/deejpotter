@@ -108,9 +108,12 @@ In Progress
 
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
 - ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration)
+- Migrate SCSS to modern `@use` / `@forward` and fix Sass deprecation warnings — **In Progress** (started 2026-01-24)
 
 Completed (last 10)
 
+- Restore Bootstrap SCSS import and apply `$primary` override (2026-01-24)
+- Replace `info` color class uses with `primary` to favor green accent (2026-01-24)
 - Update TypeDoc config name and exclude *.test.tsx from docs (2026-01-18)
 - Fix README typo ("Explain things in comments") (2026-01-18)
 - Add `src/app/api/mongo-crud/route.ts` and validation unit tests (2026-01-18)
