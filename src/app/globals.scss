@@ -1,14 +1,12 @@
-// Override bootstrap variables
-@import "../styles/bootstrap-overrides.scss";
+// Module imports (project tokens & modules)
+@use "../styles/bootstrap-overrides" as *; /* module load */
+@use "../styles/custom-gradients" as *; /* load local module */
+@use "../styles/blog" as *; /* load local module */
 
 // Imports
 // Import Bootstrap SCSS from node_modules using explicit relative path to avoid mixin resolution issues
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
-
-// My custom styles
-@import "@/styles/custom-gradients";
-@import "@/styles/blog";
 /*--------- Base Styles ---------*/
 h1,
 h2,
