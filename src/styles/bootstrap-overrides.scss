@@ -10,25 +10,23 @@
 */
 
 @use "sass:map";
-@use "./variables" as vars;
+@use "./tokens" as tokens; /* Modern module import: tokens.* references */
 
 // Variables
 
 // Color system
 
-$white: #fff !default;
-// $gray-100: #f8f9fa !default; // $light
-$gray-100: #FDFDFD;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;
-$gray-700: #495057 !default;
-// $gray-800: #343a40 !default; // $dark
-$gray-800: #181821;
-$gray-900: #08080C !default;
-$black: #000 !default;
+$white: tokens.$white !default;
+$gray-100: tokens.$gray-100 !default;
+$gray-200: tokens.$gray-200 !default;
+$gray-300: tokens.$gray-300 !default;
+$gray-400: tokens.$gray-400 !default;
+$gray-500: tokens.$gray-500 !default;
+$gray-600: tokens.$gray-600 !default;
+$gray-700: tokens.$gray-700 !default;
+$gray-800: tokens.$gray-800 !default;
+$gray-900: tokens.$gray-900 !default;
+$black: tokens.$black !default;
 
 $grays: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
@@ -48,20 +46,20 @@ $grays: map.merge(
 );
 
 // $blue:    #e1eefc !default; // $info
-$blue: #59B7CC; // $info
+$blue: tokens.$blue !default; // $info
 $indigo: #6610f2 !default;
 // $purple:  #6f42c1 !default; // $secondary
-$purple: #3A2C33; // $secondary
+$purple: tokens.$purple !default; // $secondary
 $pink: #e83e8c !default;
 // $red:     #dc3545 !default; // $danger
-$red: #f44336; // $danger
-$orange: #fd7e14 !default;
+$red: tokens.$red !default; // $danger
+$orange: tokens.$orange !default;
 // $yellow:  #ffc107 !default; // $warning
-$yellow: #c0a520; // $warning
+$yellow: tokens.$yellow !default; // $warning
 // $green:   #28a745 !default; // $primary
-$green: #1E9952; // $primary
-$teal: #20c997 !default;
-$cyan: #73C2D4 !default;
+$green: tokens.$green !default; // $primary
+$teal: tokens.$teal !default;
+$cyan: tokens.$cyan !default;
 
 $colors: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
@@ -85,17 +83,17 @@ $colors: map.merge(
 );
 
 // $primary:       $blue !default;
-$primary: $green;
+$primary: tokens.$primary !default;
 // $secondary:     $gray-600 !default;
-$secondary: $purple;
-$success: $green !default;
+$secondary: tokens.$secondary !default;
+$success: tokens.$success !default;
 // $info:          $cyan !default;
-$info: $blue;
-$warning: $yellow !default;
-$danger: $red !default;
+$info: tokens.$info !default;
+$warning: tokens.$warning !default;
+$danger: tokens.$danger !default;
 //$light:         $gray-100 !default;
-$light: $gray-200;
-$dark: $gray-800 !default;
+$light: tokens.$light !default;
+$dark: tokens.$dark !default;
 
 $theme-colors: () !default;
 // stylelint-disable-next-line styles/dollar-variable-default
@@ -159,49 +157,26 @@ $enable-deprecation-messages: true !default;
 // You can add more entries to the $spacers map, should you need more variation.
 
 // $spacer: 1rem !default;
-$spacer: 2rem;
-$spacers: () !default;
-// stylelint-disable-next-line styles/dollar-variable-default
-$spacers: map.merge(
-    (
-      0: 0,
-      1: ($spacer * .25),
-      2: ($spacer * .5),
-      3: $spacer,
-      4: ($spacer * 1.5),
-      5: ($spacer * 3)
-    ),
-    $spacers
-);
+$spacer: tokens.$spacer !default;
+$spacers: tokens.$spacers !default; /* sourced from tokens */
 
 // This variable affects the `.h-*` and `.w-*` classes.
-$sizes: () !default;
-// stylelint-disable-next-line styles/dollar-variable-default
-$sizes: map.merge(
-    (
-      25: 25%,
-      50: 50%,
-      75: 75%,
-      100: 100%,
-      auto: auto
-    ),
-    $sizes
-);
+$sizes: tokens.$sizes !default; /* sourced from tokens */
 
 //-----Body
 //
 // Settings for the `<body>` element.
 
 // $body-bg:                   $white !default;
-$body-bg: $light;
-$body-color: $gray-900 !default;
+$body-bg: tokens.$body-bg !default;
+$body-color: tokens.$body-color !default;
 
 //-----Jumbotron
 
 // $jumbotron-padding:                 2rem !default;
-$jumbotron-padding: 3rem;
+$jumbotron-padding: tokens.$jumbotron-padding !default;
 $jumbotron-color: null !default;
-$jumbotron-bg: $gray-200 !default;
+$jumbotron-bg: tokens.$gray-200 !default;
 
 //-----Components
 //
@@ -214,7 +189,7 @@ $border-width: 1px !default;
 $border-color: $gray-300 !default;
 
 // $border-radius:               .25rem !default;
-$border-radius: .5rem;
+$border-radius: tokens.$border-radius !default;
 // $border-radius-lg:            .3rem !default;
 $border-radius-lg: 1rem;
 // $border-radius-sm:            .2rem !default;
@@ -222,7 +197,7 @@ $border-radius-sm: .3rem;
 
 $rounded-pill: 50rem !default;
 
-$box-shadow-sm: 0 .125rem .25rem rgba($black, .075) !default;
+$box-shadow-sm: tokens.$box-shadow-sm !default;
 $box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
 $box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
 

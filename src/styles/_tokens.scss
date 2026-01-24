@@ -1,0 +1,3 @@
+// Central tokens aggregator for project SCSS
+// Forward variables and (future) token modules so other styles can `@use` a single entry.
+@forward "variables";
