@@ -1,0 +1,1 @@
+import{j as a}from"./jsx-runtime-pMFk8lDC.js";import"./iframe-Cl5OgQPn.js";function c(s){const{src:t,alt:e,width:o,height:r,className:i,style:m}=s,n=typeof t=="string"?t:t?.src||"";return a.jsx("img",{src:n,alt:e,width:o,height:r,className:i,style:m})}c.__docgenInfo={description:"",methods:[],displayName:"NextImage"};export{c as N};

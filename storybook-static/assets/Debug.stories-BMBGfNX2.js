@@ -1,0 +1,5 @@
+import{j as e}from"./jsx-runtime-pMFk8lDC.js";import"./iframe-Cl5OgQPn.js";import"./preload-helper-PPVm8Dsz.js";const s={title:"Debug/HealthCheck"},r=()=>e.jsxs("div",{className:"p-8",children:[e.jsx("div",{className:"bg-gray-800 text-white p-4 rounded",children:"Tailwind bg-gray-800 — should be dark green/gray"}),e.jsx("div",{className:"mt-4 text-primary",children:"Tailwind custom color primary — should be green"}),e.jsx("button",{className:"btn btn-primary mt-4",children:"Button (btn-primary)"})]});r.__docgenInfo={description:"",methods:[],displayName:"TailwindHealth"};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:`() => <div className="p-8">\r
+    <div className="bg-gray-800 text-white p-4 rounded">Tailwind bg-gray-800 — should be dark green/gray</div>\r
+    <div className="mt-4 text-primary">Tailwind custom color primary — should be green</div>\r
+    <button className="btn btn-primary mt-4">Button (btn-primary)</button>\r
+  </div>`,...r.parameters?.docs?.source}}};const n=["TailwindHealth"];export{r as TailwindHealth,n as __namedExportsOrder,s as default};

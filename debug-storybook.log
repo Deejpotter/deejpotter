@@ -1,0 +1,160 @@
+[08:07:30.406] [INFO] [36mInitializing Storybook[39m
+[08:07:30.631] [DEBUG] Getting package.json info for C:/Users/Deej/Repos/deejpotter/package.json...
+[08:07:30.632] [DEBUG] Getting CLI versions from NPM for storybook...
+[08:07:30.632] [DEBUG] Executing command: yarn info storybook version --json
+[08:07:31.419] [WARN] This is a pre-release version: 10.3.0-alpha.0
+[08:07:31.422] [DEBUG] Project type detected: nextjs
+[08:07:31.422] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:31.424] [INFO] Framework detected: nextjs-vite
+[08:07:31.425] [DEBUG] Getting installed version for vitest...
+[08:07:31.425] [DEBUG] Executing command: yarn list --pattern "vitest" --json --recursive vitest
+[08:07:31.913] [DEBUG] Installed version for vitest: 4.0.18
+[08:07:31.913] [DEBUG] Getting installed version for msw...
+[08:07:31.913] [DEBUG] Executing command: yarn list --pattern "msw" --json --recursive msw
+[08:07:32.420] [DEBUG] Installed version for msw: null
+[08:07:42.943] [PROMPT] New to Storybook? {"choice":true}
+[08:07:42.944] [INFO] Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry
+[08:07:43.800] [INFO] base-generator-task-start: Generating Storybook configuration
+[08:07:43.800] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:43.800] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:43.800] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:43.801] [INFO] base-generator-task: - Configuring ESLint plugin
+[08:07:43.802] [DEBUG] Detected flat config at C:\Users\Deej\Repos\deejpotter\eslint.config.cjs
+[08:07:43.819] [DEBUG] Using cached version for storybook...
+[08:07:43.819] [DEBUG] Getting CLI versions from NPM for @storybook/nextjs-vite...
+[08:07:43.819] [DEBUG] Executing command: yarn info @storybook/nextjs-vite version --json
+[08:07:43.857] [DEBUG] Getting CLI versions from NPM for @chromatic-com/storybook...
+[08:07:43.857] [DEBUG] Executing command: yarn info @chromatic-com/storybook version --json
+[08:07:43.895] [DEBUG] Getting CLI versions from NPM for @storybook/addon-vitest...
+[08:07:43.895] [DEBUG] Executing command: yarn info @storybook/addon-vitest version --json
+[08:07:43.934] [DEBUG] Getting CLI versions from NPM for @storybook/addon-a11y...
+[08:07:43.934] [DEBUG] Executing command: yarn info @storybook/addon-a11y version --json
+[08:07:43.980] [DEBUG] Getting CLI versions from NPM for @storybook/addon-docs...
+[08:07:43.980] [DEBUG] Executing command: yarn info @storybook/addon-docs version --json
+[08:07:44.032] [DEBUG] Getting CLI versions from NPM for @storybook/addon-onboarding...
+[08:07:44.032] [DEBUG] Executing command: yarn info @storybook/addon-onboarding version --json
+[08:07:44.090] [DEBUG] Getting CLI versions from NPM for vite...
+[08:07:44.090] [DEBUG] Executing command: yarn info vite version --json
+[08:07:44.149] [DEBUG] Getting CLI versions from NPM for eslint-plugin-storybook...
+[08:07:44.149] [DEBUG] Executing command: yarn info eslint-plugin-storybook version --json
+[08:07:46.443] [INFO] base-generator-task: - Configuring main.ts
+[08:07:46.445] [INFO] base-generator-task: - Configuring preview.ts
+[08:07:46.447] [INFO] base-generator-task: - Adding Storybook command to package.json
+[08:07:46.448] [DEBUG] Getting package.json info for C:/Users/Deej/Repos/deejpotter/package.json...
+[08:07:46.448] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:46.448] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:46.450] [INFO] base-generator-task: - Copying framework templates
+[08:07:46.489] [DEBUG] Executing command: yarn config get registry
+[08:07:47.621] [INFO] base-generator-task-success: Storybook configuration generated
+[08:07:47.623] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:47.623] [DEBUG] Using cached installed version for vitest...
+[08:07:47.624] [DEBUG] Getting installed version for @vitest/coverage-v8...
+[08:07:47.624] [DEBUG] Executing command: yarn list --pattern "@vitest/coverage-v8" --json --recursive @vitest/coverage-v8
+[08:07:48.384] [DEBUG] Installed version for @vitest/coverage-v8: 4.0.18
+[08:07:48.384] [DEBUG] Getting installed version for @vitest/coverage-istanbul...
+[08:07:48.384] [DEBUG] Executing command: yarn list --pattern "@vitest/coverage-istanbul" --json --recursive @vitest/coverage-istanbul
+[08:07:49.073] [DEBUG] Installed version for @vitest/coverage-istanbul: null
+[08:07:49.074] [INFO] adding-dependencies-task-start: Adding dependencies to package.json
+[08:07:49.077] [INFO] adding-dependencies-task: Adding devDependencies:
+- storybook@10.3.0-alpha.0
+- @storybook/nextjs-vite@10.3.0-alpha.0
+- @chromatic-com/storybook@^5.0.0
+- @storybook/addon-vitest@10.3.0-alpha.0
+- @storybook/addon-a11y@10.3.0-alpha.0
+- @storybook/addon-docs@10.3.0-alpha.0
+- @storybook/addon-onboarding@10.3.0-alpha.0
+- vite@^7.3.1
+- eslint-plugin-storybook@10.3.0-alpha.0
+- @vitest/browser-playwright@4.0.18
+[08:07:49.077] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:49.078] [DEBUG] Using cached version for storybook...
+[08:07:49.078] [DEBUG] Using cached version for @storybook/nextjs-vite...
+[08:07:49.078] [DEBUG] Using cached version for @chromatic-com/storybook...
+[08:07:49.078] [DEBUG] Using cached version for @storybook/addon-vitest...
+[08:07:49.078] [DEBUG] Using cached version for @storybook/addon-a11y...
+[08:07:49.078] [DEBUG] Using cached version for @storybook/addon-docs...
+[08:07:49.078] [DEBUG] Using cached version for @storybook/addon-onboarding...
+[08:07:49.078] [DEBUG] Using cached version for vite...
+[08:07:49.078] [DEBUG] Using cached version for eslint-plugin-storybook...
+[08:07:49.078] [DEBUG] Getting CLI versions from NPM for @vitest/browser-playwright...
+[08:07:49.078] [DEBUG] Executing command: yarn info @vitest/browser-playwright version --json
+[08:07:50.769] [DEBUG] Using cached package.json for C:\Users\Deej\Repos\deejpotter\package.json...
+[08:07:50.770] [INFO] adding-dependencies-task-success: Dependencies added to package.json
+[08:07:50.771] [INFO] Installing dependencies...
+[08:07:50.772] [INFO] install-dependencies-spinner-start: Installing dependencies...
+[08:07:50.773] [DEBUG] Executing command: yarn install --ignore-workspace-root-check
+[08:07:51.039] [INFO] Installing dependencies...: yarn install v1.22.22
+
+[08:07:51.039] [INFO] install-dependencies-spinner: Installing dependencies...: yarn install v1.22.22
+[08:07:51.103] [INFO] Installing dependencies...: [1/4] Resolving packages...
+
+[08:07:51.103] [INFO] install-dependencies-spinner: Installing dependencies...: [1/4] Resolving packages.
+[08:08:10.594] [INFO] Installing dependencies...: [2/4] Fetching packages...
+
+[08:08:10.594] [INFO] install-dependencies-spinner: Installing dependencies...: [2/4] Fetching packages..
+[08:08:14.047] [INFO] Installing dependencies...: [3/4] Linking dependencies...
+
+[08:08:14.047] [INFO] install-dependencies-spinner: Installing dependencies...: [3/4] Linking dependencie
+[08:08:23.606] [INFO] Installing dependencies...: [4/4] Building fresh packages...
+
+[08:08:23.606] [INFO] install-dependencies-spinner: Installing dependencies...: [4/4] Building fresh pack
+[08:08:23.673] [INFO] Installing dependencies...: success Saved lockfile.
+
+[08:08:23.673] [INFO] install-dependencies-spinner: Installing dependencies...: success Saved lockfile.
+[08:08:23.679] [INFO] Installing dependencies...: Done in 32.66s.
+
+[08:08:23.679] [INFO] install-dependencies-spinner: Installing dependencies...: Done in 32.66s.
+[08:08:23.725] [INFO] Dependencies installed
+[08:08:23.725] [INFO] install-dependencies-spinner-stop: Dependencies installed
+[08:08:23.728] [INFO] configure-addons-task-start: Configuring addons...
+[08:08:23.728] [INFO] configure-addons-task: Configuring @chromatic-com/storybook...
+[08:08:23.731] [INFO] configure-addons-task: @chromatic-com/storybook configured
+
+[08:08:23.731] [INFO] configure-addons-task: Configuring @storybook/addon-vitest...
+[08:08:25.084] [DEBUG] Vitest version specifier: 4.0.18
+[08:08:25.802] [INFO] Creating a Vitest setup file for Storybook:
+[08:08:25.802] [INFO] C:/Users/Deej/Repos/deejpotter/.storybook/vitest.setup.ts
+
+[08:08:25.839] [INFO] Updating your Vitest config file:
+[08:08:25.839] [INFO]   C:\Users\Deej\Repos\deejpotter\vitest.config.ts
+[08:08:25.853] [INFO] Setting up a11y addon for @storybook/addon-vitest
+[08:08:25.853] [INFO] Setting up a11y addon for @storybook/addon-vitest
+[08:08:26.309] [ERROR] Failed to setup a11y addon for @storybook/addon-vitest {"error":"ExecaError: Command failed with exit code 1: yarn.cmd exec storybook -- automigrate addon-a11y-addon-test --loglevel silent --yes --skip-doctor --package-manager yarn1 --skip-install\n    at getFinalError (file:///C:/Users/Deej/Repos/deejpotter/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:13107:10)\n    at makeError (file:///C:/Users/Deej/Repos/deejpotter/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:14643:15)\n    at getAsyncResult (file:///C:/Users/Deej/Repos/deejpotter/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:17289:158)\n    at handlePromise (file:///C:/Users/Deej/Repos/deejpotter/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:17275:162)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Object.executeTask (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-HU47ACHM.js:3650:11)\n    at async postInstall (file:///C:/Users/Deej/Repos/deejpotter/node_modules/@storybook/addon-vitest/dist/postinstall.js:1207:234)\n    at async postinstallAddon (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/create-storybook/dist/_node-chunks/postinstallAddon-ZA3LZJXH.js:196:5)\n    at async AddonConfigurationCommand.configureAddons (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/create-storybook/dist/_node-chunks/chunk-2CGOBCIH.js:1448:50)\n    at async AddonConfigurationCommand.execute (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/create-storybook/dist/_node-chunks/chunk-2CGOBCIH.js:1411:43)"}
+[08:08:26.309] [INFO] [31mCommand failed with exit code 1: yarn.cmd exec storybook -- automigrate addon-a11y-addon-test --loglevel silent --yes --skip-doctor --package-manager yarn1 --skip-install[39m
+[08:08:26.310] [ERROR] Could not automatically set up @storybook/addon-a11y for @storybook/addon-vitest.
+Please refer to the documentation to complete the setup manually:
+https://storybook.js.org/docs/writing-tests/accessibility-testing#integration-with-vitest-addon
+[08:08:26.311] [WARN] Done, but with errors!
+@storybook/addon-vitest was installed successfully, but there were some errors during the setup process. Please refer to the documentation to complete the setup manually and check the errors above:
+https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#manual-setup-advanced
+[08:08:26.311] [INFO] configure-addons-task: Configuring @storybook/addon-a11y...
+[08:08:26.676] [INFO] configure-addons-task: Configuring @storybook/addon-docs...
+[08:08:26.680] [INFO] configure-addons-task: @storybook/addon-docs configured
+
+[08:08:26.681] [INFO] configure-addons-task: Configuring @storybook/addon-onboarding...
+[08:08:26.685] [INFO] configure-addons-task: @storybook/addon-onboarding configured
+
+[08:08:26.685] [ERROR] configure-addons-task-error: Failed to configure addons
+[08:08:26.686] [INFO] [2m✅ @chromatic-com/storybook[22m
+[08:08:26.687] [INFO] [2m❌ @storybook/addon-vitest[22m
+[08:08:26.688] [INFO] [2m❌ @storybook/addon-a11y[22m
+[08:08:26.688] [INFO] [2m✅ @storybook/addon-docs[22m
+[08:08:26.688] [INFO] [2m✅ @storybook/addon-onboarding[22m
+[08:08:26.689] [INFO] Playwright browser binaries are necessary for @storybook/addon-vitest. The download can take some time. If you don't want to wait, you can skip the installation and run the following command manually later:
+[36myarn exec playwright -- install chromium --with-deps[39m
+[08:19:45.442] [PROMPT] Do you want to install Playwright with Chromium now? {"choice":true}
+[08:19:45.442] [INFO] Installing Playwright browser binaries (press "c" to abort)
+[08:19:45.442] [INFO] playwright-installation-spinner-start: Installing Playwright browser binaries (press "c" to abort)
+[08:19:45.443] [DEBUG] Executing command: yarn exec playwright -- install chromium --with-deps
+[08:19:45.656] [INFO] Installing Playwright browser binaries (press "c" to abort): yarn exec v1.22.22
+
+[08:19:45.656] [INFO] playwright-installation-spinner: Installing Playwright browser binaries (press "c" to abort): yarn exec v1.22.22
+[08:19:45.707] [INFO] Installing Playwright browser binaries (press "c" to abort): info Visit https://yarnpkg.com/en/docs/cli/exec for documentation about this command.
+
+[08:19:45.707] [INFO] playwright-installation-spinner: Installing Playwright browser binaries (press "c" to abort): info Visit https://yarnpk
+[08:19:45.726] [ERROR] An error occurred while installing Playwright browser binaries. Please run the following command later: yarn exec playwright -- install chromium --with-deps {"error":"ExecaError: Command failed with exit code 1: yarn.cmd exec playwright -- install chromium --with-deps\n\nwarning ..\\package.json: No license field\nerror Couldn't find the binary playwright\n\nyarn exec v1.22.22\ninfo Visit https://yarnpkg.com/en/docs/cli/exec for documentation about this command.\n    at getFinalError (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:13107:10)\n    at makeError (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:14643:15)\n    at getAsyncResult (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:17289:158)\n    at handlePromise (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-WY5ZA2BT.js:17275:162)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Object.executeTaskWithSpinner (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-HU47ACHM.js:3683:11)\n    at async AddonVitestService.installPlaywright (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/storybook/dist/_node-chunks/chunk-6ADIAPP2.js:5842:17)\n    at async AddonConfigurationCommand.execute (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/create-storybook/dist/_node-chunks/chunk-2CGOBCIH.js:1413:26)\n    at async doInitiate (file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/create-storybook/dist/_node-chunks/chunk-2CGOBCIH.js:2293:38)\n    at async file:///C:/Users/Deej/AppData/Local/npm-cache/_npx/9bf782ebcba22647/node_modules/create-storybook/dist/_node-chunks/chunk-2CGOBCIH.js:2322:20"}
+[08:19:45.726] [ERROR] playwright-installation-spinner-error: [31mAn error occurred while installing Playwright browser binaries. Please run the following command later: yarn exec playwright -- install chromium --with-deps[39m
+[08:19:46.997] [WARN] Storybook setup completed, but some non-blocking errors occurred. Please check the log file below for details.
+[08:19:46.998] [INFO] To run Storybook manually, run [36myarn storybook[39m. CTRL+C to stop.
+[08:19:46.999] [INFO] Wanna know more about Storybook? Check out [36mhttps://storybook.js.org/[39m
+Having trouble or want to chat? Join us at [36mhttps://discord.gg/storybook/[39m
