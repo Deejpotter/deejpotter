@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Contact from './page';
+import ContactForm from './ContactForm';
 
 describe('Contact form', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Contact form', () => {
   });
 
   test('submits form and shows success message', async () => {
-    render(<Contact />);
+    render(<ContactForm />);
 
     const name = screen.getByLabelText(/Name \(required\)/i);
     const email = screen.getByLabelText(/Email address \(required\)/i);
@@ -38,3 +38,4 @@ describe('Contact form', () => {
     await waitFor(() => expect(screen.getByText(/Form submitted successfully!/i)).toBeInTheDocument());
   });
 });
+

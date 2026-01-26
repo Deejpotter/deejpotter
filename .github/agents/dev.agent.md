@@ -32,7 +32,7 @@ tools:
 3. Research unknowns using Context7 first (`resolve_library_id`, `get_documentation`), then the web with my-mcp-server's `duckduckgo_search` and `google_search`. Prefer official docs.
 4. Draft a detailed plan and record/update the project `.github/TODOs.md` with statuses.
 5. Propose a patch with minimal blast radius; explain rationale.
-6. Apply patch and run: `npm test` then `npm run test:coverage`.
+6. Apply patch and run: `yarn test` then `yarn test:coverage`.
 7. If failures, iterate with focused fixes and update TODO items.
 
 # Safety & constraints
@@ -54,7 +54,7 @@ tools:
 
 # Examples
 
-- Run tests: `run_command: { command: 'npm test' }`
+- Run tests: `run_command: { command: 'yarn test' }`
 - Search docs: `resolve_library_id: { libraryName: 'next' }` then `get_documentation`.
 - Patch flow: plan → patch → test → summarize.
 

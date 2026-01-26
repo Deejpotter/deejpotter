@@ -1,5 +1,5 @@
 import "@/styles/globals.css"; // Tailwind base & project utilities (migrated from SCSS)
-import { Metadata, Viewport } from "next"; // Importing the Metadata type from Next.js
+import { Viewport } from "next"; // Importing the Viewport type from Next.js
 import { Fredoka, Nunito } from "next/font/google"; // Importing the Fredoka and Nunito fonts from the next/font/google module
 import React from "react"; // Importing React
 import MainFooter from "@/components/MainFooter/MainFooter";
@@ -8,6 +8,7 @@ import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
+import { defaultMetadata } from "./metadata";
 
 // Initializing the Nunito font with specific options
 const nunito = Nunito({
@@ -21,31 +22,8 @@ const fredoka = Fredoka({
   variable: "--font-fredoka", // Specifies the CSS variable to assign the font to
 });
 
-// Defining the metadata for the website
-export const metadata: Metadata = {
-  metadataBase: new URL("https://deejpotter.com"), // The base URL of the website for absolute URLs.
-  title: "Deej Potter", // The title of the website
-  description: "Deej Potter's portfolio site.", // The description of the website for meta tags.
-  openGraph: {
-    title: "Deej Potter",
-    description: "Deej Potter's portfolio site.",
-    url: "https://deejpotter.com", // The URL of the website
-    images: [
-      {
-        url: "/images/deejPotterLogo.png", // Must be an absolute URL.
-        width: 800,
-        height: 600,
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  manifest: "/manifest.json",
-};
+// Use centralized metadata configuration
+export const metadata = defaultMetadata;
 
 // The viewport data is passed to Next.js to set the viewport meta tag
 export const viewport: Viewport = {
@@ -78,7 +56,7 @@ export default function RootLayout({
           <BodyAttributesCleaner />
           <div>
             <TopNavbar />
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <main className="w-full">
               {children}
               <MainFooter />
             </main>

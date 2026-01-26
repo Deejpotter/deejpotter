@@ -9,7 +9,7 @@ This is a Next.js portfolio site (see `readme.md`). It's a static-first app with
 - Auth and client state: `src/contexts` (notably `AuthContext.tsx` which uses `netlify-identity-widget`).
 - Serverless backend: `netlify/functions` (e.g. `mongoCrud.ts` talking to MongoDB; env vars `MONGODB_URI` and `DB_NAME` required).
 - Static assets and games: `public/` (Unity WebGL in `public/basicBases/Build/`).
-- Docs: TypeDoc output goes to `public/docs` (`typedoc.json` and `npm run docs` / `yarn docs`).
+- **Docs**: TypeDoc output goes to `public/docs` (`typedoc.json` and `yarn docs`).
 
 ## AI Agent Tips
 
@@ -34,11 +34,11 @@ Update my current files instead of making new ones and copying them over.
 
 ## Developer Workflows (must-know commands)
 
-- Local dev: `npm run dev` (or `yarn dev`) — Next.js dev server.
-- Build (CI / production): `npm run build` — runs `prebuild` (TypeDoc) then `next build`.
-- Run tests: `npm test` (Jest).
-- Lint: `npm run lint`.
-- Docs: `npm run docs` (writes to `public/docs`).
+- Local dev: `yarn dev` — Next.js dev server.
+- Build (CI / production): `yarn build` — runs `prebuild` (TypeDoc) then `next build`.
+- Run tests: `yarn test`.
+- Lint: `yarn lint`.
+- Docs: `yarn docs` (writes to `public/docs`).
 - CI: A GitHub Actions workflow runs lint, tests, docs and build on pushes and PRs (`.github/workflows/ci.yml`).
 - Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
 

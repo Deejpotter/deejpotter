@@ -27,9 +27,16 @@ export default function TopNavbar() {
 
   // Close menus when route changes
   useEffect(() => {
-    setMobileOpen(false);
-    setOpenMenu(null);
-  }, [pathname]);
+    // Avoid calling setState synchronously in effect; schedule updates only when necessary
+    if (mobileOpen || openMenu !== null) {
+      const id = window.setTimeout(() => {
+        setMobileOpen(false);
+        setOpenMenu(null);
+      }, 0);
+      return () => window.clearTimeout(id);
+    }
+    // no-op when nothing to close
+  }, [pathname, mobileOpen, openMenu]);
 
   return (
     <header className="w-full bg-transparent z-30">

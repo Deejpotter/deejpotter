@@ -3,18 +3,6 @@ import Link from "next/link";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import Script from "next/script";
 
-// Debug: ensure imports resolve during server-side render
-/* eslint-disable no-console */
-console.log('DEBUG 3d-printing imports', {
-  Link: typeof Link,
-  Container: typeof Container,
-  Row: typeof Row,
-  Col: typeof Col,
-  Card: typeof Card,
-  Button: typeof Button,
-  Script: typeof Script,
-});
-/* eslint-enable no-console */
 
 export default function ThreeDPrintingService(): ReactElement {
   return (

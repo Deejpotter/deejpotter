@@ -42,9 +42,13 @@ Todo
 - Harden tests and mocks (High priority) — replace ad-hoc zod mocks with safe partial mocks (vi.mock(importOriginal...)) or use real zod where suitable.
   - Owner: @dev
   - Acceptance: No tests rely on global zod mocks; tests use partial mocks or the real library and pass reliably.
-- Accessibility audit & fixes (High priority)
+- Accessibility audit & fixes (High priority) — **In Progress**
   - Owner: @dev
-  - Acceptance: Add automated axe checks (Playwright) for critical pages and fix top accessibility violations (modal focus trap, aria attributes, heading order). Include tests and QA notes in PR.
+  - Acceptance: Add automated axe checks (Vitest + axe-core) for critical pages and fix top accessibility violations (modal focus trap, aria attributes, heading order). Include tests and QA notes in PR.
+  - Plan:
+    1. Add Vitest-based axe checks for a small set of critical pages (home, contact, projects).
+    2. Fix top 1-2 accessibility issues found and add regression checks.
+    3. Expand checks to additional routes and add CI job to fail on critical violations.
 - Metadata & social previews (Medium priority)
   - Owner: @dev
   - Acceptance: Add OpenGraph/Twitter metadata and canonical URLs for project and blog pages; include a script to auto-generate OG images for posts when possible.
@@ -108,6 +112,18 @@ In Progress
 
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
 - ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: <https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration>)
+- Harden tests & mocks — **In Progress** (started 2026-01-26)
+  - Owner: @dev
+  - Plan: Replace ad-hoc zod globals with safe partial mocks using `vi.mock(importOriginal(...))`, add deterministic component tests for `Page`/`Header`, and add test utilities for shared mock behavior. Acceptance: tests should not rely on global zod mocks and should be stable in CI.
+- Accessibility audit & fixes — **In Progress** (started 2026-01-26)
+  - Owner: @dev
+  - Plan: Add an automated axe check to the Playwright E2E suite (a11y smoke), run axe on home, contact and top navbar pages, fix top violations and add regression checks. Acceptance: Axe critical/serious violations are resolved and an a11y job runs in CI.
+- Dependabot & security triage — **In Progress** (started 2026-01-26)
+  - Owner: @security
+  - Plan: Add Dependabot config to update major/minor patches, run an initial audit and open upgrade PRs for critical/high issues. Acceptance: GH security alerts are triaged and critical updates are applied or a mitigation plan is documented.
+- Tailwind visual snapshots — **In Progress** (started 2026-01-26)
+  - Owner: @dev
+  - Plan: Add visual snapshot baselines for hero + navbar using Playwright visual snapshot support; add per-component migration checklist and remove legacy SCSS once shadowed by snapshots. Acceptance: Visual diffs are zero or intentional and recorded as baselines.
 
 Completed (last 10)
 

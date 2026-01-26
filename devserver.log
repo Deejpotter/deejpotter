@@ -1,0 +1,28 @@
+yarn run v1.22.22
+$ next dev
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.0.0.13:3000
+- Environments: .env
+
+✓ Starting...
+✓ Ready in 1055ms
+ GET / 200 in 2.2s (compile: 1648ms, render: 532ms)
+ POST / 200 in 21ms (compile: 5ms, render: 16ms)
+ GET / 200 in 139ms (compile: 6ms, render: 133ms)
+ POST / 200 in 15ms (compile: 6ms, render: 9ms)
+ GET / 200 in 119ms (compile: 6ms, render: 113ms)
+ POST / 200 in 17ms (compile: 5ms, render: 12ms)
+✓ Compiled in 1547ms
+ GET / 500 in 389ms (compile: 227ms, render: 162ms)
+ GET / 500 in 32ms (compile: 17ms, render: 16ms)
+ GET / 500 in 64ms (compile: 48ms, render: 16ms)
+✓ Compiled in 244ms
+ GET / 200 in 582ms (compile: 273ms, render: 309ms)
+ POST / 200 in 14ms (compile: 4ms, render: 11ms)
+ GET / 200 in 147ms (compile: 6ms, render: 140ms)
+ POST / 200 in 13ms (compile: 6ms, render: 7ms)
+✓ Compiled in 175ms
+✓ Compiled in 180ms
+✓ Compiled in 139ms
+✓ Compiled in 229ms

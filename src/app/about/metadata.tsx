@@ -1,23 +1,9 @@
-import { Metadata } from "next";
+import { generatePageMetadata } from "../metadata";
 
-export const metadata: Metadata = {
-  title: "About Me | Deej Potter",
-  description:
-    "Learn about Deej Potter, a passionate web developer and family man. Discover my journey, interests, and what drives my passion for technology and continuous learning.",
-  openGraph: {
-    title: "About Me | Deej Potter",
-    description:
-      "Learn about Deej Potter, a passionate web developer and family man. Discover my journey, interests, and what drives my passion for technology and continuous learning.",
-    url: "https://deejpotter.com/about",
-    images: [
-      {
-        url: "/images/deejPotterLogo.png",
-        width: 800,
-        height: 600,
-      },
-    ],
-  },
-  alternates: {
-    canonical: "https://deejpotter.com/about",
-  },
-};
+// Generate SEO-optimized metadata for the about page
+export const metadata = generatePageMetadata(
+  'About Me',
+  'Learn about Deej Potter\'s journey from chef to full-stack developer. Discover my passion for technology, AI, and creating innovative web solutions with Next.js, React, and TypeScript.',
+  '/about'
+);
+

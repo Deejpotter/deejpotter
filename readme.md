@@ -42,10 +42,10 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 
 ## Quick Start (Yarn)
 
-> **Note:** This project uses Yarn Classic (v1). If you don't have Yarn installed globally, install it with:
+> **Note:** This project uses Yarn. If you don't have Yarn enabled, enable Corepack and set the stable Yarn version with:
 >
 > ```bash
-> npm install -g yarn
+> corepack enable && yarn set version stable
 > ```
 >
 > Avoid mixing package managers (npm vs Yarn). If you previously used npm, remove `package-lock.json` before installing with Yarn to prevent lockfile conflicts.

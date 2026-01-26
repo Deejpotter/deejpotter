@@ -56,14 +56,6 @@ const initialState: NavbarState = {
       label: "Projects",
       items: [
         {
-          label: "Apps",
-          // Apps section is now empty but maintains structure for future additions
-          items: [
-            { href: "#", label: "Placeholder" },
-            // { href: "/projects/apps/app-name", label: "App Name" },
-          ],
-        },
-        {
           label: "Websites",
           href: "/projects/websites",
           items: [

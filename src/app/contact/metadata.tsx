@@ -1,23 +1,9 @@
-import { Metadata } from "next";
+import { generatePageMetadata } from "../metadata";
 
-export const metadata: Metadata = {
-  title: "Contact Me | Deej Potter",
-  description:
-    "Get in touch with Deej Potter. Send me your questions, feedback, or just say hello. I'm always happy to hear from visitors and respond to inquiries.",
-  openGraph: {
-    title: "Contact Me | Deej Potter",
-    description:
-      "Get in touch with Deej Potter. Send me your questions, feedback, or just say hello. I'm always happy to hear from visitors and respond to inquiries.",
-    url: "https://deejpotter.com/contact",
-    images: [
-      {
-        url: "/images/deejPotterLogo.png",
-        width: 800,
-        height: 600,
-      },
-    ],
-  },
-  alternates: {
-    canonical: "https://deejpotter.com/contact",
-  },
-};
+// Generate SEO-optimized metadata for the contact page
+export const metadata = generatePageMetadata(
+  'Contact Me',
+  'Get in touch with Deej Potter. Have questions, feedback, or want to collaborate? Fill out the contact form and I\'ll get back to you as soon as I can.',
+  '/contact'
+);
+

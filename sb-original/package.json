@@ -1,0 +1,11 @@
+{
+  "name": "sb-original",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "sb-original.js",
+  "exports": {
+    "./image-context": "./image-context.js",
+    "./default-loader": "./default-loader.js",
+    "./*": "./*.js"
+  }
+}
