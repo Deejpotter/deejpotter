@@ -73,215 +73,156 @@ export default function Apps(): ReactElement {
         `}
       </Script>
 
-      <div className="container py-4">
-        <div className="row mb-4">
-          <div className="col">
-            <h1>Technical Applications</h1>
-            <p className="lead">
-              These are interactive web applications that demonstrate dynamic
-              functionality, API integration, and full-stack development
-              capabilities. Each app solves specific problems with clean code
-              and user-focused design.
-            </p>
-          </div>
-        </div>
+      <section className="mb-12">
+        <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">
+          Technical Applications
+        </h1>
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          These are interactive web applications that demonstrate dynamic
+          functionality, API integration, and full-stack development
+          capabilities. Each app solves specific problems with clean code and
+          user-focused design.
+        </p>
+      </section>
 
-        <div className="row">
-          {appProjects.map((project) => (
-            <div key={project.id} className="col-12 col-md-6 col-lg-4 mb-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <div className="text-center mb-3">
-                    <Image
-                      src={project.image}
-                      alt={`${project.name} logo`}
-                      width={100}
-                      height={100}
-                      className="img-fluid"
-                    />
-                  </div>
-                  <h2 className="h5 card-title">{project.name}</h2>
-                  <p className="card-text">{project.description}</p>
-                  <div className="d-flex flex-wrap gap-1 mb-3">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="badge bg-primary">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="card-footer bg-transparent border-top-0">
-                  {project.external ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-primary w-100"
-                    >
-                      Visit App{" "}
-                      <span className="bi bi-box-arrow-up-right ms-1"></span>
-                    </a>
-                  ) : (
-                    <Link href={project.link} className="btn btn-primary w-100">
-                      View Details
-                    </Link>
-                  )}
-                </div>
+      <section className="grid md:grid-cols-2 gap-8">
+        {appProjects.map((project) => (
+          <div
+            key={project.id}
+            className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden"
+          >
+            <div className="p-6 flex-grow">
+              <div className="text-center mb-4">
+                <Image
+                  src={project.image}
+                  alt={`${project.name} logo`}
+                  width={80}
+                  height={80}
+                  className="inline-block"
+                />
+              </div>
+              <h2 className="text-2xl font-bold text-center mb-2">
+                {project.name}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 text-base">
+                {project.description}
+              </p>
+              <div className="flex flex-wrap gap-2 justify-center my-4">
+                {project.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-xs font-semibold inline-block py-1 px-3 uppercase rounded-full text-white bg-secondary"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+            <div className="p-6 pt-0 bg-gray-50 dark:bg-gray-700">
+              {project.external ? (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center bg-primary hover:bg-opacity-80 text-white font-bold py-3 px-4 rounded-full transition-transform hover:scale-105"
+                >
+                  Visit App <i className="bi bi-box-arrow-up-right ml-2"></i>
+                </a>
+              ) : (
+                <Link
+                  href={project.link}
+                  className="block w-full text-center bg-primary hover:bg-opacity-80 text-white font-bold py-3 px-4 rounded-full transition-transform hover:scale-105"
+                >
+                  View Details
+                </Link>
+              )}
+            </div>
+          </div>
+        ))}
+      </section>
 
-        <div className="row mt-4">
-          <div className="col">
-            <h2>Application Development Approach</h2>
-            <p>
-              When building web applications, I focus on creating intuitive
-              interfaces backed by robust functionality. My development process
-              emphasizes:
-            </p>
-            <ul>
+      <section className="mt-12 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+        <h2 className="text-3xl font-bold mb-4">
+          Application Development Approach
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300">
+          When building web applications, I focus on creating intuitive
+          interfaces backed by robust functionality. My development process
+          emphasizes:
+        </p>
+        <ul className="list-disc list-inside mt-4 space-y-2 text-gray-600 dark:text-gray-400">
+          <li>
+            <strong>User-centered design:</strong> Understanding workflows and
+            pain points
+          </li>
+          <li>
+            <strong>Clean architecture:</strong> Separation of concerns, modular
+            components
+          </li>
+          <li>
+            <strong>Type safety:</strong> TypeScript throughout for fewer
+            runtime errors
+          </li>
+          <li>
+            <strong>API design:</strong> RESTful endpoints with proper error
+            handling
+          </li>
+          <li>
+            <strong>State management:</strong> React hooks, context, and
+            efficient updates
+          </li>
+          <li>
+            <strong>Performance:</strong> Code splitting, lazy loading,
+            optimized renders
+          </li>
+          <li>
+            <strong>Testing:</strong> Unit tests, integration tests, manual QA
+          </li>
+          <li>
+            <strong>Documentation:</strong> Code comments, API docs, user guides
+          </li>
+        </ul>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-bold mb-6">Technology Stack</h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-bold mb-4">Frontend</h3>
+            <ul className="list-none space-y-2 text-gray-600 dark:text-gray-400">
               <li>
-                <strong>User-centered design:</strong> Understanding workflows
-                and pain points
+                <strong>React:</strong> Component-based UI with hooks
               </li>
               <li>
-                <strong>Clean architecture:</strong> Separation of concerns,
-                modular components
+                <strong>Next.js:</strong> Server-side rendering and static
+                generation
               </li>
               <li>
-                <strong>Type safety:</strong> TypeScript throughout for fewer
-                runtime errors
+                <strong>TypeScript:</strong> Type-safe development
               </li>
               <li>
-                <strong>API design:</strong> RESTful endpoints with proper error
-                handling
+                <strong>Tailwind CSS:</strong> Utility-first styling
+              </li>
+            </ul>
+          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-bold mb-4">Backend</h3>
+            <ul className="list-none space-y-2 text-gray-600 dark:text-gray-400">
+              <li>
+                <strong>Node.js:</strong> JavaScript runtime for server-side
+                code
               </li>
               <li>
-                <strong>State management:</strong> React hooks, context, and
-                efficient updates
+                <strong>Netlify Functions:</strong> Serverless API endpoints
               </li>
               <li>
-                <strong>Performance:</strong> Code splitting, lazy loading,
-                optimized renders
-              </li>
-              <li>
-                <strong>Testing:</strong> Unit tests, integration tests, manual
-                QA
-              </li>
-              <li>
-                <strong>Documentation:</strong> Code comments, API docs, user
-                guides
+                <strong>MongoDB:</strong> NoSQL database for flexible data
+                storage
               </li>
             </ul>
           </div>
         </div>
-
-        <div className="row mt-4">
-          <div className="col">
-            <h2>Technology Stack</h2>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Frontend</h3>
-                    <ul className="list-unstyled mb-0">
-                      <li>
-                        <strong>React:</strong> Component-based UI with hooks
-                      </li>
-                      <li>
-                        <strong>Next.js:</strong> Server-side rendering and
-                        static generation
-                      </li>
-                      <li>
-                        <strong>TypeScript:</strong> Type-safe development
-                      </li>
-                      <li>
-                        <strong>Bootstrap:</strong> Responsive design framework
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Backend & APIs</h3>
-                    <ul className="list-unstyled mb-0">
-                      <li>
-                        <strong>Next.js API Routes:</strong> Serverless
-                        functions
-                      </li>
-                      <li>
-                        <strong>MongoDB:</strong> Document database for flexible
-                        data
-                      </li>
-                      <li>
-                        <strong>Clerk:</strong> User authentication and
-                        management
-                      </li>
-                      <li>
-                        <strong>OpenAI API:</strong> AI-powered features
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row mt-4">
-          <div className="col">
-            <h2>Featured Application: CNC Tools</h2>
-            <p>
-              The CNC Tools application is my most comprehensive project,
-              featuring 12+ specialized calculators and tools. Highlights
-              include:
-            </p>
-            <ul>
-              <li>
-                <strong>Box Shipping Calculator:</strong> 3D bin packing
-                algorithm to optimize package layouts
-              </li>
-              <li>
-                <strong>CNC Technical AI:</strong> GPT-4 powered assistant with
-                real-time streaming
-              </li>
-              <li>
-                <strong>Feed Rate Calculator:</strong> Precision CNC machining
-                calculations
-              </li>
-              <li>
-                <strong>Role-Based Access:</strong> Admin panel with user
-                management and permissions
-              </li>
-              <li>
-                <strong>Responsive Design:</strong> Works on desktop, tablet,
-                and mobile devices
-              </li>
-            </ul>
-            <a
-              href="https://cnctools.deejpotter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
-            >
-              Visit CNC Tools{" "}
-              <span className="bi bi-box-arrow-up-right ms-1"></span>
-            </a>
-          </div>
-        </div>
-
-        <div className="row mt-4">
-          <div className="col text-center">
-            <p>Need a custom application or tool built?</p>
-            <Link href="/contact" className="btn btn-lg btn-outline-primary">
-              Contact Me
-            </Link>
-          </div>
-        </div>
-      </div>
+      </section>
     </>
   );
 }

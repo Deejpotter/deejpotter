@@ -24,10 +24,10 @@ Statuses
 Findings (Audit 2026-01-18)
 
 - Netlify integrations present and working patterns:
- 	- Identity: src/contexts/AuthContext.tsx uses netlify-identity-widget (login/signup/logout handled client-side). Docs: <https://docs.netlify.com/manage/security/secure-access-to-sites/identity/overview/>
- 	- Forms: Contact form posts to /__forms.html and public/__forms.html exists with the matching hidden form. Docs: <https://docs.netlify.com/manage/forms/setup/> and Next.js note: <https://docs.netlify.com/frameworks/next-js/overview/#netlify-forms-compatibility>
- 	- Functions: netlify/functions/mongoCrud.ts exists and expects MONGODB_URI and DB_NAME. No in-repo callers found for /.netlify/functions/... endpoints yet; likely intended for future mini-apps (e.g., TodoList).
- 	- Netlify config: netlify.toml sets build to yarn build, publish .next, functions.external_node_modules=["mongodb"].
+  - Identity: src/contexts/AuthContext.tsx uses netlify-identity-widget (login/signup/logout handled client-side). Docs: <https://docs.netlify.com/manage/security/secure-access-to-sites/identity/overview/>
+  - Forms: Contact form posts to /__forms.html and public/__forms.html exists with the matching hidden form. Docs: <https://docs.netlify.com/manage/forms/setup/> and Next.js note: <https://docs.netlify.com/frameworks/next-js/overview/#netlify-forms-compatibility>
+  - Functions: netlify/functions/mongoCrud.ts exists and expects MONGODB_URI and DB_NAME. No in-repo callers found for /.netlify/functions/... endpoints yet; likely intended for future mini-apps (e.g., TodoList).
+  - Netlify config: netlify.toml sets build to yarn build, publish .next, functions.external_node_modules=["mongodb"].
 - Next.js App Router is used (src/app/*). MDX support is enabled in next.config.js. TypeDoc prebuild generates to public/docs.
 - Unused or unreferenced deps likely: react-chartjs-2, chart.js, react-dropzone, react-paginate, open-iconic (no usages found in src/). bson-objectid is used (src/types/RepoObject.ts). Gravatar uses md5 and images domain is allowed.
 - Documentation drift: NextjsRefactor.md still references pages directory and next-auth placeholders that don't reflect current App Router/AuthContext approach.
@@ -74,56 +74,44 @@ Todo
   - Acceptance: Local `yarn test:coverage` runs non-interactively and tests are stable.
 
 - Implement API route handler replacement for mongoCrud ✅
- 	- `src/app/api/mongo-crud/route.ts` added using Next.js Route Handlers (GET/POST/PUT/DELETE).
- 	- Uses a shared MongoClient with connection caching to avoid reconnecting on hot reload.
- 	- Input validation added with `zod` and an environment-based allowlist (`ALLOWED_COLLECTIONS`). ✅
- 	- Server-side auth validation added for mutating operations using Clerk (`auth()` from `@clerk/nextjs`) — POST/PUT/DELETE require authenticated user. ✅
- 	- Unit tests added (Vitest) for validation and auth edge cases. ✅
+  - `src/app/api/mongo-crud/route.ts` added using Next.js Route Handlers (GET/POST/PUT/DELETE).
+  - Uses a shared MongoClient with connection caching to avoid reconnecting on hot reload.
+  - Input validation added with `zod` and an environment-based allowlist (`ALLOWED_COLLECTIONS`). ✅
+  - Server-side auth validation added for mutating operations using Clerk (`auth()` from `@clerk/nextjs`) — POST/PUT/DELETE require authenticated user. ✅
+  - Unit tests added (Vitest) for validation and auth edge cases. ✅
 
 - Netlify Forms hardening and tests ✅
- 	- Playwright E2E test added to simulate contact form submission against a running dev server (intercepts `/__forms.html` and asserts success UI). ✅
- 	- CI runs Playwright E2E tests against a built site (`.github/workflows/ci.yml` e2e job). ✅
- 	- Confirm `public/__forms.html` stays in sync with UI fields and honeypot name (netlify-honeypot="bot-field"). ✅ (unit test added to assert client POST behavior)
+  - Playwright E2E test added to simulate contact form submission against a running dev server (intercepts `/__forms.html` and asserts success UI). ✅
+  - CI runs Playwright E2E tests against a built site (`.github/workflows/ci.yml` e2e job). ✅
+  - Confirm `public/__forms.html` stays in sync with UI fields and honeypot name (netlify-honeypot="bot-field"). ✅ (unit test added to assert client POST behavior)
 
 - CI pipeline
- 	- Add a GitHub Actions workflow to run: install, lint, test, TypeDoc, and build on pushes and PRs.
- 	- Upload build output and TypeDoc as artifacts for debugging.
+  - Add a GitHub Actions workflow to run: install, lint, test, TypeDoc, and build on pushes and PRs.
+  - Upload build output and TypeDoc as artifacts for debugging.
 
 - Dependency audit ✅
- 	- Removed `react-dropzone` and `react-paginate` from `package.json` (no usages in `src/`).
- 	- Remaining likely-unused packages (`react-chartjs-2`, `chart.js`, `open-iconic`) were left in lockfiles but not in `package.json`; plan to remove if truly unused in follow-up PRs.
- 	- Keep `bson-objectid`, `md5`, and MongoDB driver (used).
+  - Removed `react-dropzone` and `react-paginate` from `package.json` (no usages in `src/`).
+  - Remaining likely-unused packages (`react-chartjs-2`, `chart.js`, `open-iconic`) were left in lockfiles but not in `package.json`; plan to remove if truly unused in follow-up PRs.
+  - Keep `bson-objectid`, `md5`, and MongoDB driver (used).
 
 - Docs & internal guides
- 	- Update `NextjsRefactor.md` to reflect App Router, MDX, AuthContext, and current Netlify integrations; remove pages/* and next-auth references.
- 	- Ensure `readme.md` “Technologies and Tools” reflects the final auth choice after the Auth plan decision.
- 	- Confirm TypeDoc scope: exclude tests (`*.test.tsx` done), ensure only public APIs are documented.
+  - Update `NextjsRefactor.md` to reflect App Router, MDX, AuthContext, and current Netlify integrations; remove pages/* and next-auth references.
+  - Ensure `readme.md` “Technologies and Tools” reflects the final auth choice after the Auth plan decision.
+  - Confirm TypeDoc scope: exclude tests (`*.test.tsx` done), ensure only public APIs are documented.
 
 - Config and DX
- 	- Revisit `tsconfig.json` for alignment with Next.js recommendations; consider raising target (ES2020+) and relying on Next’s defaults.
- 	- Ensure ESLint runs type-aware checks; consider adding stricter rules incrementally with autofix.
- 	- Add environment variable documentation and `.env.example` once the hosting/auth plan is finalized (keys: MONGODB_URI, DB_NAME, others).
+  - Revisit `tsconfig.json` for alignment with Next.js recommendations; consider raising target (ES2020+) and relying on Next’s defaults.
+  - Ensure ESLint runs type-aware checks; consider adding stricter rules incrementally with autofix.
+  - Add environment variable documentation and `.env.example` once the hosting/auth plan is finalized (keys: MONGODB_URI, DB_NAME, others).
 
 In Progress
 
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
 - ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: <https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration>)
-- Migrate SCSS to modern `@use` / `@forward` and fix Sass deprecation warnings — **In Progress** (started 2026-01-24)
-  - Create an internal `SCSS-MIGRATION-PLAN.md` documenting the steps — **Completed** (2026-01-24) ✅
-  - Replace `map-merge` with `sass:map` `map.merge` — **Completed** (2026-01-24) ✅
-  - Add `stylelint` with SCSS rules and CI job to detect legacy helpers and `@import` usage — **Completed** (2026-01-24) ✅
-  - Replace deprecated `darken()`, `red()`,`green()`,`blue()`, and `if()` usages in local overrides — **Completed** (2026-01-24) ✅
-  - Split overrides into `_variables.scss`, `_theme.scss`, `_mixins.scss` and `@forward` them from a main entry — **In Progress** (create `_variables.scss`)
-  - Address remaining globals/style issues surfaced by `stylelint --fix` (comments, color function notation) — **Completed (auto-fixed & inline disables)** ✅
-  - Document Bootstrap upstream deprecations and add upgrade/monitoring TODO (2026-01-24) — **Todo**
-- Add visual regression snapshots for Hero and Navbar + Playwright coverage — **In Progress** (create `e2e/visual.spec.ts`)
-- Add an automated a11y check (Playwright + axe) for header and dropdown interactions — **Todo**
-- Audit components for hard-coded colors and replace with Bootstrap variables (e.g., `text-info` -> `text-primary`) — **Completed** (2026-01-24) ✅
 
 Completed (last 10)
 
-- Restore Bootstrap SCSS import and apply `$primary` override (2026-01-24)
-- Replace `info` color class uses with `primary` to favor green accent (2026-01-24)
+- Integrate `TopNavbar` into root `layout` and replace Sidebar for desktop nav (2026-01-24)
 - Update TypeDoc config name and exclude *.test.tsx from docs (2026-01-18)
 - Fix README typo ("Explain things in comments") (2026-01-18)
 - Add `src/app/api/mongo-crud/route.ts` and validation unit tests (2026-01-18)
@@ -150,6 +138,15 @@ Notes
 - Tailwind migration status:
   - Tailwind base and `postcss` config are in place; many unknown `@apply` utilities were replaced with explicit rules to unblock build.
   - Per-component SCSS modules remain and are being migrated incrementally (next priority).
+
+Tailwind Migration Todo (feature/tailwind branch)
+
+- Convert `GradientHeroSection` to Tailwind `bg-gradient-to-b from-<color> to-<color>` and update usage to accept color tokens (done)
+- Replace dropdown gradient background in `TopNavbar` with `bg-gradient-to-b` using Tailwind utilities (done)
+- Add safelist entries to `tailwind.config.cjs` for `from-` / `to-` classes used dynamically (done)
+- Add Playwright visual snapshot baselines for hero + navbar and confirm parity (todo)
+- Replace remaining custom gradients and popover styles with Tailwind utilities where appropriate (todo)
+- Remove unused SCSS and update migration docs after visual tests pass (todo)
 
 - Cleanup performed (2026-01-20):
   - Removed generated agent and prompt markdowns and one obsolete issue that were imported for Next.js/MCP experiments: `.github/prompts/*`, `.github/agents/*`, `.github/ISSUES/007-tailwind-migration.md`.

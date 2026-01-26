@@ -1,0 +1,30 @@
+name: Playwright E2E
+
+on:
+  pull_request:
+  push:
+    branches: ["feature/tailwind", "dev", "main"]
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+      - name: Run Playwright tests (visual + a11y)
+        env:
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ''
+        run: npx playwright test --reporter=github
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            test-results/**
+            e2e/**/visual.spec.ts-snapshots/**

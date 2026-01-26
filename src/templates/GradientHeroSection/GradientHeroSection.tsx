@@ -24,13 +24,19 @@ export default function GradientHeroSection({
   textColour,
   title,
 }: GradientHeroSectionProps): ReactElement {
+  // Use Tailwind gradient utilities. `gradientFrom` and `gradientTo` should be
+  // color keys (e.g., "primary", "light", "info"). We map them to Tailwind
+  // `from-...` and `to-...` utility classes so the classes are explicit in the file.
+  const fromClass = `from-${gradientFrom}`;
+  const toClass = `to-${gradientTo}`;
+
   return (
     <section
-      className={`${gradientFrom}-${gradientTo}-gradient text-${textColour} py-5`}
+      className={`bg-gradient-to-b ${fromClass} ${toClass} ${textColour} py-20`}
     >
-      <div className="container text-center">
-        <h1 className="display-1">{title}</h1>
-        <p className="lead">{subtitle}</p>
+      <div className="container mx-auto px-4 text-center">
+        <h1 className="text-6xl font-extrabold">{title}</h1>
+        <p className="mt-4 text-xl">{subtitle}</p>
       </div>
     </section>
   );

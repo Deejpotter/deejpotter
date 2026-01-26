@@ -90,89 +90,112 @@ export default function Contact(): ReactElement {
   };
 
   return (
-    <main className="container py-4">
-      <div className="row">
-        <div className="col-md">
-          <h2>Have some questions or feedback for me?</h2>
-          <p>
-            Fill in the form with your info and I&apos;ll get back to you as
-            soon as I can. I promise I&apos;ll only use this information to
-            contact you about your feedback, I won&apos;t share it with anyone
-            or use it for any other reason.
-          </p>
-        </div>
-        <div className="col-md">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="card shadow p-2 bg-secondary text-light"
-          >
-            <div className="form-group pb-2">
-              <label htmlFor="name">Name (required):</label>
-              <input
-                type="text"
-                id="name"
-                className={`form-control shadow ${
-                  errors.name ? "is-invalid" : ""
-                }`}
-                {...register("name")}
-              />
-              {errors.name && (
-                <div className="invalid-feedback">{errors.name.message}</div>
-              )}
-            </div>
+    <div>
+      <section className="mb-12">
+        <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">
+          Get in Touch
+        </h1>
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          Have some questions or feedback for me? Fill in the form and I'll get
+          back to you as soon as I can.
+        </p>
+      </section>
 
-            <div className="form-group pb-2">
-              <label htmlFor="email">Email address (required):</label>
-              <input
-                type="email"
-                id="email"
-                className={`form-control shadow ${
-                  errors.email ? "is-invalid" : ""
-                }`}
-                {...register("email")}
-              />
-              {errors.email && (
-                <div className="invalid-feedback">{errors.email.message}</div>
-              )}
-            </div>
+      <section className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-6">
+            <label
+              htmlFor="name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Name (required):
+            </label>
+            <input
+              type="text"
+              id="name"
+              className={`w-full p-3 rounded bg-gray-50 border ${
+                errors.name
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              } text-gray-900 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary`}
+              {...register("name")}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-2">{errors.name.message}</p>
+            )}
+          </div>
 
-            <div className="form-group pb-2">
-              <label htmlFor="message">Message (required):</label>
-              <textarea
-                id="message"
-                className={`form-control shadow ${
-                  errors.message ? "is-invalid" : ""
-                }`}
-                rows={5}
-                {...register("message")}
-              />
-              {errors.message && (
-                <div className="invalid-feedback">{errors.message.message}</div>
-              )}
-            </div>
+          <div className="mb-6">
+            <label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Email address (required):
+            </label>
+            <input
+              type="email"
+              id="email"
+              className={`w-full p-3 rounded bg-gray-50 border ${
+                errors.email
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              } text-gray-900 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary`}
+              {...register("email")}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-2">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
 
-            <div className="form-group pb-2">
-              <button
-                className="btn btn-primary shadow"
-                type="submit"
-                disabled={formStatus === "submitting"}
-              >
-                {formStatus === "submitting" ? "Submitting..." : "Submit form"}
-              </button>
-            </div>
-          </form>
+          <div className="mb-6">
+            <label
+              htmlFor="message"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Message (required):
+            </label>
+            <textarea
+              id="message"
+              className={`w-full p-3 rounded bg-gray-50 border ${
+                errors.message
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              } text-gray-900 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary`}
+              rows={6}
+              {...register("message")}
+            />
+            {errors.message && (
+              <p className="text-red-500 text-sm mt-2">
+                {errors.message.message}
+              </p>
+            )}
+          </div>
 
-          {/* Display success or error message based on form submission status */}
-          {formStatus === "success" && (
-            <div className="alert alert-success mt-3">
-              Form submitted successfully! I&apos;ll get back to you soon.
-            </div>
-          )}
-          {formStatus === "error" && errorMessage && (
-            <div className="alert alert-danger mt-3">{errorMessage}</div>
-          )}
-        </div>
-      </div>
-    </main>
+          <div>
+            <button
+              className="bg-primary hover:bg-opacity-80 text-white font-bold py-3 px-6 rounded-full transition-transform hover:scale-105 disabled:opacity-50"
+              type="submit"
+              disabled={formStatus === "submitting"}
+            >
+              {formStatus === "submitting" ? "Submitting..." : "Submit Form"}
+            </button>
+          </div>
+        </form>
+
+        {/* Display success or error message based on form submission status */}
+        {formStatus === "success" && (
+          <div className="mt-6 p-4 rounded-lg bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-800">
+            Form submitted successfully! I'll get back to you soon.
+          </div>
+        )}
+        {formStatus === "error" && errorMessage && (
+          <div className="mt-6 p-4 rounded-lg bg-red-100 text-red-800 border border-red-200 dark:bg-red-900 dark:text-red-200 dark:border-red-800">
+            {errorMessage}
+          </div>
+        )}
+      </section>
+    </div>
   );
 }

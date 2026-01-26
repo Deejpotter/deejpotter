@@ -1,32 +1,26 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Visual snapshots", () => {
-  test("Home hero and navbar snapshot", async ({ page }) => {
-    await page.goto("/");
-    // Wait for hero title to be visible
-    await page.waitForSelector(
-      "h1, h2, .hero, .gradient-hero, .hero-title, [data-hero]"
-    );
-    // capture navbar area
-    const nav = await page.locator("nav.navbar");
-    await expect(nav).toHaveScreenshot("navbar.png", {
-      animations: "disabled",
-    });
+// Visual snapshot tests for critical UI: hero & navbar.
+// We disable animations/transitions to make snapshots deterministic.
 
-    // capture hero area (center region)
-    const hero = await page.locator(
-      "section[data-hero], .hero, .gradient-hero"
-    );
-    if (await hero.count()) {
-      await expect(hero.first()).toHaveScreenshot("home-hero.png", {
-        animations: "disabled",
-      });
-    } else {
-      // Fallback: grab top fold screenshot
-      await expect(page).toHaveScreenshot("home-topfold.png", {
-        fullPage: false,
-        animations: "disabled",
-      });
-    }
+test.beforeEach(async ({ page }) => {
+  await page.addStyleTag({
+    content: `* { animation: none !important; transition: none !important; }`,
+  });
+});
+
+test("Hero matches baseline", async ({ page }) => {
+  await page.goto('/test/hero');
+  const hero = page.locator("section.bg-gradient-to-b");
+  await expect(hero).toBeVisible();
+  await expect(hero).toHaveScreenshot("hero.png", { animations: "disabled" });
+});
+
+test("Navbar matches baseline", async ({ page }) => {
+  await page.goto("/");
+  const navbar = page.locator("header");
+  await expect(navbar).toBeVisible();
+  await expect(navbar).toHaveScreenshot("navbar.png", {
+    animations: "disabled",
   });
 });

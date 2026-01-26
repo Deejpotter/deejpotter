@@ -20,13 +20,16 @@ export default function BasicSection({
   heading,
   paragraph,
 }: BasicSectionProps): ReactElement {
+  // Note: For Tailwind to properly treeshake and include dynamic classes,
+  // we cannot construct class names from variables like `bg-${backgroundColour}`.
+  // Instead, the full class name must be present in the source.
+  // A mapping object or switch statement is a common workaround.
+  // However, for this migration, we'll assume the parent component passes the full class name.
   return (
-    <section
-      className={`bg-${backgroundColour} text-${textColour} py-5`}
-    >
-      <div className="container">
-        <h2>{heading}</h2>
-        <p>{paragraph}</p>
+    <section className={`${backgroundColour} ${textColour} py-16`}>
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold">{heading}</h2>
+        <p className="mt-4 text-lg">{paragraph}</p>
       </div>
     </section>
   );

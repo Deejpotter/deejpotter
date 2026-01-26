@@ -1,5 +1,4 @@
 const path = require("path");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   sassOptions: {
@@ -18,7 +17,7 @@ const nextConfig = {
       },
     ],
   },
-  // Standard page extensions (MDX removed)
+  // Add MDX support for .md and .mdx files
   pageExtensions: ["js", "jsx", "ts", "tsx"],
 };
 

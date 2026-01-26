@@ -7,7 +7,7 @@ import "@popperjs/core/dist/umd/popper.min.js";
  */
 function BootstrapClient() {
   useEffect(() => {
-    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+    // require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
   return null;

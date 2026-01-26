@@ -228,11 +228,8 @@ export const PopoverTrigger = React.forwardRef<
     // The merged ref is intentionally forwarded to the cloned child when using
     // `asChild`, so the consumer-provided element becomes the popover anchor.
     // eslint-disable-next-line react-hooks/refs
-    // Cast to any so TypeScript accepts ref injection on arbitrary child elements
-    return React.cloneElement(
-      child as React.ReactElement<any>,
-      { ref, ...(referenceProps as any) } as any
-    );
+    // `as any` used here to avoid TypeScript complaining about `ref` on generic elements
+    return React.cloneElement(child as any, { ref, ...referenceProps } as any);
   }
 
   return (
@@ -268,6 +265,7 @@ export const PopoverContent = React.forwardRef<
       <FloatingFocusManager context={floatingContext} modal={context.modal}>
         <div
           ref={ref}
+          className={`bg-white dark:bg-gray-800 text-sm p-2 rounded shadow-md border border-gray-200 dark:border-gray-700 ${props.className || ""}`}
           style={{ ...context.floatingStyles, ...style }}
           aria-labelledby={context.labelId}
           aria-describedby={context.descriptionId}

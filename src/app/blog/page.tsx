@@ -17,76 +17,68 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="container py-5">
-      <div className="row">
-        <div className="col-lg-8 mx-auto">
-          {/* Page header */}
-          <header className="mb-5">
-            <h1 className="display-4 mb-3">Technical Blog</h1>
-            <p className="lead text-muted">
-              Project write-ups, implementation details, and technical
-              challenges solved.
-            </p>
-          </header>
+    <div>
+      <section className="mb-12">
+        <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">
+          Technical Blog
+        </h1>
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          Project write-ups, implementation details, and technical challenges
+          solved.
+        </p>
+      </section>
 
-          {/* Blog posts list */}
-          {posts.length === 0 ? (
-            <div className="alert alert-info">
-              No blog posts yet. Check back soon!
-            </div>
-          ) : (
-            <div className="row g-4">
-              {posts.map((post) => (
-                <div key={post.slug} className="col-12">
-                  <article className="card h-100 border-0 shadow-sm">
-                    <div className="card-body">
-                      {/* Post title */}
-                      <h2 className="h4 card-title mb-3">
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-decoration-none text-dark stretched-link"
-                        >
-                          {post.title}
-                        </Link>
-                      </h2>
-
-                      {/* Post metadata */}
-                      <div className="text-muted small mb-3">
-                        <time dateTime={post.date}>
-                          {formatDate(post.date)}
-                        </time>
-                        {" · "}
-                        <span>{post.readTime} min read</span>
-                      </div>
-
-                      {/* Post excerpt */}
-                      {post.excerpt && (
-                        <p className="card-text text-muted mb-3">
-                          {post.excerpt}
-                        </p>
-                      )}
-
-                      {/* Post tags */}
-                      {post.tags.length > 0 && (
-                        <div className="d-flex flex-wrap gap-2">
-                          {post.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="badge bg-secondary text-white"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </article>
-                </div>
-              ))}
-            </div>
-          )}
+      {posts.length === 0 ? (
+        <div
+          className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300"
+          role="alert"
+        >
+          <p className="font-bold">No posts yet!</p>
+          <p>Check back soon for technical articles and project updates.</p>
         </div>
-      </div>
+      ) : (
+        <div className="space-y-8">
+          {posts.map((post) => (
+            <article
+              key={post.slug}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="p-8">
+                <h2 className="text-2xl font-bold mb-2">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="text-gray-900 dark:text-gray-100 hover:text-primary transition-colors"
+                  >
+                    {post.title}
+                  </Link>
+                </h2>
+                <div className="text-gray-500 dark:text-gray-400 text-sm mb-4">
+                  <time dateTime={post.date}>{formatDate(post.date)}</time>
+                  {" · "}
+                  <span>{post.readTime} min read</span>
+                </div>
+                {post.excerpt && (
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
+                    {post.excerpt}
+                  </p>
+                )}
+                {post.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs font-semibold inline-block py-1 px-3 uppercase rounded-full text-white bg-secondary"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

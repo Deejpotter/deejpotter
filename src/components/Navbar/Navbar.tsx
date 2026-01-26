@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link"; // Next.js Link component for client-side routing
 import React, { useEffect, useState } from "react"; // We need React for this component
-import Auth from "./Auth"; // My custom Auth component
+import AuthButton from "@/components/ui/auth/AuthButton"; // Use AuthButton component
 import NavDropdown from "./NavDropdown/NavDropdown"; // My custom NavDropdown component
 import Image from "next/image";
 import { useNavbar } from "@/contexts/NavbarContext";
@@ -25,14 +25,12 @@ const Navbar = () => {
   }, [isNavCollapsed]);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-primary">
-      <div className="container">
-        {/* The navbar brand is wrapped inside the Link so we can use client-side routing to navigate to the home page. */}
-        <Link href="/">
-          {/* The navbar brand is an image wrapped in a span to hold the navbar-brand class. */}
+    <nav className="bg-gray-800 text-white p-4">
+      <div className="max-w-7xl mx-auto px-4 w-full flex items-center justify-between">
+        <Link href="/" className="inline-flex items-center">
           <Image
             src="/images/deejPotterLogo.svg"
-            className="navbar-brand"
+            className="h-10 w-auto"
             alt="Deej Potter Logo"
             width={50}
             height={50}
@@ -41,23 +39,53 @@ const Navbar = () => {
 
         {/* Button to toggle the navbar on small screens. */}
         <button
-          className="navbar-toggler" // This is a Bootstrap class that makes the button look like a hamburger icon.
-          type="button" // The button type is set to show that it is used for interacting with the navbar rather than linking somewhere.
-          onClick={toggleNavCollapse} // Set to call toggleNavCollapse on click
-          aria-expanded={!isLocalCollapsed} // aria-expanded is an accessibility attribute that tells screen readers if the collapsible part of the navbar is expanded or collapsed
-          aria-label="Toggle navigation" // aria-label is another attribute that labels the button for screen readers to give a description of what it does.
+          className="ml-auto lg:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          type="button"
+          onClick={toggleNavCollapse}
+          aria-expanded={!isLocalCollapsed}
+          aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>{" "}
-          {/* The actual hamburger icon from Bootstrap */}
+          {/* Icon when menu is closed */}
+          <svg
+            className={`${!isLocalCollapsed ? "hidden" : "block"} h-6 w-6`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+          {/* Icon when menu is open */}
+          <svg
+            className={`${isLocalCollapsed ? "hidden" : "block"} h-6 w-6`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
         </button>
 
-        {/* Collapsible part of the navbar. Its visibility is controlled by isLocalCollapsed state. */}
         <div
-          className={`${isLocalCollapsed ? "collapse" : ""} navbar-collapse`}
+          className={`${
+            isLocalCollapsed ? "hidden" : "block"
+          } lg:flex lg:items-center lg:w-auto w-full`}
           id="navbarNav"
         >
-          <ul className="navbar-nav">
-            {/* Navigation items, each wrapped in a Next.js Link for client-side routing */}
+          <ul className="lg:flex items-center justify-center flex-1 space-x-4 text-sm">
             {navItems.map((item, index) =>
               // If there are nested items, render a NavDropdown component.
               item.items ? (
@@ -67,24 +95,25 @@ const Navbar = () => {
                   items={item.items}
                 />
               ) : (
-                // Otherwise, render a regular link.
-                <li key={item.label} className="nav-item">
-                  <Link href={item.href || "#"}>
-                    <span
-                      className="nav-link"
-                      onClick={() => {
-                        closeAllDropdowns();
-                      }}
-                    >
-                      {item.label}
-                    </span>
+                <li key={item.label}>
+                  <Link
+                    href={item.href || "#"}
+                    className="block py-2 px-3 text-white rounded hover:bg-gray-700"
+                    onClick={() => {
+                      closeAllDropdowns();
+                    }}
+                  >
+                    {item.label}
                   </Link>
                 </li>
               )
             )}
           </ul>
         </div>
-        <Auth />
+
+        <div className="hidden lg:block ml-4">
+          <AuthButton buttonSize="sm" />
+        </div>
       </div>
     </nav>
   );

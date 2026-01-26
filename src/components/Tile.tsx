@@ -19,20 +19,24 @@ const Tile: React.FC<TileProps> = ({
   description,
   link,
   linkText,
-  bgColorClass = "bg-light", // Default to bg-light if not provided
-  textColorClass = "text-dark", // Default to text-dark if not provided
+  bgColorClass = "bg-gray-100", // Default to bg-light
+  textColorClass = "text-gray-800", // Default to text-dark
 }) => {
   return (
-    <div className="col-md-6 col-lg-4 mb-4">
+    <div className="w-full md:w-1/2 lg:w-1/3 p-2">
       {/* Use the passed in props to set the content and styles */}
-      <div className={`card h-100 shadow ${bgColorClass} ${textColorClass}`}>
-        <div className="card-body">
-          <h3 className="card-title">{title}</h3>
-          <p className="card-text">{description}</p>
+      <div
+        className={`flex flex-col h-full shadow-lg rounded-lg ${bgColorClass} ${textColorClass}`}
+      >
+        <div className="p-6 flex-grow">
+          <h3 className="text-xl font-bold mb-2">{title}</h3>
+          <p className="text-base">{description}</p>
+        </div>
+        <div className="p-6 pt-0">
           {/* Use Link styled as a button instead of button inside Link for valid HTML and better accessibility */}
-          <Link 
-            href={link} 
-            className="btn btn-outline-secondary"
+          <Link
+            href={link}
+            className="inline-block bg-transparent hover:bg-secondary text-secondary font-semibold hover:text-white py-2 px-4 border border-secondary hover:border-transparent rounded"
             aria-label={`Learn more about ${title}`}
           >
             {linkText}
