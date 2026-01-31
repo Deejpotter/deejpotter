@@ -58,7 +58,12 @@
   "exclude": [
     "node_modules",
     "mdx.js",
-    "**/*.text.js"
+    "**/*.text.js",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "src/**/__tests__/**",
+    "src/**/*.stories.*",
+    "src/stories/**"
   ],
   "types": [
     "jest"
