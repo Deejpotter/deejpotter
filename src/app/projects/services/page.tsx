@@ -3,17 +3,6 @@ import Link from "next/link";
 import Script from "next/script";
 import { Container, Row, Col, Card } from "react-bootstrap";
 
-// Debug imports
-/* eslint-disable no-console */
-console.log('DEBUG services imports', {
-  Link: typeof Link,
-  Container: typeof Container,
-  Row: typeof Row,
-  Col: typeof Col,
-  Card: typeof Card,
-  Script: typeof Script,
-});
-/* eslint-enable no-console */
 
 export default function Services(): ReactElement {
   // Define the services offered

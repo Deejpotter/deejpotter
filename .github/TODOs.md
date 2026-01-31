@@ -66,8 +66,144 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
 - **8.2 Link TODO.md from the README under “Current Work & Roadmap”.
 - **8.3 Enable GitHub Projects and pin the board to the repo.
 
-### 9️⃣ Optional Developer Experience Boosts
-- **9.1 Storybook static build integration in CI.
-- **9.2 Husky + lint‑staged for auto‑format on commit.
-- **9.3 VSCode DevContainer for reproducible environment.
-- **9.4 Consider TurboRepo/pnpm if the repo ever splits into packages.
+### 9️⃣ Optional Developer Experience Boosts & High Priority Actions
+- **9.1 Storybook static build integration in CI.**
+- **9.2 Husky + lint‑staged for auto‑format on commit.**
+- **9.3 VSCode DevContainer for reproducible environment.**
+- **9.4 Consider TurboRepo/pnpm if the repo ever splits into packages.**
+
+High priority audits & improvements (merged)
+- **Audit Netlify usage** — search for `/.netlify/functions/`, `netlify-identity-widget`, `netlify.toml`, and `public/__forms.html`. Document call sites and list migration steps.
+- **Improve ESLint config** — implement Next.js recommended config (flat config if possible), ensure TypeScript rule coverage and autofix in CI.
+  - Owner: @dev
+  - Acceptance: ESLint runs in CI with no TODO fallbacks and applies safe autofixes.
+- **Harden tests & mocks** — replace global zod mocks with `vi.mock(importOriginal(...))` or the real zod library where appropriate and add deterministic test utilities.
+  - Owner: @dev
+  - Acceptance: Tests pass reliably in CI and locally without brittle global state.
+- **Accessibility audit & fixes (In Progress)**
+  - Owner: @dev
+  - Acceptance: Axe critical/serious violations are resolved; add Vitest-based axe checks and a CI job to fail on critical violations.
+  - Plan:
+    1. Add Vitest/axe checks for core pages (home, contact, projects).
+    2. Fix the top accessibility issues discovered and add regression tests.
+    3. Expand checks across routes and add CI a11y job.
+- **Metadata & social previews** — add OG/Twitter metadata, canonical URLs, and a script to optionally generate OG images for posts.
+- **Integration tests for API routes** — use MongoMemoryServer for CI-backed integration tests.
+  - Owner: @dev
+  - Acceptance: Integration job runs reliably in CI and cleans up test DBs.
+- **Dependabot & Security** — triage GH security alerts and create upgrade PRs for critical/high vulnerabilities.
+  - Owner: @security
+- **Staging & rollout** — deploy to a staging host, run E2E/integration tests, validate, then remove Netlify artifacts.
+- **CI thresholds & gating** — enforce coverage and lint thresholds to fail PRs when regressions occur.
+- **Docs & README updates** — ensure README, `NextjsRefactor.md` and docs reflect auth choice, deployment docs, and env variables.
+- **Cleanup unused dependencies** — remove unused packages and confirm CI passes and lockfile updates.
+- **Remove temporary test patterns** — ensure tests are non-interactive and stable in CI.
+
+- Implement API route handler replacement for mongoCrud ✅
+  - `src/app/api/mongo-crud/route.ts` added using Next.js Route Handlers (GET/POST/PUT/DELETE).
+  - Uses a shared MongoClient with connection caching to avoid reconnecting on hot reload.
+  - Input validation added with `zod` and an environment-based allowlist (`ALLOWED_COLLECTIONS`). ✅
+  - Server-side auth validation added for mutating operations using Clerk (`auth()` from `@clerk/nextjs`) — POST/PUT/DELETE require authenticated user. ✅
+  - Unit tests added (Vitest) for validation and auth edge cases. ✅
+
+- Netlify Forms hardening and tests ✅
+  - Playwright E2E test added to simulate contact form submission against a running dev server (intercepts `/__forms.html` and asserts success UI). ✅
+  - CI runs Playwright E2E tests against a built site (`.github/workflows/ci.yml` e2e job). ✅
+  - Confirm `public/__forms.html` stays in sync with UI fields and honeypot name (netlify-honeypot="bot-field"). ✅ (unit test added to assert client POST behavior)
+
+- CI pipeline
+  - Add a GitHub Actions workflow to run: install, lint, test, TypeDoc, and build on pushes and PRs.
+  - Upload build output and TypeDoc as artifacts for debugging.
+
+- Dependency audit ✅
+  - Removed `react-dropzone` and `react-paginate` from `package.json` (no usages in `src/`).
+  - Remaining likely-unused packages (`react-chartjs-2`, `chart.js`, `open-iconic`) were left in lockfiles but not in `package.json`; plan to remove if truly unused in follow-up PRs.
+  - Keep `bson-objectid`, `md5`, and MongoDB driver (used).
+
+- Docs & internal guides
+  - Update `NextjsRefactor.md` to reflect App Router, MDX, AuthContext, and current Netlify integrations; remove pages/* and next-auth references.
+  - Ensure `readme.md` “Technologies and Tools” reflects the final auth choice after the Auth plan decision.
+  - Confirm TypeDoc scope: exclude tests (`*.test.tsx` done), ensure only public APIs are documented.
+
+- Config and DX
+  - Revisit `tsconfig.json` for alignment with Next.js recommendations; consider raising target (ES2020+) and relying on Next’s defaults.
+  - Ensure ESLint runs type-aware checks; consider adding stricter rules incrementally with autofix.
+  - Add environment variable documentation and `.env.example` once the hosting/auth plan is finalized (keys: MONGODB_URI, DB_NAME, others).
+
+**New Highest Priority: Fix merge conflicts & get CI green** ✅
+- Marked: **In Progress**
+- Sub-steps:
+  1. Resolve remaining merge conflicts (search for `<<<<<<<` and `>>>>>>>` across the repo).
+  2. Run `yarn install` and `yarn build` locally; capture TypeScript/lint/test failures.
+  3. Fix TypeScript and ESLint failures incrementally, adding small tests where behavior changed.
+  4. Re-generate lockfile (if dependency changes) and commit `package.json` + `yarn.lock` updates atomically.
+  5. Run CI locally (via `yarn test` + `yarn lint`) and ensure Playwright/Vitest jobs pass.
+  6. Push fixes, open PR, and post this plan in the PR description with verification steps.
+
+In Progress
+
+- Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
+- ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: <https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration>)
+- Harden tests & mocks — **In Progress** (started 2026-01-26)
+  - Owner: @dev
+  - Plan: Replace ad-hoc zod globals with safe partial mocks using `vi.mock(importOriginal(...))`, add deterministic component tests for `Page`/`Header`, and add test utilities for shared mock behavior. Acceptance: tests should not rely on global zod mocks and should be stable in CI.
+- Accessibility audit & fixes — **In Progress** (started 2026-01-26)
+  - Owner: @dev
+  - Plan: Add an automated axe check to the Playwright E2E suite (a11y smoke), run axe on home, contact and top navbar pages, fix top violations and add regression checks. Acceptance: Axe critical/serious violations are resolved and an a11y job runs in CI.
+- Dependabot & security triage — **In Progress** (started 2026-01-26)
+  - Owner: @security
+  - Plan: Add Dependabot config to update major/minor patches, run an initial audit and open upgrade PRs for critical/high issues. Acceptance: GH security alerts are triaged and critical updates are applied or a mitigation plan is documented.
+- Tailwind visual snapshots — **In Progress** (started 2026-01-26)
+  - Owner: @dev
+  - Plan: Add visual snapshot baselines for hero + navbar using Playwright visual snapshot support; add per-component migration checklist and remove legacy SCSS once shadowed by snapshots. Acceptance: Visual diffs are zero or intentional and recorded as baselines.
+
+Completed (last 10)
+
+- Integrate `TopNavbar` into root `layout` and replace Sidebar for desktop nav (2026-01-24)
+- Update TypeDoc config name and exclude *.test.tsx from docs (2026-01-18)
+- Fix README typo ("Explain things in comments") (2026-01-18)
+- Add `src/app/api/mongo-crud/route.ts` and validation unit tests (2026-01-18)
+- Add GitHub Actions CI workflow for lint/test/docs/build (2026-01-18)
+- Add `.env.example` and hosting evaluation note `.github/hosting-eval.md` (2026-01-18)
+- Remove unused client deps and `@netlify/functions` dev dep from `package.json` (2026-01-18)
+- Add input validation and collection allowlist to API, and add server-side Clerk auth for mutating ops (2026-01-18)
+- Add Playwright E2E test for contact form (2026-01-18)
+
+Notes
+
+- Do not introduce new dependencies without explicit need.
+- Use git diffs before/after to verify scope of changes.
+
+---
+
+## Recent Update (2026-01-20) ✅
+
+- Build & TypeScript fixes:
+  - Resolved the blocking TypeScript errors (removed missing `AlgorithmType`, aligned `calculateOptimalCuts` call to `CutCalculatorInput`, fixed `Popover` prop spreads and Vitest coverage config).
+  - Added a Clerk fallback in `AuthProvider`/`layout` so prerendering won't fail when `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is missing.
+  - Local production build now completes after these fixes.
+
+- Tailwind migration status:
+  - Tailwind base and `postcss` config are in place; many unknown `@apply` utilities were replaced with explicit rules to unblock build.
+  - Per-component SCSS modules remain and are being migrated incrementally (next priority).
+
+Tailwind Migration Todo (feature/tailwind branch)
+
+- Convert `GradientHeroSection` to Tailwind `bg-gradient-to-b from-<color> to-<color>` and update usage to accept color tokens (done)
+- Replace dropdown gradient background in `TopNavbar` with `bg-gradient-to-b` using Tailwind utilities (done)
+- Add safelist entries to `tailwind.config.cjs` for `from-` / `to-` classes used dynamically (done)
+- Add Playwright visual snapshot baselines for hero + navbar and confirm parity (todo)
+- Replace remaining custom gradients and popover styles with Tailwind utilities where appropriate (todo)
+- Remove unused SCSS and update migration docs after visual tests pass (todo)
+
+- Cleanup performed (2026-01-20):
+  - Removed generated agent and prompt markdowns and one obsolete issue that were imported for Next.js/MCP experiments: `.github/prompts/*`, `.github/agents/*`, `.github/ISSUES/007-tailwind-migration.md`.
+
+- Next steps (priority):
+  1. Finish per-component SCSS → Tailwind conversions and remove legacy SCSS imports. 🔧
+  2. Run visual regression / Playwright snapshots to confirm parity. 🧪
+  3. Finalize deployment plan & remove remaining Netlify-specific artifacts once ready. 🚀
+  4. Confirm CI (lint/tests/a11y/e2e) passes and open PRs for incremental migrations.
+
+> If you'd like, I can also remove related dev dependencies that were specifically added for MCP experiments — I didn't find new package additions tied to those markdowns, so nothing required there unless you want to prune additional unused packages.
+>>>>>>> feature/tailwind

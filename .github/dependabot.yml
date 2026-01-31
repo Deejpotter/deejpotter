@@ -1,18 +1,53 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot configuration for automated dependency updates
+# See https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  # Enable version updates for npm.
+  # Enable version updates for npm (yarn)
   - package-ecosystem: "npm"
-    # Look for `package.json` and `lock` files in the `root` directory.
     directory: "/"
-    # Check for updates every day. Could be "daily", "weekly" or "monthly".
     schedule:
-      interval: "daily"      
-    # Target the dev branch.
+      interval: "weekly" # Changed from daily to reduce PR noise
+      day: "monday"
+      time: "09:00"
+      timezone: "Australia/Melbourne"
     target-branch: "dev"
-    # Set a limit for pull requests.
-    open-pull-requests-limit: 10
+    # Group updates by type to reduce PR noise
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
+    # Limit open PRs to avoid overwhelming the queue
+    open-pull-requests-limit: 5
+    # Add labels to PRs for better organization
+    labels:
+      - "dependencies"
+      - "automated"
+    # Prefix commit messages
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore(dev)"
+      include: "scope"
+    # Version update strategy
+    versioning-strategy: increase
+
+  # Enable security updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Australia/Melbourne"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automated"
+

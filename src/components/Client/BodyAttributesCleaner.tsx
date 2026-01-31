@@ -23,7 +23,6 @@ export default function BodyAttributesCleaner() {
       }
     } catch (e) {
       // No-op - defensive; never want this to break the app
-      // eslint-disable-next-line no-console
       console.debug("BodyAttributesCleaner error", e);
     }
   }, []);

@@ -96,7 +96,7 @@ export default function Contact(): ReactElement {
           Get in Touch
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          Have some questions or feedback for me? Fill in the form and I'll get
+          Have some questions or feedback for me? Fill in the form and I will get
           back to you as soon as I can.
         </p>
       </section>
@@ -187,7 +187,7 @@ export default function Contact(): ReactElement {
         {/* Display success or error message based on form submission status */}
         {formStatus === "success" && (
           <div className="mt-6 p-4 rounded-lg bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-800">
-            Form submitted successfully! I'll get back to you soon.
+            Form submitted successfully! I will get back to you soon.
           </div>
         )}
         {formStatus === "error" && errorMessage && (

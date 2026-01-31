@@ -1,7 +1,7 @@
 # Setup Next.js Environment
 
 Install Next.js and create a new project.
-Install Node.js and npm (if not already installed).
+Install Node.js (if not already installed). If you prefer Yarn, enable it via Corepack (`corepack enable`) or install Yarn.
 Run npx create-next-app to create a new Next.js project.
 Configure TypeScript (if necessary).
 Install TypeScript and necessary @types packages.
@@ -34,7 +34,7 @@ Test each service or repository individually.
 Setup SCSS
 
 Install sass.
-Run npm install sass.
+Run yarn add sass.
 Convert all global styles to SCSS and import them in _app.js.
 Rename global.css to global.scss.
 Import the new global.scss file in_app.js.
@@ -59,7 +59,7 @@ Test each form individually.
 Setup Netlify Identity
 
 Install and configure next-auth with Netlify Identity as a provider.
-Run npm install next-auth.
+Run yarn add next-auth.
 Create a [...nextauth].js file in the pages/api/auth directory.
 In this file, configure next-auth to use Netlify Identity.
 Identify all parts of the Angular project that require user authentication.
@@ -74,7 +74,7 @@ Test each game individually.
 Testing
 
 Install Jest and React Testing Library.
-Run npm install jest react-testing-library.
+Run yarn add jest react-testing-library.
 Refactor or recreate each test from the Angular project in the Next.js project.
 For each test in the Angular project, create a corresponding test in the Next.js project.
 Update the test logic to work with React and Jest.
