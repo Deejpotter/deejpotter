@@ -24,17 +24,16 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 
 - **Tailwind CSS**: Primary styling system (migration complete across critical components). We follow a Tailwind-first approach for all UI components.
 
-## Development workflow (Storybook-first) ✅
+## Testing & Component workflow (Vitest-first + Playwright) ✅
 
-We follow a Storybook-first, Tailwind-first workflow for UI changes:
+We follow a Vitest-first, Tailwind-first workflow for UI changes:
 
-1. Implement and validate UI components in Storybook as isolated units.
-2. Add `*.stories.tsx` for each component with states (default, empty, error, edge cases).
-3. Add Vitest unit tests and Playwright visual/Storybook snapshot tests for critical components.
-4. Integrate the component into pages only after Storybook verification; remove legacy CSS/framework code in the same PR.
+1. Implement and validate UI components using Tailwind and unit tests (Vitest + React Testing Library).
+2. Add unit tests covering behavior and accessibility (default, empty, error, edge cases).
+3. Add Playwright E2E and visual snapshot tests for critical pages/components (navbar, hero, cut-calculator).
+4. Integrate the component into pages only after tests and visual snapshots pass; remove legacy CSS/framework code in the same PR.
 
-Benefits: faster iteration, smaller PRs, early visual regression detection, and better documentation for component usage.
-
+Benefits: fast unit feedback, reliable visual regression, smaller PRs, and automated E2E checks.
 
 - **Next.js**: The main framework used for building the website.
 
@@ -43,7 +42,7 @@ Benefits: faster iteration, smaller PRs, early visual regression detection, and 
 - **Netlify Identity**: For user authentication.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
 - **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
 
-- **Bootstrap**: For styling the website.⚠️ This project is migrating away from Bootstrap in favor of Tailwind CSS (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+- **Tailwind CSS**: Primary styling system and recommended approach for new components.
 
 - **React**: For building the user interface components.
 
@@ -77,6 +76,13 @@ yarn build
 
 Visit `http://localhost:3000` to view the application.
 
+## Running tests
+
+- Unit & component tests: `yarn test` (Vitest + React Testing Library)
+- E2E & visual tests: `npx playwright test` (Playwright)
+
+When converting or adding components, add Vitest unit tests and Playwright visual checks for critical pages/components.
+
 For detailed setup instructions, see the [Setup & Installation](http://bookstack.deejpotter.com/books/deejpottercom/page/setup-installation) guide in BookStack.
 
 ## Documentation
@@ -96,7 +102,9 @@ When contributing to this project:
 2. Check the [TODO & Roadmap](http://bookstack.deejpotter.com/books/deejpottercom/page/todo-roadmap)
 3. Follow conventional commit messages
 4. Update BookStack documentation for any changes
-5. Test thoroughly before submitting
+5. If you change testing or UI frameworks (e.g., Vitest, Playwright, Tailwind), update the README, `.github/copilot-instructions.md`, and `.github/TODOs.md` to record the new workflow and rationale.
+6. Add or update tests for any changed behavior. New features and bug fixes must include tests covering the behavior and aim to keep coverage above the project thresholds.
+7. Test thoroughly before submitting
 
 ## License
 

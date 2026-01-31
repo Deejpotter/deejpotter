@@ -3,11 +3,12 @@
 import { ReactElement } from "react";
 import { StockItem } from "@/types/cutCalculator";
 
-// StockItemsTable
+// StockItemsTable (Tailwind-first)
 // Purpose: Manage available stock lengths and quantities used by the cut calculator.
-// Rationale: Tailwind-first component to ensure consistency across UI; add stories and
-// unit tests to validate behavior before integrating with pages.
-// Storybook: `src/stories/StockItemsTable.stories.tsx`.
+// Rationale: Tailwind-first component to ensure consistent spacing and theming.
+// Testing: Validate behavior with Vitest unit tests and use Playwright visual snapshots for layout parity when necessary.
+
+/* Table & controls: table markup is minimal and semantic to make unit tests and accessibility checks straightforward; avoid complex nested markup to keep visual snapshots stable. */
 
 type StockItemsTableProps = {
   stockItems: StockItem[];
@@ -54,6 +55,7 @@ export default function StockItemsTable({
 
   return (
     <div className="rounded shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">
+      /* Header: shows title and add-stock control. Keep control minimal for predictable unit test interactions. */
       <div className="flex items-center justify-between bg-sky-600 text-white px-4 py-3 rounded-t">
         <h5 className="m-0 text-sm font-medium">Available Stock</h5>
         <button
@@ -69,6 +71,7 @@ export default function StockItemsTable({
       </div>
       <div className="p-0">
         <div className="overflow-auto">
+          /* Table: semantic, minimal table so tests can assert cells and totals without fragile selectors. */
           <table className="min-w-full text-sm">
             <thead className="bg-gray-100">
             <tr>

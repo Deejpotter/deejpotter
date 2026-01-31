@@ -47,6 +47,47 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
 - **4.3 Generate coverage reports** – ensure yarn test:coverage outputs HTML and is uploaded in CI.
 - **4.4 Example test snippets** are included in src/**tests**/ folder.
 
+#### 4.5 Improve test coverage (detailed plan)
+Goal: Bring overall coverage to a reliable minimum of 60% across statements, functions, branches, and lines, focusing on critical libraries, API routes, and UI components.
+
+Steps:
+1. Audit current coverage
+   - Run `yarn test:coverage` locally and upload/inspect the `coverage/lcov-report/index.html` to identify files with low coverage.
+   - Prioritize files that affect correctness and user-facing behavior: `src/lib/*`, `src/app/api/*`, `src/contexts/*`, and key components (TopNavbar, ContactForm, calculators).
+
+2. Add tests for core libraries (High priority)
+   - Add unit tests for `src/lib/cutOptimizer.ts` (validation, edge cases, utilities, and algorithm behavior).
+   - Add tests for formatting/utility functions (describe, format helpers).
+   - Add tests for any other business logic-heavy libraries.
+
+3. Add route & API unit tests (High priority)
+   - Add tests for `src/app/api/mongo-crud/route.ts` to verify validation (collection name checks), auth guard behaviour, and error paths.
+   - Mock database operations (use `vi.mock` on `src/app/api/mongo-crud/route` internals or mock `mongodb` interactions) for mutating behaviour tests.
+
+4. Strengthen component tests (Medium priority)
+   - Add Vitest + React Testing Library tests for interactive components (ContactForm, TopNavbar, calculators) covering user flows, validation, and accessibility expectations.
+   - Make tests deterministic (minimal reliance on CSS classnames or layout; prefer data-testid and ARIA roles).
+
+5. Add Playwright E2E visual checkpoints (Medium priority)
+   - Add PoC visual tests (e.g., ResultsDisplay PoC already added).
+   - Create baselines for critical pages (home, about, contact, cut-calculator) and integrate into CI as optional gating (for main branch enforcement).
+
+6. Enforce coverage thresholds & CI (High priority)
+   - Configure Vitest coverage thresholds (60%) in `vitest.config.ts`.
+   - Ensure CI runs `yarn vitest run --coverage` and uploads coverage artifacts (already in `.github/workflows/ci.yml`).
+   - Fail the CI job if coverage falls below thresholds.
+
+7. Ongoing maintenance (Low priority)
+   - Add tests to PR checklist and require new features to include tests.
+   - Schedule a monthly coverage review to add tests in lower-coverage areas.
+
+Acceptance criteria:
+- `yarn test:coverage` completes and coverage meets thresholds (>= 60% for lines, functions, branches, statements).
+- Critical libraries (cutOptimizer, API routes, ContactForm) are covered by deterministic tests.
+- CI uploads coverage artifacts and fails on coverage regressions.
+
+Status: In Progress — vitest coverage thresholds added; unit tests added for `cutOptimizer` (validation + algorithm + utilities), `ContactForm` (validation & submission flows), and `mongo-crud` (validation + auth guard + mocked mutation flows). Next: expand component tests (TopNavbar, Page layout), add tests for contexts (Auth, Navbar), and add accessibility-focused unit tests for critical pages. After that, iterate until `yarn test:coverage` meets thresholds.
+
 ### 5️⃣ Documentation & Onboarding
 
 - **5.1 Add README badges** (CI, Node, License).
@@ -77,7 +118,7 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
 
 ### 9️⃣ Optional Developer Experience Boosts & High Priority Actions
 
-- **9.1 Storybook static build integration in CI.**
+- **9.1 Integrate Playwright visual/E2E tests into CI.**
 - **9.2 Husky + lint‑staged for auto‑format on commit.**
 - **9.3 VSCode DevContainer for reproducible environment.**
 - **9.4 Consider TurboRepo/pnpm if the repo ever splits into packages.**
@@ -208,29 +249,33 @@ Tailwind Migration Todo (feature/tailwind branch)
 - Replace remaining custom gradients and popover styles with Tailwind utilities where appropriate (todo)
 - Remove unused SCSS and update migration docs after visual tests pass (todo)
 
-## Storybook-first component migration (New)
+## Component migration (Vitest-first)
 
-**Goal:** Build and verify UI components in Storybook (isolated, documented, tested) before integrating them into pages. This reduces visual regression risk and enables faster component iteration.
+**Goal:** Convert UI components to Tailwind and validate them with Vitest unit tests and Playwright visual snapshots before integrating them into pages. This reduces visual regression risk and ensures behavior and accessibility parity.
 
 High-level steps:
-1. Identify components still using Bootstrap/legacy SCSS and that require Tailwind conversion.
-2. Convert each component to a Tailwind-first implementation and add comprehensive inline documentation (file header + key block comments).
-3. Create Storybook stories for each converted component with a set of primary states (default, empty, error, large data) and add small Vitest snapshot/unit tests.
-4. Add Playwright visual snapshot tests for key components (hero, navbar, cut calculator components) and include a Storybook visual test job in CI.
-5. Remove the `Compat/BootstrapShim` and any remaining Bootstrap artifacts once all usages are replaced and Storybook tests pass.
-6. Update repository docs (`readme.md`, `.github/copilot-instructions.md`, `Tailwind Migration` docs) to reflect the Storybook-first workflow and remove mentions of the old Bootstrap workflow.
+
+1. Identify components still using Bootstrap/legacy SCSS and convert them to Tailwind-first implementations.
+2. Add comprehensive inline documentation (file header + key block comments) that describe purpose, rationale, and testing approach.
+3. Add Vitest unit tests for each component covering behavior and accessibility edge cases.
+4. Add Playwright visual snapshot tests for key components/pages (hero, navbar, cut calculator).
+5. Remove the `Compat/BootstrapShim` and any remaining Bootstrap artifacts once tests and visual comparisons confirm parity.
+6. Update repository docs (`readme.md`, `.github/copilot-instructions.md`, `Tailwind Migration` docs) to reflect the Vitest-first workflow and Playwright-based visual testing approach.
 
 Acceptance criteria:
-- All previously Bootstrap-dependent components have Storybook stories and snapshot tests.
-- Visual diffs are intentional and documented; Playwright visual snapshots added to CI.
-- `Compat/BootstrapShim` is removed and no imports remain.
-- Documentation updated with the new Storybook-first workflow and Tailwind-first guidance.
+
+- All previously Bootstrap-dependent components have Vitest unit tests and Playwright visual snapshots where applicable.
+- Visual diffs are intentional and documented; Playwright visual snapshots are added to CI for critical pages/components.
+- `Compat/BootstrapShim` is removed and no Bootstrap imports remain.
+- Documentation updated with the Vitest-first workflow and Tailwind-first guidance.
 
 Owners & Timeline:
+
 - Owner: @dev
 - Target: Small batches, mergeable PRs (1-3 components per PR). Aim to complete initial set (cut calculator components) in a single sprint (~1 week).
 
 Detailed per-component sub-steps (repeat for each component):
+
 - Identify file(s) and any dependent child components.
 - Add a top-of-file comment with purpose, rationale for Tailwind-first approach, and usage examples.
 - Convert markup to Tailwind (remove shim or react-bootstrap usage).
@@ -242,18 +287,18 @@ Detailed per-component sub-steps (repeat for each component):
 ### Status: Work in progress — partial completion ✅
 
 Completed (recent):
+
 - Cut calculator components converted to Tailwind: `CutRequirementsTable`, `StockItemsTable`, `ResultsDisplay` (stories & unit tests added). ✅
 - Replaced usage of `react-bootstrap` with Tailwind in services and cut calculator pages. ✅
 - Removed `Compat/BootstrapShim` and deleted `clsx` dependency. ✅
-- README and `.github/copilot-instructions.md` updated to document the Storybook-first workflow. ✅
+- README and `.github/copilot-instructions.md` updated to document the Vitest-first workflow. ✅
 
 Open / next tasks (small incremental PRs):
+
 1. Add Playwright visual snapshot baselines for the three cut-calculator components and integrate Storybook visual snapshots into CI. (In progress)
 2. Fix failing Vitest suites unrelated to Tailwind migration (stability & environment shims) so the CI test run is reliable. (High priority)
 3. Continue converting remaining components that still used legacy SCSS or Bootstrap and add stories/tests as described.
 4. Update `TAILWIND-MIGRATION-PLAN.md` with the final list of removed SCSS files and any tokens mapping.
-
-
 
 - Cleanup performed (2026-01-20):
   - Removed generated agent and prompt markdowns and one obsolete issue that were imported for Next.js/MCP experiments: `.github/prompts/*`, `.github/agents/*`, `.github/ISSUES/007-tailwind-migration.md`.

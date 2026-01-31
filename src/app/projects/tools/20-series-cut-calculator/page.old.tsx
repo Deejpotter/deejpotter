@@ -64,7 +64,10 @@ export default function CutCalculatorPage(): ReactElement {
       <div className="max-w-5xl mx-auto px-4">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold">20 Series Cut Calculator</h1>
-          <p className="text-gray-600">Optimize aluminum extrusion cuts using advanced bin packing algorithms. Minimize waste and maximize material utilization.</p>
+          <p className="text-gray-600">
+            Optimize aluminum extrusion cuts using advanced bin packing
+            algorithms. Minimize waste and maximize material utilization.
+          </p>
         </div>
 
         <div className="mb-6">
@@ -74,25 +77,47 @@ export default function CutCalculatorPage(): ReactElement {
             </div>
             <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium">Stock Length (mm) <span className="text-red-600">*</span></label>
-                <input type="number" value={stockLength} onChange={(e) => setStockLength(e.target.value)} className="mt-1 w-full border rounded px-2 py-1 text-sm" />
-                <div className="text-xs text-gray-500 mt-1">Standard 20 series length: 6000mm</div>
+                <label className="block text-sm font-medium">
+                  Stock Length (mm) <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="number"
+                  value={stockLength}
+                  onChange={(e) => setStockLength(e.target.value)}
+                  className="mt-1 w-full border rounded px-2 py-1 text-sm"
+                />
+                <div className="text-xs text-gray-500 mt-1">
+                  Standard 20 series length: 6000mm
+                </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium">Algorithm <span className="text-red-600">*</span></label>
-                <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value as string)} className="mt-1 w-full border rounded px-2 py-1 text-sm">
+                <label className="block text-sm font-medium">
+                  Algorithm <span className="text-red-600">*</span>
+                </label>
+                <select
+                  value={algorithm}
+                  onChange={(e) => setAlgorithm(e.target.value as string)}
+                  className="mt-1 w-full border rounded px-2 py-1 text-sm"
+                >
                   <option value="FFD">First Fit Decreasing (Faster)</option>
-                  <option value="BFD">Best Fit Decreasing (More Efficient)</option>
+                  <option value="BFD">
+                    Best Fit Decreasing (More Efficient)
+                  </option>
                 </select>
-                <div className="text-xs text-gray-500 mt-1">FFD is faster, BFD may produce tighter packing</div>
+                <div className="text-xs text-gray-500 mt-1">
+                  FFD is faster, BFD may produce tighter packing
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div className="mb-6">
-          <CutRequirementsTable requirements={requirements} onRequirementsChange={setRequirements} />
+          <CutRequirementsTable
+            requirements={requirements}
+            onRequirementsChange={setRequirements}
+          />
         </div>
 
         {error && (
@@ -102,8 +127,21 @@ export default function CutCalculatorPage(): ReactElement {
         )}
 
         <div className="mb-6 flex justify-center gap-3">
-          <button onClick={handleCalculate} disabled={requirements.length === 0} aria-label="Calculate optimal cuts" className="px-4 py-2 rounded bg-indigo-600 text-white disabled:opacity-50">Calculate Cuts</button>
-          <button onClick={handleReset} aria-label="Reset calculator" className="px-4 py-2 rounded border">Reset</button>
+          <button
+            onClick={handleCalculate}
+            disabled={requirements.length === 0}
+            aria-label="Calculate optimal cuts"
+            className="px-4 py-2 rounded bg-indigo-600 text-white disabled:opacity-50"
+          >
+            Calculate Cuts
+          </button>
+          <button
+            onClick={handleReset}
+            aria-label="Reset calculator"
+            className="px-4 py-2 rounded border"
+          >
+            Reset
+          </button>
         </div>
 
         {result && (

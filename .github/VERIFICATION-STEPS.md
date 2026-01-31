@@ -20,20 +20,29 @@ yarn test:coverage
 ```
 
 **Expected Results:**
-- All existing tests should pass
-- New tests should pass:
-  - `src/__tests__/pages.a11y.test.tsx` (6 tests)
-  - `src/app/api/mongo-crud/route.integration.test.ts` (9+ tests)
-- Coverage should meet 60% thresholds:
+- All tests should pass (unit/component + api + utilities)
+- Newly added tests should pass:
+  - `src/__tests__/cutOptimizer.test.ts`
+  - `src/__tests__/apiMongoCrud.test.ts`
+  - `src/__tests__/apiMongoCrudMutations.test.ts` (mocked DB flows)
+  - `src/__tests__/ContactForm.test.tsx`
+- Coverage should meet 60% thresholds (configured in `vitest.config.ts`):
   - Lines: ≥60%
   - Functions: ≥60%
   - Branches: ≥60%
   - Statements: ≥60%
 
+**How to inspect coverage report:**
+- Open `coverage/lcov-report/index.html` in your browser after the run to inspect per-file coverage and prioritize missing tests.
+
 **Potential Issues to Check:**
 - If accessibility tests fail, check console for violation details
 - If integration tests fail, verify MongoDB Memory Server installed correctly
-- If coverage is below 60%, that's expected for first run (will improve incrementally)
+- If coverage is below 60%, inspect `coverage/lcov-report/index.html` to find low-coverage modules and add targeted tests
+- If Vitest exits with non-zero due to failing coverage thresholds, open PR with focused tests for the low-coverage files and re-run tests
+
+**Playwright PoC:**
+- Run the Playwright PoC that exercises the cut calculator and captures a screenshot: `npx playwright test e2e/results-display.spec.ts` (make sure the dev server is running locally with `yarn dev` if not using the webServer config in Playwright).
 
 ---
 

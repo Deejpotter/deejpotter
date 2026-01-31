@@ -1,1 +1,0 @@
-// No browser-playwright types — Playwright removed. Use Vitest and Storybook integrations for tests.

@@ -18,7 +18,7 @@ This is a Next.js portfolio site (see `readme.md`). It's a static-first app with
 3. Also, use my-mcp-server's google and duckduckgo search tools to find officical documentation references or search online for information for things that don't have documentation.
 4. Keep my current code and comments where possible or add your own detailed comments from my point of view to explain the purpose of the code.
 5. Prioritize updating and improving files over creating new ones.
-Update my current files instead of making new ones and copying them over. 
+   Update my current files instead of making new ones and copying them over.
 
 6. Each project should have a TODO list under .github/TODOs.md to show the workflow to follow for updates and additions.
 
@@ -28,7 +28,8 @@ Update my current files instead of making new ones and copying them over.
 
 - Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/*.scss`.
 - MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
-- Tests use Vitest + React Testing Library. See `vitest.config.ts` and `vitest.setup.ts`. (Previously Jest; migration completed.)
+- Tests use Vitest + React Testing Library for unit/component tests and Playwright for E2E and visual tests. See `vitest.config.ts` and `playwright.config.ts`.
+- When converting or adding UI components, add a top-of-file comment describing the purpose, rationale (e.g., Tailwind-first and accessibility considerations), and the testing approach (Vitest unit tests + Playwright visual test). Also include short block comments above major implementation sections explaining *why* the structure was chosen (accessibility, performance, or testability), not only *what* the code does.
 - Alias imports use `@/` mapped to `src/` (jest mapping in `jest.config.js`).
 - CSS and theme overrides: We use **Tailwind CSS** and utility classes in `src/styles` (see `TAILWIND-MIGRATION-PLAN.md` for migration notes). Tailwind-first development is the standard for new components.
 
@@ -73,9 +74,7 @@ Tip: Netlify development (functions and identity) may require the Netlify CLI (`
 
 ## Top tools for this repo
 
-- Next.js, Netlify (hosting + functions + identity), MongoDB, TypeScript, Jest, TypeDoc
-
-
+- Next.js, Netlify (hosting + functions + identity), MongoDB, TypeScript, Vitest, Playwright, TypeDoc
 
 ## Env keys quicklist
 

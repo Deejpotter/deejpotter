@@ -3,12 +3,12 @@
 import { ReactElement } from "react";
 import { CutRequirement } from "@/types/cutCalculator";
 
-// CutRequirementsTable
+// CutRequirementsTable (Tailwind-first)
 // Purpose: Display and manage the list of cut requirements for the 20-series calculator.
-// Rationale: Implemented with Tailwind utilities to keep styles framework-agnostic and
-// to support Storybook-first development. Keep the component focused on UI + local
-// state management for user edits and expose changes via `onRequirementsChange`.
-// Storybook: `src/stories/CutRequirementsTable.stories.tsx` demonstrates usage scenarios.
+// Rationale: Implemented with Tailwind utilities to keep styles framework-agnostic.
+// Testing: Add Vitest unit tests to cover behavior and accessibility; add Playwright visual tests where needed.
+
+/* Header row & controls: kept minimal and keyboard accessible. Use simple markup to make tests deterministic and to avoid brittle visual snapshots. */
 
 type CutRequirementsTableProps = {
   requirements: CutRequirement[];
@@ -48,9 +48,10 @@ export default function CutRequirementsTable({
 
   return (
     <div className="rounded shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">
+      /* Header: shows title and add-row control. The control is intentionally simple and accessible to make unit tests reliable and keyboard-friendly. */
       <div className="flex items-center justify-between bg-emerald-600 text-white px-4 py-3 rounded-t">
         <h5 className="m-0 text-sm font-medium">Cut Requirements</h5>
-        {/* Add Row: intentionally a small, accessible button. Keep visuals minimal and rely on Storybook to demonstrate variants. */}
+        {/* Add Row: intentionally a small, accessible button. Keep visuals minimal and avoid complex behavior so that tests can focus on editing logic. */}
         <button
           type="button"
           onClick={handleAddRequirement}
@@ -64,6 +65,7 @@ export default function CutRequirementsTable({
       </div>
       <div className="p-0">
         <div className="overflow-auto">
+          /* Table: semantic table layout makes it easy to test cell edits and to assert totals in unit tests. */
           <table className="min-w-full text-sm">
             <thead className="bg-gray-100">
               <tr>
