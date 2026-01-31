@@ -3,7 +3,12 @@
 import { ReactElement } from "react";
 import { CutRequirement } from "@/types/cutCalculator";
 
-// Tailwind-native implementation replacing previous Bootstrap markup.
+// CutRequirementsTable
+// Purpose: Display and manage the list of cut requirements for the 20-series calculator.
+// Rationale: Implemented with Tailwind utilities to keep styles framework-agnostic and
+// to support Storybook-first development. Keep the component focused on UI + local
+// state management for user edits and expose changes via `onRequirementsChange`.
+// Storybook: `src/stories/CutRequirementsTable.stories.tsx` demonstrates usage scenarios.
 
 type CutRequirementsTableProps = {
   requirements: CutRequirement[];
@@ -45,6 +50,7 @@ export default function CutRequirementsTable({
     <div className="rounded shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">
       <div className="flex items-center justify-between bg-emerald-600 text-white px-4 py-3 rounded-t">
         <h5 className="m-0 text-sm font-medium">Cut Requirements</h5>
+        {/* Add Row: intentionally a small, accessible button. Keep visuals minimal and rely on Storybook to demonstrate variants. */}
         <button
           type="button"
           onClick={handleAddRequirement}

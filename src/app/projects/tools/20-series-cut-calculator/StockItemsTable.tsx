@@ -3,7 +3,11 @@
 import { ReactElement } from "react";
 import { StockItem } from "@/types/cutCalculator";
 
-// Converted to Tailwind-only markup (replacing Bootstrap).
+// StockItemsTable
+// Purpose: Manage available stock lengths and quantities used by the cut calculator.
+// Rationale: Tailwind-first component to ensure consistency across UI; add stories and
+// unit tests to validate behavior before integrating with pages.
+// Storybook: `src/stories/StockItemsTable.stories.tsx`.
 
 type StockItemsTableProps = {
   stockItems: StockItem[];
