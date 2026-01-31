@@ -206,4 +206,3 @@ Tailwind Migration Todo (feature/tailwind branch)
   4. Confirm CI (lint/tests/a11y/e2e) passes and open PRs for incremental migrations.
 
 > If you'd like, I can also remove related dev dependencies that were specifically added for MCP experiments — I didn't find new package additions tied to those markdowns, so nothing required there unless you want to prune additional unused packages.
->>>>>>> feature/tailwind
