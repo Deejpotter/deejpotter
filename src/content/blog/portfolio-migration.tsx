@@ -103,8 +103,8 @@ export class ContactComponent {
       <li>Meta tags not updating per route</li>
     </ul>
 
-    <div className="alert alert-info">
-      <h4>Lessons Learned</h4>
+    <div className="rounded p-4 bg-info/10 text-info border border-info/20">
+      <h4 className="font-semibold">Lessons Learned</h4>
       <p>
         <strong>Angular excellent for:</strong> Large enterprise applications,
         complex state management, teams with Angular expertise, internal tools
@@ -169,11 +169,10 @@ export default function ProjectsPage() {
     <h3>Component Migration</h3>
     <p>Angular components → React components was straightforward:</p>
 
-    <div className="row">
-      <div className="col-md-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
         <h4>Before (Angular)</h4>
-        <pre>
-          <code>{`@Component({
+        <pre className="bg-gray-50 p-3 rounded"><code>{`@Component({
   selector: 'app-project-card',
   template: \`
     <div class="card">
@@ -184,13 +183,11 @@ export default function ProjectsPage() {
 })
 export class ProjectCardComponent {
   @Input() project!: Project;
-}`}</code>
-        </pre>
+}`}</code></pre>
       </div>
-      <div className="col-md-6">
+      <div>
         <h4>After (React)</h4>
-        <pre>
-          <code>{`interface ProjectCardProps {
+        <pre className="bg-gray-50 p-3 rounded"><code>{`interface ProjectCardProps {
   project: Project;
 }
 
@@ -203,8 +200,7 @@ export function ProjectCard({
       <p>{project.description}</p>
     </div>
   );
-}`}</code>
-        </pre>
+}`}</code></pre>
       </div>
     </div>
 
@@ -240,7 +236,7 @@ export async function POST(request: NextRequest) {
     </pre>
 
     <h2>Performance Comparison</h2>
-    <table className="table table-striped">
+    <table className="min-w-full text-sm divide-y divide-gray-200">
       <thead>
         <tr>
           <th>Metric</th>
@@ -290,7 +286,7 @@ export async function POST(request: NextRequest) {
       content immediately.
     </p>
 
-    <table className="table">
+    <table className="min-w-full text-sm divide-y divide-gray-200">
       <thead>
         <tr>
           <th>Metric</th>
@@ -323,7 +319,7 @@ export async function POST(request: NextRequest) {
     </table>
 
     <h2>Cost Comparison</h2>
-    <table className="table table-bordered">
+    <table className="min-w-full text-sm divide-y divide-gray-200 border-collapse border">
       <thead>
         <tr>
           <th>Aspect</th>
