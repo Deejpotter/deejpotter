@@ -47,7 +47,7 @@ async function getCNCResponse(
       boundaries.
     </p>
 
-    <div className="alert alert-info">
+    <div className="rounded p-4 bg-info/10 text-info border border-info/20">
       <strong>Design decisions:</strong>
       <ul>
         <li>
@@ -158,7 +158,7 @@ export default async function handler(req, res) {
 }`}</code>
     </pre>
 
-    <div className="alert alert-warning">
+    <div className="rounded p-4 bg-warning/10 text-warning border border-warning/20">
       <strong>Security considerations:</strong>
       <ul>
         <li>API key stored server-side only (never exposed to client)</li>
@@ -250,8 +250,8 @@ export default async function handler(req, res) {
     </p>
 
     <h2>Results</h2>
-    <div className="row">
-      <div className="col-md-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
         <h3>Performance</h3>
         <ul>
           <li>Response time: 2-3 seconds (streaming)</li>
@@ -259,7 +259,7 @@ export default async function handler(req, res) {
           <li>User satisfaction: 4.2/5.0</li>
         </ul>
       </div>
-      <div className="col-md-6">
+      <div>
         <h3>Most Common Queries</h3>
         <ul>
           <li>Feeds/speeds calculations (28%)</li>
@@ -291,7 +291,7 @@ export default async function handler(req, res) {
       </li>
     </ol>
 
-    <div className="alert alert-success mt-4">
+    <div className="rounded p-4 bg-success/10 text-primary border border-success/20 mt-4">
       <strong>Key Takeaway:</strong> Effective AI assistants require careful
       prompt engineering, context management, and domain-specific constraints.
       Generic chatbots won&apos;t provide the technical accuracy needed for

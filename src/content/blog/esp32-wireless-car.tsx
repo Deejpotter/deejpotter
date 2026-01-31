@@ -301,8 +301,8 @@ void handleStatus() {
     </p>
 
     <h2>Performance Results</h2>
-    <div className="row">
-      <div className="col-md-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
         <ul>
           <li>
             <strong>Speed:</strong> 0.8 m/s maximum
@@ -315,7 +315,7 @@ void handleStatus() {
           </li>
         </ul>
       </div>
-      <div className="col-md-6">
+      <div>
         <ul>
           <li>
             <strong>Position accuracy:</strong> ±5mm over 1m
@@ -348,7 +348,7 @@ void handleStatus() {
       </li>
     </ol>
 
-    <div className="alert alert-success mt-4">
+    <div className="rounded p-4 bg-success/10 text-primary border border-success/20 mt-4">
       <strong>Key Takeaway:</strong> ESP32 ideal for robotics projects.
       Dual-core processor handles control loops and Wi-Fi simultaneously.
       Encoder feedback essential for precision movement. PID control compensates
