@@ -285,7 +285,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         // The dropdown uses a bg-gradient-to-b utility for the gradient
@@ -299,7 +299,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         const dropdown = screen
