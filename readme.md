@@ -22,6 +22,20 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 
 ## Technologies and Tools
 
+- **Tailwind CSS**: Primary styling system (migration complete across critical components). We follow a Tailwind-first approach for all UI components.
+
+## Development workflow (Storybook-first) ✅
+
+We follow a Storybook-first, Tailwind-first workflow for UI changes:
+
+1. Implement and validate UI components in Storybook as isolated units.
+2. Add `*.stories.tsx` for each component with states (default, empty, error, edge cases).
+3. Add Vitest unit tests and Playwright visual/Storybook snapshot tests for critical components.
+4. Integrate the component into pages only after Storybook verification; remove legacy CSS/framework code in the same PR.
+
+Benefits: faster iteration, smaller PRs, early visual regression detection, and better documentation for component usage.
+
+
 - **Next.js**: The main framework used for building the website.
 
 - **Netlify CMS**: For managing the content of the website.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).

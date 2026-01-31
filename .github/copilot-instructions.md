@@ -30,7 +30,7 @@ Update my current files instead of making new ones and copying them over.
 - MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
 - Tests use Vitest + React Testing Library. See `vitest.config.ts` and `vitest.setup.ts`. (Previously Jest; migration completed.)
 - Alias imports use `@/` mapped to `src/` (jest mapping in `jest.config.js`).
-- CSS and theme overrides: `src/styles/bootstrap-overrides.scss` and `dark-bootstrap-overrides.scss` — follow the existing variables and class names.
+- CSS and theme overrides: We use **Tailwind CSS** and utility classes in `src/styles` (see `TAILWIND-MIGRATION-PLAN.md` for migration notes). Tailwind-first development is the standard for new components.
 
 ## Developer Workflows (must-know commands)
 

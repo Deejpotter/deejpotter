@@ -1,11 +1,13 @@
 # Project TODOs for Deej Potter Portfolio
 
 ## Overview
+
 A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengthen CI/CD, improve testing, documentation, security, and performance. All tasks are listed in this file so they appear in the GitHub UI and can be tracked via Issues/Projects.
 
 ## Detailed Plan and Sub‑steps
 
 ### 1️⃣ Clean & Streamline the Build Stack
+
 - **1.1 Remove unused Babel tooling**
   - Run yarn remove @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript @babel/helpers @babel/runtime.
   - Verify package.json no longer lists any @babel/* packages.
@@ -21,6 +23,7 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
   - Commit .yarnrc.yml and update engines in package.json.
 
 ### 2️⃣ Harden the Netlify Migration
+
 - **2.1 Create migration folder & docs**
   - mkdir -p migration && touch migration/netlify-to-route-handlers.md migration/cms-to-mdx.md migration/forms-to-api-routes.md.
   - Populate each with a brief description and checklist.
@@ -32,17 +35,20 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
   console.log(files);
 
 ### 3️⃣ CI/CD Pipeline (GitHub Actions)
+
 - **3.1 Create .github/workflows/ci.yml** with steps for install, lint, type‑check, test (Vitest coverage), build, and upload artifacts.
 - **3.2 Add CI badge to README**.
 - **3.3 Optional CI enhancements** – deploy‑preview workflow, Dependabot config (.github/dependabot.yml), CodeQL analysis.
 
 ### 4️⃣ Strengthen Testing & Coverage
+
 - **4.1 Expand Vitest unit tests** – add tests for critical UI components (ContactForm, Nav, ProjectCard).
 - **4.2 Add Playwright E2E suite** – test each public page and the contact form flow.
 - **4.3 Generate coverage reports** – ensure yarn test:coverage outputs HTML and is uploaded in CI.
-- **4.4 Example test snippets** are included in src/__tests__/ folder.
+- **4.4 Example test snippets** are included in src/**tests**/ folder.
 
 ### 5️⃣ Documentation & Onboarding
+
 - **5.1 Add README badges** (CI, Node, License).
 - **5.2 Create CONTRIBUTING.md** with workflow checklist.
 - **5.3 Add CODEOWNERS** to assign ownership of src/**.
@@ -50,29 +56,34 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
 - **5.5 Optional**: set up a static docs site (Docusaurus or MkDocs).
 
 ### 6️⃣ Security & Secrets Management
+
 - **6.1 Enforce secrets via GitHub Actions** – move any .env values to repository secrets.
 - **6.2 Add a pre‑commit hook** to warn when .env* files are staged.
 - **6.3 Enable Dependabot alerts** and add dependabot.yml.
 - **6.4 Add CodeQL workflow** for static analysis.
 
 ### 7️⃣ Performance & SEO Optimizations
+
 - **7.1 Replace raw <img> tags with Next.js <Image> component.
 - **7.2 Verify Tailwind purge configuration (content paths include all .tsx files).
 - **7.3 Run bundle analyzer (next build && npx next-bundle-analyzer).
 - **7.4 Ensure ISR for marketing pages (revalidate: 60).
 
 ### 8️⃣ Project Management & Roadmap Visibility
+
 - **8.1 Create TODO.md (this file) summarizing milestones.
 - **8.2 Link TODO.md from the README under “Current Work & Roadmap”.
 - **8.3 Enable GitHub Projects and pin the board to the repo.
 
 ### 9️⃣ Optional Developer Experience Boosts & High Priority Actions
+
 - **9.1 Storybook static build integration in CI.**
 - **9.2 Husky + lint‑staged for auto‑format on commit.**
 - **9.3 VSCode DevContainer for reproducible environment.**
 - **9.4 Consider TurboRepo/pnpm if the repo ever splits into packages.**
 
 High priority audits & improvements (merged)
+
 - **Audit Netlify usage** — search for `/.netlify/functions/`, `netlify-identity-widget`, `netlify.toml`, and `public/__forms.html`. Document call sites and list migration steps.
 - **Improve ESLint config** — implement Next.js recommended config (flat config if possible), ensure TypeScript rule coverage and autofix in CI.
   - Owner: @dev
@@ -131,6 +142,7 @@ High priority audits & improvements (merged)
   - Add environment variable documentation and `.env.example` once the hosting/auth plan is finalized (keys: MONGODB_URI, DB_NAME, others).
 
 **New Highest Priority: Fix merge conflicts & get CI green** ✅
+
 - Marked: **In Progress**
 - Sub-steps:
   1. Resolve remaining merge conflicts (search for `<<<<<<<` and `>>>>>>>` across the repo).
@@ -195,6 +207,53 @@ Tailwind Migration Todo (feature/tailwind branch)
 - Add Playwright visual snapshot baselines for hero + navbar and confirm parity (todo)
 - Replace remaining custom gradients and popover styles with Tailwind utilities where appropriate (todo)
 - Remove unused SCSS and update migration docs after visual tests pass (todo)
+
+## Storybook-first component migration (New)
+
+**Goal:** Build and verify UI components in Storybook (isolated, documented, tested) before integrating them into pages. This reduces visual regression risk and enables faster component iteration.
+
+High-level steps:
+1. Identify components still using Bootstrap/legacy SCSS and that require Tailwind conversion.
+2. Convert each component to a Tailwind-first implementation and add comprehensive inline documentation (file header + key block comments).
+3. Create Storybook stories for each converted component with a set of primary states (default, empty, error, large data) and add small Vitest snapshot/unit tests.
+4. Add Playwright visual snapshot tests for key components (hero, navbar, cut calculator components) and include a Storybook visual test job in CI.
+5. Remove the `Compat/BootstrapShim` and any remaining Bootstrap artifacts once all usages are replaced and Storybook tests pass.
+6. Update repository docs (`readme.md`, `.github/copilot-instructions.md`, `Tailwind Migration` docs) to reflect the Storybook-first workflow and remove mentions of the old Bootstrap workflow.
+
+Acceptance criteria:
+- All previously Bootstrap-dependent components have Storybook stories and snapshot tests.
+- Visual diffs are intentional and documented; Playwright visual snapshots added to CI.
+- `Compat/BootstrapShim` is removed and no imports remain.
+- Documentation updated with the new Storybook-first workflow and Tailwind-first guidance.
+
+Owners & Timeline:
+- Owner: @dev
+- Target: Small batches, mergeable PRs (1-3 components per PR). Aim to complete initial set (cut calculator components) in a single sprint (~1 week).
+
+Detailed per-component sub-steps (repeat for each component):
+- Identify file(s) and any dependent child components.
+- Add a top-of-file comment with purpose, rationale for Tailwind-first approach, and usage examples.
+- Convert markup to Tailwind (remove shim or react-bootstrap usage).
+- Add `*.stories.tsx` in `src/stories/<component>.<stories>` with knobs for props and test data.
+- Add a small unit test (Vitest) for the component's behavior and a Storybook snapshot or Playwright visual snapshot.
+- Run `yarn build` and `yarn test` locally and in CI; fix any type or accessibility regressions.
+- Remove shim import and update callers.
+
+### Status: Work in progress — partial completion ✅
+
+Completed (recent):
+- Cut calculator components converted to Tailwind: `CutRequirementsTable`, `StockItemsTable`, `ResultsDisplay` (stories & unit tests added). ✅
+- Replaced usage of `react-bootstrap` with Tailwind in services and cut calculator pages. ✅
+- Removed `Compat/BootstrapShim` and deleted `clsx` dependency. ✅
+- README and `.github/copilot-instructions.md` updated to document the Storybook-first workflow. ✅
+
+Open / next tasks (small incremental PRs):
+1. Add Playwright visual snapshot baselines for the three cut-calculator components and integrate Storybook visual snapshots into CI. (In progress)
+2. Fix failing Vitest suites unrelated to Tailwind migration (stability & environment shims) so the CI test run is reliable. (High priority)
+3. Continue converting remaining components that still used legacy SCSS or Bootstrap and add stories/tests as described.
+4. Update `TAILWIND-MIGRATION-PLAN.md` with the final list of removed SCSS files and any tokens mapping.
+
+
 
 - Cleanup performed (2026-01-20):
   - Removed generated agent and prompt markdowns and one obsolete issue that were imported for Next.js/MCP experiments: `.github/prompts/*`, `.github/agents/*`, `.github/ISSUES/007-tailwind-migration.md`.
