@@ -27,5 +27,5 @@ if (
     } as unknown as TextMetrics),
     fillRect: () => {},
     clearRect: () => {},
-  });
+  } as unknown as CanvasRenderingContext2D);
 }
