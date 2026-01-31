@@ -1,35 +1,26 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-import { Container, Row, Col, Card, Button } from "@/components/Compat/BootstrapShim";
 import Script from "next/script";
-
 
 export default function ThreeDPrintingService(): ReactElement {
   return (
-    <Container className="py-5">
-      <Row className="mb-5">
-        <Col md={12} className="text-center mb-4">
-          <h1 className="display-4 fw-bold">3D Printing Service</h1>
-          <p className="lead">Transform your ideas into reality with professional 3D printing in Frankston</p>
-        </Col>
-      </Row>
+    <div className="py-12">
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold">3D Printing Service</h1>
+          <p className="text-gray-600">Transform your ideas into reality with professional 3D printing in Frankston</p>
+        </div>
 
-      <Row className="mb-5">
-        <Col lg={8}>
+        <div className="mb-8">
           <p>Why choose us: (placeholder)</p>
-          <Row className="mt-4">
-            <Col md={6}>
-              <div className="h-100 shadow-sm mb-4 p-3">
-                <h3 className="h5">
-                  <i className="bi bi-truck me-2"></i>
-                  Local Delivery
-                </h3>
-                <p>Enjoy the convenience of free local delivery within the Frankston area.</p>
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </Container>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="h-100 shadow-sm mb-4 p-3 rounded">
+              <h3 className="text-lg font-semibold">Local Delivery</h3>
+              <p>Enjoy the convenience of free local delivery within the Frankston area.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

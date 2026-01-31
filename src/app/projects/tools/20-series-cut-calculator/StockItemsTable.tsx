@@ -1,8 +1,9 @@
 "use client";
 
 import { ReactElement } from "react";
-import { Table, Button, Form, Card } from "@/components/Compat/BootstrapShim";
 import { StockItem } from "@/types/cutCalculator";
+
+// Converted to Tailwind-only markup (replacing Bootstrap).
 
 type StockItemsTableProps = {
   stockItems: StockItem[];
@@ -48,22 +49,24 @@ export default function StockItemsTable({
   );
 
   return (
-    <Card className="shadow-sm">
-      <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 className="mb-0">Available Stock</h5>
-        <Button
-          variant="light"
-          size="sm"
+    <div className="rounded shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">
+      <div className="flex items-center justify-between bg-sky-600 text-white px-4 py-3 rounded-t">
+        <h5 className="m-0 text-sm font-medium">Available Stock</h5>
+        <button
+          type="button"
           onClick={handleAddStockItem}
           aria-label="Add new stock item"
+          className="inline-flex items-center gap-2 px-3 py-1 text-sm rounded bg-white text-black/90 hover:opacity-90"
         >
-          <i className="bi bi-plus-lg me-1"></i>
-          Add Stock Length
-        </Button>
-      </Card.Header>
-      <Card.Body className="p-0">
-        <Table responsive striped hover className="mb-0">
-          <thead className="table-light">
+          <span className="sr-only">Add Stock Length</span>
+          <span className="text-lg leading-none">＋</span>
+          <span className="text-sm">Add Stock Length</span>
+        </button>
+      </div>
+      <div className="p-0">
+        <div className="overflow-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-100">
             <tr>
               <th style={{ width: "15%" }}>ID</th>
               <th style={{ width: "35%" }}>
@@ -91,65 +94,56 @@ export default function StockItemsTable({
                   <td className="align-middle">
                     <strong>#{stock.id}</strong>
                   </td>
-                  <td>
-                    <Form.Control
+                  <td className="px-3 py-2">
+                    <input
                       type="number"
                       value={stock.length || ""}
-                      onChange={(e) =>
-                        handleUpdateStockItem(
-                          stock.id,
-                          "length",
-                          e.target.value
-                        )
-                      }
+                      onChange={(e) => handleUpdateStockItem(stock.id, "length", e.target.value)}
                       placeholder="Stock length"
-                      min="1"
+                      min={1}
                       max={maxStockLength}
-                      step="1"
+                      step={1}
                       aria-label={`Length for stock ${stock.id}`}
+                      className="w-full border rounded px-2 py-1 text-sm"
                     />
                   </td>
-                  <td>
-                    <Form.Control
+                  <td className="px-3 py-2">
+                    <input
                       type="number"
                       value={stock.quantity || ""}
-                      onChange={(e) =>
-                        handleUpdateStockItem(
-                          stock.id,
-                          "quantity",
-                          e.target.value
-                        )
-                      }
+                      onChange={(e) => handleUpdateStockItem(stock.id, "quantity", e.target.value)}
                       placeholder="Quantity available"
-                      min="1"
-                      step="1"
+                      min={1}
+                      step={1}
                       aria-label={`Quantity for stock ${stock.id}`}
+                      className="w-full border rounded px-2 py-1 text-sm"
                     />
                   </td>
-                  <td className="text-center align-middle">
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
+                  <td className="text-center align-middle px-3 py-2">
+                    <button
+                      type="button"
                       onClick={() => handleRemoveStockItem(stock.id)}
                       disabled={stockItems.length === 1}
                       aria-label={`Remove stock ${stock.id}`}
+                      className="inline-flex items-center justify-center p-1 text-sm rounded border border-red-600 text-red-600 hover:bg-red-50 disabled:opacity-50"
                     >
-                      <i className="bi bi-trash"></i>
-                    </Button>
+                      ✖
+                    </button>
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </Table>
-      </Card.Body>
-      <Card.Footer className="text-muted">
+      </div>
+
+      <div className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">
         <small>
-          Total stock pieces:{" "}
+          Total stock pieces: {" "}
           {stockItems.reduce((sum, s) => sum + s.quantity, 0)} | Total stock
           length available: {totalStockLength.toLocaleString()}mm
         </small>
-      </Card.Footer>
-    </Card>
+      </div>
+    </div>
   );
 }

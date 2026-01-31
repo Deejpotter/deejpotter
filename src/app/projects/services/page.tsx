@@ -1,9 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import { Container, Row, Col, Card } from "@/components/Compat/BootstrapShim";
-
-
 export default function Services(): ReactElement {
   // Define the services offered
   const services = [
