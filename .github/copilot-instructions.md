@@ -2,85 +2,73 @@
 
 ## Project Overview
 
-This is a Next.js portfolio site (see `readme.md`). It's a static-first app with dynamic pieces powered by Netlify:
+This is a Next.js 16 portfolio site (see `readme.md`). It uses:
 
-- App code and routes: `src/app` (Next.js App Router).
-- UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
-- Auth and client state: `src/contexts` (notably `AuthContext.tsx` which uses `netlify-identity-widget`).
-- Serverless backend: `netlify/functions` (e.g. `mongoCrud.ts` talking to MongoDB; env vars `MONGODB_URI` and `DB_NAME` required).
-- Static assets and games: `public/` (Unity WebGL in `public/basicBases/Build/`).
-- Docs: TypeDoc output goes to `public/docs` (`typedoc.json` and `npm run docs` / `yarn docs`).
+- **Next.js App Router**: Routes in `src/app/*`, components in `src/components/*`.
+- **Tailwind CSS v4**: Configured via CSS (`src/styles/globals.css`) using `@import "tailwindcss"`, `@theme`, and `@plugin` directives.
+- **Clerk Authentication**: Auth components in `src/components/ui/auth/`. The `AuthProvider` wraps the app when `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is set.
+- **MongoDB**: API routes in `src/app/api/mongo-crud/route.ts` for CRUD operations.
+- **Static assets and games**: Unity WebGL in `public/basicBases/Build/`.
+- **Docs**: TypeDoc output goes to `public/docs`.
+
+## Auth Architecture
+
+Authentication uses Clerk with a graceful fallback pattern:
+
+1. `src/app/layout.tsx` checks for `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+2. If key exists: wraps app with `ClerkProvider` → `AuthProvider`
+3. If key missing: renders children directly (no auth, builds without errors)
+
+Key files:
+- `src/components/ui/auth/AuthProvider.tsx` - Main auth context with `useAuth()` hook
+- `src/components/ui/auth/AuthButton.tsx` - Login/signup/logout button component
+- `src/contexts/AuthProvider.tsx` - Wrapper that safely handles missing Clerk keys
 
 ## AI Agent Tips
 
 1. Read the README first to understand the correct workflow.
 2. Use context7 to find exact documentation before making changes.
-3. Also, use my-mcp-server's google and duckduckgo search tools to find officical documentation references or search online for information for things that don't have documentation.
-4. Keep my current code and comments where possible or add your own detailed comments from my point of view to explain the purpose of the code.
-5. Prioritize updating and improving files over creating new ones.
-Update my current files instead of making new ones and copying them over. 
+3. Use search tools (google, duckduckgo) for official docs when needed.
+4. Keep existing code and comments; add detailed comments explaining purpose.
+5. Prioritize updating files over creating new ones.
+6. Track tasks in `.github/TODOs.md`.
+7. Make a detailed plan before implementing changes.
 
-6. Each project should have a TODO list under .github/TODOs.md to show the workflow to follow for updates and additions.
+## Architecture & Structure
 
-7. First consider how to find the best actions. Then make a detailed plan. Remember this plan and refer back to it regularly to make sure you're on track.Then make the changes following the plan.
+- Pages: `src/app/*` (Next.js App Router)
+- Components: `src/components/*`
+- Styles: `src/styles/globals.css` (Tailwind v4 with `@theme` block)
+- Tests: Vitest + React Testing Library (`vitest.config.ts`, `vitest.setup.ts`)
+- Alias imports: `@/` → `src/`
 
-## Architecture & Structure (practical details)
+## Developer Workflows
 
-- Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/*.scss`.
-- MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
-- Tests use Vitest + React Testing Library. See `vitest.config.ts` and `vitest.setup.ts`. (Previously Jest; migration completed.)
-- Alias imports use `@/` mapped to `src/` (jest mapping in `jest.config.js`).
-- CSS and theme overrides: `src/styles/bootstrap-overrides.scss` and `dark-bootstrap-overrides.scss` — follow the existing variables and class names.
+```bash
+yarn dev          # Development server (Turbopack)
+yarn build        # Production build (runs TypeDoc first)
+yarn test         # Run Vitest tests
+yarn lint         # ESLint
+yarn docs         # Generate TypeDoc
+```
 
-## Developer Workflows (must-know commands)
+## Tailwind CSS v4 Configuration
 
-- Local dev: `npm run dev` (or `yarn dev`) — Next.js dev server.
-- Build (CI / production): `npm run build` — runs `prebuild` (TypeDoc) then `next build`.
-- Run tests: `npm test` (Jest).
-- Lint: `npm run lint`.
-- Docs: `npm run docs` (writes to `public/docs`).
-- CI: A GitHub Actions workflow runs lint, tests, docs and build on pushes and PRs (`.github/workflows/ci.yml`).
-- Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
+Tailwind v4 uses CSS-based configuration instead of JavaScript config files:
 
-Tip: Netlify development (functions and identity) may require the Netlify CLI (`netlify dev`) to fully emulate production functions and Identity flows.
+```css
+/* src/styles/globals.css */
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
 
-⚠️ Migration note: The repo is migrating away from Netlify functions and (optionally) Netlify Identity — see `.github/TODOs.md` and `.github/hosting-eval.md` for the migration plan and hosting recommendations (Vercel/Render/Coolify). When adding server endpoints prefer `src/app/api/*/route.ts` route handlers for portability.
+@theme {
+  --color-primary: #1E9952;
+  --color-light: #FDFDFD;
+  --color-dark: #181821;
+  /* ... other tokens */
+}
+```
 
-## Integration Points & Environment
-
-- Netlify hosting — see `netlify.toml` for build and function settings (external_node_modules includes `mongodb`). Note: the project is migrating away from Netlify; see `.github/hosting-eval.md` and `.github/TODOs.md` for details.
-- Auth: currently implemented with Clerk (`@clerk/nextjs`) in `src/contexts/AuthContext.tsx` (login/signup/logout handled client-side). If you prefer a different provider (Auth0/Supabase), outline migration steps and update `AuthContext` accordingly.
-- Netlify Forms: contact form is wired through the site (see contact page in `src/app/contact` and `public/__forms.html`). If leaving Netlify, replace form handling with Next.js route handlers.
-- Serverless functions: `netlify/functions/mongoCrud.ts` has been replaced by `src/app/api/mongo-crud/route.ts` which uses Next.js Route Handlers and environment variables `MONGODB_URI` and `DB_NAME`.
-- Local env example: see `.env.example` for required environment variables to run local dev and deploy to new hosts.
-
-## Project-Specific Conventions
-
-- Prefer `type` declarations and keep exported types in `src/types/*` (see `Project.ts`, `RepoObject.ts`).
-- Explain intent with comments — the repo contains many well-scoped explanatory comments; preserve or extend them.
-- Use `use client` only when necessary in server components (Next.js App Router rule).
-- When changing public-facing data shapes, update TypeDoc and add tests for API surface changes.
-
-## Quick file pointers (examples)
-
-- `netlify/functions/mongoCrud.ts` — example function, Mongo usage, and error handling.
-- `src/contexts/AuthContext.tsx` — Netlify Identity login flows.
-- `src/app/contact/page.tsx` & `public/__forms.html` — Netlify Forms integration.
-- `typedoc.json` + `package.json#scripts` — docs generation and prebuild hook.
-- `public/basicBases/Build/` — Unity WebGL assets; treat as static assets.
-
----
-
-## Top tools for this repo
-
-- Next.js, Netlify (hosting + functions + identity), MongoDB, TypeScript, Jest, TypeDoc
-
-
-
-## Env keys quicklist
-
-Tools degrade gracefully when optional keys are missing (DuckDuckGo works without keys).
-
-## Security posture
-
-- Enforce timeouts and buffer limits for command execution.
+Note: `tailwind.config.cjs` is IGNORED by Tailwind v4. All customization must be in CSS.

@@ -58,70 +58,82 @@ export default function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <div className="container py-5">
-      <div className="row">
-        <div className="col-lg-8 mx-auto">
-          {/* Back to blog link */}
-          <nav aria-label="breadcrumb" className="mb-4">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <Link href="/blog">Blog</Link>
-              </li>
-              <li className="breadcrumb-item active" aria-current="page">
-                {post.title}
-              </li>
-            </ol>
-          </nav>
-
-          {/* Article header */}
-          <header className="mb-5">
-            <h1 className="display-5 mb-3">{post.title}</h1>
-
-            {/* Post metadata */}
-            <div className="text-muted mb-4">
-              <time dateTime={post.date}>{formatDate(post.date)}</time>
-              {" · "}
-              <span>{post.readTime} min read</span>
-            </div>
-
-            {/* Post tags */}
-            {post.tags.length > 0 && (
-              <div className="d-flex flex-wrap gap-2 mb-4">
-                {post.tags.map((tag) => (
-                  <span key={tag} className="badge bg-secondary text-white">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-          </header>
-
-          {/* Article content */}
-          <article className="blog-content">{post.content}</article>
-
-          {/* Link to full article in BookStack if available */}
-          {post.bookstackUrl && (
-            <div className="alert alert-info mt-4">
-              <strong>Full Documentation:</strong> This post is also available
-              with additional details in{" "}
-              <a
-                href={post.bookstackUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+    <div className="px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-4xl flex-col gap-8">
+        {/* Back to blog link */}
+        <nav aria-label="Breadcrumb" className="text-sm text-slate-600 dark:text-slate-300">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link
+                href="/blog"
+                className="font-semibold text-emerald-700 transition hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:text-emerald-300 dark:hover:text-emerald-200"
               >
-                BookStack
-              </a>
-              .
+                Blog
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-slate-400">
+              /
+            </li>
+            <li className="text-slate-900 dark:text-slate-100">{post.title}</li>
+          </ol>
+        </nav>
+
+        {/* Article header */}
+        <header className="space-y-4">
+          <h1 className="text-4xl font-bold leading-tight text-slate-900 dark:text-white">{post.title}</h1>
+
+          {/* Post metadata */}
+          <div className="text-sm text-slate-600 dark:text-slate-300">
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
+            <span aria-hidden="true" className="px-2 text-slate-400">
+              •
+            </span>
+            <span>{post.readTime} min read</span>
+          </div>
+
+          {/* Post tags */}
+          {post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-100"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           )}
+        </header>
 
-          {/* Back to blog footer */}
-          <footer className="mt-5 pt-4 border-top">
-            <Link href="/blog" className="btn btn-outline-primary">
-              ← Back to Blog
-            </Link>
-          </footer>
-        </div>
+        {/* Article content */}
+        <article className="blog-content prose prose-emerald max-w-none dark:prose-invert">{post.content}</article>
+
+        {/* Link to full article in BookStack if available */}
+        {post.bookstackUrl && (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 shadow-sm dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-100">
+            <strong>Full Documentation:</strong> This post is also available with additional details in{" "}
+            <a
+              href={post.bookstackUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline decoration-emerald-500 decoration-2 underline-offset-4"
+            >
+              BookStack
+            </a>
+            .
+          </div>
+        )}
+
+        {/* Back to blog footer */}
+        <footer className="border-t border-slate-200 pt-6 dark:border-slate-800">
+          <Link
+            href="/blog"
+            className="inline-flex items-center justify-center rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
+          >
+            ← Back to Blog
+          </Link>
+        </footer>
       </div>
     </div>
   );

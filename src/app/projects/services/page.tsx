@@ -1,19 +1,4 @@
 import { ReactElement } from "react";
-import Link from "next/link";
-import Script from "next/script";
-import { Container, Row, Col, Card } from "react-bootstrap";
-
-// Debug imports
-/* eslint-disable no-console */
-console.log('DEBUG services imports', {
-  Link: typeof Link,
-  Container: typeof Container,
-  Row: typeof Row,
-  Col: typeof Col,
-  Card: typeof Card,
-  Script: typeof Script,
-});
-/* eslint-enable no-console */
 
 export default function Services(): ReactElement {
   // Define the services offered
@@ -35,5 +20,12 @@ export default function Services(): ReactElement {
     // You can add more services here as they develop
   ];
 
-  return <div className="py-5">Services (minimal)</div>;
+  return (
+    <div className="py-16">
+      <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm">
+        <h1 className="text-3xl font-bold text-slate-900">Services</h1>
+        <p className="mt-3 text-slate-600">More details coming soon.</p>
+      </div>
+    </div>
+  );
 }

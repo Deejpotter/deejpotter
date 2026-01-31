@@ -62,79 +62,90 @@ export default function Websites(): ReactElement {
         `}
       </Script>
 
-      <div className="container py-4">
-        <div className="row mb-4">
-          <div className="col">
-            <h1>Website Development Projects</h1>
-            <p className="lead">
-              {" "}
-              These are websites that I&apos;ve designed and developed. Each
-              project demonstrates my skills in frontend development, responsive
-              design, accessibility, and user experience.
-            </p>
-          </div>
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="mb-8 space-y-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
+            Website Development Projects
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            These are websites that I&apos;ve designed and developed. Each project
+            demonstrates my skills in frontend development, responsive design,
+            accessibility, and user experience.
+          </p>
         </div>
 
-        <div className="row">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {websiteProjects.map((project) => (
-            <div key={project.id} className="col-12 col-md-6 col-lg-4 mb-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <div className="text-center mb-3">
-                    <Image
-                      src={project.image}
-                      alt={`${project.name} logo`}
-                      width={100}
-                      height={100}
-                      className="img-fluid"
-                    />
-                  </div>
-                  <h2 className="h5 card-title">{project.name}</h2>
-                  <p className="card-text">{project.description}</p>
-                  <div className="d-flex flex-wrap gap-1 mb-3">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="badge bg-primary">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+            <div
+              key={project.id}
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+            >
+              <div className="flex flex-1 flex-col gap-4 p-6">
+                <div className="flex justify-center">
+                  <Image
+                    src={project.image}
+                    alt={`${project.name} logo`}
+                    width={100}
+                    height={100}
+                    className="h-20 w-20 object-contain"
+                  />
                 </div>
-                <div className="card-footer bg-transparent border-top-0">
-                  {project.external ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-primary w-100"
+                <div className="space-y-2">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {project.name}
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {project.description}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200"
                     >
-                      Visit Site{" "}
-                      <span className="bi bi-box-arrow-up-right ms-1"></span>
-                    </a>
-                  ) : (
-                    <Link href={project.link} className="btn btn-primary w-100">
-                      View Project
-                    </Link>
-                  )}
+                      {tech}
+                    </span>
+                  ))}
                 </div>
+              </div>
+              <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
+                {project.external ? (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+                  >
+                    Visit Site
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <Link
+                    href={project.link}
+                    className="inline-flex w-full items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+                  >
+                    View Project
+                  </Link>
+                )}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="row mt-4">
-          <div className="col">
-            <h2>My Web Development Approach</h2>
-            <p>
-              When building websites, I focus on creating solutions that are not
-              only visually appealing but also functional, accessible, and
-              optimized for search engines. My development process includes:
+        <div className="mt-12 grid gap-10 md:grid-cols-2">
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+              My Web Development Approach
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              When building websites, I focus on creating solutions that are not only visually
+              appealing but also functional, accessible, and optimized for search engines.
             </p>
-            <ul>
+            <ul className="space-y-2 text-gray-700 dark:text-gray-200">
               <li>Understanding client requirements and user needs</li>
               <li>Creating responsive designs that work across all devices</li>
-              <li>
-                Implementing modern frontend technologies (React, Next.js)
-              </li>
+              <li>Implementing modern frontend technologies (React, Next.js)</li>
               <li>Ensuring accessibility compliance</li>
               <li>Optimizing for performance and SEO</li>
               <li>Testing thoroughly across browsers and devices</li>
@@ -142,10 +153,15 @@ export default function Websites(): ReactElement {
           </div>
         </div>
 
-        <div className="row mt-4">
-          <div className="col text-center">
-            <p>Interested in working together on a website project?</p>
-            <Link href="/contact" className="btn btn-lg btn-outline-primary">
+        <div className="mt-12 text-center">
+          <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
+            Interested in working together on a website project?
+          </p>
+          <div className="mt-4 flex justify-center">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-full border border-emerald-600 px-6 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
+            >
               Contact Me
             </Link>
           </div>

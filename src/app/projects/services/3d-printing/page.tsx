@@ -1,47 +1,31 @@
 import { ReactElement } from "react";
-import Link from "next/link";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import Script from "next/script";
-
-// Debug: ensure imports resolve during server-side render
-/* eslint-disable no-console */
-console.log('DEBUG 3d-printing imports', {
-  Link: typeof Link,
-  Container: typeof Container,
-  Row: typeof Row,
-  Col: typeof Col,
-  Card: typeof Card,
-  Button: typeof Button,
-  Script: typeof Script,
-});
-/* eslint-enable no-console */
 
 export default function ThreeDPrintingService(): ReactElement {
   return (
-    <Container className="py-5">
-      <Row className="mb-5">
-        <Col md={12} className="text-center mb-4">
-          <h1 className="display-4 fw-bold">3D Printing Service</h1>
-          <p className="lead">Transform your ideas into reality with professional 3D printing in Frankston</p>
-        </Col>
-      </Row>
+    <div className="py-16">
+      <div className="mx-auto max-w-5xl space-y-10 px-4">
+        <header className="text-center">
+          <h1 className="text-4xl font-bold text-slate-900">3D Printing Service</h1>
+          <p className="mt-3 text-lg text-slate-600">
+            Transform your ideas into reality with professional 3D printing in Frankston.
+          </p>
+        </header>
 
-      <Row className="mb-5">
-        <Col lg={8}>
-          <p>Why choose us: (placeholder)</p>
-          <Row className="mt-4">
-            <Col md={6}>
-              <div className="h-100 shadow-sm mb-4 p-3">
-                <h3 className="h5">
-                  <i className="bi bi-truck me-2"></i>
-                  Local Delivery
-                </h3>
-                <p>Enjoy the convenience of free local delivery within the Frankston area.</p>
+        <section className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Why choose us</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 shadow-sm">
+                <p className="text-lg font-semibold text-slate-900">Local Delivery</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  Enjoy the convenience of free local delivery within the Frankston area.
+                </p>
               </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </Container>
+            </div>
+            <p className="text-sm text-slate-500">Full service details coming soon.</p>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }

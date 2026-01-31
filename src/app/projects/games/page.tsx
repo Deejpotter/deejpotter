@@ -47,52 +47,63 @@ export default function Games(): ReactElement {
         `}
       </Script>
 
-      <div className="container py-4">
-        <div className="row mb-4">
-          <div className="col">
-            <h1>Game Development Projects</h1>
-            <p className="lead">
-              These are games that I&apos;ve designed and developed. Game
-              development allows me to combine my programming skills with
-              creativity.
-            </p>
-          </div>
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="mb-8 space-y-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
+            Game Development Projects
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            These are games that I&apos;ve designed and developed. Game development allows me to
+            combine my programming skills with creativity.
+          </p>
         </div>
 
-        <div className="row">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {gameProjects.map((project) => (
-            <div key={project.id} className="col-12 col-md-6 mb-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <h2 className="h5 card-title">{project.name}</h2>
-                  <p className="card-text">{project.description}</p>
-                  <div className="d-flex flex-wrap gap-1 mb-3">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="badge bg-success">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+            <div
+              key={project.id}
+              className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+            >
+              <div className="flex flex-1 flex-col gap-3 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  {project.name}
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
-                <div className="card-footer bg-transparent border-top-0">
-                  <Link href={project.link} className="btn btn-success w-100">
-                    Play Game
-                  </Link>
-                </div>
+              </div>
+              <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
+                <Link
+                  href={project.link}
+                  className="inline-flex w-full items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+                >
+                  Play Game
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="row mt-4">
-          <div className="col">
-            <h2>Game Development Skills</h2>
-            <p>
-              Game development is a fun way to practice programming skills and
-              explore interactive digital experiences. My game development
-              approach includes:
+        <div className="mt-12 grid gap-8 md:grid-cols-2">
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+              Game Development Skills
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              Game development is a fun way to practice programming skills and explore interactive
+              digital experiences. My game development approach includes:
             </p>
-            <ul>
+            <ul className="space-y-2 text-gray-700 dark:text-gray-200">
               <li>Creating engaging gameplay mechanics</li>
               <li>Programming game logic and systems</li>
               <li>Designing user interfaces for intuitive interactions</li>
@@ -102,10 +113,15 @@ export default function Games(): ReactElement {
           </div>
         </div>
 
-        <div className="row mt-4">
-          <div className="col text-center">
-            <p>Have an idea for a game or interactive experience?</p>
-            <Link href="/contact" className="btn btn-lg btn-outline-success">
+        <div className="mt-12 text-center">
+          <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
+            Have an idea for a game or interactive experience?
+          </p>
+          <div className="mt-4 flex justify-center">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-full border border-emerald-600 px-6 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
+            >
               Let&apos;s Discuss It
             </Link>
           </div>

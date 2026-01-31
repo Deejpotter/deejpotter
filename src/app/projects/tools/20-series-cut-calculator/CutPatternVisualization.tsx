@@ -9,16 +9,16 @@ type CutPatternVisualizationProps = {
 };
 
 const COLORS = [
-  "#0d6efd", // primary
-  "#6610f2", // indigo
-  "#6f42c1", // purple
-  "#d63384", // pink
-  "#dc3545", // danger
-  "#fd7e14", // orange
-  "#ffc107", // warning
-  "#198754", // success
-  "#20c997", // teal
-  "#0dcaf0", // cyan
+  "#10b981", // emerald-500
+  "#6366f1", // indigo-500
+  "#ec4899", // pink-500
+  "#f97316", // orange-500
+  "#f59e0b", // amber-500
+  "#22c55e", // green-500
+  "#06b6d4", // cyan-500
+  "#a855f7", // purple-500
+  "#0ea5e9", // sky-500
+  "#ef4444", // red-500
 ];
 
 export default function CutPatternVisualization({

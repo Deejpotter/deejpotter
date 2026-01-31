@@ -1,8 +1,8 @@
 import { BlogPost } from "@/lib/blog";
 
 const content = (
-  <article className="blog-post">
-    <p className="lead">
+  <article className="blog-post space-y-6">
+    <p className="text-lg text-slate-700">
       Building a precision-controlled wireless car using ESP32 microcontroller,
       DC motors with encoders, and Wi-Fi control interface. Position accuracy:
       ±5mm over 1 meter travel.
@@ -301,8 +301,8 @@ void handleStatus() {
     </p>
 
     <h2>Performance Results</h2>
-    <div className="row">
-      <div className="col-md-6">
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <ul>
           <li>
             <strong>Speed:</strong> 0.8 m/s maximum
@@ -315,7 +315,7 @@ void handleStatus() {
           </li>
         </ul>
       </div>
-      <div className="col-md-6">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <ul>
           <li>
             <strong>Position accuracy:</strong> ±5mm over 1m
@@ -348,11 +348,11 @@ void handleStatus() {
       </li>
     </ol>
 
-    <div className="alert alert-success mt-4">
-      <strong>Key Takeaway:</strong> ESP32 ideal for robotics projects.
-      Dual-core processor handles control loops and Wi-Fi simultaneously.
-      Encoder feedback essential for precision movement. PID control compensates
-      for real-world inconsistencies.
+    <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-slate-900 shadow-sm">
+      <strong>Key Takeaway:</strong> ESP32 ideal for robotics projects. Dual-core
+      processor handles control loops and Wi-Fi simultaneously. Encoder
+      feedback essential for precision movement. PID control compensates for
+      real-world inconsistencies.
     </div>
 
     <p>

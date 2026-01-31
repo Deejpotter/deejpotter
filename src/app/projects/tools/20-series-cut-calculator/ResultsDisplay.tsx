@@ -1,7 +1,6 @@
 "use client";
 
 import { ReactElement } from "react";
-import { Card, Row, Col, Badge, ListGroup } from "react-bootstrap";
 import { CalculationResult } from "@/types/cutCalculator";
 import CutPatternVisualization from "./CutPatternVisualization";
 
@@ -23,216 +22,150 @@ export default function ResultsDisplay({
   );
 
   return (
-    <div>
-      <Card className="shadow-sm mb-4">
-        <Card.Header className="bg-info text-white">
-          <h5 className="mb-0">Results Summary</h5>
-        </Card.Header>
-        <Card.Body>
-          <Row>
-            <Col md={3} sm={6} className="mb-3">
-              <Card className="text-center border-primary">
-                <Card.Body>
-                  <h6 className="text-muted mb-2">Stock Pieces</h6>
-                  <h2 className="text-primary mb-0">{result.totalStock}</h2>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={3} sm={6} className="mb-3">
-              <Card className="text-center border-success">
-                <Card.Body>
-                  <h6 className="text-muted mb-2">Utilization</h6>
-                  <h2 className="text-success mb-0">
-                    {formatNumber(result.averageUtilization)}%
-                  </h2>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={3} sm={6} className="mb-3">
-              <Card className="text-center border-warning">
-                <Card.Body>
-                  <h6 className="text-muted mb-2">Total Waste</h6>
-                  <h2 className="text-warning mb-0">
-                    {result.totalWaste.toLocaleString()}mm
-                  </h2>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={3} sm={6} className="mb-3">
-              <Card className="text-center border-secondary">
-                <Card.Body>
-                  <h6 className="text-muted mb-2">Calculation Time</h6>
-                  <h2 className="text-secondary mb-0">
-                    {formatNumber(result.executionTime, 2)}ms
-                  </h2>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
+    <div className="space-y-6">
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-100 px-6 py-4">
+          <h2 className="text-lg font-semibold text-slate-900">Results Summary</h2>
+        </div>
+        <div className="grid gap-4 px-6 py-5 sm:grid-cols-2 lg:grid-cols-4">
+          {[ 
+            { label: "Stock Pieces", value: result.totalStock, accent: "text-emerald-600" },
+            { label: "Utilization", value: `${formatNumber(result.averageUtilization)}%`, accent: "text-teal-600" },
+            { label: "Total Waste", value: `${result.totalWaste.toLocaleString()}mm`, accent: "text-amber-600" },
+            { label: "Calculation Time", value: `${formatNumber(result.executionTime, 2)}ms`, accent: "text-slate-700" },
+          ].map((metric) => (
+            <div
+              key={metric.label}
+              className="rounded-xl border border-slate-100 bg-slate-50 p-4 shadow-sm"
+            >
+              <p className="text-sm font-medium text-slate-600">{metric.label}</p>
+              <p className={`text-2xl font-semibold ${metric.accent}`}>{metric.value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* Cost Breakdown Card */}
-      <Card className="shadow-sm mb-4">
-        <Card.Header className="bg-success text-white">
-          <h5 className="mb-0">Cost Breakdown</h5>
-        </Card.Header>
-        <Card.Body>
-          <Row className="mb-3">
-            <Col>
-              <h3 className="text-center text-success mb-0">
-                ${result.totalCost.toFixed(2)}
-              </h3>
-              <p className="text-center text-muted small mb-0">Total Cost</p>
-            </Col>
-          </Row>
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-100 px-6 py-4">
+          <h2 className="text-lg font-semibold text-slate-900">Cost Breakdown</h2>
+        </div>
+        <div className="px-6 py-5 space-y-5">
+          <div className="text-center">
+            <p className="text-3xl font-semibold text-emerald-600">
+              ${result.totalCost.toFixed(2)}
+            </p>
+            <p className="text-sm text-slate-500">Total Cost</p>
+          </div>
 
-          <Row className="mb-3">
-            <Col md={6} className="text-center mb-2 mb-md-0">
-              <div className="border rounded p-2">
-                <h5 className="text-primary mb-0">
-                  ${result.totalSetupFees.toFixed(2)}
-                </h5>
-                <small className="text-muted">Setup Fees</small>
-                <div className="small text-muted">
-                  ({result.costByLength.length} unique length
-                  {result.costByLength.length !== 1 ? "s" : ""} × $3)
-                </div>
-              </div>
-            </Col>
-            <Col md={6} className="text-center">
-              <div className="border rounded p-2">
-                <h5 className="text-info mb-0">
-                  ${result.totalCuttingCosts.toFixed(2)}
-                </h5>
-                <small className="text-muted">Cutting Costs</small>
-                <div className="small text-muted">
-                  (
-                  {result.costByLength.reduce((sum, c) => sum + c.totalCuts, 0)}{" "}
-                  cuts × $2)
-                </div>
-              </div>
-            </Col>
-          </Row>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 text-center shadow-sm">
+              <p className="text-lg font-semibold text-emerald-700">
+                ${result.totalSetupFees.toFixed(2)}
+              </p>
+              <p className="text-sm text-slate-500">Setup Fees</p>
+              <p className="text-xs text-slate-500">
+                ({result.costByLength.length} unique length
+                {result.costByLength.length !== 1 ? "s" : ""} × $3)
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 text-center shadow-sm">
+              <p className="text-lg font-semibold text-sky-700">
+                ${result.totalCuttingCosts.toFixed(2)}
+              </p>
+              <p className="text-sm text-slate-500">Cutting Costs</p>
+              <p className="text-xs text-slate-500">
+                ({result.costByLength.reduce((sum, c) => sum + c.totalCuts, 0)} cuts × $2)
+              </p>
+            </div>
+          </div>
 
-          <div className="table-responsive">
-            <table className="table table-sm table-hover mb-0">
-              <thead className="table-light">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-800">
+              <thead className="bg-slate-50 text-left font-semibold text-slate-700">
                 <tr>
-                  <th>Stock Length</th>
-                  <th className="text-center">Pieces Used</th>
-                  <th className="text-center">Total Cuts</th>
-                  <th className="text-end">Setup Fee</th>
-                  <th className="text-end">Cutting Cost</th>
-                  <th className="text-end">Total</th>
+                  <th className="px-4 py-3">Stock Length</th>
+                  <th className="px-4 py-3 text-center">Pieces Used</th>
+                  <th className="px-4 py-3 text-center">Total Cuts</th>
+                  <th className="px-4 py-3 text-right">Setup Fee</th>
+                  <th className="px-4 py-3 text-right">Cutting Cost</th>
+                  <th className="px-4 py-3 text-right">Total</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-200">
                 {result.costByLength.map((cost) => (
-                  <tr key={cost.stockLength}>
-                    <td>
-                      <strong>{cost.stockLength}mm</strong>
-                    </td>
-                    <td className="text-center">{cost.quantity}</td>
-                    <td className="text-center">{cost.totalCuts}</td>
-                    <td className="text-end">${cost.setupFee.toFixed(2)}</td>
-                    <td className="text-end">${cost.cuttingCost.toFixed(2)}</td>
-                    <td className="text-end">
-                      <strong>${cost.totalCost.toFixed(2)}</strong>
+                  <tr key={cost.stockLength} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 font-semibold text-slate-900">{cost.stockLength}mm</td>
+                    <td className="px-4 py-3 text-center">{cost.quantity}</td>
+                    <td className="px-4 py-3 text-center">{cost.totalCuts}</td>
+                    <td className="px-4 py-3 text-right">${cost.setupFee.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right">${cost.cuttingCost.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right font-semibold text-slate-900">
+                      ${cost.totalCost.toFixed(2)}
                     </td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot className="table-light">
+              <tfoot className="bg-slate-50 font-semibold text-slate-900">
                 <tr>
-                  <td colSpan={3}>
-                    <strong>Total</strong>
+                  <td className="px-4 py-3" colSpan={3}>
+                    Total
                   </td>
-                  <td className="text-end">
-                    <strong>${result.totalSetupFees.toFixed(2)}</strong>
-                  </td>
-                  <td className="text-end">
-                    <strong>${result.totalCuttingCosts.toFixed(2)}</strong>
-                  </td>
-                  <td className="text-end">
-                    <strong>${result.totalCost.toFixed(2)}</strong>
-                  </td>
+                  <td className="px-4 py-3 text-right">${result.totalSetupFees.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right">${result.totalCuttingCosts.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right">${result.totalCost.toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>
           </div>
-        </Card.Body>
-      </Card>
+        </div>
+      </section>
 
-      <Card className="shadow-sm">
-        <Card.Header className="bg-dark text-white">
-          <h5 className="mb-0">
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-100 px-6 py-4">
+          <h2 className="text-lg font-semibold text-slate-900">
             Cutting Patterns ({result.patterns.length} pieces)
-          </h5>
-        </Card.Header>
-        <Card.Body>
-          <ListGroup variant="flush">
-            {result.patterns.map((pattern, index) => (
-              <ListGroup.Item key={index} className="px-0">
-                <Row className="align-items-center">
-                  <Col lg={2} md={3} className="mb-2 mb-md-0">
-                    <strong className="text-primary">
-                      Stock #{pattern.stockIndex}
-                    </strong>
-                    <div className="small text-muted">
-                      {pattern.stockLength}mm stock
-                    </div>
-                    <div className="small text-muted">
-                      {pattern.cuts.length} cuts
-                    </div>
-                  </Col>
-                  <Col lg={7} md={6} className="mb-2 mb-md-0">
-                    <CutPatternVisualization pattern={pattern} />
-                  </Col>
-                  <Col lg={3} md={3}>
-                    <div className="d-flex flex-wrap gap-2">
-                      <Badge bg="success" className="d-flex align-items-center">
-                        <i className="bi bi-speedometer2 me-1"></i>
-                        {formatNumber(pattern.utilization)}%
-                      </Badge>
-                      <Badge
-                        bg="warning"
-                        text="dark"
-                        className="d-flex align-items-center"
-                      >
-                        <i className="bi bi-exclamation-triangle me-1"></i>
-                        {pattern.waste}mm waste
-                      </Badge>
-                    </div>
-                    <div className="small text-muted mt-2">
-                      Cuts: {pattern.cuts.join("mm, ")}mm
-                    </div>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </Card.Body>
-        <Card.Footer className="text-muted">
-          <Row>
-            <Col md={6}>
-              <small>
-                <strong>Material Efficiency:</strong> Using {result.totalStock}{" "}
-                stock pieces with {formatNumber(result.averageUtilization)}%
-                average utilization
-              </small>
-            </Col>
-            <Col md={6} className="text-md-end">
-              <small>
-                <strong>Waste:</strong> {result.totalWaste.toLocaleString()}mm
-                total (~
-                {formatNumber((result.totalWaste / totalStockLength) * 100)}% of
-                material)
-              </small>
-            </Col>
-          </Row>
-        </Card.Footer>
-      </Card>
+          </h2>
+        </div>
+        <div className="divide-y divide-slate-100">
+          {result.patterns.map((pattern, index) => (
+            <div key={index} className="grid gap-4 px-6 py-5 lg:grid-cols-[220px_1fr_220px]">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-emerald-700">
+                  Stock #{pattern.stockIndex}
+                </p>
+                <p className="text-sm text-slate-600">{pattern.stockLength}mm stock</p>
+                <p className="text-sm text-slate-600">{pattern.cuts.length} cuts</p>
+              </div>
+
+              <div>
+                <CutPatternVisualization pattern={pattern} />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
+                    Utilization {formatNumber(pattern.utilization)}%
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700">
+                    Waste {pattern.waste}mm
+                  </span>
+                </div>
+                <p className="text-sm text-slate-600">Cuts: {pattern.cuts.join("mm, ")}mm</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-6 py-4 text-sm text-slate-600">
+          <span>
+            <strong className="font-semibold text-slate-900">Material Efficiency:</strong> Using {result.totalStock} stock
+            pieces with {formatNumber(result.averageUtilization)}% average utilization
+          </span>
+          <span>
+            <strong className="font-semibold text-slate-900">Waste:</strong> {result.totalWaste.toLocaleString()}mm total (~
+            {formatNumber((result.totalWaste / totalStockLength) * 100)}% of material)
+          </span>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import { BlogPost } from "@/lib/blog";
 
 const content = (
-  <article className="blog-post">
-    <p className="lead">
+  <article className="blog-post space-y-6">
+    <p className="text-lg text-slate-700">
       CNC machine operators frequently need technical information: tooling
       recommendations, feeds/speeds calculations, material properties,
       troubleshooting guidance. Traditional documentation is scattered. Goal:
@@ -47,9 +47,9 @@ async function getCNCResponse(
       boundaries.
     </p>
 
-    <div className="alert alert-info">
+    <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-900 shadow-sm">
       <strong>Design decisions:</strong>
-      <ul>
+      <ul className="mt-2 list-disc space-y-1 pl-5">
         <li>
           <strong>Low temperature (0.3):</strong> Reduces creative responses,
           increases factual consistency
@@ -158,9 +158,9 @@ export default async function handler(req, res) {
 }`}</code>
     </pre>
 
-    <div className="alert alert-warning">
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-slate-900 shadow-sm">
       <strong>Security considerations:</strong>
-      <ul>
+      <ul className="mt-2 list-disc space-y-1 pl-5">
         <li>API key stored server-side only (never exposed to client)</li>
         <li>User conversations isolated by userId</li>
         <li>File uploads validated and sanitized</li>
@@ -250,8 +250,8 @@ export default async function handler(req, res) {
     </p>
 
     <h2>Results</h2>
-    <div className="row">
-      <div className="col-md-6">
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <h3>Performance</h3>
         <ul>
           <li>Response time: 2-3 seconds (streaming)</li>
@@ -259,7 +259,7 @@ export default async function handler(req, res) {
           <li>User satisfaction: 4.2/5.0</li>
         </ul>
       </div>
-      <div className="col-md-6">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <h3>Most Common Queries</h3>
         <ul>
           <li>Feeds/speeds calculations (28%)</li>
@@ -291,7 +291,7 @@ export default async function handler(req, res) {
       </li>
     </ol>
 
-    <div className="alert alert-success mt-4">
+    <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-slate-900 shadow-sm">
       <strong>Key Takeaway:</strong> Effective AI assistants require careful
       prompt engineering, context management, and domain-specific constraints.
       Generic chatbots won&apos;t provide the technical accuracy needed for

@@ -1,8 +1,8 @@
 import { BlogPost } from "@/lib/blog";
 
 const content = (
-  <article className="blog-post">
-    <p className="lead">
+  <article className="blog-post space-y-6">
+    <p className="text-lg text-slate-700">
       My portfolio has evolved through three major technology stacks: PHP
       (2019-2021), Angular (2022-2023), and Next.js (2024-present). Each
       migration taught valuable lessons about choosing the right tool for the
@@ -103,14 +103,14 @@ export class ContactComponent {
       <li>Meta tags not updating per route</li>
     </ul>
 
-    <div className="alert alert-info">
-      <h4>Lessons Learned</h4>
-      <p>
+    <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-900 shadow-sm">
+      <h4 className="text-lg font-semibold">Lessons Learned</h4>
+      <p className="mt-2">
         <strong>Angular excellent for:</strong> Large enterprise applications,
         complex state management, teams with Angular expertise, internal tools
         (SEO irrelevant)
       </p>
-      <p>
+      <p className="mt-2">
         <strong>Angular overkill for:</strong> Simple portfolio sites,
         content-heavy pages, SEO-critical projects, solo developer projects
       </p>
@@ -169,8 +169,8 @@ export default function ProjectsPage() {
     <h3>Component Migration</h3>
     <p>Angular components → React components was straightforward:</p>
 
-    <div className="row">
-      <div className="col-md-6">
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <h4>Before (Angular)</h4>
         <pre>
           <code>{`@Component({
@@ -187,7 +187,7 @@ export class ProjectCardComponent {
 }`}</code>
         </pre>
       </div>
-      <div className="col-md-6">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <h4>After (React)</h4>
         <pre>
           <code>{`interface ProjectCardProps {
@@ -240,45 +240,39 @@ export async function POST(request: NextRequest) {
     </pre>
 
     <h2>Performance Comparison</h2>
-    <table className="table table-striped">
+    <div className="overflow-hidden rounded-xl border border-slate-200">
+      <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-800">
       <thead>
         <tr>
-          <th>Metric</th>
-          <th>Angular SPA</th>
-          <th>Next.js SSG</th>
+          <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Metric</th>
+          <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Angular SPA</th>
+          <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Next.js SSG</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="divide-y divide-slate-200">
         <tr>
-          <td>First Contentful Paint</td>
-          <td>1.8s</td>
-          <td>
-            <strong>0.4s</strong>
-          </td>
+          <td className="px-4 py-3">First Contentful Paint</td>
+          <td className="px-4 py-3">1.8s</td>
+          <td className="px-4 py-3 font-semibold">0.4s</td>
         </tr>
         <tr>
-          <td>Time to Interactive</td>
-          <td>3.2s</td>
-          <td>
-            <strong>0.6s</strong>
-          </td>
+          <td className="px-4 py-3">Time to Interactive</td>
+          <td className="px-4 py-3">3.2s</td>
+          <td className="px-4 py-3 font-semibold">0.6s</td>
         </tr>
         <tr>
-          <td>Bundle Size</td>
-          <td>850KB</td>
-          <td>
-            <strong>45KB HTML</strong>
-          </td>
+          <td className="px-4 py-3">Bundle Size</td>
+          <td className="px-4 py-3">850KB</td>
+          <td className="px-4 py-3 font-semibold">45KB HTML</td>
         </tr>
         <tr>
-          <td>Lighthouse Score</td>
-          <td>72/100</td>
-          <td>
-            <strong>100/100</strong>
-          </td>
+          <td className="px-4 py-3">Lighthouse Score</td>
+          <td className="px-4 py-3">72/100</td>
+          <td className="px-4 py-3 font-semibold">100/100</td>
         </tr>
       </tbody>
     </table>
+    </div>
 
     <p className="lead">
       <strong>Result: 4.5x faster page loads</strong>
@@ -290,71 +284,73 @@ export async function POST(request: NextRequest) {
       content immediately.
     </p>
 
-    <table className="table">
-      <thead>
-        <tr>
-          <th>Metric</th>
-          <th>Before</th>
-          <th>After</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Google indexing</td>
-          <td>Partial</td>
-          <td>100% of pages</td>
-        </tr>
-        <tr>
-          <td>Search impressions</td>
-          <td>Baseline</td>
-          <td>+340%</td>
-        </tr>
-        <tr>
-          <td>Average position</td>
-          <td>12</td>
-          <td>6</td>
-        </tr>
-        <tr>
-          <td>Click-through rate</td>
-          <td>Baseline</td>
-          <td>+180%</td>
-        </tr>
-      </tbody>
-    </table>
+    <div className="overflow-hidden rounded-xl border border-slate-200">
+      <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-800">
+        <thead>
+          <tr>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Metric</th>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Before</th>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">After</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-200">
+          <tr>
+            <td className="px-4 py-3">Google indexing</td>
+            <td className="px-4 py-3">Partial</td>
+            <td className="px-4 py-3">100% of pages</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3">Search impressions</td>
+            <td className="px-4 py-3">Baseline</td>
+            <td className="px-4 py-3">+340%</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3">Average position</td>
+            <td className="px-4 py-3">12</td>
+            <td className="px-4 py-3">6</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3">Click-through rate</td>
+            <td className="px-4 py-3">Baseline</td>
+            <td className="px-4 py-3">+180%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>Cost Comparison</h2>
-    <table className="table table-bordered">
-      <thead>
-        <tr>
-          <th>Aspect</th>
-          <th>PHP</th>
-          <th>Angular</th>
-          <th>Next.js</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Hosting</td>
-          <td>$5/mo</td>
-          <td>$12/mo</td>
-          <td>
-            <strong>$0 (Netlify)</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>Build time</td>
-          <td>N/A</td>
-          <td>45s</td>
-          <td>22s</td>
-        </tr>
-        <tr>
-          <td>Deploy time</td>
-          <td>5min (manual)</td>
-          <td>8min (manual)</td>
-          <td>2min (auto)</td>
-        </tr>
-      </tbody>
-    </table>
+    <div className="overflow-hidden rounded-xl border border-slate-200">
+      <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-800">
+        <thead>
+          <tr>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Aspect</th>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">PHP</th>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Angular</th>
+            <th className="bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Next.js</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-200">
+          <tr>
+            <td className="px-4 py-3">Hosting</td>
+            <td className="px-4 py-3">$5/mo</td>
+            <td className="px-4 py-3">$12/mo</td>
+            <td className="px-4 py-3 font-semibold">$0 (Netlify)</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3">Build time</td>
+            <td className="px-4 py-3">N/A</td>
+            <td className="px-4 py-3">45s</td>
+            <td className="px-4 py-3">22s</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3">Deploy time</td>
+            <td className="px-4 py-3">5min (manual)</td>
+            <td className="px-4 py-3">8min (manual)</td>
+            <td className="px-4 py-3">2min (auto)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <p>
       <strong>Current cost: $15/year (domain only)</strong>
@@ -387,7 +383,7 @@ export async function POST(request: NextRequest) {
       </li>
     </ol>
 
-    <div className="alert alert-success mt-4">
+    <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-slate-900 shadow-sm">
       <strong>Final verdict:</strong> Next.js optimal for portfolio sites. Fast,
       SEO-friendly, excellent DX. Would migrate again.
     </div>

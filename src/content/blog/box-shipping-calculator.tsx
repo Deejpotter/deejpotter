@@ -104,9 +104,9 @@ const content = (
       50-60% manual packing
     </p>
 
-    <div className="alert alert-info">
+    <div className="mt-4 space-y-2 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sky-900 shadow-sm dark:border-sky-800 dark:bg-sky-900/20 dark:text-sky-100">
       <strong>Example:</strong> 20 mixed-size items across 3 box types
-      <ul>
+      <ul className="list-inside list-disc space-y-1">
         <li>Manual: 6 boxes, 55% utilization</li>
         <li>Algorithm: 4 boxes, 78% utilization</li>
         <li>
@@ -147,7 +147,7 @@ const content = (
         <strong>Auth:</strong> Clerk for user-scoped data
       </li>
       <li>
-        <strong>Styling:</strong> Bootstrap 5
+        <strong>Styling:</strong> Tailwind CSS (migrated from Bootstrap 5)
       </li>
     </ul>
 
@@ -159,7 +159,7 @@ const content = (
       <li>3D visualization - preview of packed boxes</li>
     </ol>
 
-    <div className="alert alert-success mt-4">
+    <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900 shadow-sm dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-100">
       <strong>Key Takeaway:</strong> Complex packing problems benefit from
       heuristic algorithms rather than brute force. The guillotine approach
       provides a good balance of efficiency and optimality for real-world

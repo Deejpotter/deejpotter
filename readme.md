@@ -22,16 +22,28 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 
 ## Technologies and Tools
 
-- **Next.js**: The main framework used for building the website.
+- **Next.js 16**: The main framework (App Router, Turbopack, Server Components).
+- **Tailwind CSS v4**: Utility-first CSS framework with CSS-based configuration (`@import "tailwindcss"`, `@theme`, `@plugin` directives).
+- **Clerk**: Authentication provider (`@clerk/nextjs`). Requires `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` environment variables.
+- **MongoDB**: Database for dynamic content via Next.js Route Handlers (`src/app/api/mongo-crud/route.ts`).
+- **Vitest**: Testing framework with React Testing Library.
+- **TypeDoc**: API documentation generation.
 
-- **Netlify CMS**: For managing the content of the website.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Netlify Forms**: For handling the contact form submissions.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Netlify Identity**: For user authentication.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+## Environment Setup
 
-- **Bootstrap**: For styling the website.⚠️ This project is migrating away from Bootstrap in favor of Tailwind CSS (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+1. Copy `.env.example` to `.env.local`
+2. Add your Clerk keys from [Clerk Dashboard](https://dashboard.clerk.com)
+3. Add MongoDB connection string if using database features
 
-- **React**: For building the user interface components.
+```bash
+# Required for authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+
+# Required for database features
+MONGODB_URI=mongodb+srv://...
+DB_NAME=your-database
+```
 
 ## Code style
 

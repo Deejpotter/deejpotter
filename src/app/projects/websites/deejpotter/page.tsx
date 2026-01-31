@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Portfolio Website | Deej Potter",
   description:
-    "Technical details about my portfolio website - built with Next.js, TypeScript, and Bootstrap. Three major migrations from PHP to Angular to Next.js.",
+    "Technical details about my portfolio website - built with Next.js, TypeScript, and Tailwind CSS. Three major migrations from PHP to Angular to Next.js.",
   openGraph: {
     title: "Portfolio Website | Deej Potter",
     description:
@@ -18,328 +18,225 @@ export const metadata: Metadata = {
 
 export default function Deejpotter(): ReactElement {
   return (
-    <div className="container py-5">
-      <div className="row">
-        <div className="col-lg-10 mx-auto">
-          {/* Header */}
-          <header className="mb-4">
-            <h1 className="display-4 mb-3">Portfolio Website</h1>
-            <p className="lead text-muted">
-              My personal portfolio site - the one you&apos;re viewing right
-              now. Built with Next.js, TypeScript, and Bootstrap.
-            </p>
-          </header>
+    <div className="mx-auto max-w-5xl space-y-10 px-4 py-10">
+      <header className="space-y-3">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
+          Portfolio Website
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          My personal portfolio site — the one you&apos;re viewing right now. Built with Next.js,
+          TypeScript, and Tailwind CSS, after migrations from PHP and Angular.
+        </p>
+      </header>
 
-          {/* Overview */}
-          <section className="mb-5">
-            <h2 className="h3 mb-3">Overview</h2>
-            <p>
-              This portfolio has evolved through three major technology stacks
-              over five years, from PHP (2019-2021) to Angular (2022-2023) to
-              Next.js (2024-present). Each migration taught valuable lessons
-              about choosing the right tool for the job.
-            </p>
-            <p>
-              The current Next.js implementation focuses on performance, SEO,
-              and maintainability - combining the benefits of static site
-              generation with the flexibility of server-side rendering when
-              needed.
-            </p>
-          </section>
+      <section className="space-y-3">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Overview</h2>
+        <p className="text-gray-700 dark:text-gray-200">
+          This portfolio has evolved through three major technology stacks over five years, from PHP
+          (2019-2021) to Angular (2022-2023) to Next.js (2024-present). Each migration taught valuable
+          lessons about choosing the right tool for the job. The current implementation focuses on
+          performance, SEO, and maintainability, combining static site generation with server-side
+          rendering when needed.
+        </p>
+      </section>
 
-          {/* Tech Stack */}
-          <section className="mb-5">
-            <h2 className="h3 mb-3">Tech Stack</h2>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <div className="card h-100 border-0 bg-light">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Frontend</h3>
-                    <ul className="mb-0">
-                      <li>Next.js 14.2 (App Router)</li>
-                      <li>React 18</li>
-                      <li>TypeScript</li>
-                      <li>Bootstrap 5 + SCSS</li>
-                      <li>React Bootstrap components</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="card h-100 border-0 bg-light">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Backend & Services</h3>
-                    <ul className="mb-0">
-                      <li>Next.js API Routes</li>
-                      <li>MongoDB (user data)</li>
-                      <li>Clerk Authentication</li>
-                      <li>Netlify Forms (contact)</li>
-                      <li>Netlify CMS (content management)</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="card h-100 border-0 bg-light">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Development Tools</h3>
-                    <ul className="mb-0">
-                      <li>Yarn 4 (package management)</li>
-                      <li>ESLint + Prettier</li>
-                      <li>Jest (testing)</li>
-                      <li>TypeDoc (documentation)</li>
-                      <li>Git + GitHub</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="card h-100 border-0 bg-light">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Hosting & Deployment</h3>
-                    <ul className="mb-0">
-                      <li>Currently: Netlify</li>
-                      <li>Migrating to: Coolify (self-hosted)</li>
-                      <li>CI/CD: GitHub Actions</li>
-                      <li>Domain: deejpotter.com</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Tech Stack</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {["Frontend", "Backend & Services", "Development Tools", "Hosting & Deployment"].map(
+            (title, index) => {
+              const items = [
+                [
+                  "Next.js (App Router)",
+                  "React",
+                  "TypeScript",
+                  "Tailwind CSS",
+                  "MDX + custom components",
+                ],
+                [
+                  "Next.js Route Handlers",
+                  "MongoDB (user data)",
+                  "Clerk Authentication",
+                  "Netlify Forms (contact)",
+                  "Netlify CMS (content management)",
+                ],
+                ["Yarn", "ESLint + Prettier", "Vitest + Playwright", "TypeDoc", "Git + GitHub"],
+                ["Currently: Netlify", "Migrating: Coolify", "CI/CD: GitHub Actions", "Domain: deejpotter.com"],
+              ][index];
 
-          {/* Key Features */}
-          <section className="mb-5">
-            <h2 className="h3 mb-3">Key Features</h2>
-            <ul>
-              <li>
-                <strong>Technical Blog</strong> - Project write-ups with code
-                examples and implementation details
-              </li>
-              <li>
-                <strong>Project Showcase</strong> - Websites, apps, engineering
-                projects, and games with external links
-              </li>
-              <li>
-                <strong>Contact Form</strong> - Netlify Forms integration for
-                contact submissions
-              </li>
-              <li>
-                <strong>Responsive Design</strong> - Mobile-first Bootstrap 5
-                layout
-              </li>
-              <li>
-                <strong>Type Safety</strong> - Full TypeScript implementation
-                throughout
-              </li>
-              <li>
-                <strong>SEO Optimized</strong> - Static generation with Next.js
-                metadata API
-              </li>
-              <li>
-                <strong>Accessibility</strong> - WCAG 2.1 AA compliance (in
-                progress)
-              </li>
-            </ul>
-          </section>
-
-          {/* Migration Journey */}
-          <section className="mb-5">
-            <h2 className="h3 mb-3">Migration Journey</h2>
-            <div className="timeline">
-              <div className="mb-4">
-                <h4 className="h5">Phase 1: PHP (2019-2021)</h4>
-                <p className="text-muted mb-2">
-                  Traditional LAMP stack: PHP 7.4, jQuery, Bootstrap 4, MySQL
-                </p>
-                <p>
-                  Simple deployment and cheap hosting, but limited reusability
-                  and no type safety. jQuery spaghetti code became
-                  unmaintainable.
-                </p>
-              </div>
-
-              <div className="mb-4">
-                <h4 className="h5">Phase 2: Angular (2022-2023)</h4>
-                <p className="text-muted mb-2">
-                  Single Page Application: Angular 14, TypeScript, RxJS
-                </p>
-                <p>
-                  Modernized with component architecture and type safety.
-                  However, large bundle sizes (850KB after optimization) and SEO
-                  challenges without server-side rendering led to the next
-                  migration.
-                </p>
-              </div>
-
-              <div className="mb-4">
-                <h4 className="h5">Phase 3: Next.js (2024-Present)</h4>
-                <p className="text-muted mb-2">
-                  React Server Components: Next.js 14, App Router, TypeScript
-                </p>
-                <p>
-                  Best of both worlds - static generation for performance,
-                  server components for SEO, client components for
-                  interactivity. Initial load: ~200KB, First Contentful Paint
-                  under 1s.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Technical Challenges */}
-          <section className="mb-5">
-            <h2 className="h3 mb-3">Technical Challenges Solved</h2>
-            <div className="accordion" id="challengesAccordion">
-              <div className="accordion-item">
-                <h3 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#challenge1"
-                  >
-                    Angular to Next.js Migration
-                  </button>
-                </h3>
+              return (
                 <div
-                  id="challenge1"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#challengesAccordion"
+                  key={title}
+                  className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
                 >
-                  <div className="accordion-body">
-                    <p>
-                      Migrated from Angular&apos;s component architecture to
-                      Next.js App Router. Challenges included:
-                    </p>
-                    <ul>
-                      <li>Converting Angular services to React hooks</li>
-                      <li>Replacing RxJS observables with async/await</li>
-                      <li>
-                        Restructuring routing from Angular Router to file-based
-                        routing
-                      </li>
-                      <li>Migrating from Angular Forms to React Hook Form</li>
-                    </ul>
-                    <p>
-                      Result: 75% smaller initial bundle, better SEO, simpler
-                      mental model.
-                    </p>
-                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+                  <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                    {items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-
-              <div className="accordion-item">
-                <h3 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#challenge2"
-                  >
-                    Blog System Implementation
-                  </button>
-                </h3>
-                <div
-                  id="challenge2"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#challengesAccordion"
-                >
-                  <div className="accordion-body">
-                    <p>
-                      Built a custom blog system using TypeScript files as
-                      content source (no MDX complexity):
-                    </p>
-                    <ul>
-                      <li>React components for rich content formatting</li>
-                      <li>Static generation for all blog routes</li>
-                      <li>Type-safe blog post structure</li>
-                      <li>Integrated with BookStack for draft management</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="accordion-item">
-                <h3 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#challenge3"
-                  >
-                    GitHub Packages Integration
-                  </button>
-                </h3>
-                <div
-                  id="challenge3"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#challengesAccordion"
-                >
-                  <div className="accordion-body">
-                    <p>Configured private npm packages from GitHub Packages:</p>
-                    <ul>
-                      <li>
-                        Set up npmScopes in yarn configuration for @deejpotter
-                        scope
-                      </li>
-                      <li>Configured authentication with GitHub PAT</li>
-                      <li>
-                        Shared UI components between portfolio and CNC Tools
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Current Status */}
-          <section className="mb-5">
-            <h2 className="h3 mb-3">Current Status & Roadmap</h2>
-            <p>
-              <strong>Production:</strong> Live at{" "}
-              <a
-                href="https://deejpotter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                deejpotter.com
-              </a>
-            </p>
-            <p>
-              <strong>GitHub:</strong>{" "}
-              <a
-                href="https://github.com/Deejpotter/deejpotter"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                github.com/Deejpotter/deejpotter
-              </a>
-            </p>
-            <p className="mb-3">
-              <strong>Upcoming:</strong> Migrating from Netlify to self-hosted
-              Coolify for better control and cost optimization.
-            </p>
-          </section>
-
-          {/* Learn More */}
-          <section>
-            <div className="alert alert-info">
-              <h3 className="h5 mb-2">Read the full migration story</h3>
-              <p className="mb-0">
-                Check out my{" "}
-                <Link href="/blog/portfolio-migration">
-                  Portfolio Migration blog post
-                </Link>{" "}
-                for detailed technical insights about the journey from PHP to
-                Angular to Next.js.
-              </p>
-            </div>
-          </section>
+              );
+            }
+          )}
         </div>
-      </div>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Key Features</h2>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-200">
+          <li>
+            <strong>Technical Blog</strong> — Project write-ups with code examples and implementation
+            details
+          </li>
+          <li>
+            <strong>Project Showcase</strong> — Websites, apps, engineering projects, and games with
+            external links
+          </li>
+          <li>
+            <strong>Contact Form</strong> — Netlify Forms integration for contact submissions
+          </li>
+          <li>
+            <strong>Responsive Design</strong> — Tailwind-first, mobile-friendly layout
+          </li>
+          <li>
+            <strong>Type Safety</strong> — Full TypeScript implementation throughout
+          </li>
+          <li>
+            <strong>SEO Optimized</strong> — Static generation with the Next.js metadata API
+          </li>
+          <li>
+            <strong>Accessibility</strong> — WCAG 2.1 AA compliance work in progress
+          </li>
+        </ul>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Migration Journey</h2>
+        <div className="space-y-6 border-l-2 border-emerald-200 pl-6 dark:border-emerald-800">
+          {[
+            {
+              title: "Phase 1: PHP (2019-2021)",
+              meta: "Traditional LAMP stack: PHP 7.4, jQuery, Bootstrap 4, MySQL",
+              body:
+                "Simple deployment and cheap hosting, but limited reusability and no type safety. jQuery spaghetti code became unmaintainable.",
+            },
+            {
+              title: "Phase 2: Angular (2022-2023)",
+              meta: "Single Page Application: Angular 14, TypeScript, RxJS",
+              body:
+                "Modernized with component architecture and type safety. Large bundle sizes and SEO challenges without SSR led to the next migration.",
+            },
+            {
+              title: "Phase 3: Next.js (2024-Present)",
+              meta: "React Server Components: Next.js App Router, TypeScript",
+              body:
+                "Best of both worlds — static generation for performance, server components for SEO, client components for interactivity. Initial load ~200KB, FCP under 1s.",
+            },
+          ].map((phase) => (
+            <div key={phase.title} className="space-y-1">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{phase.title}</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{phase.meta}</p>
+              <p className="text-gray-700 dark:text-gray-200">{phase.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Technical Challenges Solved</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {[
+            {
+              title: "Angular to Next.js Migration",
+              bullets: [
+                "Converted Angular services to React hooks",
+                "Replaced RxJS observables with async/await",
+                "Moved from Angular Router to file-based routing",
+                "Migrated forms to React Hook Form",
+                "Result: 75% smaller initial bundle and better SEO",
+              ],
+            },
+            {
+              title: "Blog System Implementation",
+              bullets: [
+                "Custom blog content authored in TypeScript instead of MDX",
+                "Static generation for all blog routes",
+                "Type-safe post structure",
+                "Draft management via BookStack",
+              ],
+            },
+            {
+              title: "GitHub Packages Integration",
+              bullets: [
+                "Scoped npm config for @deejpotter packages",
+                "PAT-based authentication",
+                "Shared UI components between portfolio and CNC Tools",
+              ],
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{item.title}</h3>
+              <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                {item.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Current Status & Roadmap</h2>
+        <div className="space-y-2 text-gray-700 dark:text-gray-200">
+          <p>
+            <strong>Production:</strong> Live at{" "}
+            <a
+              className="text-emerald-700 underline decoration-emerald-400 decoration-2 underline-offset-4 hover:text-emerald-800 dark:text-emerald-200"
+              href="https://deejpotter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              deejpotter.com
+            </a>
+          </p>
+          <p>
+            <strong>GitHub:</strong>{" "}
+            <a
+              className="text-emerald-700 underline decoration-emerald-400 decoration-2 underline-offset-4 hover:text-emerald-800 dark:text-emerald-200"
+              href="https://github.com/Deejpotter/deejpotter"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/Deejpotter/deejpotter
+            </a>
+          </p>
+          <p className="mb-0">
+            <strong>Upcoming:</strong> Migrating from Netlify to self-hosted Coolify for better control
+            and cost optimization.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-emerald-900 shadow-sm dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-100">
+          <h3 className="text-lg font-semibold">Read the full migration story</h3>
+          <p className="mt-2 text-sm">
+            Check out my {""}
+            <Link
+              href="/blog/portfolio-migration"
+              className="font-semibold text-emerald-800 underline decoration-emerald-500 decoration-2 underline-offset-4 hover:text-emerald-900 dark:text-emerald-100"
+            >
+              Portfolio Migration blog post
+            </Link>{" "}
+            for detailed technical insights about the journey from PHP to Angular to Next.js.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

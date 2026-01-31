@@ -1,100 +1,8 @@
+"use client";
+
 /*
- Angular class code:
- @ViewChild('newTodoInput', {static: false}) newTodoInput!: ElementRef;
-
- todoItems: TodoItem[] = [];
- newTodoText = '';
- todoItemsSub!: Subscription;
- loading: boolean = true;
-
- constructor(
- public todoService: TodoService,
- private toastr: ToastrService,
- private changeDetectorRef: ChangeDetectorRef
- ) {
- }
-
- ngOnInit(): void {
- this.todoItemsSub = this.todoService.itemsSubject.subscribe((items) => {
- this.todoItems = items;
- });
- this.todoService.loadingCompleted.subscribe((loadingCompleted) => {
- this.loading = !loadingCompleted;
- setTimeout(() => {
- this.newTodoInput.nativeElement.focus();
- }, 1000);
- });
- }
-
- ngAfterViewInit(): void {
-
- }
-
- addTodo(): void {
- if (!this.newTodoText.trim()) {
- return;
- }
- this.todoService.addItem(this.newTodoText.trim());
- this.newTodoText = '';
- }
-
- deleteTodoItem(id: string): void {
- this.todoService.deleteItem(id);
- }
-
- updateTodoItem(item: TodoItem): void {
- this.todoService.updateItem(item);
- }
-
- ngOnDestroy(): void {
- this.todoItemsSub.unsubscribe();
- }
-
- Angular template code:
- <div class="container">
- <div class="row justify-content-center">
- <div class="col-md-8">
- <div class="card mt-5">
- <div class="card-header bg-primary text-white">
- <h2 class="mb-0">Todo List</h2>
- </div>
- <div class="card-body shadow">
- <ng-container *ngIf="!loading; else loadingTemplate">
- <ul class="list-group">
- <ng-container *ngIf="todoService.items.length > 0; else noItems">
- <app-TodoItem *ngFor="let item of todoService.items"
- [item]="item"
- (delete)="deleteTodoItem($event)"
- (update)="updateTodoItem(item)">
- </app-TodoItem>
- </ng-container>
-
- <ng-template #noItems>
- <div class="text-muted text-center my-3">
- No items found. Add a new todo item.
- </div>
- </ng-template>
- </ul>
- </ng-container>
-
- <form class="mt-3" (submit)="addTodo(); todoInput.focus()">
- <div class="input-group">
- <input #todoInput class="form-control" [(ngModel)]="newTodoText" name="newTodoText" placeholder="Enter a new todo item"/>
- <div class="input-group-append">
- <button class="btn btn-success" type="submit">Add</button>
- </div>
- </div>
- </form>
- <ng-template #loadingTemplate>
- <app-loading-spinner [isLoading]="loading"></app-loading-spinner>
- </ng-template>
- </div>
- </div>
- </div>
- </div>
- </div>
-
- Nextjs code:
+ Original Angular implementation omitted; this file now uses a Tailwind-styled React placeholder that
+ still needs real data, auth, and persistence wiring before production use.
  */
 
 import { ReactElement } from "react";
@@ -123,31 +31,61 @@ export type TodoListModel = {
  */
 export default function TodoList(): ReactElement | null {
   return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className="card mt-5">
-            <div className="card-header bg-primary text-white">
-              <h2 className="mb-0">Todo List</h2>
-            </div>
-            <div className="card-body shadow">
-              <ul className="list-group">
-                <li className="list-group-item d-flex justify-content-between align-items-center py-1 mb-1">
-                  <span>Item 1</span>
-                  <div>
-                    <button className="btn btn-warning me-1">
-                      <i className="bi bi-pencil"></i>
-                    </button>
-                    <button className="btn btn-danger">
-                      <i className="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
+    <section className="mx-auto max-w-3xl px-4 py-8">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 dark:bg-gray-900 dark:ring-gray-800">
+        <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Todo List</h2>
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+            Placeholder client demo — wire up data, auth, and persistence before using in production.
+          </p>
+        </div>
+
+        <div className="space-y-4 px-6 py-5">
+          <ul className="divide-y divide-gray-200 dark:divide-gray-800">
+            <li className="flex items-center justify-between py-3">
+              <span className="text-gray-800 dark:text-gray-100">Item 1</span>
+              <div className="flex gap-2">
+                <button
+                  className="inline-flex items-center justify-center rounded-md bg-amber-500 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+                  type="button"
+                >
+                  Edit
+                </button>
+                <button
+                  className="inline-flex items-center justify-center rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400"
+                  type="button"
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          </ul>
+
+          <form
+            className="flex flex-col gap-3 sm:flex-row"
+            onSubmit={(event) => {
+              event.preventDefault();
+            }}
+          >
+            <label className="sr-only" htmlFor="new-todo">
+              Add todo item
+            </label>
+            <input
+              id="new-todo"
+              name="new-todo"
+              placeholder="Enter a new todo item"
+              className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+              type="text"
+            />
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+            >
+              Add
+            </button>
+          </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

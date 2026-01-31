@@ -235,7 +235,7 @@ export const PopoverTrigger = React.forwardRef<
   return (
     <button
       ref={ref}
-      className="btn btn-primary"
+      className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
       type="button"
       // The user can style the trigger based on the state
       data-state={context.open ? "open" : "closed"}
@@ -338,7 +338,7 @@ export const PopoverClose = React.forwardRef<
   const { setOpen } = usePopoverContext();
   return (
     <button
-      className="btn btn-primary"
+      className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
       type="button"
       ref={ref}
       {...props}

@@ -74,200 +74,186 @@ export default function Engineering(): ReactElement {
         `}
       </Script>
 
-      <div className="container py-4">
-        <div className="row mb-4">
-          <div className="col">
-            <h1>Engineering & Hardware Projects</h1>
-            <p className="lead">
-              These are hardware and embedded systems projects that combine
-              electronics, programming, and mechanical engineering. From
-              wireless robotics to CNC control systems, each project explores
-              different aspects of embedded development and precision control.
-            </p>
-          </div>
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="mb-8 space-y-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
+            Engineering &amp; Hardware Projects
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Hardware and embedded systems projects that combine electronics, programming, and mechanical
+            engineering. From wireless robotics to CNC control systems, each project explores a different
+            facet of embedded development and precision control.
+          </p>
         </div>
 
-        <div className="row">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {engineeringProjects.map((project) => (
-            <div key={project.id} className="col-12 col-md-6 col-lg-4 mb-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <div className="text-center mb-3">
-                    <Image
-                      src={project.image}
-                      alt={`${project.name} logo`}
-                      width={100}
-                      height={100}
-                      className="img-fluid"
-                    />
-                  </div>
-                  <h2 className="h5 card-title">{project.name}</h2>
-                  <p className="card-text">{project.description}</p>
-                  <div className="d-flex flex-wrap gap-1 mb-3">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="badge bg-primary">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+            <div
+              key={project.id}
+              className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+            >
+              <div className="flex flex-1 flex-col gap-4 p-6">
+                <div className="flex justify-center">
+                  <Image
+                    src={project.image}
+                    alt={`${project.name} logo`}
+                    width={100}
+                    height={100}
+                    className="h-20 w-20 object-contain"
+                  />
                 </div>
-                <div className="card-footer bg-transparent border-top-0">
-                  <div className="d-flex gap-2">
-                    {project.external ? (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-primary flex-grow-1"
-                      >
-                        View Project{" "}
-                        <span className="bi bi-box-arrow-up-right ms-1"></span>
-                      </a>
-                    ) : (
-                      <Link
-                        href={project.link}
-                        className="btn btn-primary flex-grow-1"
-                      >
-                        View Details
-                      </Link>
-                    )}
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-outline-secondary"
-                        aria-label="View on GitHub"
-                      >
-                        <span className="bi bi-github"></span>
-                      </a>
-                    )}
-                  </div>
+                <div className="space-y-2">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {project.name}
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{project.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
+                <div className="flex gap-2">
+                  {project.external ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+                    >
+                      View Project <span aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <Link
+                      href={project.link}
+                      className="inline-flex flex-1 items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+                    >
+                      View Details
+                    </Link>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+                      aria-label="View on GitHub"
+                    >
+                      GitHub
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="row mt-4">
-          <div className="col">
-            <h2>My Engineering Approach</h2>
-            <p>
-              When building hardware projects, I focus on practical solutions
-              that combine robust software with reliable hardware. My
-              development process includes:
+        <div className="mt-12 grid gap-10 lg:grid-cols-2">
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">My Engineering Approach</h2>
+            <p className="text-gray-700 dark:text-gray-200">
+              I focus on practical solutions that combine robust software with reliable hardware. The process
+              I follow includes:
             </p>
-            <ul>
+            <ul className="space-y-2 text-gray-700 dark:text-gray-200">
               <li>
-                <strong>Understanding requirements:</strong> Define the problem
-                and constraints before selecting components
+                <strong>Understanding requirements:</strong> Define the problem and constraints before
+                selecting components
               </li>
               <li>
-                <strong>Prototyping:</strong> Breadboard circuits, test
-                assumptions, iterate quickly
+                <strong>Prototyping:</strong> Breadboard circuits, test assumptions, iterate quickly
               </li>
               <li>
-                <strong>Embedded programming:</strong> Efficient C/C++ code
-                optimized for microcontrollers
+                <strong>Embedded programming:</strong> Efficient C/C++ code optimized for microcontrollers
               </li>
               <li>
-                <strong>Real-time systems:</strong> Interrupt handling, timing
-                constraints, resource management
+                <strong>Real-time systems:</strong> Interrupt handling, timing constraints, resource
+                management
               </li>
               <li>
-                <strong>Sensor integration:</strong> Encoders, IMUs, ultrasonic,
-                temperature, etc.
+                <strong>Sensor integration:</strong> Encoders, IMUs, ultrasonic, temperature, etc.
               </li>
               <li>
-                <strong>Communication protocols:</strong> UART, I2C, SPI, Wi-Fi,
-                Bluetooth
+                <strong>Communication protocols:</strong> UART, I2C, SPI, Wi-Fi, Bluetooth
               </li>
               <li>
-                <strong>Testing & debugging:</strong> Oscilloscope, logic
-                analyzer, serial debugging
+                <strong>Testing &amp; debugging:</strong> Oscilloscope, logic analyzer, serial debugging
               </li>
               <li>
-                <strong>Documentation:</strong> Circuit diagrams, pin
-                assignments, API documentation
+                <strong>Documentation:</strong> Circuit diagrams, pin assignments, API documentation
               </li>
             </ul>
           </div>
-        </div>
 
-        <div className="row mt-4">
-          <div className="col">
-            <h2>Technologies & Tools</h2>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Microcontrollers</h3>
-                    <ul className="list-unstyled mb-0">
-                      <li>
-                        <strong>ESP32:</strong> Wi-Fi/Bluetooth, dual-core,
-                        240MHz
-                      </li>
-                      <li>
-                        <strong>Arduino:</strong> AVR, Due, Mega for various
-                        projects
-                      </li>
-                      <li>
-                        <strong>Raspberry Pi:</strong> Linux-based embedded
-                        computing
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Technologies &amp; Tools</h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Microcontrollers</h3>
+                <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                  <li>
+                    <strong>ESP32:</strong> Wi-Fi/Bluetooth, dual-core, 240MHz
+                  </li>
+                  <li>
+                    <strong>Arduino:</strong> AVR, Due, Mega for various projects
+                  </li>
+                  <li>
+                    <strong>Raspberry Pi:</strong> Linux-based embedded computing
+                  </li>
+                </ul>
               </div>
-              <div className="col-md-6">
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="h5 card-title">Development Tools</h3>
-                    <ul className="list-unstyled mb-0">
-                      <li>
-                        <strong>PlatformIO:</strong> Cross-platform embedded IDE
-                      </li>
-                      <li>
-                        <strong>Arduino IDE:</strong> Quick prototyping
-                      </li>
-                      <li>
-                        <strong>KiCad:</strong> PCB design and schematics
-                      </li>
-                      <li>
-                        <strong>Fusion 360:</strong> 3D modeling for enclosures
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+              <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Development Tools</h3>
+                <ul className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-200">
+                  <li>
+                    <strong>PlatformIO:</strong> Cross-platform embedded IDE
+                  </li>
+                  <li>
+                    <strong>Arduino IDE:</strong> Quick prototyping
+                  </li>
+                  <li>
+                    <strong>KiCad:</strong> PCB design and schematics
+                  </li>
+                  <li>
+                    <strong>Fusion 360:</strong> 3D modeling for enclosures
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="row mt-4">
-          <div className="col">
-            <h2>3D Printing Services</h2>
-            <p>
-              Looking for custom 3D printed parts for your project? I offer 3D
-              printing services for prototypes, enclosures, and custom
-              mechanical components.
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">3D Printing Services</h2>
+            <p className="mt-2 text-sm text-gray-700 dark:text-gray-200">
+              Looking for custom 3D printed parts for your project? I offer 3D printing services for
+              prototypes, enclosures, and custom mechanical components.
             </p>
             <Link
               href="/projects/services/3d-printing"
-              className="btn btn-outline-primary"
+              className="mt-4 inline-flex items-center justify-center rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
             >
               Learn About 3D Printing Services
             </Link>
           </div>
-        </div>
 
-        <div className="row mt-4">
-          <div className="col text-center">
-            <p>
-              Interested in collaborating on an engineering or embedded systems
-              project?
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Collaborate</h2>
+            <p className="mt-2 text-sm text-gray-700 dark:text-gray-200">
+              Interested in collaborating on an engineering or embedded systems project?
             </p>
-            <Link href="/contact" className="btn btn-lg btn-outline-primary">
+            <Link
+              href="/contact"
+              className="mt-4 inline-flex items-center justify-center rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
+            >
               Contact Me
             </Link>
           </div>
