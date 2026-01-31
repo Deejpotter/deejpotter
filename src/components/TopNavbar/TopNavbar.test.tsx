@@ -83,7 +83,7 @@ describe("TopNavbar Component", () => {
       expect(screen.queryByText("Websites")).not.toBeInTheDocument();
 
       // Hover over Projects
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       // Dropdown should appear with all categories
       await waitFor(() => {
@@ -101,13 +101,13 @@ describe("TopNavbar Component", () => {
       const projectsButton = screen.getByRole("button", { name: /projects/i });
 
       // Open dropdown
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
       await waitFor(() => {
         expect(screen.getByText("Websites")).toBeInTheDocument();
       });
 
       // Move mouse away
-      await user.unhover(projectsButton.parentElement!);
+      await user.unhover(projectsButton);
 
       // Dropdown should close after delay (150ms)
       await waitFor(
@@ -147,7 +147,7 @@ describe("TopNavbar Component", () => {
       expect(projectsButton).toHaveAttribute("aria-expanded", "false");
 
       // Hover to open
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
       await waitFor(() => {
         expect(projectsButton).toHaveAttribute("aria-expanded", "true");
       });
@@ -164,7 +164,7 @@ describe("TopNavbar Component", () => {
       expect(arrow).toHaveStyle({ transform: "rotate(0deg)" });
 
       // Open dropdown
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
       await waitFor(() => {
         expect(arrow).toHaveStyle({ transform: "rotate(180deg)" });
       });
@@ -177,7 +177,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       await waitFor(() => {
         const categories = ["Websites", "Engineering", "Games", "Tools"];
@@ -192,7 +192,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Websites")).toBeInTheDocument();
@@ -207,7 +207,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Deej Potter")).toBeInTheDocument();
@@ -219,7 +219,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       await waitFor(() => {
         expect(
@@ -233,7 +233,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Wireless Car")).toBeInTheDocument();
@@ -245,7 +245,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+      await user.hover(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Basic Bases")).toBeInTheDocument();
