@@ -141,7 +141,7 @@ export default function StockItemsTable({
               ))
             )}
           </tbody>
-        </Table>
+        </table>
       </div>
 
       <div className="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">
