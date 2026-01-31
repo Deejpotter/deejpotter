@@ -177,7 +177,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         const categories = ["Websites", "Engineering", "Games", "Tools"];
@@ -207,7 +207,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Deej Potter")).toBeInTheDocument();
@@ -219,7 +219,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         expect(
@@ -233,7 +233,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Wireless Car")).toBeInTheDocument();
@@ -245,7 +245,7 @@ describe("TopNavbar Component", () => {
       renderNavbar();
 
       const projectsButton = screen.getByRole("button", { name: /projects/i });
-      await user.hover(projectsButton);
+      await user.click(projectsButton);
 
       await waitFor(() => {
         expect(screen.getByText("Basic Bases")).toBeInTheDocument();
