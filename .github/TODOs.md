@@ -252,6 +252,68 @@ Tailwind Migration Todo (feature/tailwind branch)
 - Replace remaining custom gradients and popover styles with Tailwind utilities where appropriate (todo)
 - Remove unused SCSS and update migration docs after visual tests pass (todo)
 
+### 🔧 Tailwind merge regression — fix styles & preserve tools pages
+
+**Goal:** Restore Tailwind-based styles from `feature/tailwind` and keep the additional tools pages (new tools) introduced on top of it. Make a minimal, safe set of changes to get the app building, visual parity for key pages, and CI passing; follow up with iterative polish.
+
+**High‑level steps:**
+1. Reproduce & capture failures (errors, visual diffs) — confirm build/test failures and pages with broken styling.
+2. Audit & triage root causes — find leftover legacy files, duplicate imports, and unresolved merge artifacts; list components still using Bootstrap/legacy classes.
+3. Fast fix to restore build & dev server — remove/rename leftover .old files, simplify broken components so the app compiles, and add minimal compatibility styles where necessary.
+4. Restore Tailwind styles & convert affected components — prefer Tailwind replacements for Bootstrap classes; where conversion is large, add compatibility utilities that match previous visuals and add tests.
+5. Visual regression & test coverage — add Playwright visual snapshots for Home, TopNavbar, and tools pages; add unit tests that assert critical layout/behavior.
+6. Clean-up & remove legacy SCSS — once visual baselines are green, remove unused SCSS, `Compat` shims, and update docs.
+7. Final verification & PR — run `yarn build`, `yarn test`, and Playwright checks; open a PR with the plan, tests, and visual baselines.
+
+**Sub‑steps & logic (detailed):**
+- Step 1 — Reproduce & capture failures
+  - Run `yarn build` and `yarn dev`, capture errors (type check, parse errors), and record failing pages.
+  - Take Playwright snapshots locally for pages that look wrong (home, navbar, tools pages).
+  - Logic: reproduction narrows the problem and gives a failing baseline for verification.
+
+- Step 2 — Audit & triage
+  - Search for `<<<<<<<`, `.old` files left from merges, duplicate imports, and Bootstrap class usage (`row`, `col-`, `btn`, `alert`, `card`, etc.).
+  - Create a short list of problematic files and assign severity (build-blocking, visual-only, low-impact).
+  - Logic: triage separates immediate build-blockers from later visual work.
+
+- Step 3 — Fast fixes to restore build
+  - Remove or rename stale files (e.g., `page.old.tsx`) and fix duplicate imports or parsing errors.
+  - Replace a broken, hard-to-parse component with a small placeholder and open a follow-up ticket to reintroduce features (keeps CI green).
+  - Logic: keeping commits small and reversible reduces risk and restores feedback loop quickly.
+
+- Step 4 — Restore Tailwind styles & conversions
+  - For each visual-only component, convert Bootstrap classes to Tailwind or map via `src/styles/globals.css` compatibility utilities (temporary) and add safelist entries to `tailwind.config.cjs` as needed.
+  - Add unit tests (Vitest) for behavior and Playwright visual snapshots for visuals.
+  - Logic: convert when quick; otherwise add compatibility CSS that can be removed after visual parity is confirmed.
+
+- Step 5 — Visual regression & test coverage
+  - Add Playwright snapshots for Home, TopNavbar, and tools pages; run local comparisons and update baselines intentionally.
+  - Add Vitest unit tests for the tools pages (smoke tests) to ensure content and basic controls render.
+  - Logic: automated checks protect against regressions and confirm parity.
+
+- Step 6 — Cleanup & docs
+  - Remove temporary compatibility utilities and `.old` files, update `TAILWIND-MIGRATION-PLAN.md` and this TODO to reflect completed work.
+  - Logic: remove tech debt and make future PRs smaller and safer.
+
+- Step 7 — Final verification & PR
+  - Run full CI locally where possible, push changes, create a PR that references this TODO section and include visual diffs and tests.
+  - Logic: make the changes reviewable and transparent to collaborators.
+
+**Acceptance criteria:**
+- `yarn build` completes without build-time parse/type errors.
+- Key pages (home, top navbar, affected tools pages) visually match the `feature/tailwind` baseline (or acceptable updated look documented in PR).
+- Unit tests for converted components are added and passing (Vitest).
+- Playwright visual snapshots for critical pages are added and reviewed.
+
+**Immediate action items (this session):**
+- [✅ Completed] Remove stale merge artifacts (e.g., `page.old.tsx`) and fix parse/type build-blocking issues.
+- [✅ Completed] Simplify broken components that blocked the build (temporarily simplified `StockItemsTable`) — follow-up ticket created to reintroduce full table and tests.
+- [In Progress] Add temporary Bootstrap compatibility utilities in `src/styles/globals.css` for `row`, `col-md-6`, `card`, and `alert` to restore visual parity; convert to Tailwind in follow-up PRs.
+- [Planned] Add Playwright visual snapshots for Home, TopNavbar, and tools pages and add Vitest smoke tests for tools pages.
+- [Planned] Replace temporary TypeScript/test exclusions and ambient stubs with proper fixes (install dev types, fix vitest config types, and restore test type checking).
+
+
+
 ## Component migration (Vitest-first)
 
 **Goal:** Convert UI components to Tailwind and validate them with Vitest unit tests and Playwright visual snapshots before integrating them into pages. This reduces visual regression risk and ensures behavior and accessibility parity.
