@@ -10,7 +10,8 @@ if (
   !HTMLCanvasElement.prototype.getContext
 ) {
   // Provide minimal TextMetrics-compatible stub to satisfy TypeScript
-  HTMLCanvasElement.prototype.getContext = () => ({
+  // Cast the stub to the same type as the original method to satisfy overloads
+  HTMLCanvasElement.prototype.getContext = ((): any => ({
     measureText: () => ({
       width: 0,
       actualBoundingBoxAscent: 0,
@@ -27,5 +28,5 @@ if (
     } as unknown as TextMetrics),
     fillRect: () => {},
     clearRect: () => {},
-  } as unknown as CanvasRenderingContext2D);
+  })) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 }
