@@ -9,7 +9,7 @@ import {
   Form,
   Button,
   Alert,
-} from "react-bootstrap";
+} from "@/components/Compat/BootstrapShim";
 import { calculateOptimalCuts } from "@/lib/cutOptimizer";
 import {
   CutRequirement,

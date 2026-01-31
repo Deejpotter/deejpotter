@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactElement } from "react";
-import { Card, Row, Col, Badge, ListGroup } from "react-bootstrap";
+import { Card, Row, Col, Badge, ListGroup } from "@/components/Compat/BootstrapShim";
 import { CalculationResult } from "@/types/cutCalculator";
 import CutPatternVisualization from "./CutPatternVisualization";
 

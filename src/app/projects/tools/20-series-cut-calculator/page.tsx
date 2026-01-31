@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactElement, useState } from "react";
-import { Container, Row, Col, Card, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button, Alert } from "@/components/Compat/BootstrapShim";
 import { calculateOptimalCuts } from "@/lib/cutOptimizer";
 import {
   CutRequirement,

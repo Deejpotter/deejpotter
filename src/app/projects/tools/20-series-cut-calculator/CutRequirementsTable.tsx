@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactElement } from "react";
-import { Table, Button, Form, Card } from "react-bootstrap";
+import { Table, Button, Form, Card } from "@/components/Compat/BootstrapShim";
 import { CutRequirement } from "@/types/cutCalculator";
 
 type CutRequirementsTableProps = {

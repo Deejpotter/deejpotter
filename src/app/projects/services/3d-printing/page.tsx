@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "@/components/Compat/BootstrapShim";
 import Script from "next/script";
 
 
