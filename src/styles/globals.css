@@ -343,6 +343,13 @@
   .text-muted { color: var(--color-gray-600); }
   .text-danger { color: var(--color-danger); }
 
+  /* Table & utility compatibility */
+  .table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .table th, .table td { padding: 0.5rem 0.75rem; border-top: 1px solid var(--color-gray-200); }
+  .table.table-striped tbody tr:nth-child(odd) { background: rgba(0,0,0,0.02); }
+  .table.table-bordered td, .table.table-bordered th { border: 1px solid var(--color-gray-200); }
+  .lead { font-size: 1.125rem; font-weight: 600; }
+
   /* Scrollbar utilities */
   .custom-scrollbar::-webkit-scrollbar { 
     width: 0.6rem; 
