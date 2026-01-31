@@ -313,8 +313,8 @@ Tailwind Migration Todo (feature/tailwind branch)
 - [Planned] Replace temporary TypeScript/test exclusions and ambient stubs with proper fixes (install dev types, fix vitest config types, and restore test type checking).
 
 #### Next code tasks (small, incremental PRs)
-1. Convert blog posts that use Bootstrap classes (`portfolio-migration.tsx`, `cnc-technical-ai.tsx`, `esp32-wireless-car.tsx`) to Tailwind or update markup to use semantic classes; add visual snapshots. (owner: @dev)
-2. Re-introduce full `StockItemsTable` implementation with accessible inputs and Vitest unit tests (owner: @dev) — add smoke test to ensure calculator page behavior.
+1. Convert blog posts that use Bootstrap classes (`portfolio-migration.tsx`, `cnc-technical-ai.tsx`, `esp32-wireless-car.tsx`) to Tailwind or update markup to use semantic classes; add visual snapshots. (owner: @dev) — **In Progress/Partial**: `portfolio-migration` converted; `cnc-technical-ai` and `esp32-wireless-car` updated for grid/alerts.
+2. Re-introduce full `StockItemsTable` implementation with accessible inputs and Vitest unit tests (owner: @dev) — **Completed (smoke tests added)**; follow-up: add more behavioral tests and Playwright visual snapshot for the calculator page.
 3. Replace ambient `react-dropzone` and `mongodb-memory-server` declarations with proper dev types or install packages and update types. (owner: @dev)
 4. Remove temporary tsconfig exclusions and adjust test type definitions so the test suite compiles with TypeScript. (owner: @dev)
 5. Remove temporary `vitest.config.ts` `as any` cast and fix typings. (owner: @dev)
