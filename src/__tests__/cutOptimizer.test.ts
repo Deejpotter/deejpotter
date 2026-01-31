@@ -5,9 +5,7 @@ import {
   describeCutPattern,
 } from "@/lib/cutOptimizer";
 
-import type {
-  CutCalculatorInput,
-} from "@/types/cutCalculator";
+import type { CutCalculatorInput } from "@/types/cutCalculator";
 
 describe("cutOptimizer utilities and main flow", () => {
   test("formatCutLength returns mm string", () => {
@@ -76,9 +74,7 @@ describe("cutOptimizer utilities and main flow", () => {
 
   test("calculateOptimalCuts does a basic packing correctly", () => {
     const input: CutCalculatorInput = {
-      stockItems: [
-        { id: "1", length: 1000, quantity: 2 },
-      ],
+      stockItems: [{ id: "1", length: 1000, quantity: 2 }],
       requirements: [
         { id: "a", length: 450, quantity: 2 },
         { id: "b", length: 300, quantity: 1 },

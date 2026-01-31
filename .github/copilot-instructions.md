@@ -29,7 +29,7 @@ This is a Next.js portfolio site (see `readme.md`). It's a static-first app with
 - Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/*.scss`.
 - MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
 - Tests use Vitest + React Testing Library for unit/component tests and Playwright for E2E and visual tests. See `vitest.config.ts` and `playwright.config.ts`.
-- When converting or adding UI components, add a top-of-file comment describing the purpose, rationale (e.g., Tailwind-first and accessibility considerations), and the testing approach (Vitest unit tests + Playwright visual test). Also include short block comments above major implementation sections explaining *why* the structure was chosen (accessibility, performance, or testability), not only *what* the code does.
+- When converting or adding UI components, add a top-of-file comment describing the purpose, rationale (e.g., Tailwind-first and accessibility considerations), and the testing approach (Vitest unit tests + Playwright visual test). Also include short block comments above major implementation sections explaining _why_ the structure was chosen (accessibility, performance, or testability), not only _what_ the code does.
 - Alias imports use `@/` mapped to `src/` (jest mapping in `jest.config.js`).
 - CSS and theme overrides: We use **Tailwind CSS** and utility classes in `src/styles` (see `TAILWIND-MIGRATION-PLAN.md` for migration notes). Tailwind-first development is the standard for new components.
 

@@ -1,22 +1,26 @@
 # Deejpotter Project Architecture
 
 ## Overview
+
 Next.js 16 portfolio website using App Router with React 19, TypeScript, and Tailwind CSS v4.
 
 ## Tech Stack
 
 ### Core Framework
+
 - **Next.js 16.1.3** - React framework with App Router for SSR/SSG
 - **React 19.3.0-canary** - UI library with latest features
 - **TypeScript 5.9.3** - Type-safe JavaScript
 - **Tailwind CSS 4.1.18** - Utility-first CSS with CSS-based configuration
 
 ### Backend & Data
+
 - **MongoDB Atlas** - Cloud database
 - **Next.js API Routes** (Route Handlers) - Serverless API endpoints
 - **Clerk** - Authentication and user management
 
 ### Development Tools
+
 - **Storybook 10.3.0** - Component development and UI testing
 - **Playwright 1.57.0** - End-to-end testing
 - **ESLint** - Code quality and formatting
@@ -64,11 +68,13 @@ deejpotter/
 ## Tailwind CSS v4 Configuration
 
 ### CSS-Based Config (Not JavaScript)
+
 Tailwind v4 uses a CSS-based configuration system instead of `tailwind.config.js`:
 
 **Location**: `src/styles/globals.css`
 
 **Structure**:
+
 ```css
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
@@ -88,7 +94,9 @@ Tailwind v4 uses a CSS-based configuration system instead of `tailwind.config.js
 ```
 
 ### Custom Gradients
+
 Six gradient utilities defined in `@layer components`:
+
 - `primary-light-gradient` - Hero section gradient (green to transparent)
 - `light-primary-gradient` - Inverted gradient
 - `secondary-light-gradient` - Purple variant
@@ -101,16 +109,20 @@ See `GRADIENT-GUIDE.md` for usage examples.
 ## Navigation Architecture
 
 ### Structure
+
 Projects dropdown has 4 categories (Apps category removed):
+
 1. **Websites** - External portfolio sites
 2. **Engineering** - Hardware projects
 3. **Games** - WebGL games
 4. **Tools** - Single-page web utilities
 
 ### Dropdown Pattern
+
 **Implementation**: `src/components/TopNavbar/TopNavbar.tsx`
 
 **Key Design**:
+
 - **Hover Zone**: Parent `<div>` handles `onMouseEnter`/`onMouseLeave`
 - **Click Handler**: Button handles `onClick` for toggle
 - **Timeout System**: 150ms delay prevents flicker when moving mouse
@@ -119,6 +131,7 @@ Projects dropdown has 4 categories (Apps category removed):
 - **Styling**: `navbar-dropdown-gradient` class with backdrop blur
 
 **Event Flow**:
+
 ```tsx
 <div onMouseEnter={() => handleOpenMenu(label)} onMouseLeave={handleCloseMenu}>
   <button onClick={() => handleToggleMenu(label)} aria-expanded={isOpen}>
@@ -138,9 +151,11 @@ Projects dropdown has 4 categories (Apps category removed):
 ## Layout Patterns
 
 ### Full-Width Sections
+
 **Pattern**: Sections stretch edge-to-edge, content constrained inside
 
 **Implementation**:
+
 ```tsx
 <main className="w-full">  {/* No max-width constraint */}
   <section className="bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">  {/* Full-width bg */}
@@ -154,6 +169,7 @@ Projects dropdown has 4 categories (Apps category removed):
 **Why**: Allows backgrounds/gradients to extend full-width while keeping content readable.
 
 ### Responsive Breakpoints
+
 - `sm:` - 640px and up
 - `md:` - 768px and up
 - `lg:` - 1024px and up
@@ -163,6 +179,7 @@ Projects dropdown has 4 categories (Apps category removed):
 ## Component Patterns
 
 ### Server vs Client Components
+
 - **Default**: Server Components (no `"use client"`)
 - **Use `"use client"`** for:
   - Event handlers (onClick, onHover)
@@ -170,12 +187,15 @@ Projects dropdown has 4 categories (Apps category removed):
   - Browser APIs
 
 ### Context Providers
+
 **NavbarContext** (`src/contexts/NavbarContext.tsx`):
+
 - Manages dropdown state with useReducer
 - Provides navigation structure
 - 4 project categories (no Apps)
 
 **AuthProvider** (`src/contexts/AuthProvider.tsx`):
+
 - Wraps Clerk authentication
 - Client-side only
 
@@ -184,6 +204,7 @@ Projects dropdown has 4 categories (Apps category removed):
 **Location**: `src/app/api/*/route.ts`
 
 **Example**: `src/app/api/mongo-crud/route.ts`
+
 - MongoDB CRUD operations
 - Uses environment variables `MONGODB_URI` and `DB_NAME`
 - Exports GET, POST, PUT, DELETE handlers
@@ -191,11 +212,13 @@ Projects dropdown has 4 categories (Apps category removed):
 ## Testing Strategy
 
 ### Vitest (Unit & Component Testing)
+
 - **Location**: `src/` and `src/__tests__/`
 - **Run**: `yarn test`
 - **Purpose**: Fast unit and component tests with jsdom and React Testing Library for behavior and accessibility checks.
 
 ### Playwright (E2E & Visual Testing)
+
 - **Location**: `e2e/`
 - **Run**: `npx playwright test` or the CI job configured in `.github/workflows/ci.yml`
 - **Purpose**: End-to-end user flows, accessibility smoke checks (axe), and visual snapshot testing.
@@ -205,18 +228,21 @@ Projects dropdown has 4 categories (Apps category removed):
 ## Build & Deployment
 
 ### Development
+
 ```bash
 yarn dev          # Next.js dev server on localhost:3000
 yarn storybook    # Storybook on localhost:6006
 ```
 
 ### Production
+
 ```bash
 yarn build        # Next.js production build (runs prebuild → docs generation)
 yarn start        # Start production server
 ```
 
 ### Linting & Docs
+
 ```bash
 yarn lint         # ESLint
 yarn lint:fix     # Auto-fix issues
@@ -226,6 +252,7 @@ yarn docs         # Generate TypeDoc (output: public/docs/)
 ## Environment Variables
 
 Required for local development:
+
 ```
 MONGODB_URI=mongodb+srv://...
 DB_NAME=your_database_name
@@ -238,6 +265,7 @@ See `.env.example` for complete list.
 ## CI/CD
 
 GitHub Actions workflow (`.github/workflows/ci.yml`):
+
 1. Lint code
 2. Build project
 3. Generate docs

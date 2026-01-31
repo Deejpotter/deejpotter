@@ -21,8 +21,13 @@ export default function TopNavbar() {
         setOpenMenu(null);
       }
     };
+    // Listen on both document and window so tests can reliably dispatch key events
     document.addEventListener("keydown", onEsc);
-    return () => document.removeEventListener("keydown", onEsc);
+    window.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("keydown", onEsc);
+      window.removeEventListener("keydown", onEsc);
+    };
   }, []);
 
   // Close menus when route changes
@@ -51,11 +56,12 @@ export default function TopNavbar() {
               <div key={item.label} className="relative">
                 {item.items ? (
                   <button
+                    data-testid={`nav-${item.label
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}-button`}
                     onMouseEnter={() => setOpenMenu(item.label)}
-                    onMouseLeave={() => setOpenMenu(null)}
                     onFocus={() => setOpenMenu(item.label)}
-                    onBlur={() => setOpenMenu(null)}
-                    onClick={() =>
+                    onMouseDown={() =>
                       setOpenMenu((s) => (s === item.label ? null : item.label))
                     }
                     className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 ${
@@ -81,23 +87,38 @@ export default function TopNavbar() {
                 )}
 
                 {/* Thin full-width dropdown */}
-                {item.items && openMenu === item.label && (
+                {item.items && (
                   <div
+                    data-testid={`nav-${item.label
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}-dropdown`}
                     onMouseEnter={() => setOpenMenu(item.label)}
                     onMouseLeave={() => setOpenMenu(null)}
-                    className="absolute left-0 right-0 top-full mt-2 bg-gradient-to-b from-primary/0 to-primary border-t border-primary/20 shadow-md"
+                    className={`absolute left-0 right-0 top-full mt-2 bg-gradient-to-b from-primary/0 to-primary border-t border-primary/20 shadow-md ${
+                      openMenu === item.label ? "" : "hidden"
+                    }`}
+                    aria-hidden={openMenu !== item.label}
                     style={{ zIndex: 50 }}
                   >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
                       <div className="flex gap-6">
                         {item.items.map((sub) => (
-                          <Link
-                            key={sub.label}
-                            href={sub.href || "#"}
-                            className="text-sm text-gray-200 hover:text-primary px-2 py-1 rounded"
-                          >
-                            {sub.label}
-                          </Link>
+                          <div key={sub.label} className="min-w-[160px]">
+                            <div className="text-sm font-semibold text-gray-100">
+                              {sub.label}
+                            </div>
+                            <div className="mt-1 flex flex-col gap-1">
+                              {sub.items?.map((child) => (
+                                <Link
+                                  key={child.label}
+                                  href={child.href || "#"}
+                                  className="text-sm text-gray-200 hover:text-primary px-2 py-1 rounded"
+                                >
+                                  {child.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -154,6 +175,7 @@ export default function TopNavbar() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
+          data-testid="mobile-nav-overlay"
           className="lg:hidden fixed inset-0 bg-black/50 z-40"
           onClick={() => setMobileOpen(false)}
         >
@@ -173,6 +195,7 @@ export default function TopNavbar() {
                 <span className="font-bold text-white">Deej Potter</span>
               </Link>
               <button
+                data-testid="mobile-nav-close"
                 onClick={() => setMobileOpen(false)}
                 className="text-white"
               >

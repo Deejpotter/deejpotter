@@ -48,9 +48,11 @@ A concise, actionable roadmap to clean up the repo, migrate off Netlify, strengt
 - **4.4 Example test snippets** are included in src/**tests**/ folder.
 
 #### 4.5 Improve test coverage (detailed plan)
+
 Goal: Bring overall coverage to a reliable minimum of 60% across statements, functions, branches, and lines, focusing on critical libraries, API routes, and UI components.
 
 Steps:
+
 1. Audit current coverage
    - Run `yarn test:coverage` locally and upload/inspect the `coverage/lcov-report/index.html` to identify files with low coverage.
    - Prioritize files that affect correctness and user-facing behavior: `src/lib/*`, `src/app/api/*`, `src/contexts/*`, and key components (TopNavbar, ContactForm, calculators).
@@ -82,6 +84,7 @@ Steps:
    - Schedule a monthly coverage review to add tests in lower-coverage areas.
 
 Acceptance criteria:
+
 - `yarn test:coverage` completes and coverage meets thresholds (>= 60% for lines, functions, branches, statements).
 - Critical libraries (cutOptimizer, API routes, ContactForm) are covered by deterministic tests.
 - CI uploads coverage artifacts and fails on coverage regressions.
