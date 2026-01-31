@@ -306,6 +306,43 @@
     max-width: calc(100vw - 10px);
   }
 
+  /* Bootstrap compatibility helpers (temporary) */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: calc(var(--spacing-bs-1) * -1);
+    margin-right: calc(var(--spacing-bs-1) * -1);
+  }
+
+  .col-md-6 {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .col-md-6 { width: 50%; }
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-bs);
+    padding: 1rem;
+    box-shadow: var(--shadow-bs-sm);
+  }
+
+  .alert {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+  }
+
+  .alert-info { background: rgba(89,183,204,0.08); color: var(--color-info); border-color: rgba(89,183,204,0.2); }
+  .alert-success { background: rgba(30,153,82,0.08); color: var(--color-primary); border-color: rgba(30,153,82,0.12); }
+  .alert-warning { background: rgba(192,165,32,0.08); color: var(--color-warning); border-color: rgba(192,165,32,0.12); }
+
+  .text-muted { color: var(--color-gray-600); }
+  .text-danger { color: var(--color-danger); }
+
   /* Scrollbar utilities */
   .custom-scrollbar::-webkit-scrollbar { 
     width: 0.6rem; 
