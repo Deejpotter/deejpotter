@@ -28,4 +28,5 @@ export default defineConfig({
     functions: 60,
     lines: 60,
   },
-});
+} as any);
+
