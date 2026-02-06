@@ -1,8 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@import "@/styles/blog";
+@use "tailwindcss/preflight";
+@use "tailwindcss/utilities";
+@use "@/styles/blog";
 
 /*--------- Base Styles ---------*/
 h1,
