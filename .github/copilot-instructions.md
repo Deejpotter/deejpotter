@@ -6,8 +6,8 @@ This is a Next.js portfolio site (see `readme.md`). It's a static-first app with
 
 - App code and routes: `src/app` (Next.js App Router).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
-- Auth and client state: `src/contexts` (notably `AuthContext.tsx` which uses `netlify-identity-widget`).
-- Serverless backend: `netlify/functions` (e.g. `mongoCrud.ts` talking to MongoDB; env vars `MONGODB_URI` and `DB_NAME` required).
+- Auth and client state: `src/contexts` (notably `AuthContext.tsx` which uses Clerk via `@clerk/nextjs`).
+- API routes: `src/app/api/mongo-crud/route.ts` (Next.js Route Handlers replacing Netlify Functions).
 - Static assets and games: `public/` (Unity WebGL in `public/basicBases/Build/`).
 - **Docs**: TypeDoc output goes to `public/docs` (`typedoc.json` and `yarn docs`).
 
@@ -26,11 +26,11 @@ Update my current files instead of making new ones and copying them over.
 
 ## Architecture & Structure (practical details)
 
-- Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/*.scss`.
+- Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/globals.css`.
+- Styling uses **Tailwind CSS v4** with CSS-first configuration (`@theme` blocks in `src/styles/globals.css`). Custom design tokens for colors, spacing and typography are defined there. Legacy SCSS files may still exist but Tailwind utilities are the standard.
 - MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
-- Tests use Vitest + React Testing Library. See `vitest.config.ts` and `vitest.setup.ts`. (Previously Jest; migration completed.)
-- Alias imports use `@/` mapped to `src/` (jest mapping in `jest.config.js`).
-- CSS and theme overrides: `src/styles/bootstrap-overrides.scss` and `dark-bootstrap-overrides.scss` — follow the existing variables and class names.
+- Tests use Vitest + React Testing Library. See `vitest.config.ts` and `vitest.setup.ts`.
+- Alias imports use `@/` mapped to `src/` (resolved via `vitest.config.ts` for tests and `tsconfig.json` for the app).
 
 ## Developer Workflows (must-know commands)
 
@@ -63,17 +63,19 @@ Tip: Netlify development (functions and identity) may require the Netlify CLI (`
 
 ## Quick file pointers (examples)
 
-- `netlify/functions/mongoCrud.ts` — example function, Mongo usage, and error handling.
-- `src/contexts/AuthContext.tsx` — Netlify Identity login flows.
+- `src/components/TopNavbar/TopNavbar.tsx` — Primary navigation with mega-menu dropdowns (hover + click), mobile drawer.
+- `src/contexts/NavbarContext.tsx` — Navigation state (items, dropdown open/close) via React reducer + context.
+- `src/contexts/AuthContext.tsx` — Clerk-based auth flows.
 - `src/app/contact/page.tsx` & `public/__forms.html` — Netlify Forms integration.
 - `typedoc.json` + `package.json#scripts` — docs generation and prebuild hook.
 - `public/basicBases/Build/` — Unity WebGL assets; treat as static assets.
+- `vitest.config.ts` — Test runner config with `@/` alias resolution and jsdom environment.
 
 ---
 
 ## Top tools for this repo
 
-- Next.js, Netlify (hosting + functions + identity), MongoDB, TypeScript, Jest, TypeDoc
+- Next.js 16, Tailwind CSS v4, Clerk (auth), MongoDB, TypeScript, Vitest, TypeDoc
 
 
 

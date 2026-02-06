@@ -29,9 +29,11 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 - **Netlify Identity**: For user authentication.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
 - **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
 
-- **Bootstrap**: For styling the website.⚠️ This project is migrating away from Bootstrap in favor of Tailwind CSS (see `.github/TODOs.md` and `.github/hosting-eval.md`).
+- **Tailwind CSS v4**: For styling the website, using the new CSS-first configuration with `@theme` blocks in `globals.css`. Custom design tokens (colors, spacing, typography) are defined there.
 
 - **React**: For building the user interface components.
+
+- **Vitest**: Test runner with jsdom environment and `@testing-library/react` for component tests. Config in `vitest.config.ts`, setup in `vitest.setup.ts`.
 
 ## Code style
 
