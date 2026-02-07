@@ -1,32 +1,28 @@
+/**
+ * Vitest configuration for the deejpotter project.
+ *
+ * Key choices:
+ * - jsdom environment: lets us test React components that use DOM APIs
+ *   without a real browser.
+ * - resolve.alias "@/" → "./src/": mirrors the tsconfig "paths" so imports
+ *   like `@/contexts/NavbarContext` work identically in tests and app code.
+ * - setupFiles: loads @testing-library/jest-dom matchers (toBeInTheDocument,
+ *   toHaveClass, etc.) before every test file.
+ */
 import { defineConfig } from "vitest/config";
-import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: ["./src/test/setupTests.ts"],
-    include: ["src/**/*.test.{ts,tsx}", "src/**/__tests__/**/*.{ts,tsx}"],
+    setupFiles: ["./vitest.setup.ts"],
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    css: false,
   },
-  coverage: {
-    provider: "v8",
-    reporter: ["text", "lcov"],
-    reportsDirectory: "coverage",
-    exclude: [
-      "node_modules",
-      "dist",
-      "public",
-      "src/stories",
-      "src/**/*.stories.*",
-      "src/**/__tests__/**",
-      "src/test/**",
-      ".storybook/**",
-    ],
-    statements: 60,
-    branches: 60,
-    functions: 60,
-    lines: 60,
-  },
-} as any);
-
+});

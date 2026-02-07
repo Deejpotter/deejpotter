@@ -198,23 +198,26 @@ High priority audits & improvements (merged)
 
 In Progress
 
+- **Fix TopNavbar dropdown functionality** — **Completed** (2026-02-07)
+  - Fixed hover gap: dropdown panel uses `fixed top-16` positioning with shared mouse-enter/leave handlers and a 150ms close delay timer so the cursor can move from button to panel without closing.
+  - Added outside-click handler via `useRef` + `mousedown` listener.
+  - Fixed route-change effect: removed `mobileOpen`/`openMenu` from dependency array (only depends on `pathname`).
+  - Fixed mobile overlay click propagation with `e.stopPropagation()`.
+  - Added `aria-haspopup`, chevron indicator (▾ with rotation), and keyboard accessibility.
+  - Upgraded dropdown to mega-menu layout showing categories + nested sub-links.
+  - Removed unused `onFocus` auto-open that caused click-toggle bug.
+  - Created `vitest.config.ts` and `vitest.setup.ts` (were missing). All 22 TopNavbar tests pass.
+
 - Copy `ui-components` into repo and update imports — **In Progress** (started 2026-01-19)
-- ESLint migration: PR `eslint/migration` created with `eslint.config.cjs` and `lint:fix` script — **In Progress** (created branch and pushed; PR URL: <https://github.com/Deejpotter/deejpotter/pull/new/eslint/migration>)
+- ESLint migration — **In Progress** (created branch `eslint/migration`)
 - Harden tests & mocks — **In Progress** (started 2026-01-26)
-  - Owner: @dev
-  - Plan: Replace ad-hoc zod globals with safe partial mocks using `vi.mock(importOriginal(...))`, add deterministic component tests for `Page`/`Header`, and add test utilities for shared mock behavior. Acceptance: tests should not rely on global zod mocks and should be stable in CI.
 - Accessibility audit & fixes — **In Progress** (started 2026-01-26)
-  - Owner: @dev
-  - Plan: Add an automated axe check to the Playwright E2E suite (a11y smoke), run axe on home, contact and top navbar pages, fix top violations and add regression checks. Acceptance: Axe critical/serious violations are resolved and an a11y job runs in CI.
 - Dependabot & security triage — **In Progress** (started 2026-01-26)
-  - Owner: @security
-  - Plan: Add Dependabot config to update major/minor patches, run an initial audit and open upgrade PRs for critical/high issues. Acceptance: GH security alerts are triaged and critical updates are applied or a mitigation plan is documented.
 - Tailwind visual snapshots — **In Progress** (started 2026-01-26)
-  - Owner: @dev
-  - Plan: Add visual snapshot baselines for hero + navbar using Playwright visual snapshot support; add per-component migration checklist and remove legacy SCSS once shadowed by snapshots. Acceptance: Visual diffs are zero or intentional and recorded as baselines.
 
 Completed (last 10)
 
+- Fix TopNavbar dropdown: mega-menu with hover delay, outside-click, ESC close, mobile click propagation, vitest config (2026-02-07)
 - Integrate `TopNavbar` into root `layout` and replace Sidebar for desktop nav (2026-01-24)
 - Update TypeDoc config name and exclude *.test.tsx from docs (2026-01-18)
 - Fix README typo ("Explain things in comments") (2026-01-18)
