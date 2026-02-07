@@ -11,7 +11,6 @@ import {
 import CutRequirementsTable from "./CutRequirementsTable";
 import StockItemsTable from "./StockItemsTable";
 import ResultsDisplay from "./ResultsDisplay";
-import styles from "./CutCalculator.module.scss";
 
 const DEFAULT_KERF_WIDTH = 4; // 4mm kerf for standard cutting blade
 const MAX_STOCK_LENGTH = 3050; // Maximum standard stock length

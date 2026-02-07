@@ -260,6 +260,7 @@ Tailwind Migration Todo (feature/tailwind branch)
 **Goal:** Restore Tailwind-based styles from `feature/tailwind` and keep the additional tools pages (new tools) introduced on top of it. Make a minimal, safe set of changes to get the app building, visual parity for key pages, and CI passing; follow up with iterative polish.
 
 **High‑level steps:**
+
 1. Reproduce & capture failures (errors, visual diffs) — confirm build/test failures and pages with broken styling.
 2. Audit & triage root causes — find leftover legacy files, duplicate imports, and unresolved merge artifacts; list components still using Bootstrap/legacy classes.
 3. Fast fix to restore build & dev server — remove/rename leftover .old files, simplify broken components so the app compiles, and add minimal compatibility styles where necessary.
@@ -269,6 +270,7 @@ Tailwind Migration Todo (feature/tailwind branch)
 7. Final verification & PR — run `yarn build`, `yarn test`, and Playwright checks; open a PR with the plan, tests, and visual baselines.
 
 **Sub‑steps & logic (detailed):**
+
 - Step 1 — Reproduce & capture failures
   - Run `yarn build` and `yarn dev`, capture errors (type check, parse errors), and record failing pages.
   - Take Playwright snapshots locally for pages that look wrong (home, navbar, tools pages).
@@ -303,12 +305,14 @@ Tailwind Migration Todo (feature/tailwind branch)
   - Logic: make the changes reviewable and transparent to collaborators.
 
 **Acceptance criteria:**
+
 - `yarn build` completes without build-time parse/type errors.
 - Key pages (home, top navbar, affected tools pages) visually match the `feature/tailwind` baseline (or acceptable updated look documented in PR).
 - Unit tests for converted components are added and passing (Vitest).
 - Playwright visual snapshots for critical pages are added and reviewed.
 
 **Immediate action items (this session):**
+
 - [✅ Completed] Remove stale merge artifacts (e.g., `page.old.tsx`) and fix parse/type build-blocking issues.
 - [✅ Completed] Simplify broken components that blocked the build (temporarily simplified `StockItemsTable`) — follow-up ticket created to reintroduce full table and tests.
 - [In Progress] Add temporary Bootstrap compatibility utilities in `src/styles/globals.css` for `row`, `col-md-6`, `card`, and `alert` to restore visual parity; convert to Tailwind in follow-up PRs.
@@ -316,6 +320,7 @@ Tailwind Migration Todo (feature/tailwind branch)
 - [Planned] Replace temporary TypeScript/test exclusions and ambient stubs with proper fixes (install dev types, fix vitest config types, and restore test type checking).
 
 #### Next code tasks (small, incremental PRs)
+
 1. Convert blog posts that use Bootstrap classes (`portfolio-migration.tsx`, `cnc-technical-ai.tsx`, `esp32-wireless-car.tsx`) to Tailwind or update markup to use semantic classes; add visual snapshots. (owner: @dev) — **In Progress/Partial**: `portfolio-migration` converted; `cnc-technical-ai` and `esp32-wireless-car` updated for grid/alerts.
 2. Re-introduce full `StockItemsTable` implementation with accessible inputs and Vitest unit tests (owner: @dev) — **Completed (smoke tests added)**; follow-up: add more behavioral tests and Playwright visual snapshot for the calculator page.
 3. Replace ambient `react-dropzone` and `mongodb-memory-server` declarations with proper dev types or install packages and update types. (owner: @dev)
@@ -324,8 +329,6 @@ Tailwind Migration Todo (feature/tailwind branch)
 6. Remove temporary Bootstrap compatibility utilities once components are converted and visual baselines pass. (owner: @dev)
 
 I'll start with task 1 (convert `portfolio-migration.tsx` tables/alerts) and task 2 (restore `StockItemsTable` features) next.
-
-
 
 ## Component migration (Vitest-first)
 
