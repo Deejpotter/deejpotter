@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-// Contact form validation schema using Zod
 const contactFormSchema = z.object({
   name: z
     .string()
@@ -20,7 +19,6 @@ const contactFormSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
-// The contact page component with React Hook Form integration
 export default function Contact(): ReactElement {
   const [formStatus, setFormStatus] = useState<
     "idle" | "submitting" | "success" | "error"
@@ -36,7 +34,6 @@ export default function Contact(): ReactElement {
     resolver: zodResolver(contactFormSchema),
   });
 
-  // Function to handle form submission
   const onSubmit = async (data: ContactFormData) => {
     setFormStatus("submitting");
     setErrorMessage(null);
@@ -47,7 +44,6 @@ export default function Contact(): ReactElement {
       const isDevelopment =
         appEnv === "development" || process.env.NODE_ENV === "test";
 
-      // Validate backend URL is configured in production
       if (!backendUrl) {
         if (!isDevelopment) {
           setFormStatus("error");
@@ -56,7 +52,7 @@ export default function Contact(): ReactElement {
           );
           return;
         }
-        // In development and test, default to localhost and warn developer
+
         console.warn(
           "NEXT_PUBLIC_BACKEND_URL not set, using http://localhost:3001"
         );
@@ -73,7 +69,7 @@ export default function Contact(): ReactElement {
 
       if (response.ok) {
         setFormStatus("success");
-        reset(); // Clear the form
+        reset();
       } else {
         const errorData = await response.json().catch(() => ({}));
         setFormStatus("error");
@@ -81,7 +77,7 @@ export default function Contact(): ReactElement {
           errorData.message || "Failed to submit the form. Please try again."
         );
       }
-    } catch (error) {
+    } catch {
       setFormStatus("error");
       setErrorMessage(
         "An error occurred while submitting the form. Please check your internet connection and try again."
@@ -93,15 +89,45 @@ export default function Contact(): ReactElement {
     <div>
       <section className="mb-12">
         <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">
-          Get in Touch
+          Start with a message
         </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300">
-          Have some questions or feedback for me? Fill in the form and I will get
-          back to you as soon as I can.
+        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+          If you want help with a website, redesign, custom page, or a small
+          technical tool, send me a message here. I prefer to begin through
+          text so we can sort out the goals, scope, and next steps clearly.
+        </p>
+        <p className="mt-4 text-gray-700 dark:text-gray-300 max-w-3xl">
+          I do not publish phone or physical contact details on the site. Email,
+          forms, social messaging, and freelance-platform messages are the best
+          way to start.
         </p>
       </section>
 
-      <section className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+      <section className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mb-10">
+        <div className="grid gap-6 md:grid-cols-3 mb-8">
+          <div className="rounded-lg bg-gray-50 dark:bg-gray-900 p-4">
+            <h2 className="text-lg font-semibold mb-2">Best for</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-0">
+              Website design, website development, landing pages, portfolio
+              sites, and practical custom tools.
+            </p>
+          </div>
+          <div className="rounded-lg bg-gray-50 dark:bg-gray-900 p-4">
+            <h2 className="text-lg font-semibold mb-2">Send me</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-0">
+              A short summary of what you need, who it is for, and whether this
+              is a fresh build, redesign, or improvement to something existing.
+            </p>
+          </div>
+          <div className="rounded-lg bg-gray-50 dark:bg-gray-900 p-4">
+            <h2 className="text-lg font-semibold mb-2">Preferred contact</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-0">
+              Written conversation first. That keeps the process simpler and
+              makes it easier to define the job properly.
+            </p>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-6">
             <label
@@ -179,15 +205,14 @@ export default function Contact(): ReactElement {
               type="submit"
               disabled={formStatus === "submitting"}
             >
-              {formStatus === "submitting" ? "Submitting..." : "Submit Form"}
+              {formStatus === "submitting" ? "Submitting..." : "Send message"}
             </button>
           </div>
         </form>
 
-        {/* Display success or error message based on form submission status */}
         {formStatus === "success" && (
           <div className="mt-6 p-4 rounded-lg bg-green-100 text-green-800 border border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-800">
-            Form submitted successfully! I will get back to you soon.
+            Message sent successfully. I will reply as soon as I can.
           </div>
         )}
         {formStatus === "error" && errorMessage && (
