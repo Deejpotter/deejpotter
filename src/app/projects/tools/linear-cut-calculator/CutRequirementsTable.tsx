@@ -70,7 +70,7 @@ export default function CutRequirementsTable({
             {requirements.length === 0 ? (
               <tr>
                 <td colSpan={4} className="text-center text-gray-500 py-4">
-                  No requirements added. Click "Add Row" to start.
+                  No requirements added. Click &quot;Add Row&quot; to start.
                 </td>
               </tr>
             ) : (

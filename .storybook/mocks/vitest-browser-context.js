@@ -10,4 +10,5 @@ export const server = {
   }
 };
 export const page = null;
-export default { server, page };
+const vitestBrowserContext = { server, page };
+export default vitestBrowserContext;

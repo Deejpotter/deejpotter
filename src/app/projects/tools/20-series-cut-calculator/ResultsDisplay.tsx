@@ -61,9 +61,9 @@ export default function ResultsDisplay({
           </div>
         </div>
       </section>
-      /* Cost Breakdown: shows the fee and per-length cost breakdown in a
+      {/* Cost Breakdown: shows the fee and per-length cost breakdown in a
       compact table. Using simple tables keeps visual snapshots deterministic
-      and makes numeric assertions easy in tests. */
+      and makes numeric assertions easy in tests. */}
       <section className="rounded shadow-sm bg-white dark:bg-gray-800 p-0 mb-4">
         <div className="bg-emerald-600 text-white px-4 py-3 rounded-t">
           <h5 className="m-0 text-sm font-medium">Cost Breakdown</h5>
@@ -151,9 +151,9 @@ export default function ResultsDisplay({
           </div>
         </div>
       </section>
-      /* Cutting Patterns: Renders each cut pattern with a compact visualization
+      {/* Cutting Patterns: Renders each cut pattern with a compact visualization
       and metrics. Keep markup simple for reliable Playwright snapshots and
-      accessibility (clear headings, small summaries). */
+      accessibility (clear headings, small summaries). */}
       <section className="rounded shadow-sm bg-white dark:bg-gray-800 p-0">
         <div className="bg-gray-900 text-white px-4 py-3 rounded-t">
           <h5 className="m-0 text-sm font-medium">

@@ -48,9 +48,8 @@ export default function CutRequirementsTable({
 
   return (
     <div className="rounded shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">
-      /* Header: shows title and add-row control. The control is intentionally
-      simple and accessible to make unit tests reliable and keyboard-friendly.
-      */
+      {/* Header: shows title and add-row control. The control is intentionally
+      simple and accessible to make unit tests reliable and keyboard-friendly. */}
       <div className="flex items-center justify-between bg-emerald-600 text-white px-4 py-3 rounded-t">
         <h5 className="m-0 text-sm font-medium">Cut Requirements</h5>
         {/* Add Row: intentionally a small, accessible button. Keep visuals minimal and avoid complex behavior so that tests can focus on editing logic. */}
@@ -67,8 +66,8 @@ export default function CutRequirementsTable({
       </div>
       <div className="p-0">
         <div className="overflow-auto">
-          /* Table: semantic table layout makes it easy to test cell edits and
-          to assert totals in unit tests. */
+          {/* Table: semantic table layout makes it easy to test cell edits and
+          to assert totals in unit tests. */}
           <table className="min-w-full text-sm">
             <thead className="bg-gray-100">
               <tr>

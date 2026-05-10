@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 
 /**
  * Component for calculating and displaying CNC calibration data.
@@ -11,30 +11,23 @@ const StepsPerMmSection = () => {
   const [currentSteps, setCurrentSteps] = useState("");
   const [expectedMovement, setExpectedMovement] = useState("100");
   const [actualMovement, setActualMovement] = useState("");
-  const [newSteps, setNewSteps] = useState("");
+  const newSteps = useMemo(() => {
+    const currentStepsNum = Number(currentSteps);
+    const expectedMovementNum = Number(expectedMovement);
+    const actualMovementNum = Number(actualMovement);
 
-  // Effect hook for calculating new steps per millimeter
-  useEffect(() => {
-    const calculateNewSteps = () => {
-      // Convert string values to numbers for calculation
-      const currentStepsNum = Number(currentSteps);
-      const expectedMovementNum = Number(expectedMovement);
-      const actualMovementNum = Number(actualMovement);
+    if (
+      actualMovementNum === 0 ||
+      isNaN(currentStepsNum) ||
+      isNaN(expectedMovementNum) ||
+      isNaN(actualMovementNum)
+    ) {
+      return "";
+    }
 
-      // Prevent division by zero and invalid inputs
-      if (
-        actualMovementNum === 0 ||
-        isNaN(currentStepsNum) ||
-        isNaN(expectedMovementNum) ||
-        isNaN(actualMovementNum)
-      ) {
-        return "";
-      }
-      const calculatedSteps =
-        (currentStepsNum * expectedMovementNum) / actualMovementNum;
-      return calculatedSteps.toFixed(2); // Set new steps with two decimal places
-    };
-    setNewSteps(calculateNewSteps());
+    const calculatedSteps =
+      (currentStepsNum * expectedMovementNum) / actualMovementNum;
+    return calculatedSteps.toFixed(2);
   }, [currentSteps, expectedMovement, actualMovement]);
 
   // Handler for changing input values

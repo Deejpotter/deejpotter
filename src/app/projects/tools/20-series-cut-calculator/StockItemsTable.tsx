@@ -83,7 +83,7 @@ export default function StockItemsTable({
             <tbody>
               {stockItems.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="text-center text-muted py-4">No stock items added. Click "Add Stock Length" to start.</td>
+                  <td colSpan={4} className="text-center text-muted py-4">No stock items added. Click &quot;Add Stock Length&quot; to start.</td>
                 </tr>
               ) : (
                 stockItems.map((stock) => (

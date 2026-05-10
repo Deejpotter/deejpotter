@@ -28,15 +28,22 @@ type Document = {
   [key: string]: any;
 };
 
-const DB_NAME = process.env["DB_NAME"];
-const uri = process.env["MONGODB_URI"];
-// SECURITY: Allowlist of permitted collection names.
-// REQUIRED in production. For development/tests, set ALLOWED_COLLECTIONS="col1,col2" or use a permissive default.
-// If empty and MONGODB_URI is set, requests will be rejected to prevent unrestricted access.
-const ALLOWED_COLLECTIONS = (process.env["ALLOWED_COLLECTIONS"] || "test,users")
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
+type MongoConfig = {
+  dbName?: string;
+  uri?: string;
+  allowedCollections: string[];
+};
+
+function getMongoConfig(): MongoConfig {
+  const dbName = process.env["DB_NAME"];
+  const uri = process.env["MONGODB_URI"];
+  const allowedCollections = (process.env["ALLOWED_COLLECTIONS"] || "test,users")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  return { dbName, uri, allowedCollections };
+}
 
 // Basic schema for POST/PUT bodies - ensure an object is provided
 const bodySchema = (function getBodySchema() {
@@ -54,15 +61,19 @@ const bodySchema = (function getBodySchema() {
   return { safeParse: (v: any) => ({ success: true as const }) };
 })();
 
-if (!uri) {
-  console.warn(
-    "MONGODB_URI is not set. Database operations will fail until it is provided."
-  );
-}
-if (!DB_NAME) {
-  console.warn(
-    "DB_NAME is not set. Database operations will fail until it is provided."
-  );
+function warnIfMongoConfigMissing() {
+  const { uri, dbName } = getMongoConfig();
+
+  if (!uri) {
+    console.warn(
+      "MONGODB_URI is not set. Database operations will fail until it is provided."
+    );
+  }
+  if (!dbName) {
+    console.warn(
+      "DB_NAME is not set. Database operations will fail until it is provided."
+    );
+  }
 }
 
 // Connection caching for Node (avoids reconnecting on hot reload)
@@ -74,7 +85,14 @@ async function getClient(): Promise<MongoClient> {
   if (cachedClient && (cachedClient as any).isConnected?.()) {
     return cachedClient;
   }
-  const client = new MongoClient(uri!);
+
+  const { uri } = getMongoConfig();
+  if (!uri) {
+    warnIfMongoConfigMissing();
+    throw new Error("Missing MONGODB_URI");
+  }
+
+  const client = new MongoClient(uri);
   await client.connect();
   cachedClient = client;
   return client;
@@ -85,7 +103,14 @@ async function performMongoOperation<T extends Document>(
   operation: (collection: Collection<T>) => Promise<any>
 ): Promise<any> {
   const client = await getClient();
-  const db = client.db(DB_NAME);
+  const { dbName } = getMongoConfig();
+
+  if (!dbName) {
+    warnIfMongoConfigMissing();
+    throw new Error("Missing DB_NAME");
+  }
+
+  const db = client.db(dbName);
   const collection = db.collection<T>(collectionName);
   return await operation(collection);
 }
@@ -97,10 +122,12 @@ function validateCollection(collection: string | null) {
   // Basic allowlist pattern: letters, numbers, dashes, underscores
   if (!/^[a-zA-Z0-9_-]+$/.test(collection)) return false;
 
+  const { allowedCollections } = getMongoConfig();
+
   // Check against explicit allowlist
   if (
-    ALLOWED_COLLECTIONS.length > 0 &&
-    !ALLOWED_COLLECTIONS.includes(collection)
+    allowedCollections.length > 0 &&
+    !allowedCollections.includes(collection)
   ) {
     return false;
   }

@@ -64,6 +64,8 @@ describe('mongo-crud route - additional scenarios', () => {
   beforeEach(() => {
     vi.resetModules();
     setAllowedCollections(undefined);
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/test';
+    process.env.DB_NAME = 'test';
   });
 
   afterEach(() => {

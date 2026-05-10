@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 
 /**
  * Component for calculating flow compensation for 3D printers.
@@ -16,29 +16,19 @@ const FlowCompensationSection = () => {
     c3: "",
     c4: "",
   });
-  const [newFlow, setNewFlow] = useState("");
+  const newFlow = useMemo(() => {
+    const measurements = Object.values(wallMeasurements).map(Number);
+    if (measurements.some(isNaN)) return "";
 
-  // Calculate new flow percentage when inputs change
-  useEffect(() => {
-    const calculateFlow = () => {
-      // Convert all measurements to numbers and check for valid inputs
-      const measurements = Object.values(wallMeasurements).map(Number);
-      if (measurements.some(isNaN)) return "";
+    const avgThickness =
+      measurements.reduce((a, b) => a + b, 0) / measurements.length;
+    if (avgThickness === 0) return "";
 
-      // Calculate average wall thickness from all measurements
-      const avgThickness =
-        measurements.reduce((a, b) => a + b, 0) / measurements.length;
-      if (avgThickness === 0) return "";
+    const currentFlowNum = Number(currentFlow);
+    const nozzleWidthNum = Number(nozzleWidth);
+    if (isNaN(currentFlowNum) || isNaN(nozzleWidthNum)) return "";
 
-      // Convert other inputs to numbers
-      const currentFlowNum = Number(currentFlow);
-      const nozzleWidthNum = Number(nozzleWidth);
-      if (isNaN(currentFlowNum) || isNaN(nozzleWidthNum)) return "";
-
-      // Calculate new flow percentage based on measured vs expected thickness
-      return ((currentFlowNum * nozzleWidthNum) / avgThickness).toFixed(2);
-    };
-    setNewFlow(calculateFlow());
+    return ((currentFlowNum * nozzleWidthNum) / avgThickness).toFixed(2);
   }, [currentFlow, nozzleWidth, wallMeasurements]);
 
   // Event handlers for form inputs

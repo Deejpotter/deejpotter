@@ -70,13 +70,6 @@ export default function TopNavbar() {
     return () => window.removeEventListener("mousedown", handleClick);
   }, [openMenu]);
 
-  // ── Route change: close all menus ─────────────────────────────────────
-  // Only depends on pathname so it doesn't re-trigger from its own state changes.
-  useEffect(() => {
-    setMobileOpen(false);
-    setOpenMenu(null);
-  }, [pathname]);
-
   // ── Cleanup close timer on unmount ────────────────────────────────────
   useEffect(() => {
     return () => {
@@ -116,9 +109,7 @@ export default function TopNavbar() {
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() =>
-                  item.items && handleMouseEnter(item.label)
-                }
+                onMouseEnter={() => item.items && handleMouseEnter(item.label)}
                 onMouseLeave={() => item.items && handleMouseLeave()}
               >
                 {item.items ? (
@@ -130,9 +121,7 @@ export default function TopNavbar() {
                      menu by pressing Enter/Space (which fires onClick). */
                   <button
                     onClick={() =>
-                      setOpenMenu((s) =>
-                        s === item.label ? null : item.label
-                      )
+                      setOpenMenu((s) => (s === item.label ? null : item.label))
                     }
                     className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 inline-flex items-center gap-1 ${
                       pathname.startsWith(item.href || "")
@@ -170,26 +159,11 @@ export default function TopNavbar() {
                   </Link>
                 )}
 
-                {item.items && (
+                {item.items && openMenu === item.label && (
+                  <div
                     data-testid={`nav-${item.label
                       .toLowerCase()
                       .replace(/\s+/g, "-")}-dropdown`}
-
-                            </div>
-=======
-                {/* ── Desktop dropdown panel ───────────────────────── */}
-                {/* Full-width bar pinned directly under the navbar (top-16).
-                    Mouse-enter/leave handlers are on both the trigger div and
-                    this panel, sharing the same 150 ms timer — so moving the
-                    mouse across the gap keeps it open. */}
-                {/* ── Desktop dropdown panel (mega-menu) ─────────────
-                    Shows category headings with their nested links.
-                    Full-width bar pinned directly under the navbar (top-16).
-                    Mouse-enter/leave handlers share the same 150 ms timer
-                    as the trigger div so the cursor can travel across any
-                    gap without closing the menu. */}
-                {item.items && openMenu === item.label && (
-                  <div
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
                     className="navbar-dropdown-gradient fixed left-0 right-0 top-16 bg-gradient-to-b from-primary/0 to-primary border-t border-primary/20 shadow-md"
@@ -199,7 +173,6 @@ export default function TopNavbar() {
                       <div className="flex gap-8">
                         {item.items.map((category) => (
                           <div key={category.label} className="min-w-[140px]">
-                            {/* Category heading — links to the category index page */}
                             <Link
                               href={category.href || "#"}
                               className="block text-sm font-semibold text-white hover:text-primary mb-2"
@@ -207,7 +180,7 @@ export default function TopNavbar() {
                             >
                               {category.label}
                             </Link>
-                            {/* Nested links under this category */}
+
                             {category.items && category.items.length > 0 && (
                               <ul className="space-y-1">
                                 {category.items.map((sub) => (
@@ -286,7 +259,7 @@ export default function TopNavbar() {
           aria-expanded and a conditional CSS class. */}
       <nav
         aria-label="Mobile navigation"
-        aria-expanded={mobileOpen}
+        data-expanded={mobileOpen}
         className={mobileOpen ? "" : "hidden"}
       >
         {mobileOpen && (

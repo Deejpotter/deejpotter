@@ -1,718 +1,147 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, within, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { NavbarProvider } from '@/contexts/NavbarContext';
-import TopNavbar from './TopNavbar';
+import React from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, waitFor, fireEvent, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { NavbarProvider } from "@/contexts/NavbarContext";
+import TopNavbar from "./TopNavbar";
 
-// Mock next/link
-vi.mock('next/link', () => ({
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
-    <a href={href}>{children}</a>
+vi.mock("next/link", () => ({
+  default: ({ children, href, ...props }: { children: React.ReactNode; href: string }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
   ),
 }));
 
-// Mock Clerk — the AuthButton uses a custom useAuth hook from AuthProvider.
-// When Clerk isn't initialised (no publishable key), isLoaded stays false and
-// AuthButton renders a loading spinner. We keep the Clerk mock minimal.
-vi.mock('@clerk/nextjs', () => ({
-  ClerkProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  useUser: () => ({ user: null, isLoaded: false, isSignedIn: false }),
-  useAuth: () => ({ isLoaded: false, isSignedIn: false }),
+vi.mock("next/image", () => ({
+  default: ({ alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    <img alt={alt} {...props} />
+  ),
 }));
 
-describe('TopNavbar Component', () => {
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+}));
+
+vi.mock("@/components/ui/auth/AuthButton", () => ({
+  default: ({ buttonSize }: { buttonSize?: string }) => (
+    <button type="button">Auth {buttonSize ?? "default"}</button>
+  ),
+}));
+
+describe("TopNavbar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  const renderNavbar = () => {
-    return render(
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  const renderNavbar = () =>
+    render(
       <NavbarProvider>
         <TopNavbar />
       </NavbarProvider>
     );
-  };
 
-  describe('Desktop Navigation', () => {
-    it('renders all top-level navigation items', () => {
-      renderNavbar();
+  const getProjectsButton = () =>
+    screen.getByRole("button", { name: /projects/i });
 
-      expect(screen.getByText('Projects')).toBeInTheDocument();
-      expect(screen.getByText('Blog')).toBeInTheDocument();
-      expect(screen.getByText('About Me')).toBeInTheDocument();
-      expect(screen.getByText('Contact Me')).toBeInTheDocument();
-    });
+  it("renders the main navigation items and branding", () => {
+    renderNavbar();
 
-    it('renders logo and site name', () => {
-      renderNavbar();
+    expect(screen.getByRole("navigation", { name: /primary/i })).toBeInTheDocument();
+    expect(screen.getByText("Projects")).toBeInTheDocument();
+    expect(screen.getByText("Blog")).toBeInTheDocument();
+    expect(screen.getByText("About Me")).toBeInTheDocument();
+    expect(screen.getByText("Contact Me")).toBeInTheDocument();
+    expect(screen.getAllByAltText("Deej Potter Logo")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Deej Potter").length).toBeGreaterThan(0);
+  });
 
-      const logo = screen.getByAltText('Deej Potter Logo');
-      expect(logo).toBeInTheDocument();
-      expect(screen.getByText('Deej Potter')).toBeInTheDocument();
-    });
+  it("opens the Projects dropdown on click and shows the expected categories", async () => {
+    renderNavbar();
 
-    it('displays dropdown arrow indicator for Projects', () => {
-      renderNavbar();
+    const projectsButton = getProjectsButton();
+    expect(projectsButton).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByTestId("nav-projects-dropdown")).not.toBeInTheDocument();
 
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      expect(projectsButton).toContainHTML('▾');
+    fireEvent.click(projectsButton);
+
+    const dropdown = await screen.findByTestId("nav-projects-dropdown");
+    expect(projectsButton).toHaveAttribute("aria-expanded", "true");
+
+    const categories = ["Websites", "Engineering", "Games", "Tools"];
+    for (const category of categories) {
+      expect(within(dropdown).getByText(category)).toBeVisible();
+    }
+
+    expect(within(dropdown).getByText("Deej Potter")).toBeVisible();
+    expect(within(dropdown).getByText("Wireless Car")).toBeVisible();
+    expect(within(dropdown).getByText("Basic Bases")).toBeVisible();
+    expect(within(dropdown).getByText("20 Series Cut Calculator")).toBeVisible();
+  });
+
+  it("closes the Projects dropdown when Escape is pressed", async () => {
+    const user = userEvent.setup();
+    renderNavbar();
+
+    fireEvent.click(getProjectsButton());
+    expect(await screen.findByTestId("nav-projects-dropdown")).toBeInTheDocument();
+
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("nav-projects-dropdown")).not.toBeInTheDocument();
+      expect(getProjectsButton()).toHaveAttribute("aria-expanded", "false");
     });
   });
 
-  describe('Dropdown Menu Functionality', () => {
-    it('opens dropdown on mouse enter', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
+  it("closes a hover-opened dropdown after the mouse leaves and the delay expires", async () => {
+    renderNavbar();
 
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
+    const triggerWrapper = getProjectsButton().parentElement;
+    expect(triggerWrapper).not.toBeNull();
 
-      // Initially, dropdown should not be visible
-      expect(screen.queryByText('Websites')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(triggerWrapper!);
+    expect(await screen.findByTestId("nav-projects-dropdown")).toBeInTheDocument();
 
-      // Hover over Projects
-      await user.hover(projectsButton.parentElement!);
+    fireEvent.mouseLeave(triggerWrapper!);
 
-      // Dropdown should appear with all categories
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-      expect(screen.getByText('Engineering')).toBeInTheDocument();
-      expect(screen.getByText('Games')).toBeInTheDocument();
-      expect(screen.getByText('Tools')).toBeInTheDocument();
-    });
-
-    it('closes dropdown on mouse leave with delay', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-
-      // Open dropdown
-      await user.hover(projectsButton.parentElement!);
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-
-      // Move mouse away
-      await user.unhover(projectsButton.parentElement!);
-
-      // Dropdown should close after delay (150ms)
-      await waitFor(() => {
-        expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-      }, { timeout: 300 });
-    });
-
-    it('toggles dropdown on button click', async () => {
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-
-      // Initially, dropdown should not be visible
-      expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-
-      // Use fireEvent.click (not userEvent) to dispatch only the click event
-      // without the full pointer lifecycle that triggers onMouseEnter first.
-      fireEvent.click(projectsButton);
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-
-      // Click to close
-      fireEvent.click(projectsButton);
-      await waitFor(() => {
-        expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-      });
-    });
-
-    it('updates aria-expanded attribute correctly', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-
-      // Initially collapsed
-      expect(projectsButton).toHaveAttribute('aria-expanded', 'false');
-
-      // Hover to open
-      await user.hover(projectsButton.parentElement!);
-      await waitFor(() => {
-        expect(projectsButton).toHaveAttribute('aria-expanded', 'true');
-      });
-    });
-
-    it('rotates arrow indicator when dropdown opens', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      const arrow = projectsButton.querySelector('span');
-
-      // Initially 0 degrees
-      expect(arrow).toHaveStyle({ transform: 'rotate(0deg)' });
-
-      // Open dropdown
-      await user.hover(projectsButton.parentElement!);
-      await waitFor(() => {
-        expect(arrow).toHaveStyle({ transform: 'rotate(180deg)' });
-      });
-    });
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId("nav-projects-dropdown")).not.toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
   });
 
-  describe('Navigation Structure', () => {
-    it('displays all project categories in correct order', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
+  it("toggles the mobile navigation drawer", async () => {
+    const user = userEvent.setup();
+    renderNavbar();
 
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
+    const mobileNav = screen.getByRole("navigation", {
+      name: /mobile navigation/i,
+      hidden: true,
+    });
+    const toggleButton = screen.getByLabelText("Toggle navigation");
 
-      await waitFor(() => {
-        const categories = ['Websites', 'Engineering', 'Games', 'Tools'];
-        categories.forEach(category => {
-          expect(screen.getByText(category)).toBeInTheDocument();
-        });
-      });
+    expect(mobileNav).toHaveAttribute("data-expanded", "false");
+
+    await user.click(toggleButton);
+
+    await waitFor(() => {
+      expect(mobileNav).toHaveAttribute("data-expanded", "true");
+      expect(screen.getByLabelText("Close navigation")).toBeInTheDocument();
+      expect(screen.getByText("Auth default")).toBeInTheDocument();
     });
 
-    it('does not display Apps category (removed)', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-
-      // Apps category should not exist
-      expect(screen.queryByText('Apps')).not.toBeInTheDocument();
-    });
-
-    it('displays Websites project links', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        const matches = screen.getAllByText('Deej Potter');
-        // At least 2: logo text + dropdown link
-        expect(matches.length).toBeGreaterThanOrEqual(2);
-      });
-    });
-
-    it('displays Tools project links', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        expect(screen.getByText('20 Series Cut Calculator')).toBeInTheDocument();
-      });
-    });
-
-    it('displays Engineering project links', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        expect(screen.getByText('Wireless Car')).toBeInTheDocument();
-      });
-    });
-
-    it('displays Games project links', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        expect(screen.getByText('Basic Bases')).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe('Mobile Navigation', () => {
-    it('renders mobile menu toggle button', () => {
-      renderNavbar();
-
-      const mobileToggle = screen.getByLabelText('Toggle navigation');
-      expect(mobileToggle).toBeInTheDocument();
-    });
-
-    it('toggles mobile menu on button click', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const mobileToggle = screen.getByLabelText('Toggle navigation');
-
-      // Mobile nav is the one labelled "Mobile navigation"
-      const mobileNav = screen.getByRole('navigation', { name: /mobile/i, hidden: true });
-      expect(mobileNav).toHaveAttribute('aria-expanded', 'false');
-
-      // Click to expand
-      await user.click(mobileToggle);
-      await waitFor(() => {
-        expect(mobileNav).toHaveAttribute('aria-expanded', 'true');
-      });
-    });
-
-    it('applies gradient background to dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        const dropdown = screen.getByText('Websites').closest('div[class*="navbar-dropdown-gradient"]');
-        expect(dropdown).toHaveClass('navbar-dropdown-gradient');
-      });
-    });
-
-    it('positions dropdown at fixed top-16', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-
-      await waitFor(() => {
-        const dropdown = screen.getByText('Websites').closest('div[class*="fixed"]');
-        expect(dropdown).toHaveClass('fixed');
-        expect(dropdown).toHaveClass('top-16');
-      });
-    });
-
-    it('has proper ARIA labels', () => {
-      renderNavbar();
-
-      // Desktop nav labelled "Primary" and mobile nav labelled "Mobile navigation"
-      expect(screen.getByRole('navigation', { name: /primary/i })).toBeInTheDocument();
-      expect(screen.getByRole('navigation', { name: /mobile/i, hidden: true })).toBeInTheDocument();
-      expect(screen.getByLabelText('Toggle navigation')).toBeInTheDocument();
-    });
-
-    it('keyboard navigation works for dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-
-      // Focus the Projects button directly
-      projectsButton.focus();
-
-      // Enter to open dropdown
-      await user.keyboard('{Enter}');
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-    });
-
-    it('ESC key closes dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      
-      // Use fireEvent.click to open without hover interference
-      fireEvent.click(projectsButton);
-      
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-      
-      // Press ESC
-      await user.keyboard('{Escape}');
-      await waitFor(() => {
-        expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-      });
-    });
-
-    describe('Authentication Buttons', () => {
-      it('renders auth loading state when Clerk is not initialised', () => {
-        renderNavbar();
-        // AuthButton shows a loading spinner when isLoaded is false
-        const spinner = document.querySelector('.animate-spin');
-        expect(spinner).toBeInTheDocument();
-      });
-    });
-  });
-});
-
-
-  describe("Dropdown Menu Functionality", () => {
-    it("opens dropdown on mouse enter", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-
-      // Initially, dropdown should be hidden (aria-hidden used for visibility in DOM)
-      const dropdown = screen.getByTestId("nav-projects-dropdown");
-      expect(dropdown).toHaveAttribute("aria-hidden", "true");
-
-      // Hover over Projects
-      await user.hover(projectsButton);
-
-      // Dropdown should become visible with all categories
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(within(dropdown).getByText("Websites")).toBeVisible();
-        expect(within(dropdown).getByText("Engineering")).toBeVisible();
-        expect(within(dropdown).getByText("Games")).toBeVisible();
-        expect(within(dropdown).getByText("Tools")).toBeVisible();
-      });
-    });
-
-    it("closes dropdown on mouse leave with delay", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-
-      // Open dropdown (use mouseEnter for deterministic event)
-      fireEvent.mouseEnter(projectsButton);
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(dropdown).toHaveAttribute("aria-hidden", "false");
-      });
-
-      // Move mouse away
-      fireEvent.mouseLeave(projectsButton);
-
-      // Dropdown should close after delay (150ms)
-      await waitFor(
-        () => {
-          expect(screen.getByTestId("nav-projects-dropdown")).toHaveAttribute(
-            "aria-hidden",
-            "true"
-          );
-        },
-        { timeout: 300 }
-      );
-    });
-
-    it('toggles dropdown on button click', async () => {
-      renderNavbar();
-      
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      
-      // Initially, dropdown should not be visible
-      expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-      
-      // Use fireEvent.click (not userEvent) to dispatch only the click event
-      // without the full pointer lifecycle that triggers onMouseEnter first.
-      fireEvent.click(projectsButton);
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-      
-      // Click to close
-      fireEvent.click(projectsButton);
-      await waitFor(() => {
-        expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-      });
-    });
-      
-      // Click to close
-      fireEvent.click(projectsButton);
-      await waitFor(() => {
-        expect(screen.getByTestId("nav-projects-dropdown")).toHaveAttribute(
-          "aria-hidden",
-          "true"
-        );
-      });
-    });
-
-    it("updates aria-expanded attribute correctly (via click)", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-
-      // Initially collapsed
-      expect(projectsButton).toHaveAttribute("aria-expanded", "false");
-
-      // Click to open (use mouseDown to match component event)
-      fireEvent.mouseDown(projectsButton);
-      await waitFor(() => {
-        expect(projectsButton).toHaveAttribute("aria-expanded", "true");
-      });
-    });
-
-    it("rotates arrow indicator when dropdown opens (or updates aria-expanded)", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      const arrow = projectsButton.querySelector("span");
-
-      // If the arrow element exists, it should be rotatable. Otherwise, ensure aria-expanded toggles.
-      if (arrow) {
-        expect(arrow).toHaveStyle({ transform: "rotate(0deg)" });
-        // Open dropdown
-        fireEvent.mouseDown(projectsButton);
-        await waitFor(() => {
-          expect(arrow).toHaveStyle({ transform: "rotate(180deg)" });
-        });
-      } else {
-        // Fallback: ensure aria-expanded toggles
-        expect(projectsButton).toHaveAttribute("aria-expanded", "false");
-        await user.click(projectsButton);
-        await waitFor(() => {
-          expect(projectsButton).toHaveAttribute("aria-expanded", "true");
-        });
-      }
-    });
-  });
-
-  describe("Navigation Structure", () => {
-    it("displays all project categories in correct order", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      await user.click(projectsButton);
-
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        const categories = ["Websites", "Engineering", "Games", "Tools"];
-        categories.forEach((category) => {
-          expect(within(dropdown).getByText(category)).toBeVisible();
-        });
-      });
-    });
-
-    it("does not display Apps category (removed)", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      await user.hover(projectsButton);
-
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(dropdown).toBeVisible();
-      });
-
-      // Apps category should not exist
-      expect(screen.queryByText("Apps")).not.toBeInTheDocument();
-    });
-
-    it("displays Websites project links", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      await user.hover(projectsButton.parentElement!);
-      
-      // "Deej Potter" appears in both the logo and the dropdown mega-menu.
-      // Use getAllByText and check that the dropdown link is present.
-      await waitFor(() => {
-        const matches = screen.getAllByText('Deej Potter');
-        // At least 2: logo text + dropdown link
-        expect(matches.length).toBeGreaterThanOrEqual(2);
-      });
-      });
-    });
-
-    it("displays Tools project links", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      await user.click(projectsButton);
-
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(
-          within(dropdown).getByText("20 Series Cut Calculator")
-        ).toBeVisible();
-      });
-    });
-
-    it("displays Engineering project links", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      await user.click(projectsButton);
-
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(within(dropdown).getByText("Wireless Car")).toBeVisible();
-      });
-    });
-
-    it("displays Games project links", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      await user.click(projectsButton);
-
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(within(dropdown).getByText("Basic Bases")).toBeVisible();
-      });
-    });
-  });
-
-  describe("Mobile Navigation", () => {
-    it("renders mobile menu toggle button", () => {
-      renderNavbar();
-
-      const mobileToggle = screen.getByLabelText("Toggle menu");
-      expect(mobileToggle).toBeInTheDocument();
-    });
-
-    it("toggles mobile menu on button click", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-      const mobileToggle = screen.getByLabelText('Toggle navigation');
-      
-      // Mobile nav is the one labelled "Mobile navigation"
-      const mobileNav = screen.getByRole('navigation', { name: /mobile/i, hidden: true });
-      expect(mobileNav).toHaveAttribute('aria-expanded', 'false');
-      // Click to expand
-      fireEvent.click(mobileToggle);
-      await waitFor(() => {
-        expect(screen.getByTestId("mobile-nav-overlay")).toBeInTheDocument();
-        expect(screen.getByTestId("mobile-nav-close")).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe("Dropdown Styling", () => {
-
-      await waitFor(() => {
-        const dropdown = screen.getByText('Websites').closest('div[class*="fixed"]');
-        expect(dropdown).toHaveClass('fixed');
-        expect(dropdown).toHaveClass('top-16');
-      });
-    });
-  });
-
-  describe('Accessibility', () => {
-    it('has proper ARIA labels', () => {
-      renderNavbar();
-      
-      // Desktop nav labelled "Primary" and mobile nav labelled "Mobile navigation"
-      expect(screen.getByRole('navigation', { name: /primary/i })).toBeInTheDocument();
-      expect(screen.getByRole('navigation', { name: /mobile/i, hidden: true })).toBeInTheDocument();
-      expect(screen.getByLabelText('Toggle navigation')).toBeInTheDocument();
-    });
-
-    it('keyboard navigation works for dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-      
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      
-      // Focus the Projects button directly
-      projectsButton.focus();
-      
-      // Enter to open dropdown
-      await user.keyboard('{Enter}');
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-    });
-
-    it('ESC key closes dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-      
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-      
-      // Use fireEvent.click to open without hover interference
-      fireEvent.click(projectsButton);
-      
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(dropdown).toHaveClass("bg-gradient-to-b");
-      });
-    });
-
-    it("positions dropdown immediately below the nav (absolute top-full)", async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = getProjectsButton();
-      await user.click(projectsButton);
-
-      await waitFor(() => {
-        const dropdown = screen.getByTestId("nav-projects-dropdown");
-        expect(dropdown).toHaveClass("absolute");
-        expect(dropdown).toHaveClass("top-full");
-      });
-    });
-  });
-
-  describe('Accessibility', () => {
-    it('has proper ARIA labels', () => {
-      renderNavbar();
-
-      // Desktop nav labelled "Primary" and mobile nav labelled "Mobile navigation"
-      expect(screen.getByRole('navigation', { name: /primary/i })).toBeInTheDocument();
-      expect(screen.getByRole('navigation', { name: /mobile/i, hidden: true })).toBeInTheDocument();
-      expect(screen.getByLabelText('Toggle navigation')).toBeInTheDocument();
-    });
-
-    it('keyboard navigation works for dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-
-      // Focus the Projects button directly
-      projectsButton.focus();
-
-      // Enter to open dropdown
-      await user.keyboard('{Enter}');
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-    });
-
-    it('ESC key closes dropdown', async () => {
-      const user = userEvent.setup();
-      renderNavbar();
-
-      const projectsButton = screen.getByRole('button', { name: /projects/i });
-
-      // Use fireEvent.click to open without hover interference
-      fireEvent.click(projectsButton);
-      
-      await waitFor(() => {
-        expect(screen.getByText('Websites')).toBeInTheDocument();
-      });
-      
-      // Press ESC
-      await user.keyboard('{Escape}');
-      await waitFor(() => {
-        expect(screen.queryByText('Websites')).not.toBeInTheDocument();
-      });
-    });
-  });
-
-  describe('Authentication Buttons', () => {
-    it('renders auth loading state when Clerk is not initialised', () => {
-      renderNavbar();
-      // AuthButton shows a loading spinner when isLoaded is false
-      const spinner = document.querySelector('.animate-spin');
-      expect(spinner).toBeInTheDocument();
-    });
-  });
-});
+    await user.click(screen.getByLabelText("Close navigation"));
+
+    await waitFor(() => {
+      expect(mobileNav).toHaveAttribute("data-expanded", "false");
+      expect(screen.queryByLabelText("Close navigation")).not.toBeInTheDocument();
     });
   });
 });

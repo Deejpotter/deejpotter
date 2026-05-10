@@ -6,11 +6,22 @@ const storybook = require('eslint-plugin-storybook');
 const nextConfig = require('eslint-config-next');
 
 module.exports = [
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'public/**',
+      'storybook-static/**',
+      'test-results/**',
+      'coverage/**',
+      'tmp/**',
+      'sb-original/**',
+    ],
+  },
   // spread the Next.js-provided flat config entries first
   ...(Array.isArray(nextConfig) ? nextConfig : [nextConfig]),
   // project-specific overrides
   {
-    ignores: ['node_modules/**', '.next/**', 'public/**'],
     plugins: {
       'react-hooks': require('eslint-plugin-react-hooks'),
       'storybook': storybook,

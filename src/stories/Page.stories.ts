@@ -25,7 +25,6 @@ export const LoggedIn: Story = {
     // If the canvas has no children, fallback to searching the entire document body.
     let canvas = within(canvasElement);
     // Debug: wait for any children to be attached to the canvas root
-    // eslint-disable-next-line no-console
     console.debug('Canvas start children:', canvasElement.children.length, 'innerHTML:', canvasElement.innerHTML);
     // Wait for the canvas to receive its rendered content (some Storybook decorators are async)
     await new Promise((resolve) => {
@@ -36,11 +35,9 @@ export const LoggedIn: Story = {
       };
       check();
     });
-    // eslint-disable-next-line no-console
     console.debug('Canvas after wait children:', canvasElement.children.length, 'innerHTML:', canvasElement.innerHTML);
     if (canvasElement.children.length === 0) {
       // fall back to document body (handles fullscreen layout)
-      // eslint-disable-next-line no-console
       console.debug('Falling back to document.body for queries');
       canvas = within(document.body);
     }
@@ -50,7 +47,6 @@ export const LoggedIn: Story = {
       loginButton = await canvas.findByRole('button', { name: /Log in/i }, { timeout: 10000 });
     } catch (err) {
       // If the login button can't be found in the story environment (flaky in this harness), skip the interaction.
-      // eslint-disable-next-line no-console
       console.warn('Skipped Login interaction: Login button not found in story environment. Document body:', document.body.innerHTML);
       return;
     }

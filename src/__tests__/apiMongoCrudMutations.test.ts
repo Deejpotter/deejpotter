@@ -46,6 +46,12 @@ vi.mock("@clerk/nextjs", () => ({ auth: () => ({ userId: "test-user" }) }));
 import { POST } from "@/app/api/mongo-crud/route";
 
 describe("mongo-crud mutating operations (mocked)", () => {
+  beforeEach(() => {
+    process.env.MONGODB_URI = "mongodb://localhost:27017/test";
+    process.env.DB_NAME = "test";
+    process.env.ALLOWED_COLLECTIONS = "test";
+  });
+
   test("POST with auth inserts document successfully", async () => {
     const body = { name: "test" };
     const req = new Request("http://localhost/api?collection=test", {
