@@ -1,3 +1,6 @@
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import { POST } from './route';
 
 function makeFormRequest(formData: FormData) {
@@ -8,6 +11,19 @@ function makeFormRequest(formData: FormData) {
 }
 
 describe('3d-printing-quote route', () => {
+  const originalDir = process.env.QUOTE_STORAGE_DIR;
+  let tempDir: string;
+
+  beforeEach(async () => {
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'quote-route-'));
+    process.env.QUOTE_STORAGE_DIR = tempDir;
+  });
+
+  afterEach(async () => {
+    process.env.QUOTE_STORAGE_DIR = originalDir;
+    await fs.rm(tempDir, { recursive: true, force: true });
+  });
+
   test('accepts a valid quote request', async () => {
     const formData = new FormData();
     formData.set('name', 'Deej');

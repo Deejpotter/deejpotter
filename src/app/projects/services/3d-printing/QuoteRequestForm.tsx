@@ -38,10 +38,11 @@ export default function QuoteRequestForm(): ReactElement {
       }
 
       setFormStatus("success");
-      setSuccessMessage(
+      const baseMessage =
         payload.message ||
-          "Quote request sent. I will review the file and get back to you."
-      );
+        "Quote request sent. I will review the file and get back to you.";
+      const requestId = payload.requestId ? ` Request ID: ${payload.requestId}.` : "";
+      setSuccessMessage(`${baseMessage}${requestId}`);
       form.reset();
     } catch {
       setFormStatus("error");

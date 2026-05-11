@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
 import QuoteRequestForm from "./QuoteRequestForm";
+import QuoteStatusLookup from "./QuoteStatusLookup";
 
 const benefits = [
   {
@@ -156,6 +157,10 @@ export default function ThreeDPrintingService(): ReactElement {
 
             <section className="mb-5">
               <QuoteRequestForm />
+            </section>
+
+            <section className="mb-5">
+              <QuoteStatusLookup />
             </section>
 
             <section className="mb-5">

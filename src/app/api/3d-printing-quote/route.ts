@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import {
+  listQuoteRequests,
+  saveQuoteRequest,
+  updateQuoteRequest,
+  type QuoteStatus,
+} from "@/lib/quote-storage";
 
 const quoteSchema = z.object({
   name: z.string().trim().min(2).max(100),
@@ -10,6 +16,23 @@ const quoteSchema = z.object({
   localFulfilment: z.enum(["yes", "no", "unsure"]),
   needsNextDay: z.enum(["yes", "no"]),
   notes: z.string().max(3000).optional().default(""),
+});
+
+const patchSchema = z.object({
+  id: z.string().uuid(),
+  status: z.enum([
+    "new",
+    "reviewing",
+    "quoted",
+    "approved",
+    "printing",
+    "ready",
+    "completed",
+    "declined",
+  ] satisfies QuoteStatus[]),
+  quotedPrice: z.number().nonnegative().nullable().optional(),
+  turnaroundEstimate: z.string().max(200).nullable().optional(),
+  adminNotes: z.string().max(3000).nullable().optional(),
 });
 
 const allowedExtensions = [".stl", ".3mf", ".obj", ".step", ".stp"];
@@ -23,6 +46,22 @@ const allowedMimeTypes = [
 ];
 const maxFileBytes = 25 * 1024 * 1024;
 
+async function getAuthAsync() {
+  try {
+    const _clerk = await import("@clerk/nextjs");
+    const anyClerk = _clerk as any;
+    const getter =
+      typeof anyClerk?.auth === "function"
+        ? anyClerk.auth
+        : typeof anyClerk?.getAuth === "function"
+          ? anyClerk.getAuth
+          : () => ({ userId: null });
+    return getter();
+  } catch {
+    return { userId: null };
+  }
+}
+
 function hasAllowedExtension(filename: string): boolean {
   const lower = filename.toLowerCase();
   return allowedExtensions.some((extension) => lower.endsWith(extension));
@@ -34,6 +73,21 @@ function hasAllowedFileType(file: File): boolean {
 
 function isFileLike(value: FormDataEntryValue | null): value is File {
   return !!value && typeof value !== "string" && "name" in value && "size" in value;
+}
+
+export async function GET() {
+  const { userId } = await getAuthAsync();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const records = await listQuoteRequests();
+    return NextResponse.json(records, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("3d-printing-quote list error", error);
+    return NextResponse.json({ error: "Could not load quote requests." }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -79,19 +133,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const requestId = crypto.randomUUID();
+    const record = await saveQuoteRequest(parsed.data, modelFile);
 
     console.info("3d-printing-quote", {
-      requestId,
+      requestId: record.id,
       ...parsed.data,
-      fileName: modelFile.name,
-      fileSize: modelFile.size,
-      fileType: modelFile.type || "unknown",
+      fileName: record.fileName,
+      fileSize: record.fileSize,
+      fileType: record.fileType,
     });
 
     return NextResponse.json({
       ok: true,
-      requestId,
+      requestId: record.id,
       message:
         "Quote request received. I will review the file and reply with pricing and turnaround.",
     });
@@ -101,5 +155,36 @@ export async function POST(request: Request) {
       { error: "Could not process the quote request right now." },
       { status: 500 }
     );
+  }
+}
+
+export async function PATCH(request: Request) {
+  const { userId } = await getAuthAsync();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const parsed = patchSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid quote update payload." }, { status: 400 });
+    }
+
+    const updated = await updateQuoteRequest(parsed.data.id, {
+      status: parsed.data.status,
+      quotedPrice: parsed.data.quotedPrice,
+      turnaroundEstimate: parsed.data.turnaroundEstimate,
+      adminNotes: parsed.data.adminNotes,
+    });
+
+    if (!updated) {
+      return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error("3d-printing-quote patch error", error);
+    return NextResponse.json({ error: "Could not update the quote request." }, { status: 500 });
   }
 }
