@@ -174,7 +174,7 @@ export default function Deejpotter(): ReactElement {
             <div className="alert alert-info">
               <h3 className="h5 mb-2">Want the broader context?</h3>
               <p className="mb-0">
-                Explore the rest of the <Link href="/projects">projects section</Link>,
+                Explore more <Link href="/projects/websites">website projects</Link>,
                 read the <Link href="/blog">blog</Link>, or <Link href="/contact">send a message</Link>
                 if you want to talk about a website or custom build.
               </p>

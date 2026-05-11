@@ -1,13 +1,13 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Professional Services | Deej Potter",
+  title: "Services | Website Design, Development, and Custom Tools | Deej Potter",
   description:
-    "Discover professional services offered by Deej Potter, including 3D printing, design consulting, and technical solutions for hobbyists and small businesses.",
+    "Website design and development, landing pages, custom digital tools, automation helpers, and selected technical services by Deej Potter.",
   openGraph: {
-    title: "Professional Services | Deej Potter",
+    title: "Services | Website Design, Development, and Custom Tools | Deej Potter",
     description:
-      "Discover professional services offered by Deej Potter, including 3D printing, design consulting, and technical solutions for hobbyists and small businesses.",
+      "Website design and development, landing pages, custom digital tools, automation helpers, and selected technical services by Deej Potter.",
     url: "https://deejpotter.com/projects/services",
     images: [
       {
