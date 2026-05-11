@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
+import QuoteRequestForm from "./QuoteRequestForm";
 
 const benefits = [
   {
@@ -38,7 +39,7 @@ const quoteFactors = [
 ];
 
 const nextSteps = [
-  "Send the STL, dimensions, or a clear description of the part.",
+  "Upload the STL or other supported model file.",
   "Confirm location if you want to ask about next-day local turnaround.",
   "Get a quote based on print time, material, and handling.",
   "Approve the job and have it printed on demand.",
@@ -104,11 +105,11 @@ export default function ThreeDPrintingService(): ReactElement {
                 <div className="col-lg-6">
                   <div className="card shadow-sm border-0 bg-white">
                     <div className="card-body">
-                      <h2 className="h4 mb-3">How quoting would work</h2>
+                      <h2 className="h4 mb-3">How quoting works</h2>
                       <p className="text-muted">
-                        A live upload-and-quote flow is the right long-term move
-                        here. Until that is fully wired in, quotes still need to
-                        account for a few practical variables:
+                        The upload form below is the practical first version of
+                        the quoting flow. Quotes still need to account for a few
+                        variables before final pricing is confirmed:
                       </p>
                       <ul className="mb-0">
                         {quoteFactors.map((factor) => (
@@ -154,28 +155,33 @@ export default function ThreeDPrintingService(): ReactElement {
             </section>
 
             <section className="mb-5">
+              <QuoteRequestForm />
+            </section>
+
+            <section className="mb-5">
               <div className="alert alert-info mb-0">
-                <h2 className="h4 mb-2">Planned improvement: STL upload and live quote</h2>
+                <h2 className="h4 mb-2">Planned improvement: live STL quote</h2>
                 <p className="mb-0">
-                  The next smart step for this service is an upload workflow
-                  where customers can submit STL files, get a quote based on the
-                  print job, and approve the work before printing starts. That
-                  would make this offer much easier to sell at scale.
+                  The next smart step for this service is automatic model
+                  analysis so customers can upload STL files, get a live quote,
+                  and approve the work before printing starts. This quote intake
+                  form is the first step toward that workflow.
                 </p>
               </div>
             </section>
 
             <section className="text-center">
-              <h2 className="h3 mb-3">Want a quote for a print job?</h2>
+              <h2 className="h3 mb-3">Need something custom instead?</h2>
               <p className="text-muted mb-4">
-                Start with a message and include the file, dimensions, quantity,
-                and whether you are local and hoping for fast turnaround.
+                If the job needs more than straightforward printing, start with a
+                message and include the file, dimensions, quantity, and whether
+                you are local and hoping for fast turnaround.
               </p>
               <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Link href="/contact" className="btn btn-primary btn-lg">
-                  Ask for a quote
+                <Link href="/contact" className="btn btn-outline-primary btn-lg">
+                  General enquiry
                 </Link>
-                <Link href="/projects/services" className="btn btn-outline-primary btn-lg">
+                <Link href="/projects/services" className="btn btn-outline-secondary btn-lg">
                   View all services
                 </Link>
               </div>
