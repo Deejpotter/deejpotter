@@ -1,18 +1,24 @@
 # Decap CMS content
 
-This folder is the planned home for Decap-authored blog posts.
+This folder is now the live home for Decap-authored Markdown blog posts.
 
 Current state:
-- the live blog still reads from `src/content/blog/*.tsx`
-- Decap has been scaffolded under `public/admin/`
-- the next migration step is to teach the site to read Markdown/MDX posts from this folder
+- the site reads published Markdown posts from `src/content/blog-md/*.md`
+- existing TSX posts in `src/content/blog/*.tsx` still work in parallel
+- Decap is scaffolded under `public/admin/`
+- drafts are supported through frontmatter and are excluded from the public blog by default
 
-Intended frontmatter shape:
+Frontmatter shape:
 - title
 - slug
 - date
 - excerpt
 - tags
 - draft
+- bookstackUrl (optional)
 
-Once the loader is migrated, Decap-authored posts in this folder can become the primary blog source.
+Notes:
+- use `.md` files with frontmatter
+- keep slugs unique across both Markdown and TSX posts
+- normal editorial posts should prefer Markdown
+- keep TSX for posts that genuinely need custom React rendering

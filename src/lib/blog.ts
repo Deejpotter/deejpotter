@@ -53,7 +53,7 @@ const tsxBlogPosts: BlogPost[] = [
 }));
 
 function getMarkdownPostsDir(): string {
-  return path.join(process.cwd(), "src", "content", "blog-md");
+  return process.env.BLOG_MARKDOWN_DIR || path.join(process.cwd(), "src", "content", "blog-md");
 }
 
 function loadMarkdownPosts(): BlogPost[] {
@@ -112,17 +112,21 @@ function getAllBlogPosts({ includeDrafts = false }: { includeDrafts?: boolean } 
   );
 }
 
-export function getAllPostSlugs(): string[] {
-  return getAllBlogPosts().map((post) => post.slug);
+export function getAllPostSlugs(options?: { includeDrafts?: boolean }): string[] {
+  return getAllBlogPosts(options).map((post) => post.slug);
 }
 
-export function getPostBySlug(slug: string): BlogPost | null {
-  const post = getAllBlogPosts().find((entry) => entry.slug === slug);
+export function getPostBySlug(slug: string, options?: { includeDrafts?: boolean }): BlogPost | null {
+  const post = getAllBlogPosts(options).find((entry) => entry.slug === slug);
   return post || null;
 }
 
-export function getAllPosts(): BlogPostMetadata[] {
-  return getAllBlogPosts().map(({ content, markdown, ...metadata }) => metadata);
+export function getAllPosts(options?: { includeDrafts?: boolean }): BlogPostMetadata[] {
+  return getAllBlogPosts(options).map(({ content, markdown, ...metadata }) => metadata);
+}
+
+export function getFeaturedPosts(limit = 3): BlogPostMetadata[] {
+  return getAllPosts().slice(0, limit);
 }
 
 export function getPostsByTag(tag: string): BlogPostMetadata[] {
