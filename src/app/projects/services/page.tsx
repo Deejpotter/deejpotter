@@ -14,8 +14,22 @@ const services = [
       "Landing pages and lead-generation pages",
       "Redesigns and technical improvements",
     ],
-    link: "/contact",
+    link: "/projects/services/website-design",
     cta: "Start a website project",
+  },
+  {
+    id: "website-redesign",
+    name: "Website Redesign",
+    description:
+      "A focused service for improving sites that already exist but need clearer messaging, better structure, or stronger enquiry flow.",
+    features: [
+      "Design refreshes",
+      "Better mobile responsiveness",
+      "Stronger calls to action",
+      "SEO and content structure improvements",
+    ],
+    link: "/projects/services/website-redesign",
+    cta: "Ask about a redesign",
   },
   {
     id: "custom-tools-automation",
@@ -28,7 +42,7 @@ const services = [
       "Operational workflow helpers",
       "Automation for repetitive digital tasks",
     ],
-    link: "/contact",
+    link: "/projects/services/custom-tools",
     cta: "Ask about a custom tool",
   },
   {
@@ -89,7 +103,7 @@ export default function Services(): ReactElement {
 
         <div className="row g-4 mb-5">
           {services.map((service) => (
-            <div key={service.id} className="col-12 col-lg-4">
+            <div key={service.id} className="col-12 col-md-6 col-xl-3">
               <div className="card h-100 shadow-sm border-0 bg-light">
                 <div className="card-body d-flex flex-column">
                   <h2 className="h4 card-title mb-3">{service.name}</h2>
