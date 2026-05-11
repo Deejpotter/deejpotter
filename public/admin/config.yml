@@ -1,0 +1,36 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: Deejpotter/deejpotter
+  branch: main
+  squash_merges: true
+  commit_messages:
+    create: Create blog post "{{slug}}"
+    update: Update blog post "{{slug}}"
+    delete: Delete blog post "{{slug}}"
+    uploadMedia: Upload "{{path}}"
+    deleteMedia: Delete "{{path}}"
+
+publish_mode: editorial_workflow
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: blog
+    label: Blog Posts
+    label_singular: Blog Post
+    folder: src/content/blog-md
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    preview_path: blog/{{slug}}
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Slug, name: slug, widget: string, hint: 'URL slug, e.g. openclaw-android-pairing-request-churn' }
+      - { label: Publish Date, name: date, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { label: Excerpt, name: excerpt, widget: text }
+      - { label: Tags, name: tags, widget: list, default: [] }
+      - { label: Draft, name: draft, widget: boolean, default: true, required: false }
+      - { label: Body, name: body, widget: markdown }
