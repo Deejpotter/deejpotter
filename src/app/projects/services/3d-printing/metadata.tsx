@@ -1,13 +1,13 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "3D Printing Service | Mornington Peninsula | Deej Potter",
+  title: "On-Demand 3D Printing | Frankston & Mornington Peninsula | Deej Potter",
   description:
-    "Transform your ideas into reality with our local 3D printing service in Frankston, tailored for hobbyists and small businesses across the Mornington Peninsula with free local delivery and fast turnaround.",
+    "On-demand 3D printing in Frankston and the Mornington Peninsula for prototypes, replacement parts, hobby projects, and small-run functional pieces, with viable next-day local turnaround for suitable jobs.",
   openGraph: {
-    title: "3D Printing Service | Mornington Peninsula | Deej Potter",
+    title: "On-Demand 3D Printing | Frankston & Mornington Peninsula | Deej Potter",
     description:
-      "Transform your ideas into reality with our local 3D printing service in Frankston, tailored for hobbyists and small businesses across the Mornington Peninsula with free local delivery and fast turnaround.",
+      "On-demand 3D printing in Frankston and the Mornington Peninsula for prototypes, replacement parts, hobby projects, and small-run functional pieces, with viable next-day local turnaround for suitable jobs.",
     url: "https://deejpotter.com/projects/services/3d-printing",
     images: [
       {

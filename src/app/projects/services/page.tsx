@@ -47,17 +47,17 @@ const services = [
   },
   {
     id: "3d-printing",
-    name: "3D Printing Service",
+    name: "On-Demand 3D Printing",
     description:
-      "Professional 3D printing for hobbyists and small businesses around the Mornington Peninsula, with local delivery in Frankston.",
+      "On-demand 3D printing for prototypes, replacement parts, hobby projects, and small-run functional pieces around Frankston and the Mornington Peninsula.",
     features: [
-      "Prototype prints",
-      "Small-run functional parts",
-      "Design assistance",
-      "Local delivery options",
+      "Prototype and replacement parts",
+      "Small-run functional prints",
+      "Viable next-day local turnaround",
+      "Planned STL upload and quoting workflow",
     ],
     link: "/projects/services/3d-printing",
-    cta: "View 3D printing details",
+    cta: "Get 3D printing details",
   },
 ];
 
