@@ -6,6 +6,7 @@ import {
   updateQuoteRequest,
   type QuoteStatus,
 } from "@/lib/quote-storage";
+import { analyzeQuoteFile } from "@/lib/quote-analysis";
 
 const quoteSchema = z.object({
   name: z.string().trim().min(2).max(100),
@@ -133,7 +134,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const record = await saveQuoteRequest(parsed.data, modelFile);
+    const analysis = await analyzeQuoteFile(
+      modelFile,
+      parsed.data.quantity,
+      parsed.data.material
+    );
+
+    const record = await saveQuoteRequest(parsed.data, modelFile, analysis);
 
     console.info("3d-printing-quote", {
       requestId: record.id,
@@ -141,6 +148,9 @@ export async function POST(request: Request) {
       fileName: record.fileName,
       fileSize: record.fileSize,
       fileType: record.fileType,
+      analysisAvailable: analysis.analysisAvailable,
+      estimatedPriceAud: analysis.estimatedPriceAud,
+      estimatedPrintHours: analysis.estimatedPrintHours,
     });
 
     return NextResponse.json({
@@ -148,6 +158,7 @@ export async function POST(request: Request) {
       requestId: record.id,
       message:
         "Quote request received. I will review the file and reply with pricing and turnaround.",
+      estimate: analysis,
     });
   } catch (error) {
     console.error("3d-printing-quote error", error);

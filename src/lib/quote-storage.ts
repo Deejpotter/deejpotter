@@ -11,6 +11,8 @@ export type QuoteStatus =
   | "completed"
   | "declined";
 
+import type { QuoteAnalysis } from "./quote-analysis";
+
 export interface QuoteRequestRecord {
   id: string;
   name: string;
@@ -29,6 +31,7 @@ export interface QuoteRequestRecord {
   quotedPrice?: number | null;
   turnaroundEstimate?: string | null;
   adminNotes?: string | null;
+  analysis?: QuoteAnalysis | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -78,7 +81,11 @@ async function writeIndex(records: QuoteRequestRecord[], root = getQuoteStorageR
   await fs.writeFile(getIndexPath(root), JSON.stringify(records, null, 2) + "\n", "utf8");
 }
 
-export async function saveQuoteRequest(input: QuoteRequestInput, file: File): Promise<QuoteRequestRecord> {
+export async function saveQuoteRequest(
+  input: QuoteRequestInput,
+  file: File,
+  analysis?: QuoteAnalysis | null
+): Promise<QuoteRequestRecord> {
   const root = getQuoteStorageRoot();
   await ensureRoot(root);
 
@@ -103,6 +110,7 @@ export async function saveQuoteRequest(input: QuoteRequestInput, file: File): Pr
     quotedPrice: null,
     turnaroundEstimate: null,
     adminNotes: null,
+    analysis: analysis ?? null,
     createdAt: now,
     updatedAt: now,
   };

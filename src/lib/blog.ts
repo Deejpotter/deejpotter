@@ -40,8 +40,10 @@ import { boxShippingPost } from "../content/blog/box-shipping-calculator";
 import { cncAiPost } from "../content/blog/cnc-technical-ai";
 import { portfolioMigrationPost } from "../content/blog/portfolio-migration";
 import { esp32CarPost } from "../content/blog/esp32-wireless-car";
+import { openclawAndroidPairingRequestChurnPost } from "../content/blog/openclaw-android-pairing-request-churn";
 
 const blogPosts: BlogPost[] = [
+  openclawAndroidPairingRequestChurnPost,
   boxShippingPost,
   cncAiPost,
   portfolioMigrationPost,

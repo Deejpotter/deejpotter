@@ -12,6 +12,13 @@ type QuoteStatusResponse = {
   fileName: string;
   material: string;
   quantity: number;
+  estimate?: {
+    analysisAvailable: boolean;
+    estimatedPriceAud?: number;
+    estimatedPrintHours?: number;
+    estimatedMaterialGrams?: number;
+    previewNote: string;
+  } | null;
 };
 
 export default function QuoteStatusLookup(): ReactElement {
@@ -116,6 +123,19 @@ export default function QuoteStatusLookup(): ReactElement {
                 ? `Turnaround: ${result.turnaroundEstimate}`
                 : "Turnaround: pending review"}
             </div>
+            {result.quotedPrice == null && result.estimate?.analysisAvailable && (
+              <>
+                <div className="mb-1">
+                  Preliminary estimate: from ${result.estimate.estimatedPriceAud?.toFixed(2)}
+                </div>
+                <div className="mb-1 small text-muted">
+                  Approx {result.estimate.estimatedPrintHours} hours and {result.estimate.estimatedMaterialGrams} g material
+                </div>
+              </>
+            )}
+            {result.estimate?.previewNote && (
+              <div className="small text-muted mb-1">{result.estimate.previewNote}</div>
+            )}
             <div className="text-muted small">
               Last updated {new Date(result.updatedAt).toLocaleString()}
             </div>

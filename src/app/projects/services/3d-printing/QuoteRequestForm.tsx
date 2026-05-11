@@ -2,6 +2,18 @@
 
 import { ReactElement, useState } from "react";
 
+type QuoteEstimate = {
+  analysisAvailable: boolean;
+  triangleCount?: number;
+  boundingBoxMm?: { x: number; y: number; z: number };
+  estimatedMaterialGrams?: number;
+  estimatedPrintHours?: number;
+  estimatedPriceAud?: number;
+  previewNote: string;
+  fileKind: "stl" | "other";
+  confidence: "low" | "medium";
+};
+
 const acceptedFileTypes = ".stl,.3mf,.obj,.step,.stp";
 
 export default function QuoteRequestForm(): ReactElement {
@@ -10,12 +22,14 @@ export default function QuoteRequestForm(): ReactElement {
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [estimate, setEstimate] = useState<QuoteEstimate | null>(null);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormStatus("submitting");
     setErrorMessage(null);
     setSuccessMessage(null);
+    setEstimate(null);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -43,6 +57,7 @@ export default function QuoteRequestForm(): ReactElement {
         "Quote request sent. I will review the file and get back to you.";
       const requestId = payload.requestId ? ` Request ID: ${payload.requestId}.` : "";
       setSuccessMessage(`${baseMessage}${requestId}`);
+      setEstimate(payload.estimate ?? null);
       form.reset();
     } catch {
       setFormStatus("error");
@@ -186,7 +201,36 @@ export default function QuoteRequestForm(): ReactElement {
 
         {successMessage && (
           <div className="alert alert-success mt-4 mb-0" role="alert">
-            {successMessage}
+            <div>{successMessage}</div>
+            {estimate && (
+              <div className="mt-3 pt-3 border-top">
+                <div className="fw-semibold mb-2">Automatic preflight estimate</div>
+                {estimate.analysisAvailable ? (
+                  <>
+                    <div className="small mb-1">
+                      Estimated starting price: ${estimate.estimatedPriceAud?.toFixed(2)}
+                    </div>
+                    <div className="small mb-1">
+                      Estimated print time: {estimate.estimatedPrintHours} hours
+                    </div>
+                    <div className="small mb-1">
+                      Estimated material: {estimate.estimatedMaterialGrams} g
+                    </div>
+                    {estimate.boundingBoxMm && (
+                      <div className="small mb-1">
+                        Approx size: {estimate.boundingBoxMm.x} x {estimate.boundingBoxMm.y} x {estimate.boundingBoxMm.z} mm
+                      </div>
+                    )}
+                    {typeof estimate.triangleCount === "number" && (
+                      <div className="small mb-1">Triangle count: {estimate.triangleCount}</div>
+                    )}
+                  </>
+                ) : (
+                  <div className="small mb-1">Automatic STL preflight was not available for this file.</div>
+                )}
+                <div className="small text-muted mt-2">{estimate.previewNote}</div>
+              </div>
+            )}
           </div>
         )}
         {errorMessage && (

@@ -19,6 +19,15 @@ type QuoteRecord = {
   quotedPrice?: number | null;
   turnaroundEstimate?: string | null;
   adminNotes?: string | null;
+  analysis?: {
+    analysisAvailable: boolean;
+    triangleCount?: number;
+    boundingBoxMm?: { x: number; y: number; z: number };
+    estimatedMaterialGrams?: number;
+    estimatedPrintHours?: number;
+    estimatedPriceAud?: number;
+    previewNote: string;
+  } | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -157,6 +166,30 @@ export default function QuoteRequestsAdmin(): ReactElement {
                 <div className="mb-3">
                   <div className="small text-uppercase text-muted mb-1">Customer notes</div>
                   <div>{record.notes}</div>
+                </div>
+              )}
+
+              {record.analysis && (
+                <div className="mb-3 p-3 bg-light rounded border">
+                  <div className="small text-uppercase text-muted mb-1">Automatic preflight</div>
+                  {record.analysis.analysisAvailable ? (
+                    <>
+                      <div className="small mb-1">Starting estimate: ${record.analysis.estimatedPriceAud?.toFixed(2)}</div>
+                      <div className="small mb-1">Print time: {record.analysis.estimatedPrintHours} h</div>
+                      <div className="small mb-1">Material: {record.analysis.estimatedMaterialGrams} g</div>
+                      {record.analysis.boundingBoxMm && (
+                        <div className="small mb-1">
+                          Size: {record.analysis.boundingBoxMm.x} x {record.analysis.boundingBoxMm.y} x {record.analysis.boundingBoxMm.z} mm
+                        </div>
+                      )}
+                      {typeof record.analysis.triangleCount === "number" && (
+                        <div className="small mb-1">Triangles: {record.analysis.triangleCount}</div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="small mb-1">No automatic STL estimate was available for this file.</div>
+                  )}
+                  <div className="small text-muted">{record.analysis.previewNote}</div>
                 </div>
               )}
 

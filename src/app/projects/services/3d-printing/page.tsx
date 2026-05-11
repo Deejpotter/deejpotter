@@ -108,9 +108,9 @@ export default function ThreeDPrintingService(): ReactElement {
                     <div className="card-body">
                       <h2 className="h4 mb-3">How quoting works</h2>
                       <p className="text-muted">
-                        The upload form below is the practical first version of
-                        the quoting flow. Quotes still need to account for a few
-                        variables before final pricing is confirmed:
+                        The upload form below can now give a preliminary STL-based
+                        preflight estimate, but final quotes still need to account for
+                        a few practical variables before pricing is locked in:
                       </p>
                       <ul className="mb-0">
                         {quoteFactors.map((factor) => (
@@ -165,12 +165,12 @@ export default function ThreeDPrintingService(): ReactElement {
 
             <section className="mb-5">
               <div className="alert alert-info mb-0">
-                <h2 className="h4 mb-2">Planned improvement: live STL quote</h2>
+                <h2 className="h4 mb-2">Automatic preflight now available for STL files</h2>
                 <p className="mb-0">
-                  The next smart step for this service is automatic model
-                  analysis so customers can upload STL files, get a live quote,
-                  and approve the work before printing starts. This quote intake
-                  form is the first step toward that workflow.
+                  STL uploads can now return a rough starting estimate based on file
+                  geometry, quantity, and material choice. It is still a preliminary
+                  figure rather than a locked quote, but it gives customers a much
+                  better sense of cost and scale before manual review.
                 </p>
               </div>
             </section>

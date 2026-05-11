@@ -43,5 +43,6 @@ export async function GET(request: Request) {
     fileName: record.fileName,
     material: record.material,
     quantity: record.quantity,
+    estimate: record.analysis ?? null,
   });
 }
