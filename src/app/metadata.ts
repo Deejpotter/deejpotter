@@ -6,11 +6,22 @@ import { Metadata } from 'next';
  */
 export const defaultMetadata: Metadata = {
   title: {
-    default: 'Deej Potter | Full-Stack Developer',
+    default: 'Deej Potter | Website Designer and Developer',
     template: '%s | Deej Potter'
   },
-  description: 'Full-stack developer portfolio showcasing web projects, technical apps, and engineering work. Formerly a chef, now building modern web applications with Next.js, React, and TypeScript.',
-  keywords: ['Full-Stack Developer', 'Web Development', 'Next.js', 'React', 'TypeScript', 'Portfolio', 'Software Engineer'],
+  description: 'Website designer and developer building practical websites, landing pages, portfolio sites, and custom digital tools with Next.js, React, and TypeScript.',
+  keywords: [
+    'Website Designer',
+    'Website Developer',
+    'Web Design',
+    'Web Development',
+    'Next.js',
+    'React',
+    'TypeScript',
+    'Portfolio Website',
+    'Landing Pages',
+    'Custom Web Tools'
+  ],
   authors: [{ name: 'Daniel Potter', url: 'https://deejpotter.com' }],
   creator: 'Daniel Potter',
   publisher: 'Daniel Potter',
@@ -19,22 +30,22 @@ export const defaultMetadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://deejpotter.com',
-    siteName: 'Deej Potter Portfolio',
-    title: 'Deej Potter | Full-Stack Developer',
-    description: 'Full-stack developer portfolio showcasing web projects, technical apps, and engineering work.',
+    siteName: 'Deej Potter',
+    title: 'Deej Potter | Website Designer and Developer',
+    description: 'Website designer and developer building practical websites, portfolio sites, and custom digital tools for real-world use.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Deej Potter - Full-Stack Developer'
+        alt: 'Deej Potter - Website Designer and Developer'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Deej Potter | Full-Stack Developer',
-    description: 'Full-stack developer portfolio showcasing web projects, technical apps, and engineering work.',
+    title: 'Deej Potter | Website Designer and Developer',
+    description: 'Website designer and developer building practical websites, portfolio sites, and custom digital tools.',
     images: ['/og-image.png'],
     creator: '@deejpotter'
   },

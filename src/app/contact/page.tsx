@@ -17,6 +17,32 @@ const contactFormSchema = z.object({
     .max(1000, "Message must be less than 1000 characters"),
 });
 
+const messageChannels = [
+  {
+    title: "Contact form",
+    description:
+      "Best for project briefs, redesign requests, and anything that needs a clear written starting point.",
+    href: "#contact-form",
+    label: "Use the form below",
+  },
+  {
+    title: "LinkedIn",
+    description:
+      "Good for direct professional messages if you would rather start there than by email.",
+    href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
+    label: "Message on LinkedIn",
+    external: true,
+  },
+  {
+    title: "Facebook",
+    description:
+      "An easy option if social messaging is the simplest way to start the conversation.",
+    href: "https://www.facebook.com/deej.potter.7/",
+    label: "Open Facebook profile",
+    external: true,
+  },
+];
+
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function Contact(): ReactElement {
@@ -103,6 +129,36 @@ export default function Contact(): ReactElement {
         </p>
       </section>
 
+      <section className="mb-10">
+        <div className="grid gap-6 md:grid-cols-3">
+          {messageChannels.map((channel) => (
+            <div
+              key={channel.title}
+              className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md"
+            >
+              <h2 className="text-lg font-semibold mb-2">{channel.title}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
+                {channel.description}
+              </p>
+              <a
+                href={channel.href}
+                {...(channel.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="inline-flex items-center bg-primary hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded-full transition-transform hover:scale-105"
+              >
+                {channel.label}
+              </a>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 text-sm text-gray-600 dark:text-gray-400 max-w-3xl">
+          Fiverr and Upwork are sensible options too. I have kept the public
+          site ready for that text-first workflow, and can add those profile
+          links here once the preferred platforms are settled.
+        </p>
+      </section>
+
       <section className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mb-10">
         <div className="grid gap-6 md:grid-cols-3 mb-8">
           <div className="rounded-lg bg-gray-50 dark:bg-gray-900 p-4">
@@ -128,7 +184,7 @@ export default function Contact(): ReactElement {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id="contact-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-6">
             <label
               htmlFor="name"

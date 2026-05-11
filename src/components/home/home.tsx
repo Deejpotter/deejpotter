@@ -32,14 +32,15 @@ const quickLinks = [
     tone: "bg-sky-600 text-white",
   },
   {
-    href: "/blog",
-    label: "Read the blog",
+    href: "/contact",
+    label: "Start with a message",
     tone: "bg-emerald-600 text-white",
   },
   {
-    href: "/contact",
-    label: "Send a message",
+    href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
+    label: "LinkedIn",
     tone: "border border-primary text-primary dark:text-white",
+    external: true,
   },
 ];
 
@@ -91,15 +92,27 @@ export default function Home(): ReactElement {
               suits me just fine.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              {quickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {quickLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
             </div>
           </div>
         </div>
