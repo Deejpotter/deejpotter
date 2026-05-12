@@ -36,7 +36,7 @@ describe('Contact form', () => {
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringMatching(/http:\/\/localhost:3001\/api\/contact$/),
+      "/api/contact",
       expect.objectContaining({ method: 'POST' })
     );
 

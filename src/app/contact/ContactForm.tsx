@@ -114,32 +114,16 @@ export default function ContactForm(): ReactElement {
     setErrorMessage(null);
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-      const appEnv = process.env.NEXT_PUBLIC_ENV;
-      const isDevelopment =
-        appEnv === "development" || process.env.NODE_ENV === "test";
+      const contactEndpoint =
+        process.env.NEXT_PUBLIC_CONTACT_ENDPOINT ||
+        process.env.NEXT_PUBLIC_BACKEND_URL ||
+        "/api/contact";
 
-      // Validate backend URL is configured in production
-      if (!backendUrl) {
-        if (!isDevelopment) {
-          setFormStatus("error");
-          setErrorMessage(
-            "Contact form is not configured. Please contact the site administrator."
-          );
-          return;
-        }
-        // In development and test, default to localhost and warn developer
-        console.warn(
-          "NEXT_PUBLIC_BACKEND_URL not set, using http://localhost:3001"
-        );
-      }
-
-      const finalUrl = backendUrl || "http://localhost:3001";
       const payload = {
         ...data,
         leadContext,
       };
-      const response = await fetch(`${finalUrl}/api/contact`, {
+      const response = await fetch(contactEndpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
