@@ -20,11 +20,17 @@ describe('Contact form', () => {
 
     const name = screen.getByLabelText(/Name \(required\)/i);
     const email = screen.getByLabelText(/Email address \(required\)/i);
+    const company = screen.getByLabelText(/Company or website/i);
+    const projectType = screen.getByLabelText(/Project type/i);
+    const source = screen.getByLabelText(/How did you find me\?/i);
     const textarea = screen.getByLabelText(/Message \(required\)/i);
     const submit = screen.getByRole('button', { name: /Submit form/i });
 
     fireEvent.change(name, { target: { value: 'John Doe' } });
     fireEvent.change(email, { target: { value: 'john@example.com' } });
+    fireEvent.change(company, { target: { value: 'Example Co' } });
+    fireEvent.change(projectType, { target: { value: 'website' } });
+    fireEvent.change(source, { target: { value: 'google' } });
     fireEvent.change(textarea, { target: { value: 'hello there world' } });
     fireEvent.click(submit);
 
@@ -32,6 +38,14 @@ describe('Contact form', () => {
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringMatching(/http:\/\/localhost:3001\/api\/contact$/),
       expect.objectContaining({ method: 'POST' })
+    );
+
+    const body = JSON.parse((global.fetch as any).mock.calls[0][1].body);
+    expect(body.company).toBe('Example Co');
+    expect(body.projectType).toBe('website');
+    expect(body.source).toBe('google');
+    expect(body.leadContext).toEqual(
+      expect.objectContaining({ currentPath: expect.any(String), source: 'website' })
     );
 
     // successful submission shows alert
