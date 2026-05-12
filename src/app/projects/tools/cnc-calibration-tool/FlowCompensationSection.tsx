@@ -1,27 +1,16 @@
 "use client";
 import React, { useMemo, useState } from "react";
 
-/**
- * Component for calculating flow compensation for 3D printers.
- * Helps users adjust flow rate to compensate for filament expansion
- * by measuring wall thickness and calculating the optimal flow percentage.
- */
 const FlowCompensationSection = () => {
-  // State for form values
   const [currentFlow, setCurrentFlow] = useState("100");
   const [nozzleWidth, setNozzleWidth] = useState("0.4");
-  const [wallMeasurements, setWallMeasurements] = useState({
-    c1: "",
-    c2: "",
-    c3: "",
-    c4: "",
-  });
+  const [wallMeasurements, setWallMeasurements] = useState({ c1: "", c2: "", c3: "", c4: "" });
+
   const newFlow = useMemo(() => {
     const measurements = Object.values(wallMeasurements).map(Number);
     if (measurements.some(isNaN)) return "";
 
-    const avgThickness =
-      measurements.reduce((a, b) => a + b, 0) / measurements.length;
+    const avgThickness = measurements.reduce((a, b) => a + b, 0) / measurements.length;
     if (avgThickness === 0) return "";
 
     const currentFlowNum = Number(currentFlow);
@@ -31,182 +20,91 @@ const FlowCompensationSection = () => {
     return ((currentFlowNum * nozzleWidthNum) / avgThickness).toFixed(2);
   }, [currentFlow, nozzleWidth, wallMeasurements]);
 
-  // Event handlers for form inputs
-  const handleCurrentFlowChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentFlow(e.target.value);
+  const handleCurrentFlowChange = (e: React.ChangeEvent<HTMLInputElement>) => setCurrentFlow(e.target.value);
+  const handleNozzleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => setNozzleWidth(e.target.value);
+  const handleWallChange = (wall: keyof typeof wallMeasurements) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWallMeasurements({ ...wallMeasurements, [wall]: e.target.value });
   };
 
-  const handleNozzleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNozzleWidth(e.target.value);
-  };
-
-  const handleWallChange =
-    (wall: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setWallMeasurements({ ...wallMeasurements, [wall]: e.target.value });
-    };
+  const inputClass =
+    "w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100";
 
   return (
-    <div className="card border-success">
-      <div className="card-header bg-success text-white">
-        <h2 className="h4 mb-0">
-          <i className="fa fa-tint me-2" aria-hidden="true"></i> Flow
-          Compensation
-        </h2>
+    <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div className="border-b border-green-100 bg-green-600 px-6 py-5 text-white dark:border-gray-700">
+        <h2 className="text-xl font-bold">Flow Compensation</h2>
       </div>
-      <div className="card-body">
-        {/* Description of flow compensation */}
-        <p className="card-text mb-4">
-          Flow compensation is used to compensate for the expansion of the
-          filament being pressed against the layer underneath. Use this
-          calculator to correct for the expansion of the filament by adjusting
-          the flow rate. To use this calculator, print a 20mm x 20mm x 20mm cube
-          in vase mode and then measure the top 5 layers with your caliper.
-          Measure near the center of the cube, not near the edges. Enter the
-          values below to see how you can adjust your flow compensation to
-          produce the properly sized line width of extruded material.
-          <br />
-          <span className="fw-bold mt-2 d-inline-block">
+      <div className="space-y-5 p-6 lg:p-8">
+        <p className="text-gray-700 dark:text-gray-300">
+          Flow compensation is used to correct for filament expansion when it is pressed against the layer underneath. Print a 20mm x 20mm x 20mm cube in vase mode,
+          measure the top 5 layers near the center, and enter the values below.
+          <span className="mt-2 block font-semibold">
             Note that flow compensation can differ based on material.
           </span>
         </p>
 
-        {/* Current Flow % input row */}
-        <div className="row align-items-center py-2 mb-2">
-          <div className="col-lg-3 col-md-3 col-sm-12 mb-2 mb-sm-0">
-            <label className="form-label fw-bold" htmlFor="flow_old">
-              Current Flow %
-            </label>
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,220px)_minmax(0,220px)_minmax(0,1fr)] lg:items-center">
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-200" htmlFor="flow_old">
+            Current Flow %
+          </label>
+          <div className="flex items-center gap-2">
+            <input type="text" className={inputClass} id="flow_old" value={currentFlow} onChange={handleCurrentFlowChange} />
+            <span className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+              %
+            </span>
           </div>
-          <div className="col-lg-2 col-md-3 col-sm-4 mb-2 mb-sm-0">
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                id="flow_old"
-                value={currentFlow}
-                onChange={handleCurrentFlowChange}
-              />
-              <span className="input-group-text">%</span>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Most slicers have flow compensation set to 100% by default.</p>
+        </div>
+
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,220px)_minmax(0,220px)_minmax(0,1fr)] lg:items-center">
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-200" htmlFor="flow_nozzle">
+            Nozzle Width
+          </label>
+          <div className="flex items-center gap-2">
+            <input type="text" className={inputClass} id="flow_nozzle" value={nozzleWidth} onChange={handleNozzleWidthChange} />
+            <span className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+              mm
+            </span>
+          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Enter the diameter of your nozzle.</p>
+        </div>
+
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,220px)_minmax(0,1fr)] lg:items-start">
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-200">Measured Values</label>
+          <div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {(["c1", "c2", "c3", "c4"] as const).map((wall, index) => (
+                <div key={wall} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    className={`${inputClass} text-sm`}
+                    placeholder={`Side ${index + 1}`}
+                    value={wallMeasurements[wall]}
+                    onChange={handleWallChange(wall)}
+                  />
+                  <span className="rounded-xl border border-gray-200 bg-gray-50 px-2.5 py-2 text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                    mm
+                  </span>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="col-lg-7 col-md-6 col-sm-8">
-            <small className="text-muted">
-              Most slicers have flow compensation set to 100% by default.
-            </small>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              Measure the thickness of each side of the cube wall using the top 5 layers near the center of the wall.
+            </p>
           </div>
         </div>
 
-        {/* Nozzle Width input row */}
-        <div className="row align-items-center py-2 mb-2">
-          <div className="col-lg-3 col-md-3 col-sm-12 mb-2 mb-sm-0">
-            <label className="form-label fw-bold" htmlFor="flow_nozzle">
-              Nozzle Width
-            </label>
-          </div>
-          <div className="col-lg-2 col-md-3 col-sm-4 mb-2 mb-sm-0">
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                id="flow_nozzle"
-                value={nozzleWidth}
-                onChange={handleNozzleWidthChange}
-              />
-              <span className="input-group-text">mm</span>
-            </div>
-          </div>
-          <div className="col-lg-7 col-md-6 col-sm-8">
-            <small className="text-muted">
-              Enter the diameter of your nozzle.
-            </small>
-          </div>
-        </div>
-
-        {/* Wall Measurements input row */}
-        <div className="row align-items-center py-2 mb-3">
-          <div className="col-lg-3 col-md-3 col-sm-12 mb-2 mb-sm-0">
-            <label className="form-label fw-bold">Measured Values</label>
-          </div>
-          <div className="col-lg-4 col-md-5 col-sm-12">
-            <div className="row g-2">
-              <div className="col-3">
-                <div className="input-group input-group-sm">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Side 1"
-                    value={wallMeasurements.c1}
-                    onChange={handleWallChange("c1")}
-                  />
-                  <span className="input-group-text">mm</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="input-group input-group-sm">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Side 2"
-                    value={wallMeasurements.c2}
-                    onChange={handleWallChange("c2")}
-                  />
-                  <span className="input-group-text">mm</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="input-group input-group-sm">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Side 3"
-                    value={wallMeasurements.c3}
-                    onChange={handleWallChange("c3")}
-                  />
-                  <span className="input-group-text">mm</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="input-group input-group-sm">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Side 4"
-                    value={wallMeasurements.c4}
-                    onChange={handleWallChange("c4")}
-                  />
-                  <span className="input-group-text">mm</span>
-                </div>
-              </div>
-            </div>
-            <small className="text-muted mt-1 d-block">
-              Measure the thickness of each side of the cube wall using the top
-              5 layers near the center of the wall.
-            </small>
-          </div>
-        </div>
-
-        {/* Result row with calculated new flow percentage */}
-        <div className="row mt-4">
-          <div className="col-md-8 offset-md-2">
-            <div className="card bg-light">
-              <div className="card-body text-center">
-                <h3 className="h5 card-title">New Flow Percentage</h3>
-                <p className="display-6 text-success mb-3">
-                  {newFlow ? `${newFlow}%` : "—"}
-                </p>
-                {newFlow && (
-                  <small className="text-muted">
-                    Enter this value into one or more fields of Cura&apos;s flow
-                    compensation fields. Shell/Skin values are most important to
-                    modify for accurate parts.
-                  </small>
-                )}
-              </div>
-            </div>
-          </div>
+        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 text-center dark:border-gray-700 dark:bg-gray-900">
+          <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">New Flow Percentage</h3>
+          <p className="text-4xl font-extrabold text-green-600">{newFlow ? `${newFlow}%` : "—"}</p>
+          {newFlow && (
+            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+              Enter this value into one or more fields of Cura&apos;s flow compensation fields. Shell/Skin values are most important to modify for accurate parts.
+            </p>
+          )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

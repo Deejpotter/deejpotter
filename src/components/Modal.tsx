@@ -6,77 +6,58 @@ const Modal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const openButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Lock body scroll when modal is open
-  // Also mark main content as aria-hidden for screen readers while modal is open
   useEffect(() => {
-    const main = document.querySelector('main');
+    const main = document.querySelector("main");
 
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
-      if (main) main.setAttribute('aria-hidden', 'true');
+      if (main) main.setAttribute("aria-hidden", "true");
     } else {
       document.body.style.overflow = "unset";
-      if (main) main.removeAttribute('aria-hidden');
+      if (main) main.removeAttribute("aria-hidden");
     }
 
     return () => {
       document.body.style.overflow = "unset";
-      if (main) main.removeAttribute('aria-hidden');
+      if (main) main.removeAttribute("aria-hidden");
     };
   }, [isModalOpen]);
 
   const closeModal = () => {
     setIsModalOpen(false);
-    // Return focus to the button that opened the modal
-    if (openButtonRef.current) {
-      openButtonRef.current.focus();
-    }
+    openButtonRef.current?.focus();
   };
 
-  // Focus management and keyboard handling
   useEffect(() => {
     if (!isModalOpen) return;
 
     const modalElement = modalRef.current;
     if (!modalElement) return;
 
-    // Focus the first focusable element in the modal
     const focusableElements = modalElement.querySelectorAll(
       "button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])"
     );
     const firstElement = focusableElements[0] as HTMLElement;
-    if (firstElement) {
-      firstElement.focus();
-    }
+    if (firstElement) firstElement.focus();
 
-    // Handle ESC key to close modal
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeModal();
-      }
+      if (event.key === "Escape") closeModal();
     };
 
-    // Focus trap: keep focus within modal
     const handleTab = (event: KeyboardEvent) => {
       if (event.key !== "Tab") return;
 
       const firstFocusable = focusableElements[0] as HTMLElement;
-      const lastFocusable = focusableElements[
-        focusableElements.length - 1
-      ] as HTMLElement;
+      const lastFocusable = focusableElements[focusableElements.length - 1] as HTMLElement;
 
       if (event.shiftKey) {
-        // Shift + Tab
         if (document.activeElement === firstFocusable) {
           event.preventDefault();
           lastFocusable.focus();
         }
-      } else {
-        // Tab
-        if (document.activeElement === lastFocusable) {
-          event.preventDefault();
-          firstFocusable.focus();
-        }
+      } else if (document.activeElement === lastFocusable) {
+        event.preventDefault();
+        firstFocusable.focus();
       }
     };
 
@@ -90,10 +71,7 @@ const Modal = () => {
   }, [isModalOpen]);
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    // Close modal if clicking on the overlay (not the modal content)
-    if (event.target === event.currentTarget) {
-      closeModal();
-    }
+    if (event.target === event.currentTarget) closeModal();
   };
 
   return (
@@ -102,57 +80,57 @@ const Modal = () => {
         ref={openButtonRef}
         onClick={() => setIsModalOpen(true)}
         aria-haspopup="dialog"
+        className="inline-flex items-center rounded-full bg-primary px-4 py-2 font-semibold text-white shadow-sm transition-transform hover:scale-[1.02]"
       >
         Open Modal
       </button>
-      
+
       {isModalOpen && (
         <div
-          className="modal show d-block"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
           aria-describedby="modal-description"
           onClick={handleOverlayClick}
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         >
-          <div className="modal-dialog" ref={modalRef}>
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="modal-title">
-                  Modal Title
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={closeModal}
-                  aria-label="Close modal"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <p id="modal-description">Modal body text goes here.</p>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={closeModal}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => {
-                    // Handle save action here
-                    closeModal();
-                  }}
-                >
-                  Save changes
-                </button>
-              </div>
+          <div
+            ref={modalRef}
+            className="w-full max-w-lg overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-gray-900"
+          >
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-800">
+              <h5 className="text-xl font-bold" id="modal-title">
+                Modal Title
+              </h5>
+              <button
+                type="button"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-xl text-gray-600 transition hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                onClick={closeModal}
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+            </div>
+            <div className="px-6 py-5">
+              <p id="modal-description" className="text-gray-700 dark:text-gray-300">
+                Modal body text goes here.
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-gray-800">
+              <button
+                type="button"
+                className="inline-flex items-center rounded-full border border-gray-300 px-4 py-2 font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center rounded-full bg-primary px-4 py-2 font-semibold text-white shadow-sm transition-transform hover:scale-[1.02]"
+                onClick={() => closeModal()}
+              >
+                Save changes
+              </button>
             </div>
           </div>
         </div>

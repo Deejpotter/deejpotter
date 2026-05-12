@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "./AuthProvider";
 import md5 from "md5";
@@ -94,6 +95,9 @@ const AuthButton: React.FC<AuthButtonProps> = ({
     <div className={`flex items-center ${className}`}>
       {isSignedIn && user ? (
         <div className="flex items-center gap-3">
+          <Link href="/admin/leads" className={`${btnClasses("outline")}`}>
+            Leads
+          </Link>
           {showGravatar && (
             <Gravatar
               email={

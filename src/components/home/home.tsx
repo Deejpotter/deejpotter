@@ -1,24 +1,11 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
-
-const featuredAreas = [
-  {
-    title: "Website design and development",
-    description:
-      "Business websites, portfolio sites, and custom frontends built to be clear, modern, and easy to keep improving over time.",
-  },
-  {
-    title: "Custom tools and automation",
-    description:
-      "Calculators, internal tools, and workflow helpers that solve a real operational problem instead of adding more admin overhead.",
-  },
-  {
-    title: "Technical problem solving",
-    description:
-      "Projects that sit between software, engineering, operations, and manufacturing - where details matter and the answer has to actually work.",
-  },
-];
+import {
+  processSteps,
+  serviceOfferings,
+  showcaseItems,
+} from "@/content/site-data";
 
 const quickLinks = [
   {
@@ -76,7 +63,7 @@ export default function Home(): ReactElement {
         })}
       </Script>
 
-      <section className="primary-light-gradient text-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-b from-primary via-primary/95 to-primary/80 text-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-3xl">
             <p className="text-sm uppercase tracking-[0.2em] text-white/70 mb-4">
@@ -90,6 +77,11 @@ export default function Home(): ReactElement {
               with a focus on clarity, performance, and maintainability. If you
               prefer to start through messages instead of phone calls, that
               suits me just fine.
+            </p>
+            <p className="mt-4 text-sm sm:text-base text-white/80 max-w-2xl">
+              My strongest work tends to live where design, implementation, and
+              practical operations meet - the projects where a clean answer is
+              better than a flashy one.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {quickLinks.map((link) =>
@@ -145,17 +137,42 @@ export default function Home(): ReactElement {
 
       <section className="py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">Featured areas</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {featuredAreas.map((area) => (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6">
+            <div>
+              <p className="text-sm uppercase tracking-[0.2em] text-primary font-semibold">
+                Services
+              </p>
+              <h2 className="text-3xl font-bold">What I can build for you</h2>
+            </div>
+            <Link
+              href="/projects/services"
+              className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
+            >
+              See the full services page
+            </Link>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {serviceOfferings.map((service) => (
               <article
-                key={area.title}
-                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow"
+                key={service.id}
+                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow flex flex-col"
               >
-                <h3 className="text-xl font-semibold mb-3">{area.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {area.description}
+                <h3 className="text-xl font-semibold mb-3">{service.name}</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  {service.description}
                 </p>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
+                  {service.features.slice(0, 3).map((feature) => (
+                    <li key={feature}>- {feature}</li>
+                  ))}
+                </ul>
+                <Link
+                  href={service.link}
+                  className="mt-auto inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+                >
+                  {service.cta}
+                </Link>
               </article>
             ))}
           </div>
@@ -163,6 +180,40 @@ export default function Home(): ReactElement {
       </section>
 
       <section className="py-14 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950/60">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6">
+            <div>
+              <p className="text-sm uppercase tracking-[0.2em] text-primary font-semibold">
+                How I work
+              </p>
+              <h2 className="text-3xl font-bold">A simple process that keeps things moving</h2>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xl sm:text-right">
+              Clear brief, sensible structure, working build, then refinement.
+              No drama, no mystery, just deliberate progress.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {processSteps.map((step, index) => (
+              <article
+                key={step.id}
+                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md"
+              >
+                <p className="text-sm font-semibold text-primary mb-2">
+                  Step {index + 1}
+                </p>
+                <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {step.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto grid gap-6 lg:grid-cols-2">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
             <h2 className="text-2xl font-bold mb-3">Explore the work</h2>
@@ -171,25 +222,22 @@ export default function Home(): ReactElement {
               blog. The common thread is simple: solve the problem properly,
               then make the result easy to use.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/projects/websites"
-                className="text-sm bg-primary text-white font-bold py-2 px-4 rounded-full transition-transform hover:scale-105"
-              >
-                Websites
-              </Link>
-              <Link
-                href="/projects/tools"
-                className="text-sm bg-sky-600 text-white font-bold py-2 px-4 rounded-full transition-transform hover:scale-105"
-              >
-                Tools
-              </Link>
-              <Link
-                href="/blog"
-                className="text-sm bg-emerald-600 text-white font-bold py-2 px-4 rounded-full transition-transform hover:scale-105"
-              >
-                Blog
-              </Link>
+            <div className="space-y-4">
+              {showcaseItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.link}
+                  className="block rounded-xl border border-gray-200 dark:border-gray-700 p-4 transition-colors hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-900/50"
+                >
+                  <p className="text-lg font-semibold mb-1">{item.title}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {item.description}
+                  </p>
+                  <span className="mt-3 inline-flex text-sm font-semibold text-primary">
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
 

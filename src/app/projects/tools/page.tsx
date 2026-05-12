@@ -4,7 +4,6 @@ import Image from "next/image";
 import Script from "next/script";
 
 export default function Tools(): ReactElement {
-  // Define the tools project data
   const toolProjects = [
     {
       id: "20-series-cut-calculator",
@@ -23,7 +22,6 @@ export default function Tools(): ReactElement {
         "Visual cut pattern display",
       ],
     },
-    // Note: You can add more tool projects here as they are developed
   ];
 
   return (
@@ -61,113 +59,112 @@ export default function Tools(): ReactElement {
         `}
       </Script>
 
-      <div className="container py-4">
-        <div className="row mb-4">
-          <div className="col">
-            <h1>Tools & Calculators</h1>
-            <p className="lead">
-              Engineering and manufacturing tools I&apos;ve developed to solve
-              practical problems. Each tool demonstrates algorithm design,
-              optimization techniques, and user-focused interface design.
-            </p>
-          </div>
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            Tools
+          </p>
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Tools & Calculators
+          </h1>
+          <p className="max-w-4xl text-lg text-gray-600 dark:text-gray-400">
+            Engineering and manufacturing tools I&apos;ve developed to solve
+            practical problems. Each tool demonstrates algorithm design,
+            optimization techniques, and user-focused interface design.
+          </p>
         </div>
 
-        <div className="row">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {toolProjects.map((project) => (
-            <div key={project.id} className="col-12 col-md-6 col-lg-4 mb-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body d-flex flex-column">
-                  <div className="text-center mb-3">
-                    <Image
-                      src={project.image}
-                      alt={project.name}
-                      width={80}
-                      height={80}
-                      className="rounded"
-                    />
-                  </div>
-                  <h5 className="card-title">{project.name}</h5>
-                  <p className="card-text flex-grow-1">
-                    {project.description}
-                  </p>
+            <article key={project.id} className="rounded-2xl border border-gray-200 bg-white shadow-md dark:border-gray-800 dark:bg-gray-900">
+              <div className="flex h-full flex-col p-6">
+                <div className="mb-4 flex justify-center">
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    width={80}
+                    height={80}
+                    className="h-auto w-20 rounded"
+                  />
+                </div>
+                <h2 className="mb-3 text-2xl font-bold">{project.name}</h2>
+                <p className="mb-4 flex-grow text-gray-600 dark:text-gray-400">
+                  {project.description}
+                </p>
 
-                  {project.features && (
-                    <div className="mb-3">
-                      <h6 className="text-muted small mb-2">Key Features:</h6>
-                      <ul className="small mb-0">
-                        {project.features.map((feature, index) => (
-                          <li key={index}>{feature}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div className="mb-3">
-                    <h6 className="text-muted small mb-2">Technologies:</h6>
-                    <div className="d-flex flex-wrap gap-2">
-                      {project.technologies.map((tech, index) => (
-                        <span
-                          key={index}
-                          className="badge bg-secondary bg-opacity-10 text-dark"
-                        >
-                          {tech}
-                        </span>
+                {project.features && (
+                  <div className="mb-4 rounded-2xl bg-gray-50 p-4 dark:bg-gray-950/40">
+                    <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-gray-500">
+                      Key features
+                    </h3>
+                    <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                      {project.features.map((feature) => (
+                        <li key={feature} className="flex gap-3">
+                          <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+                          <span>{feature}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
+                )}
 
-                  <div className="mt-auto">
-                    {project.external ? (
-                      <a
-                        href={project.link}
-                        className="btn btn-primary w-100"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                <div className="mb-5">
+                  <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-gray-500">
+                    Technologies
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-white"
                       >
-                        Visit Tool{" "}
-                        <i className="bi bi-box-arrow-up-right ms-1"></i>
-                      </a>
-                    ) : (
-                      <Link
-                        href={project.link}
-                        className="btn btn-primary w-100"
-                      >
-                        Use Tool <i className="bi bi-arrow-right ms-1"></i>
-                      </Link>
-                    )}
+                        {tech}
+                      </span>
+                    ))}
                   </div>
                 </div>
+
+                <div className="mt-auto">
+                  {project.external ? (
+                    <a
+                      href={project.link}
+                      className="inline-flex w-full items-center justify-center rounded-full bg-primary px-5 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Visit Tool <span className="ml-2">↗</span>
+                    </a>
+                  ) : (
+                    <Link href={project.link} className="inline-flex w-full items-center justify-center rounded-full bg-primary px-5 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
+                      Use Tool <span className="ml-2">→</span>
+                    </Link>
+                  )}
+                </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
-        <div className="row mt-5">
-          <div className="col">
-            <div className="alert alert-info">
-              <h5 className="alert-heading">
-                <i className="bi bi-info-circle me-2"></i>More Tools Coming
-                Soon
-              </h5>
-              <p className="mb-0">
-                I&apos;m continuously developing new tools and calculators for
-                engineering and manufacturing applications. Check back regularly
-                for updates, or visit{" "}
-                <a
-                  href="https://cnctools.deejpotter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="alert-link"
-                >
-                  CNC Tools
-                </a>{" "}
-                for a comprehensive collection of CNC-specific calculators and
-                resources.
-              </p>
-            </div>
-          </div>
-        </div>
+        <section className="mt-10 rounded-2xl border border-sky-200 bg-sky-50 p-6 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30">
+          <h2 className="mb-2 text-2xl font-bold">
+            More tools coming soon
+          </h2>
+          <p className="mb-0 text-gray-700 dark:text-gray-300">
+            I&apos;m continuously developing new tools and calculators for
+            engineering and manufacturing applications. Check back regularly
+            for updates, or visit{" "}
+            <a
+              href="https://cnctools.deejpotter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-primary hover:underline"
+            >
+              CNC Tools
+            </a>{" "}
+            for a comprehensive collection of CNC-specific calculators and
+            resources.
+          </p>
+        </section>
       </div>
     </>
   );

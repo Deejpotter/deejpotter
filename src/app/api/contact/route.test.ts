@@ -1,6 +1,10 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import fs from "node:fs/promises";
 import path from "node:path";
+
+vi.mock("@clerk/nextjs", () => ({
+  auth: () => ({ userId: "user_123" }),
+}));
 
 const tempDir = path.join(process.cwd(), "tmp", "contact-leads-test");
 
@@ -53,4 +57,55 @@ test("contact route stores lead data", async () => {
   expect(records).toHaveLength(1);
   expect(records[0].email).toBe("jane@example.com");
   expect(records[0].leadContext.source).toBe("Google");
+});
+
+test("contact route lists leads for authenticated admin users", async () => {
+  const { POST, GET } = await import("./route");
+
+  await POST(
+    new Request("http://localhost/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: "Jane Doe",
+        email: "jane@example.com",
+        message: "Please help with a site redesign.",
+      }),
+    })
+  );
+
+  const response = await GET();
+  expect(response.ok).toBe(true);
+  const leads = await response.json();
+  expect(leads).toHaveLength(1);
+  expect(leads[0].name).toBe("Jane Doe");
+});
+
+test("contact route updates lead status for authenticated admin users", async () => {
+  const { POST, PATCH } = await import("./route");
+
+  const postResponse = await POST(
+    new Request("http://localhost/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: "Jane Doe",
+        email: "jane@example.com",
+        message: "Please help with a site redesign.",
+      }),
+    })
+  );
+  const created = await postResponse.json();
+
+  const response = await PATCH(
+    new Request("http://localhost/api/contact", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ id: created.requestId, status: "reviewed" }),
+    })
+  );
+
+  expect(response.ok).toBe(true);
+  const lead = await response.json();
+  expect(lead.status).toBe("reviewed");
 });

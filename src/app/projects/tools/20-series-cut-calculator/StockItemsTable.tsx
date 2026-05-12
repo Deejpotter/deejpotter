@@ -75,15 +75,15 @@ export default function StockItemsTable({
             <thead className="bg-gray-100">
               <tr>
                 <th style={{ width: "15%" }}>ID</th>
-                <th style={{ width: "35%" }}>Length (mm) <span className="text-danger">*</span></th>
-                <th style={{ width: "35%" }}>Quantity Available <span className="text-danger">*</span></th>
+                <th style={{ width: "35%" }}>Length (mm) <span className="text-red-600">*</span></th>
+                <th style={{ width: "35%" }}>Quantity Available <span className="text-red-600">*</span></th>
                 <th style={{ width: "15%" }} className="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {stockItems.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="text-center text-muted py-4">No stock items added. Click &quot;Add Stock Length&quot; to start.</td>
+                  <td colSpan={4} className="py-4 text-center text-gray-500 dark:text-gray-400">No stock items added. Click &quot;Add Stock Length&quot; to start.</td>
                 </tr>
               ) : (
                 stockItems.map((stock) => (

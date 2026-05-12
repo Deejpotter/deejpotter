@@ -30,66 +30,71 @@ export default function CustomToolsService(): ReactElement {
         })}
       </Script>
 
-      <div className="container py-5">
-        <div className="row">
-          <div className="col-lg-10 mx-auto">
-            <p className="text-uppercase text-muted small mb-2">Service</p>
-            <h1 className="display-5 mb-3">Custom tools and automation</h1>
-            <p className="lead text-muted mb-5">
-              Sometimes the real problem is not the website itself - it is the
-              repetitive process behind the work. That is where custom tools can
-              help.
-            </p>
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            Service
+          </p>
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Custom tools and automation
+          </h1>
+          <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
+            Sometimes the real problem is not the website itself - it is the
+            repetitive process behind the work. That is where custom tools can
+            help.
+          </p>
 
-            <section className="mb-5">
-              <h2 className="h3 mb-3">What this can include</h2>
-              <ul>
+          <section className="mb-10 grid gap-6 lg:grid-cols-[1fr_0.95fr] lg:items-start">
+            <div>
+              <h2 className="mb-3 text-3xl font-bold">What this can include</h2>
+              <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 {examples.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ul>
-            </section>
-
-            <section className="mb-5">
-              <h2 className="h3 mb-3">When a custom tool makes sense</h2>
-              <p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+              <h2 className="mb-3 text-2xl font-bold">When a custom tool makes sense</h2>
+              <p className="text-gray-700 dark:text-gray-300">
                 A custom tool is often the right choice when there is a small,
-                specific problem that keeps costing time, attention, or accuracy
-                - but not enough of a problem to justify a giant software system.
+                specific problem that keeps costing time, attention, or
+                accuracy - but not enough of a problem to justify a giant
+                software system.
               </p>
-              <p>
+              <p className="mb-0 text-gray-700 dark:text-gray-300">
                 Good examples include internal calculators, quoting helpers,
                 dashboards, admin shortcuts, and workflow tools that remove
                 repeated manual steps.
               </p>
-            </section>
+            </div>
+          </section>
 
-            <section className="mb-5">
-              <div className="card shadow-sm border-0 bg-light">
-                <div className="card-body">
-                  <h2 className="h4 mb-3">Best starting brief</h2>
-                  <p className="mb-0">
-                    The clearest way to start is to describe the repetitive task,
-                    what is currently painful, and what a better outcome would
-                    look like. That is usually enough to tell whether a small
-                    custom build is the right move.
-                  </p>
-                </div>
-              </div>
-            </section>
+          <section className="mb-10">
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+              <h2 className="mb-3 text-2xl font-bold">Best starting brief</h2>
+              <p className="mb-0 text-gray-700 dark:text-gray-300">
+                The clearest way to start is to describe the repetitive task,
+                what is currently painful, and what a better outcome would look
+                like. That is usually enough to tell whether a small custom
+                build is the right move.
+              </p>
+            </div>
+          </section>
 
-            <section className="text-center">
-              <h2 className="h3 mb-3">Want to talk through a custom tool?</h2>
-              <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Link href="/contact" className="btn btn-primary btn-lg">
-                  Start with a message
-                </Link>
-                <Link href="/projects/tools" className="btn btn-outline-primary btn-lg">
-                  View existing tools
-                </Link>
-              </div>
-            </section>
-          </div>
+          <section className="text-center">
+            <h2 className="mb-3 text-3xl font-bold">Want to talk through a custom tool?</h2>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link href="/contact" className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
+                Start with a message
+              </Link>
+              <Link href="/projects/tools" className="inline-flex items-center rounded-full border border-primary px-6 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] dark:text-white">
+                View existing tools
+              </Link>
+            </div>
+          </section>
         </div>
       </div>
     </>

@@ -1,65 +1,7 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
-
-const services = [
-  {
-    id: "website-design-development",
-    name: "Website Design and Development",
-    description:
-      "Practical websites, landing pages, portfolio sites, and redesigns built to be clear, responsive, and easy to maintain.",
-    features: [
-      "Small business websites",
-      "Portfolio and personal brand sites",
-      "Landing pages and lead-generation pages",
-      "Redesigns and technical improvements",
-    ],
-    link: "/projects/services/website-design",
-    cta: "Start a website project",
-  },
-  {
-    id: "website-redesign",
-    name: "Website Redesign",
-    description:
-      "A focused service for improving sites that already exist but need clearer messaging, better structure, or stronger enquiry flow.",
-    features: [
-      "Design refreshes",
-      "Better mobile responsiveness",
-      "Stronger calls to action",
-      "SEO and content structure improvements",
-    ],
-    link: "/projects/services/website-redesign",
-    cta: "Ask about a redesign",
-  },
-  {
-    id: "custom-tools-automation",
-    name: "Custom Tools and Automation",
-    description:
-      "Purpose-built calculators, internal tools, and workflow helpers for situations where off-the-shelf software is not quite right.",
-    features: [
-      "Custom calculators",
-      "Small internal utilities",
-      "Operational workflow helpers",
-      "Automation for repetitive digital tasks",
-    ],
-    link: "/projects/services/custom-tools",
-    cta: "Ask about a custom tool",
-  },
-  {
-    id: "3d-printing",
-    name: "On-Demand 3D Printing",
-    description:
-      "On-demand 3D printing for prototypes, replacement parts, hobby projects, and small-run functional pieces around Frankston and the Mornington Peninsula.",
-    features: [
-      "Prototype and replacement parts",
-      "Small-run functional prints",
-      "Viable next-day local turnaround",
-      "Planned STL upload and quoting workflow",
-    ],
-    link: "/projects/services/3d-printing",
-    cta: "Get 3D printing details",
-  },
-];
+import { serviceOfferings } from "@/content/site-data";
 
 export default function Services(): ReactElement {
   return (
@@ -74,7 +16,7 @@ export default function Services(): ReactElement {
             "Website design and development, custom digital tools, automation, and selected technical services.",
           mainEntity: {
             "@type": "ItemList",
-            itemListElement: services.map((service, index) => ({
+            itemListElement: serviceOfferings.map((service, index) => ({
               "@type": "ListItem",
               position: index + 1,
               item: {
@@ -88,75 +30,79 @@ export default function Services(): ReactElement {
         })}
       </Script>
 
-      <div className="container py-5">
-        <div className="row mb-5">
-          <div className="col-lg-10 mx-auto text-center">
-            <p className="text-uppercase text-muted small mb-2">Services</p>
-            <h1 className="display-5 mb-3">Practical digital work, built properly</h1>
-            <p className="lead text-muted mb-0">
-              I help with website design and development, custom tools, and
-              selected technical projects that need a clear result rather than a
-              pile of vague promises.
-            </p>
-          </div>
-        </div>
+      <div className="space-y-10 py-8 sm:py-12 lg:py-16">
+        <section className="mx-auto max-w-4xl text-center">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
+            Services
+          </p>
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            Practical digital work, built properly
+          </h1>
+          <p className="mx-auto max-w-3xl text-lg text-gray-600 dark:text-gray-300">
+            I help with website design and development, custom tools, and selected technical projects that need a clear result rather than a pile of vague promises.
+          </p>
+        </section>
 
-        <div className="row g-4 mb-5">
-          {services.map((service) => (
-            <div key={service.id} className="col-12 col-md-6 col-xl-3">
-              <div className="card h-100 shadow-sm border-0 bg-light">
-                <div className="card-body d-flex flex-column">
-                  <h2 className="h4 card-title mb-3">{service.name}</h2>
-                  <p className="card-text text-muted">{service.description}</p>
-                  <ul className="mt-3 mb-4">
-                    {service.features.map((feature) => (
-                      <li key={feature}>{feature}</li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto">
-                    <Link href={service.link} className="btn btn-primary w-100">
-                      {service.cta}
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="row g-4 align-items-start">
-          <div className="col-lg-7">
-            <h2 className="h3 mb-3">How I approach service work</h2>
-            <p>
-              The goal is not to sell as many disconnected services as possible.
-              The goal is to solve the actual problem in front of you - whether
-              that is a weak website, a missing workflow tool, or a technical
-              process that wastes time.
-            </p>
-            <p>
-              I prefer written communication first because it keeps briefs,
-              scope, and next steps clearer. That usually leads to better work
-              and less confusion than forcing everything into phone-first calls.
-            </p>
-          </div>
-          <div className="col-lg-5">
-            <div className="card shadow-sm border-0 bg-white">
-              <div className="card-body">
-                <h2 className="h4 mb-3">Best fit projects</h2>
-                <ul className="mb-4">
-                  <li>Small business websites</li>
-                  <li>Portfolio and personal brand sites</li>
-                  <li>Landing pages with clearer calls to action</li>
-                  <li>Custom calculators and small internal tools</li>
-                  <li>Technical cleanup and iterative improvements</li>
-                </ul>
-                <Link href="/contact" className="btn btn-outline-primary w-100">
-                  Start with a message
+        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {serviceOfferings.map((service) => (
+            <article
+              key={service.id}
+              className="flex h-full flex-col rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+            >
+              <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">{service.name}</h2>
+              <p className="text-gray-600 dark:text-gray-300">{service.description}</p>
+              <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                {service.features.map((feature) => (
+                  <li key={feature} className="flex gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6">
+                <Link
+                  href={service.link}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-primary px-4 py-3 font-semibold text-white shadow-sm transition-transform hover:scale-[1.01]"
+                >
+                  {service.cta}
                 </Link>
               </div>
+            </article>
+          ))}
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
+          <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h2 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">How I approach service work</h2>
+            <div className="space-y-4 text-gray-600 dark:text-gray-300">
+              <p>
+                The goal is not to sell as many disconnected services as possible. The goal is to solve the actual problem in front of you - whether that is a weak website, a missing workflow tool, or a technical process that wastes time.
+              </p>
+              <p>
+                I prefer written communication first because it keeps briefs, scope, and next steps clearer. That usually leads to better work and less confusion than forcing everything into phone-first calls.
+              </p>
             </div>
           </div>
-        </div>
+
+          <div className="rounded-3xl border border-gray-100 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+            <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Best fit projects</h2>
+            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+              <li>Small business websites</li>
+              <li>Portfolio and personal brand sites</li>
+              <li>Landing pages with clearer calls to action</li>
+              <li>Custom calculators and small internal tools</li>
+              <li>Technical cleanup and iterative improvements</li>
+            </ul>
+            <div className="mt-6">
+              <Link
+                href="/contact"
+                className="inline-flex w-full items-center justify-center rounded-full border border-primary/30 px-4 py-3 font-semibold text-primary transition hover:bg-primary/5"
+              >
+                Start with a message
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

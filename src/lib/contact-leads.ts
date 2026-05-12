@@ -23,9 +23,11 @@ export type ContactLeadInput = {
   leadContext?: LeadContext;
 };
 
+export type ContactLeadStatus = "new" | "reviewed" | "replied" | "closed";
+
 export type ContactLeadRecord = ContactLeadInput & {
   id: string;
-  status: "new" | "reviewed" | "replied" | "closed";
+  status: ContactLeadStatus;
   createdAt: string;
   updatedAt: string;
 };
@@ -91,5 +93,26 @@ export async function saveContactLead(input: ContactLeadInput): Promise<ContactL
 }
 
 export async function listContactLeads(): Promise<ContactLeadRecord[]> {
-  return readIndex();
+  const records = await readIndex();
+  return [...records].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function updateContactLeadStatus(
+  id: string,
+  status: ContactLeadStatus
+): Promise<ContactLeadRecord | null> {
+  const root = getRootDir();
+  const records = await readIndex(root);
+  const index = records.findIndex((record) => record.id === id);
+  if (index === -1) return null;
+
+  const next: ContactLeadRecord = {
+    ...records[index],
+    status,
+    updatedAt: new Date().toISOString(),
+  };
+
+  records[index] = next;
+  await writeIndex(records, root);
+  return next;
 }

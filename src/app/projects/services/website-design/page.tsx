@@ -68,105 +68,104 @@ export default function WebsiteDesignService(): ReactElement {
         })}
       </Script>
 
-      <div className="container py-5">
-        <div className="row">
-          <div className="col-lg-10 mx-auto">
-            <p className="text-uppercase text-muted small mb-2">Service</p>
-            <h1 className="display-5 mb-3">Website design and development</h1>
-            <p className="lead text-muted mb-5">
-              Practical websites for businesses, brands, and projects that need
-              to look clear, work properly, and make it easy for people to take
-              the next step.
-            </p>
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            Service
+          </p>
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+            Website design and development
+          </h1>
+          <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
+            Practical websites for businesses, brands, and projects that need
+            to look clear, work properly, and make it easy for people to take
+            the next step.
+          </p>
 
-            <div className="row g-4 mb-5">
-              <div className="col-lg-7">
-                <h2 className="h3 mb-3">What this service is for</h2>
-                <p>
-                  This is the right fit when you need a website that does a real
-                  job - explaining what you offer, building trust, attracting
-                  enquiries, or presenting your work more clearly.
-                </p>
-                <p>
-                  Some projects start from scratch. Others are already online but
-                  need a stronger structure, better messaging, cleaner design, or
-                  a more usable contact flow. Both are valid.
-                </p>
-              </div>
-              <div className="col-lg-5">
-                <div className="card h-100 shadow-sm border-0 bg-light">
-                  <div className="card-body">
-                    <h2 className="h4 mb-3">Typical deliverables</h2>
-                    <ul className="mb-0">
-                      {deliverables.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <section className="mb-5">
-              <h2 className="h3 mb-3">How I approach website work</h2>
-              <div className="row g-3">
-                {process.map((step, index) => (
-                  <div key={step} className="col-md-6">
-                    <div className="card h-100 shadow-sm border-0 bg-light">
-                      <div className="card-body">
-                        <p className="text-uppercase text-muted small mb-2">Step {index + 1}</p>
-                        <p className="mb-0">{step}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="mb-5">
-              <h2 className="h3 mb-3">Frequently asked questions</h2>
-              <div className="accordion" id="website-service-faq">
-                {faqs.map((faq, index) => (
-                  <div key={faq.question} className="accordion-item">
-                    <h3 className="accordion-header">
-                      <button
-                        className={`accordion-button ${index === 0 ? "" : "collapsed"}`}
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#website-service-faq-${index}`}
-                        aria-expanded={index === 0 ? "true" : "false"}
-                        aria-controls={`website-service-faq-${index}`}
-                      >
-                        {faq.question}
-                      </button>
-                    </h3>
-                    <div
-                      id={`website-service-faq-${index}`}
-                      className={`accordion-collapse collapse ${index === 0 ? "show" : ""}`}
-                      data-bs-parent="#website-service-faq"
-                    >
-                      <div className="accordion-body">{faq.answer}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="text-center">
-              <h2 className="h3 mb-3">Want to talk about a website?</h2>
-              <p className="text-muted mb-4">
-                Start with a written brief. A short message is enough to begin.
+          <section className="mb-10 grid gap-6 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold">What this service is for</h2>
+              <p className="text-gray-700 dark:text-gray-300">
+                This is the right fit when you need a website that does a real
+                job - explaining what you offer, building trust, attracting
+                enquiries, or presenting your work more clearly.
               </p>
-              <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Link href="/contact" className="btn btn-primary btn-lg">
-                  Start with a message
-                </Link>
-                <Link href="/projects/websites" className="btn btn-outline-primary btn-lg">
-                  View website projects
-                </Link>
-              </div>
-            </section>
-          </div>
+              <p className="text-gray-700 dark:text-gray-300">
+                Some projects start from scratch. Others are already online but
+                need a stronger structure, better messaging, cleaner design, or
+                a more usable contact flow. Both are valid.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+              <h2 className="mb-3 text-2xl font-bold">Typical deliverables</h2>
+              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                {deliverables.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="mb-4 text-3xl font-bold">How I approach website work</h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {process.map((step, index) => (
+                <article
+                  key={step}
+                  className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
+                >
+                  <p className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-primary">
+                    Step {index + 1}
+                  </p>
+                  <p className="mb-0 text-gray-700 dark:text-gray-300">{step}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="mb-4 text-3xl font-bold">Frequently asked questions</h2>
+            <div className="space-y-3">
+              {faqs.map((faq, index) => (
+                <details
+                  key={faq.question}
+                  className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm open:shadow-md dark:border-gray-800 dark:bg-gray-900"
+                  open={index === 0}
+                >
+                  <summary className="cursor-pointer list-none px-5 py-4 text-lg font-semibold text-gray-900 outline-none transition hover:bg-gray-50 group-open:border-b group-open:border-gray-100 dark:text-gray-100 dark:hover:bg-gray-800/60">
+                    {faq.question}
+                  </summary>
+                  <div className="px-5 py-4 text-gray-700 dark:text-gray-300">
+                    {faq.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section className="text-center">
+            <h2 className="mb-3 text-3xl font-bold">Want to talk about a website?</h2>
+            <p className="mb-6 text-gray-600 dark:text-gray-400">
+              Start with a written brief. A short message is enough to begin.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
+              >
+                Start with a message
+              </Link>
+              <Link
+                href="/projects/websites"
+                className="inline-flex items-center rounded-full border border-primary px-6 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] dark:text-white"
+              >
+                View website projects
+              </Link>
+            </div>
+          </section>
         </div>
       </div>
     </>

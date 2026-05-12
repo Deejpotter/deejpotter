@@ -73,10 +73,10 @@ export default function CutRequirementsTable({
               <tr>
                 <th style={{ width: "15%" }}>ID</th>
                 <th style={{ width: "35%" }}>
-                  Length (mm) <span className="text-danger">*</span>
+                  Length (mm) <span className="text-red-600">*</span>
                 </th>
                 <th style={{ width: "35%" }}>
-                  Quantity <span className="text-danger">*</span>
+                  Quantity <span className="text-red-600">*</span>
                 </th>
                 <th style={{ width: "15%" }} className="text-center">
                   Actions
@@ -86,7 +86,7 @@ export default function CutRequirementsTable({
             <tbody>
               {requirements.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="text-center text-muted py-4">
+                  <td colSpan={4} className="py-4 text-center text-gray-500 dark:text-gray-400">
                     No requirements added. Click &quot;Add Row&quot; to start.
                   </td>
                 </tr>

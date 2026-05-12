@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { saveContactLead } from "@/lib/contact-leads";
+import {
+  listContactLeads,
+  saveContactLead,
+  updateContactLeadStatus,
+  type ContactLeadStatus,
+} from "@/lib/contact-leads";
 
 const leadContextSchema = z.object({
   currentPath: z.string().max(200).optional().default(""),
@@ -22,6 +27,44 @@ const contactSchema = z.object({
   message: z.string().trim().min(10).max(2000),
   leadContext: leadContextSchema.optional(),
 });
+
+const contactStatuses = ["new", "reviewed", "replied", "closed"] as const;
+
+const patchSchema = z.object({
+  id: z.string().uuid(),
+  status: z.enum(contactStatuses),
+});
+
+async function getAuthAsync() {
+  try {
+    const clerk = await import("@clerk/nextjs");
+    const anyClerk = clerk as any;
+    const getter =
+      typeof anyClerk?.auth === "function"
+        ? anyClerk.auth
+        : typeof anyClerk?.getAuth === "function"
+          ? anyClerk.getAuth
+          : () => ({ userId: null });
+    return getter();
+  } catch {
+    return { userId: null };
+  }
+}
+
+export async function GET() {
+  const { userId } = await getAuthAsync();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const leads = await listContactLeads();
+    return NextResponse.json(leads, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("contact route list error", error);
+    return NextResponse.json({ error: "Could not load contact leads." }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -63,5 +106,30 @@ export async function POST(request: Request) {
       { error: "Could not process the contact form right now." },
       { status: 500 }
     );
+  }
+}
+
+export async function PATCH(request: Request) {
+  const { userId } = await getAuthAsync();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const parsed = patchSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid lead update payload." }, { status: 400 });
+    }
+
+    const updated = await updateContactLeadStatus(parsed.data.id, parsed.data.status);
+    if (!updated) {
+      return NextResponse.json({ error: "Lead not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error("contact route patch error", error);
+    return NextResponse.json({ error: "Could not update the lead." }, { status: 500 });
   }
 }

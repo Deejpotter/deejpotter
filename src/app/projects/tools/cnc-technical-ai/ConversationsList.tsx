@@ -1,31 +1,29 @@
-'use client';
-// Import React library and useState hook
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
-// Define the ConversationsList component as a functional component
 const ConversationsList: React.FC = () => {
-  // State to hold the selected conversation type
-  const [selectedType, setSelectedType] = useState('Chat');
+  const [selectedType, setSelectedType] = useState("Chat");
 
-  // Function to handle type selection
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);
   };
 
   return (
-    <div>
-      {/* Dropdown for conversation type selection */}
-      <div className="mb-3">
-        <label htmlFor="conversation-type" className="form-label">Conversation Type:</label>
-        <select id="conversation-type" className="form-select" value={selectedType} onChange={handleTypeChange}>
-          <option value="Chat">Chat</option>
-          <option value="Email">Email</option>
-          {/* Add more types as needed */}
-        </select>
-      </div>
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <label htmlFor="conversation-type" className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-200">
+        Conversation Type:
+      </label>
+      <select
+        id="conversation-type"
+        className="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+        value={selectedType}
+        onChange={handleTypeChange}
+      >
+        <option value="Chat">Chat</option>
+        <option value="Email">Email</option>
+      </select>
     </div>
   );
 };
 
-// Export the ConversationsList component for use in other parts of the application
 export default ConversationsList;

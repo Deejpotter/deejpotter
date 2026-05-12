@@ -21,6 +21,9 @@ type QuoteStatusResponse = {
   } | null;
 };
 
+const inputClass =
+  "w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white";
+
 export default function QuoteStatusLookup(): ReactElement {
   const [requestId, setRequestId] = useState("");
   const [email, setEmail] = useState("");
@@ -55,62 +58,68 @@ export default function QuoteStatusLookup(): ReactElement {
   };
 
   return (
-    <div className="card shadow-sm border-0 bg-white">
-      <div className="card-body p-4 p-lg-5">
-        <div className="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+    <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="border-b border-gray-100 bg-gray-50/80 px-6 py-5 dark:border-gray-800 dark:bg-gray-950/40 sm:px-8">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="h3 mb-2">Check your quote status</h2>
-            <p className="text-muted mb-0">
+            <h2 className="mb-2 text-3xl font-bold">Check your quote status</h2>
+            <p className="max-w-2xl text-gray-600 dark:text-gray-400">
               Enter your request ID and the same email address used on the quote request.
             </p>
           </div>
-          <span className="badge text-bg-light border">Self-serve status</span>
+          <span className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
+            Self-serve status
+          </span>
         </div>
+      </div>
 
-        <form className="row g-3" onSubmit={onSubmit}>
-          <div className="col-md-7">
-            <label htmlFor="status-request-id" className="form-label">
+      <div className="px-6 py-6 sm:px-8">
+        <form className="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] md:items-end" onSubmit={onSubmit}>
+          <div>
+            <label htmlFor="status-request-id" className="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-100">
               Request ID
             </label>
             <input
               id="status-request-id"
-              className="form-control"
+              className={inputClass}
               value={requestId}
               onChange={(event) => setRequestId(event.target.value)}
               placeholder="Paste your quote request ID"
               required
             />
           </div>
-          <div className="col-md-5">
-            <label htmlFor="status-email" className="form-label">
+          <div>
+            <label htmlFor="status-email" className="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-100">
               Email
             </label>
             <input
               id="status-email"
               type="email"
-              className="form-control"
+              className={inputClass}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
             />
           </div>
-          <div className="col-12">
-            <button className="btn btn-outline-primary" type="submit" disabled={loading}>
-              {loading ? "Checking..." : "Check quote status"}
-            </button>
-          </div>
+          <button
+            className="inline-flex items-center justify-center rounded-full border border-primary px-5 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70 dark:text-white"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Checking..." : "Check quote status"}
+          </button>
         </form>
 
         {error && (
-          <div className="alert alert-danger mt-4 mb-0" role="alert">
+          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950 shadow-sm dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-50" role="alert">
             {error}
           </div>
         )}
 
         {result && (
-          <div className="alert alert-info mt-4 mb-0" role="alert">
-            <div className="fw-semibold mb-2">Quote status: {result.status}</div>
-            <div className="small mb-2">
+          <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sky-950 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-50" role="status">
+            <div className="mb-2 text-xl font-bold">Quote status: {result.status}</div>
+            <div className="mb-2 text-sm">
               Request {result.requestId} - {result.fileName} - {result.material} x {result.quantity}
             </div>
             <div className="mb-1">
@@ -128,20 +137,20 @@ export default function QuoteStatusLookup(): ReactElement {
                 <div className="mb-1">
                   Preliminary estimate: from ${result.estimate.estimatedPriceAud?.toFixed(2)}
                 </div>
-                <div className="mb-1 small text-muted">
+                <div className="mb-1 text-sm text-sky-900/80 dark:text-sky-100/80">
                   Approx {result.estimate.estimatedPrintHours} hours and {result.estimate.estimatedMaterialGrams} g material
                 </div>
               </>
             )}
             {result.estimate?.previewNote && (
-              <div className="small text-muted mb-1">{result.estimate.previewNote}</div>
+              <div className="mb-1 text-sm text-sky-900/80 dark:text-sky-100/80">{result.estimate.previewNote}</div>
             )}
-            <div className="text-muted small">
+            <div className="text-sm text-sky-900/70 dark:text-sky-100/70">
               Last updated {new Date(result.updatedAt).toLocaleString()}
             </div>
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 }

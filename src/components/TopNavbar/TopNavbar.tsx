@@ -166,7 +166,7 @@ export default function TopNavbar() {
                       .replace(/\s+/g, "-")}-dropdown`}
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
-                    className="navbar-dropdown-gradient fixed left-0 right-0 top-16 bg-gradient-to-b from-primary/0 to-primary border-t border-primary/20 shadow-md"
+                    className="fixed left-0 right-0 top-16 border-t border-primary/20 bg-gradient-to-b from-primary/0 to-primary/95 shadow-md backdrop-blur-md"
                     style={{ zIndex: 50 }}
                   >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
