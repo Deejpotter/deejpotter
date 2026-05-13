@@ -1,7 +1,19 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-// Default: no routes protected, authentication available everywhere
-export default clerkMiddleware();
+const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
+// Default: no routes protected, authentication available everywhere.
+// When Clerk is not configured, fall through cleanly instead of throwing at runtime.
+const clerk = clerkMiddleware();
+
+export default function middleware(request: NextRequest) {
+  if (!hasClerk) {
+    return NextResponse.next();
+  }
+
+  return clerk(request);
+}
 
 export const config = {
   matcher: [
