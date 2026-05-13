@@ -1,5 +1,5 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server";
 
 const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
@@ -7,12 +7,12 @@ const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 // When Clerk is not configured, fall through cleanly instead of throwing at runtime.
 const clerk = clerkMiddleware();
 
-export default function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest, event: NextFetchEvent) {
   if (!hasClerk) {
     return NextResponse.next();
   }
 
-  return clerk(request);
+  return clerk(request, event);
 }
 
 export const config = {
