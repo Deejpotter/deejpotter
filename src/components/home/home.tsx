@@ -40,7 +40,7 @@ export default function Home(): ReactElement {
           "@type": "Person",
           "@id": "https://deejpotter.com/#person",
           name: "Deej Potter",
-          jobTitle: "Website Designer and Developer",
+          jobTitle: "Website Designer, Maker, and Developer",
           url: "https://deejpotter.com",
           sameAs: [
             "https://www.facebook.com/deej.potter.7/",
@@ -70,17 +70,17 @@ export default function Home(): ReactElement {
               Deej Potter
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-              Website designer and developer building practical digital tools.
+              Website designer, maker, and developer building practical digital and physical tools.
             </h1>
             <p className="text-lg sm:text-xl text-white/90 max-w-2xl">
-              I design and build websites, portfolio sites, and custom tools
-              with a focus on clarity, performance, and maintainability. If you
-              prefer to start through messages instead of phone calls, that
-              suits me just fine.
+              I design and build websites, portfolio sites, custom tools, and
+              light fabrication work for small businesses and hobbyists across
+              Australia. If you want local delivery or home visits within about
+              an hour&apos;s drive, that can work too.
             </p>
             <p className="mt-4 text-sm sm:text-base text-white/80 max-w-2xl">
-              My strongest work tends to live where design, implementation, and
-              practical operations meet - the projects where a clean answer is
+              My strongest work tends to live where design, implementation, CAD/CAM,
+              and practical operations meet - the projects where a clean answer is
               better than a flashy one.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -127,7 +127,8 @@ export default function Home(): ReactElement {
             </p>
             <ul className="space-y-3 text-gray-700 dark:text-gray-300">
               <li>- Website design and development projects</li>
-              <li>- Small business and personal brand sites</li>
+              <li>- Small business and hobbyist projects in Australia</li>
+              <li>- CAD/CAM, 3D printing, laser, and basic milling work</li>
               <li>- Custom tools and automation helpers</li>
               <li>- Text-first communication through forms, social, or freelance platforms</li>
             </ul>
@@ -218,8 +219,8 @@ export default function Home(): ReactElement {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
             <h2 className="text-2xl font-bold mb-3">Explore the work</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-5">
-              Browse website projects, custom tools, engineering work, and the
-              blog. The common thread is simple: solve the problem properly,
+              Browse website projects, custom tools, maker and engineering work,
+              and the blog. The common thread is simple: solve the problem properly,
               then make the result easy to use.
             </p>
             <div className="space-y-4">

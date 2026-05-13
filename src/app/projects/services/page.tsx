@@ -13,7 +13,7 @@ export default function Services(): ReactElement {
           "@id": "https://deejpotter.com/projects/services/#collection",
           name: "Services by Deej Potter",
           description:
-            "Website design and development, custom digital tools, automation, and selected technical services.",
+            "Website design and development, custom digital tools, CAD/CAM support, light fabrication, and selected technical services.",
           mainEntity: {
             "@type": "ItemList",
             itemListElement: serviceOfferings.map((service, index) => ({
@@ -39,7 +39,7 @@ export default function Services(): ReactElement {
             Practical digital work, built properly
           </h1>
           <p className="mx-auto max-w-3xl text-lg text-gray-600 dark:text-gray-300">
-            I help with website design and development, custom tools, and selected technical projects that need a clear result rather than a pile of vague promises.
+            I help with website design and development, custom tools, CAD/CAM support, light fabrication, and selected technical projects that need a clear result rather than a pile of vague promises.
           </p>
         </section>
 
@@ -91,6 +91,7 @@ export default function Services(): ReactElement {
               <li>Portfolio and personal brand sites</li>
               <li>Landing pages with clearer calls to action</li>
               <li>Custom calculators and small internal tools</li>
+              <li>CAD/CAM prep, print jobs, and light fabrication support</li>
               <li>Technical cleanup and iterative improvements</li>
             </ul>
             <div className="mt-6">

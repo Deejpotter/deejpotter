@@ -78,8 +78,21 @@ export const serviceOfferings: ServiceOffering[] = [
     link: "/projects/services/3d-printing",
     cta: "Get 3D printing details",
   },
+  {
+    id: "cad-cam-fabrication",
+    name: "CAD, CAM, and Fabrication Support",
+    description:
+      "CAD/CAM prep, machine-ready files, and light fabrication support for 3D printing, laser work, and basic milling - with honest limits around the Snapmaker A250T 2.0.",
+    features: [
+      "CAD models and file prep",
+      "CAM and toolpath setup",
+      "Basic laser and milling work",
+      "Local delivery or home visits within about an hour drive",
+    ],
+    link: "/projects/services/cad-cam-fabrication",
+    cta: "Talk about fabrication",
+  },
 ];
-
 export const processSteps: ProcessStep[] = [
   {
     id: "discover",

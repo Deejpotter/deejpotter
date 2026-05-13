@@ -10,6 +10,7 @@ const staticRoutes = [
   "/projects/apps",
   "/projects/engineering",
   "/projects/games",
+  "/projects/games/geek-pride-day",
   "/projects/services",
   "/projects/tools",
   "/projects/websites",

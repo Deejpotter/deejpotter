@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Geek Pride Day Platformer Prototype</title>
+    <meta
+      name="description"
+      content="A small browser platformer prototype built from the Geek Pride Day asset pack."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --panel: rgba(8, 14, 28, 0.86);
+        --panel-border: rgba(255, 255, 255, 0.12);
+        --text: #eef3ff;
+        --muted: #b8c2dd;
+        --accent: #34d399;
+        --accent-2: #8b5cf6;
+        --warning: #fbbf24;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(circle at top, rgba(139, 92, 246, 0.24), transparent 30%),
+          radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.15), transparent 22%),
+          linear-gradient(180deg, #09111f 0%, #050811 100%);
+        color: var(--text);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        padding: 24px;
+        box-sizing: border-box;
+      }
+
+      .shell {
+        max-width: 1320px;
+        margin: 0 auto;
+        display: grid;
+        gap: 18px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(110px, 180px) 1fr;
+        gap: 18px;
+        align-items: center;
+        padding: 18px 20px;
+        border: 1px solid var(--panel-border);
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+        backdrop-filter: blur(14px);
+      }
+
+      .hero img {
+        width: 100%;
+        max-width: 180px;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(1.9rem, 3vw, 3.6rem);
+        line-height: 1;
+      }
+
+      .lede {
+        margin: 0;
+        color: var(--muted);
+        max-width: 68ch;
+        line-height: 1.55;
+        font-size: 1rem;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #f4f7ff;
+        font-size: 0.92rem;
+      }
+
+      .stage {
+        position: relative;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 1px solid var(--panel-border);
+        background: linear-gradient(180deg, #06101f 0%, #02040a 100%);
+        box-shadow: 0 32px 100px rgba(0, 0, 0, 0.42);
+        min-height: min(76vh, 820px);
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: min(76vh, 820px);
+        background: linear-gradient(180deg, #0a1830 0%, #050914 100%);
+        outline: none;
+      }
+
+      .hud {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        z-index: 3;
+        display: grid;
+        gap: 6px;
+        padding: 12px 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(4, 8, 18, 0.72);
+        color: #f4f7ff;
+        backdrop-filter: blur(10px);
+        max-width: min(560px, calc(100% - 32px));
+      }
+
+      .hud strong {
+        color: var(--accent);
+      }
+
+      .notice {
+        color: var(--warning);
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 28px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.78));
+        z-index: 4;
+      }
+
+      .overlay[hidden] {
+        display: none;
+      }
+
+      .overlay-card {
+        max-width: 560px;
+        padding: 24px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(8, 14, 28, 0.92);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        text-align: center;
+      }
+
+      .overlay-card h2 {
+        margin: 0 0 10px;
+        font-size: clamp(1.5rem, 3vw, 2.4rem);
+      }
+
+      .overlay-card p {
+        margin: 0 0 14px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .overlay-card button,
+      .overlay-card a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 0;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .overlay-card button {
+        background: linear-gradient(135deg, #10b981, #8b5cf6);
+        color: white;
+        box-shadow: 0 18px 36px rgba(139, 92, 246, 0.28);
+      }
+
+      .overlay-card a {
+        margin-left: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f4f7ff;
+      }
+
+      .overlay-card button:hover,
+      .overlay-card a:hover {
+        transform: translateY(-1px);
+      }
+
+      .footer-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.94rem;
+        text-align: center;
+      }
+
+      @media (max-width: 780px) {
+        body {
+          padding: 14px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          text-align: left;
+        }
+
+        .hero img {
+          max-width: 140px;
+        }
+
+        canvas {
+          height: min(68vh, 760px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="hero">
+        <img
+          src="./resource/The-worker-in-a-yellow-hard-hat-and-blue-overalls-performs-a.webp"
+          alt="Worker character artwork from the Geek Pride Day asset pack"
+        />
+        <div>
+          <p class="eyebrow">Geek Pride Day</p>
+          <h1>Platformer prototype</h1>
+          <p class="lede">
+            A tiny browser platformer built from the Geek Pride Day art pack.
+            Collect the badges, learn the route, and reach the flag at the end.
+            This is the first playable proof that the asset set can become a
+            simple shareable game.
+          </p>
+          <div class="tags" aria-label="Controls">
+            <span class="tag">Move: A/D or arrow keys</span>
+            <span class="tag">Jump: Space, W, or Up</span>
+            <span class="tag">Run: Shift</span>
+            <span class="tag">Restart: R</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="stage" aria-label="Geek Pride Day game stage">
+        <canvas id="game" width="1280" height="720" tabindex="0" aria-label="Geek Pride Day platformer game"></canvas>
+        <div class="hud" id="hud">
+          <strong>Loading assets...</strong>
+          <span>Give it a moment - the worker and level art are loading.</span>
+        </div>
+        <div class="overlay" id="overlay" hidden>
+          <div class="overlay-card">
+            <h2 id="overlayTitle">You did it!</h2>
+            <p id="overlayText">Placeholder text</p>
+            <div>
+              <button id="restartButton" type="button">Play again</button>
+              <a href="./" target="_self">Reload stage</a>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <p class="footer-note">
+        Prototype only - the final launch version can be embedded in a blog post
+        and bundled into a downloadable ZIP.
+      </p>
+    </div>
+
+    <script>
+      (() => {
+        const canvas = document.getElementById("game");
+        const ctx = canvas.getContext("2d");
+        const hud = document.getElementById("hud");
+        const overlay = document.getElementById("overlay");
+        const overlayTitle = document.getElementById("overlayTitle");
+        const overlayText = document.getElementById("overlayText");
+        const restartButton = document.getElementById("restartButton");
+
+        const worldWidth = 3120;
+        const worldHeight = 720;
+        const gravity = 1900;
+        const walkAccel = 3400;
+        const runAccel = 4700;
+        const maxWalkSpeed = 260;
+        const maxRunSpeed = 400;
+        const jumpSpeed = 760;
+        const friction = 0.82;
+        const airDrag = 0.985;
+        const badgeRadius = 18;
+        const startCheckpoint = { x: 210, y: 496 };
+
+        const state = {
+          keys: new Set(),
+          assets: null,
+          player: null,
+          checkpoints: [],
+          platforms: [],
+          movingPlatforms: [],
+          badges: [],
+          goal: null,
+          cameraX: 0,
+          cameraY: 0,
+          collected: 0,
+          totalBadges: 0,
+          notice: "",
+          noticeTimer: 0,
+          won: false,
+          lastTime: performance.now(),
+          started: false,
+          loaded: false,
+        };
+
+        const assetPaths = {
+          portrait: "./resource/The-worker-in-a-yellow-hard-hat-and-blue-overalls-performs-a.webp",
+          door: "./resource/sprite/Door1.png",
+          flag: "./resource/sprite/Flag1.png",
+          light1: "./resource/sprite/Light1.png",
+          light2: "./resource/sprite/Light2.png",
+          pole: "./resource/sprite/Pole1.png",
+          walk: [
+            "./resource/sprite/Walk/Walk1.png",
+            "./resource/sprite/Walk/Walk2.png",
+            "./resource/sprite/Walk/Walk3.png",
+            "./resource/sprite/Walk/Walk4.png",
+            "./resource/sprite/Walk/Walk5.png",
+            "./resource/sprite/Walk/Walk6.png",
+            "./resource/sprite/Walk/Walk7.png",
+            "./resource/sprite/Walk/Walk8.png",
+          ],
+          run: [
+            "./resource/sprite/run/Run1.png",
+            "./resource/sprite/run/Run2.png",
+            "./resource/sprite/run/Run3.png",
+            "./resource/sprite/run/Run4.png",
+            "./resource/sprite/run/Run5.png",
+            "./resource/sprite/run/Run6.png",
+            "./resource/sprite/run/Run7.png",
+            "./resource/sprite/run/Run8.png",
+          ],
+          jump: [
+            "./resource/sprite/Jump/Jump1.png",
+            "./resource/sprite/Jump/Jump2.png",
+            "./resource/sprite/Jump/Jump3.png",
+            "./resource/sprite/Jump/Jump4.png",
+            "./resource/sprite/Jump/Jump5.png",
+            "./resource/sprite/Jump/Jump6.png",
+            "./resource/sprite/Jump/Jump7.png",
+            "./resource/sprite/Jump/Jump8.png",
+          ],
+        };
+
+        function loadImage(src) {
+          return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = () => reject(new Error(`Failed to load ${src}`));
+            image.src = src;
+          });
+        }
+
+        function clamp(value, min, max) {
+          return Math.max(min, Math.min(max, value));
+        }
+
+        function rectsOverlap(a, b) {
+          return (
+            a.x < b.x + b.w &&
+            a.x + a.w > b.x &&
+            a.y < b.y + b.h &&
+            a.y + a.h > b.y
+          );
+        }
+
+        function circleHit(rect, point, radius) {
+          const cx = clamp(point.x, rect.x, rect.x + rect.w);
+          const cy = clamp(point.y, rect.y, rect.y + rect.h);
+          const dx = point.x - cx;
+          const dy = point.y - cy;
+          return dx * dx + dy * dy <= radius * radius;
+        }
+
+        function loadLevel() {
+          state.player = {
+            x: startCheckpoint.x,
+            y: startCheckpoint.y,
+            w: 58,
+            h: 74,
+            vx: 0,
+            vy: 0,
+            facing: 1,
+            onGround: false,
+            ground: null,
+            animationTime: 0,
+          };
+
+          state.checkpoints = [
+            { x: 210, y: 470, w: 112, h: 160, label: "Console Gate" },
+            { x: 1510, y: 330, w: 112, h: 160, label: "Relay Node" },
+          ];
+
+          state.platforms = [
+            { x: -80, y: 628, w: 3280, h: 92, kind: "ground", color: "#111827" },
+            { x: 140, y: 530, w: 210, h: 24, kind: "static", color: "#384066" },
+            { x: 420, y: 465, w: 170, h: 24, kind: "static", color: "#2f7a74" },
+            { x: 700, y: 395, w: 210, h: 24, kind: "static", color: "#5a3f8f" },
+            { x: 1000, y: 330, w: 170, h: 24, kind: "static", color: "#355a8a" },
+            { x: 1290, y: 410, w: 220, h: 24, kind: "static", color: "#43715f" },
+            { x: 1760, y: 535, w: 190, h: 24, kind: "static", color: "#4a3f68" },
+            { x: 2020, y: 455, w: 180, h: 24, kind: "static", color: "#3c5b7d" },
+            { x: 2320, y: 395, w: 200, h: 24, kind: "static", color: "#5d4d79" },
+            { x: 2690, y: 500, w: 220, h: 24, kind: "static", color: "#32695e" },
+            { x: 2870, y: 410, w: 180, h: 24, kind: "static", color: "#4d567f" },
+          ];
+
+          state.movingPlatforms = [
+            { x: 1510, y: 475, w: 150, h: 20, minX: 1380, maxX: 1700, speed: 86, dir: 1, vx: 0, color: "#ef4444" },
+          ];
+
+          state.badges = [
+            { x: 260, y: 490, collected: false },
+            { x: 505, y: 430, collected: false },
+            { x: 790, y: 360, collected: false },
+            { x: 1360, y: 370, collected: false },
+            { x: 2110, y: 415, collected: false },
+            { x: 2450, y: 360, collected: false },
+          ];
+
+          state.totalBadges = state.badges.length;
+          state.goal = { x: 2950, y: 418, w: 90, h: 168 };
+          state.collected = 0;
+          state.cameraX = 0;
+          state.cameraY = 0;
+          state.notice = "";
+          state.noticeTimer = 0;
+          state.won = false;
+          state.started = false;
+        }
+
+        function setNotice(text, duration = 1.6) {
+          state.notice = text;
+          state.noticeTimer = duration;
+        }
+
+        function respawn() {
+          state.player.x = state.checkpoints[state.checkpoints.length - 1].x - 16;
+          state.player.y = state.checkpoints[state.checkpoints.length - 1].y;
+          state.player.vx = 0;
+          state.player.vy = 0;
+          state.player.onGround = false;
+          state.player.ground = null;
+          setNotice("Respawned at the last checkpoint.", 1.7);
+        }
+
+        function resetGame() {
+          loadLevel();
+          hideOverlay();
+          hud.innerHTML = "<strong>Restarted.</strong><span>Collect the badges and reach the flag.</span>";
+        }
+
+        function showOverlay(title, text) {
+          overlayTitle.textContent = title;
+          overlayText.textContent = text;
+          overlay.hidden = false;
+        }
+
+        function hideOverlay() {
+          overlay.hidden = true;
+        }
+
+        function updateHud() {
+          const checkpoint = state.checkpoints[state.checkpoints.length - 1];
+          const progress = `Badges ${state.collected}/${state.totalBadges} | Checkpoint ${checkpoint.label}`;
+          const instruction = state.won
+            ? "Victory secured - press Play again or R to try another run."
+            : "Collect every badge, then touch the flag to finish.";
+          const notice = state.notice ? `<span class=\"notice\">${state.notice}</span>` : "";
+          hud.innerHTML = `<strong>${progress}</strong><span>${instruction}</span>${notice}`;
+        }
+
+        function updateCamera() {
+          const targetX = state.player.x + state.player.w / 2 - canvas.width / 2;
+          state.cameraX = clamp(targetX, 0, worldWidth - canvas.width);
+          state.cameraY = 0;
+        }
+
+        function getSolids() {
+          return [...state.platforms, ...state.movingPlatforms];
+        }
+
+        function integrateMovement(dt) {
+          const player = state.player;
+          const left = state.keys.has("ArrowLeft") || state.keys.has("KeyA");
+          const right = state.keys.has("ArrowRight") || state.keys.has("KeyD");
+          const jump = state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW");
+          const run = state.keys.has("ShiftLeft") || state.keys.has("ShiftRight");
+
+          if (left || right || jump || run) {
+            state.started = true;
+          }
+
+          const accel = player.onGround ? (run ? runAccel : walkAccel) : walkAccel * 0.72;
+          const maxSpeed = run ? maxRunSpeed : maxWalkSpeed;
+
+          if (left && !right) {
+            player.vx -= accel * dt;
+            player.facing = -1;
+          } else if (right && !left) {
+            player.vx += accel * dt;
+            player.facing = 1;
+          } else if (player.onGround) {
+            player.vx *= friction;
+          } else {
+            player.vx *= airDrag;
+          }
+
+          player.vx = clamp(player.vx, -maxSpeed, maxSpeed);
+
+          if (jump && player.onGround) {
+            player.vy = -jumpSpeed;
+            player.onGround = false;
+            player.ground = null;
+            setNotice("Jump!", 0.5);
+          }
+
+          if (player.ground) {
+            player.x += player.ground.vx * dt;
+          }
+
+          player.x += player.vx * dt;
+          player.y += player.vy * dt;
+          player.vy += gravity * dt;
+
+          player.x = clamp(player.x, 0, worldWidth - player.w);
+
+          const solids = getSolids();
+          player.onGround = false;
+          player.ground = null;
+
+          for (const solid of solids) {
+            if (!rectsOverlap(player, solid)) {
+              continue;
+            }
+
+            const overlapLeft = player.x + player.w - solid.x;
+            const overlapRight = solid.x + solid.w - player.x;
+            const overlapTop = player.y + player.h - solid.y;
+            const overlapBottom = solid.y + solid.h - player.y;
+            const minHorizontal = Math.min(overlapLeft, overlapRight);
+            const minVertical = Math.min(overlapTop, overlapBottom);
+
+            if (minHorizontal < minVertical) {
+              if (overlapLeft < overlapRight) {
+                player.x = solid.x - player.w;
+              } else {
+                player.x = solid.x + solid.w;
+              }
+              player.vx = 0;
+            } else {
+              if (overlapTop < overlapBottom) {
+                player.y = solid.y - player.h;
+                player.vy = 0;
+                player.onGround = true;
+                player.ground = solid;
+              } else {
+                player.y = solid.y + solid.h;
+                player.vy = Math.max(0, player.vy);
+              }
+            }
+          }
+
+          for (const checkpoint of state.checkpoints) {
+            if (rectsOverlap(player, checkpoint)) {
+              const idx = state.checkpoints.indexOf(checkpoint);
+              state.checkpoints = state.checkpoints.slice(0, idx + 1);
+              setNotice(`Checkpoint reached: ${checkpoint.label}`, 1.8);
+            }
+          }
+
+          for (const badge of state.badges) {
+            if (!badge.collected && circleHit(player, badge, badgeRadius)) {
+              badge.collected = true;
+              state.collected += 1;
+              setNotice(`Badge collected ${state.collected}/${state.totalBadges}`, 1.2);
+            }
+          }
+
+          if (player.y > worldHeight + 180) {
+            respawn();
+          }
+
+          if (!state.won && rectsOverlap(player, state.goal)) {
+            if (state.collected === state.totalBadges) {
+              state.won = true;
+              showOverlay(
+                "Victory!",
+                "You collected every badge and reached the Geek Pride Day flag. This prototype is ready for the next step: polish the blog post embed and the downloadable build."
+              );
+            } else {
+              setNotice(`Need ${state.totalBadges - state.collected} more badge(s) before the flag accepts you.`, 1.7);
+            }
+          }
+        }
+
+        function drawBackground() {
+          const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          gradient.addColorStop(0, "#0b1632");
+          gradient.addColorStop(0.52, "#091123");
+          gradient.addColorStop(1, "#02040a");
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          const skyOffset = state.cameraX * 0.15;
+          ctx.fillStyle = "rgba(255,255,255,0.08)";
+          for (let i = 0; i < 32; i += 1) {
+            const x = ((i * 203) - skyOffset * 0.4) % (canvas.width + 200);
+            const y = (i * 53) % 220 + 22;
+            ctx.beginPath();
+            ctx.arc(x < -50 ? x + canvas.width + 200 : x - 80, y, (i % 3) + 1, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          for (let i = 0; i < 3; i += 1) {
+            const alpha = 0.08 + i * 0.05;
+            ctx.fillStyle = `rgba(139,92,246,${alpha})`;
+            const bandY = 140 + i * 38;
+            ctx.fillRect(0, bandY, canvas.width, 4);
+          }
+        }
+
+        function drawPlatform(platform) {
+          const x = Math.round(platform.x - state.cameraX);
+          const y = Math.round(platform.y - state.cameraY);
+          const gradient = ctx.createLinearGradient(0, y, 0, y + platform.h);
+          gradient.addColorStop(0, platform.color || "#334155");
+          gradient.addColorStop(1, "#0b1222");
+          ctx.fillStyle = gradient;
+          ctx.fillRect(x, y, platform.w, platform.h);
+          ctx.strokeStyle = "rgba(255,255,255,0.12)";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x + 0.5, y + 0.5, platform.w - 1, platform.h - 1);
+        }
+
+        function drawBadge(badge) {
+          const x = badge.x - state.cameraX;
+          const y = badge.y - state.cameraY;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(Math.PI / 4);
+          ctx.fillStyle = badge.collected ? "rgba(52,211,153,0.25)" : "#fbbf24";
+          ctx.shadowColor = "rgba(251,191,36,0.8)";
+          ctx.shadowBlur = badge.collected ? 0 : 16;
+          ctx.fillRect(-10, -10, 20, 20);
+          ctx.restore();
+        }
+
+        function drawCheckpoint(checkpoint, index) {
+          const img = state.assets.door;
+          const x = checkpoint.x - state.cameraX;
+          const y = checkpoint.y - state.cameraY;
+          if (img) {
+            ctx.drawImage(img, x - 8, y - 8, checkpoint.w + 16, checkpoint.h + 16);
+          } else {
+            ctx.fillStyle = "#8b5cf6";
+            ctx.fillRect(x, y, checkpoint.w, checkpoint.h);
+          }
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          ctx.font = "bold 14px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(`CP ${index + 1}`, x + checkpoint.w / 2, y - 10);
+        }
+
+        function drawGoal() {
+          const x = state.goal.x - state.cameraX;
+          const y = state.goal.y - state.cameraY;
+          const flag = state.assets.flag;
+          const pole = state.assets.pole;
+          if (pole) {
+            ctx.drawImage(pole, x - 22, y - 86, 98, 232);
+          }
+          if (flag) {
+            ctx.drawImage(flag, x - 2, y - 70, 150, 150);
+          } else {
+            ctx.fillStyle = "#34d399";
+            ctx.fillRect(x, y, state.goal.w, state.goal.h);
+          }
+          ctx.fillStyle = "#f8fafc";
+          ctx.font = "bold 16px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("FINISH", x + 42, y - 18);
+        }
+
+        function drawDecoration(image, x, y, w, h, alpha = 1) {
+          if (!image) {
+            return;
+          }
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.drawImage(image, x - state.cameraX, y - state.cameraY, w, h);
+          ctx.restore();
+        }
+
+        function drawPlayer() {
+          const player = state.player;
+          const imageSet = !player.onGround
+            ? state.assets.jump
+            : Math.abs(player.vx) > 270
+              ? state.assets.run
+              : Math.abs(player.vx) > 24
+                ? state.assets.walk
+                : state.assets.walk;
+          const frames = imageSet || [];
+          const frameRate = !player.onGround ? 0.08 : Math.abs(player.vx) > 270 ? 0.055 : 0.09;
+          const frame = frames.length ? frames[Math.floor(player.animationTime / frameRate) % frames.length] : null;
+          const x = player.x - state.cameraX;
+          const y = player.y - state.cameraY;
+          ctx.save();
+          ctx.translate(x + player.w / 2, y + player.h / 2);
+          ctx.scale(player.facing < 0 ? -1 : 1, 1);
+          if (frame) {
+            ctx.drawImage(frame, -player.w / 2 - 6, -player.h / 2 - 4, player.w + 12, player.h + 8);
+          } else {
+            ctx.fillStyle = "#f97316";
+            ctx.fillRect(-player.w / 2, -player.h / 2, player.w, player.h);
+          }
+          ctx.restore();
+        }
+
+        function drawLayerDetails() {
+          const offset = -state.cameraX * 0.3;
+          ctx.fillStyle = "rgba(52, 211, 153, 0.18)";
+          for (let i = 0; i < 8; i += 1) {
+            const x = ((i * 420) + offset) % (canvas.width + 420) - 120;
+            const y = 120 + (i % 3) * 24;
+            ctx.fillRect(x, y, 40, 2);
+          }
+        }
+
+        function drawWorld() {
+          drawBackground();
+          drawLayerDetails();
+          drawDecoration(state.assets.light1, 540, 110, 116, 116, 0.9);
+          drawDecoration(state.assets.light2, 1910, 142, 126, 126, 0.85);
+          for (const platform of state.platforms) {
+            drawPlatform(platform);
+          }
+          for (const platform of state.movingPlatforms) {
+            drawPlatform(platform);
+          }
+          state.checkpoints.forEach(drawCheckpoint);
+          for (const badge of state.badges) {
+            drawBadge(badge);
+          }
+          drawGoal();
+          drawPlayer();
+        }
+
+        function updateAnimation(dt) {
+          state.player.animationTime += dt;
+          if (state.noticeTimer > 0) {
+            state.noticeTimer -= dt;
+            if (state.noticeTimer <= 0) {
+              state.notice = "";
+            }
+          }
+        }
+
+        function updateMovingPlatforms(dt) {
+          for (const platform of state.movingPlatforms) {
+            platform.x += platform.speed * platform.dir * dt;
+            if (platform.x <= platform.minX) {
+              platform.x = platform.minX;
+              platform.dir = 1;
+            } else if (platform.x >= platform.maxX) {
+              platform.x = platform.maxX;
+              platform.dir = -1;
+            }
+            platform.vx = platform.speed * platform.dir;
+          }
+        }
+
+        function loop(now) {
+          const dt = Math.min(0.033, (now - state.lastTime) / 1000);
+          state.lastTime = now;
+
+          if (state.loaded) {
+            updateMovingPlatforms(dt);
+            if (!state.won) {
+              integrateMovement(dt);
+              updateCamera();
+              updateAnimation(dt);
+              updateHud();
+            }
+            drawWorld();
+          }
+
+          requestAnimationFrame(loop);
+        }
+
+        function drawLoading() {
+          ctx.fillStyle = "#050914";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#e2e8f0";
+          ctx.font = "bold 32px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("Loading Geek Pride Day prototype...", canvas.width / 2, canvas.height / 2 - 12);
+          ctx.font = "18px system-ui, sans-serif";
+          ctx.fillStyle = "#94a3b8";
+          ctx.fillText("If this takes a moment, the art assets are still loading.", canvas.width / 2, canvas.height / 2 + 24);
+        }
+
+        function initControls() {
+          window.addEventListener("keydown", (event) => {
+            if (["ArrowLeft", "ArrowRight", "ArrowUp", "KeyA", "KeyD", "KeyW", "Space", "ShiftLeft", "ShiftRight"].includes(event.code)) {
+              event.preventDefault();
+            }
+            state.keys.add(event.code);
+            if (event.code === "KeyR") {
+              resetGame();
+            }
+          });
+
+          window.addEventListener("keyup", (event) => {
+            state.keys.delete(event.code);
+          });
+
+          canvas.addEventListener("pointerdown", () => {
+            canvas.focus();
+          });
+
+          restartButton.addEventListener("click", () => {
+            resetGame();
+          });
+        }
+
+        function setLoadingMessage(message) {
+          hud.innerHTML = `<strong>Loading assets...</strong><span>${message}</span>`;
+        }
+
+        async function loadAssets() {
+          const images = {};
+          setLoadingMessage("Loading character frames and goal props...");
+          images.portrait = await loadImage(assetPaths.portrait);
+          images.door = await loadImage(assetPaths.door);
+          images.flag = await loadImage(assetPaths.flag);
+          images.light1 = await loadImage(assetPaths.light1);
+          images.light2 = await loadImage(assetPaths.light2);
+          images.pole = await loadImage(assetPaths.pole);
+          images.walk = await Promise.all(assetPaths.walk.map(loadImage));
+          images.run = await Promise.all(assetPaths.run.map(loadImage));
+          images.jump = await Promise.all(assetPaths.jump.map(loadImage));
+          return images;
+        }
+
+        function bootstrap() {
+          drawLoading();
+          initControls();
+          loadLevel();
+          loadAssets()
+            .then((assets) => {
+              state.assets = assets;
+              state.loaded = true;
+              hud.innerHTML = "<strong>Ready.</strong><span>Collect the badges, ride the platforms, and reach the flag.</span>";
+              updateHud();
+            })
+            .catch((error) => {
+              state.loaded = true;
+              hud.innerHTML = `<strong>Asset load issue.</strong><span>${error.message}</span>`;
+              setNotice("Fallback mode active - the prototype can still run with simple shapes.", 4);
+            });
+          requestAnimationFrame(loop);
+        }
+
+        bootstrap();
+      })();
+    </script>
+  </body>
+</html>

@@ -9,6 +9,7 @@ describe("sitemap", () => {
     expect(urls).toContain("https://deejpotter.com/projects/services/website-design");
     expect(urls).toContain("https://deejpotter.com/projects/services/website-redesign");
     expect(urls).toContain("https://deejpotter.com/projects/services/custom-tools");
+    expect(urls).toContain("https://deejpotter.com/projects/games/geek-pride-day");
     expect(urls).toContain("https://deejpotter.com/blog/rss.xml");
     expect(urls).toContain("https://deejpotter.com/blog/openclaw-android-pairing-request-churn");
   });

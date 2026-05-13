@@ -1,9 +1,20 @@
 import { ReactElement } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 
+type GameProject = {
+  id: string;
+  name: string;
+  description: string;
+  technologies: string[];
+  image: string;
+  link: string;
+  buttonLabel?: string;
+};
+
 export default function Games(): ReactElement {
-  const gameProjects = [
+  const gameProjects: GameProject[] = [
     {
       id: "basic-bases",
       name: "Basic Bases",
@@ -11,7 +22,18 @@ export default function Games(): ReactElement {
         "A simple but fun WebGL game where you defend your base against waves of enemies. Built with Unity.",
       technologies: ["Unity", "C#", "WebGL"],
       image: "/images/games/basic-bases.jpg",
+      buttonLabel: "Play Basic Bases",
       link: "/projects/games/basic-bases",
+    },
+    {
+      id: "geek-pride-day",
+      name: "Geek Pride Day Platformer",
+      description:
+        "A browser-friendly platformer prototype built from the Geek Pride Day asset pack, ready to embed in a blog post.",
+      technologies: ["HTML", "Canvas", "Browser Game"],
+      image: "/geek-pride-day/resource/The-worker-in-a-yellow-hard-hat-and-blue-overalls-performs-a.webp",
+      buttonLabel: "Play Geek Pride Day Prototype",
+      link: "/projects/games/geek-pride-day",
     },
   ];
 
@@ -38,6 +60,13 @@ export default function Games(): ReactElement {
                   "applicationCategory": "Game",
                   "operatingSystem": "Web Browser",
                   "description": "A simple but fun WebGL game where you defend your base against waves of enemies"
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "name": "Geek Pride Day Platformer",
+                  "applicationCategory": "Game",
+                  "operatingSystem": "Web Browser",
+                  "description": "A browser-friendly platformer prototype built from the Geek Pride Day asset pack"
                 }
               ]
             }
@@ -62,12 +91,22 @@ export default function Games(): ReactElement {
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {gameProjects.map((project) => (
-            <article key={project.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <article key={project.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition-transform hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900">
               <div className="flex h-full flex-col p-6">
-                <div className="mb-4 flex justify-center">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary dark:bg-primary/20 dark:text-white">
-                    🎮
-                  </div>
+                <div className="mb-4 overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 dark:border-gray-800">
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={`${project.name} preview`}
+                      width={640}
+                      height={360}
+                      className="h-40 w-full object-cover opacity-90"
+                    />
+                  ) : (
+                    <div className="flex h-40 w-full items-center justify-center text-5xl">
+                      🎮
+                    </div>
+                  )}
                 </div>
                 <h2 className="mb-3 text-2xl font-bold">{project.name}</h2>
                 <p className="mb-4 flex-grow text-gray-600 dark:text-gray-400">
@@ -82,7 +121,7 @@ export default function Games(): ReactElement {
                 </div>
                 <div className="mt-auto">
                   <Link href={project.link} className="inline-flex w-full items-center justify-center rounded-full bg-emerald-600 px-5 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
-                    Play Game
+                    {project.buttonLabel ?? "Play Game"}
                   </Link>
                 </div>
               </div>

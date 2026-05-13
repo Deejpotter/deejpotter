@@ -7,7 +7,7 @@ export default function About(): ReactElement {
       <section className="mb-12">
         <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">About Me</h1>
         <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
-          I am a website designer and developer with a strong bias toward
+          I am a website designer, maker, and developer with a strong bias toward
           practical problem solving. I like building things that are clear,
           useful, maintainable, and actually help the people using them.
         </p>
@@ -35,7 +35,7 @@ export default function About(): ReactElement {
           <p>
             I have built websites for clients, worked as a junior full-stack
             developer in a team environment, and continue to work across
-            software, operations, and technical systems. That mix is part of why
+            software, operations, CAD/CAM, and technical systems. That mix is part of why
             I am comfortable moving between design decisions, implementation
             details, and the practical realities behind a project.
           </p>
@@ -90,8 +90,8 @@ export default function About(): ReactElement {
           <div className="space-y-4 text-gray-800 dark:text-gray-300">
             <p>
               I enjoy web development, AI-assisted workflows, automation,
-              engineering tools, and the broader systems thinking that connects
-              software to operations.
+              CAD/CAM, maker tooling, and the broader systems thinking that
+              connects software to operations and fabrication.
             </p>
             <p>
               I am especially drawn to work where software has to be both
@@ -106,8 +106,9 @@ export default function About(): ReactElement {
           </h2>
           <div className="space-y-4 text-gray-800 dark:text-gray-300">
             <p>
-              If you need a website, redesign, or a custom digital tool, send me
-              a message with the basics of what you are trying to achieve.
+              If you need a website, redesign, custom tool, or help with a
+              practical fabrication project, send me a message with the basics
+              of what you are trying to achieve.
             </p>
             <Link
               href="/contact"

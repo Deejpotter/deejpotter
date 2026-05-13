@@ -9,12 +9,17 @@ export const defaultMetadata: Metadata = {
     default: 'Deej Potter | Website Designer and Developer',
     template: '%s | Deej Potter'
   },
-  description: 'Website designer and developer building practical websites, landing pages, portfolio sites, and custom digital tools with Next.js, React, and TypeScript.',
+  description: 'Website designer, maker, and developer building practical websites, landing pages, portfolio sites, custom digital tools, and light fabrication work with Next.js, React, TypeScript, and CAD/CAM tools.',
   keywords: [
     'Website Designer',
     'Website Developer',
     'Web Design',
     'Web Development',
+    'CAD/CAM',
+    'Fabrication',
+    '3D Printing',
+    'Laser Cutting',
+    'Milling',
     'Next.js',
     'React',
     'TypeScript',
@@ -32,7 +37,7 @@ export const defaultMetadata: Metadata = {
     url: 'https://deejpotter.com',
     siteName: 'Deej Potter',
     title: 'Deej Potter | Website Designer and Developer',
-    description: 'Website designer and developer building practical websites, portfolio sites, and custom digital tools for real-world use.',
+    description: 'Website designer, maker, and developer building practical websites, portfolio sites, custom digital tools, and light fabrication work for real-world use.',
     images: [
       {
         url: '/og-image.png',
@@ -45,7 +50,7 @@ export const defaultMetadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Deej Potter | Website Designer and Developer',
-    description: 'Website designer and developer building practical websites, portfolio sites, and custom digital tools.',
+    description: 'Website designer, maker, and developer building practical websites, portfolio sites, custom digital tools, and light fabrication work.',
     images: ['/og-image.png'],
     creator: '@deejpotter'
   },
