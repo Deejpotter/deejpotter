@@ -8,6 +8,13 @@ const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 const clerk = clerkMiddleware();
 
 export default function middleware(request: NextRequest, event: NextFetchEvent) {
+  const host = request.headers.get("host") || "";
+  if (host === "www.deejpotter.com") {
+    const url = new URL(request.url);
+    url.hostname = "deejpotter.com";
+    return NextResponse.redirect(url, 308);
+  }
+
   if (!hasClerk) {
     return NextResponse.next();
   }
