@@ -9,26 +9,33 @@ import {
 
 const quickLinks = [
   {
-    href: "/projects/websites/deejpotter",
-    label: "About this site",
-    tone: "bg-primary text-white",
+    href: "/contact",
+    label: "Start with a message",
+    tone: "bg-white text-gray-950",
+    primary: true,
   },
   {
     href: "/projects/websites",
     label: "Website projects",
-    tone: "bg-sky-600 text-white",
+    tone: "border border-white/15 text-white/90 hover:bg-white/5",
   },
   {
-    href: "/contact",
-    label: "Start with a message",
-    tone: "bg-emerald-600 text-white",
+    href: "/projects/services",
+    label: "Services",
+    tone: "border border-white/15 text-white/90 hover:bg-white/5",
   },
   {
     href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
     label: "LinkedIn",
-    tone: "border border-primary text-primary dark:text-white",
+    tone: "border border-emerald-300/40 text-emerald-200 hover:bg-emerald-400/10",
     external: true,
   },
+];
+
+const heroBullets = [
+  "Small business websites and portfolio refreshes",
+  "Custom tools, calculators, and automation helpers",
+  "CAD/CAM, 3D printing, laser, and basic milling support",
 ];
 
 export default function Home(): ReactElement {
@@ -63,87 +70,158 @@ export default function Home(): ReactElement {
         })}
       </Script>
 
-      <section className="bg-gradient-to-b from-primary via-primary/95 to-primary/80 text-white py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="max-w-3xl">
-            <p className="text-sm uppercase tracking-[0.2em] text-white/70 mb-4">
+      <section className="bg-gray-950 px-4 pb-16 pt-8 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+            <p className="text-xs uppercase tracking-[0.35em] text-white/55">
               Deej Potter
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-              Website designer, maker, and developer building practical digital and physical tools.
-            </h1>
-            <p className="text-lg sm:text-xl text-white/90 max-w-2xl">
-              I design and build websites, portfolio sites, custom tools, and
-              light fabrication work for small businesses and hobbyists across
-              Australia. If you want local delivery or home visits within about
-              an hour&apos;s drive, that can work too.
+            <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/80">
+              Practical digital tools and fabrication
             </p>
-            <p className="mt-4 text-sm sm:text-base text-white/80 max-w-2xl">
-              My strongest work tends to live where design, implementation, CAD/CAM,
-              and practical operations meet - the projects where a clean answer is
-              better than a flashy one.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {quickLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
+          </div>
+
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div>
+              <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
+                Website designer - maker - developer
+              </p>
+              <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[0.92] sm:text-5xl lg:text-7xl">
+                Building practical digital and physical tools for people who want the work done properly.
+              </h1>
+              <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
+                I design and build websites, portfolio sites, custom tools, and light fabrication work for small businesses and hobbyists across Australia. If you want local delivery or home visits within about an hour&apos;s drive, that can work too.
+              </p>
+              <p className="mt-5 max-w-3xl text-sm leading-7 text-white/62 sm:text-base">
+                My strongest work tends to live where design, implementation, CAD/CAM, and practical operations meet - the projects where a clean answer is better than a flashy one.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                {quickLinks.map((link) =>
+                  link.external ? (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                )}
+              </div>
+
+              <div className="mt-10 grid gap-3 sm:grid-cols-3">
+                {heroBullets.map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm leading-6 text-white/80"
                   >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
+
+            <aside className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/30 backdrop-blur-sm">
+              <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">
+                What I help with
+              </p>
+              <h2 className="mt-3 text-2xl font-bold text-white">
+                Clear structure. Clean execution. No wasted motion.
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-white/70">
+                I work best on websites and digital tools that need thoughtful structure, clean implementation, and a practical result.
+              </p>
+              <div className="mt-6 grid gap-3">
+                {[
+                  "Website design and development projects",
+                  "Small business and hobbyist projects in Australia",
+                  "CAD/CAM, 3D printing, laser, and basic milling work",
+                  "Custom tools and automation helpers",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/82"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
-      <section className="bg-gray-100 dark:bg-gray-900 py-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">What I help with</h2>
-            <p className="text-gray-700 dark:text-gray-300 max-w-3xl">
-              I work best on websites and digital tools that need thoughtful
-              structure, clean implementation, and a practical result. That can
-              mean a public business site, a portfolio refresh, a custom
-              calculator, or a workflow tool that removes repetitive work.
+      <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8 dark:bg-gray-950">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-3xl bg-white p-8 shadow-bs-lg dark:bg-gray-900">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+              Design direction
             </p>
+            <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-4xl">
+              Built like a studio homepage, not a brochure.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300">
+              The redesign leans on strong typography, generous spacing, a dark hero, and sharper cards with clearer job-to-be-done messaging. The aim is to feel modern, deliberate, and easy to scan in seconds.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {[
+                ["1", "Hero first", "One clear positioning statement and one primary action."],
+                ["2", "Proof second", "Services and process show how I actually work."],
+                ["3", "Conversion last", "Keep the contact path obvious and low-friction."],
+              ].map(([num, title, text]) => (
+                <div key={title} className="rounded-2xl border border-gray-200 p-4 dark:border-gray-800">
+                  <p className="text-sm font-bold text-primary">{num}</p>
+                  <h3 className="mt-2 font-semibold text-gray-900 dark:text-white">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{text}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-md p-6">
-            <p className="text-sm uppercase tracking-wide text-primary mb-2">
+
+          <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-bs-lg dark:border-gray-800 dark:bg-gray-900">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Best fit
             </p>
-            <ul className="space-y-3 text-gray-700 dark:text-gray-300">
+            <ul className="mt-5 space-y-3 text-gray-700 dark:text-gray-300">
               <li>- Website design and development projects</li>
               <li>- Small business and hobbyist projects in Australia</li>
               <li>- CAD/CAM, 3D printing, laser, and basic milling work</li>
               <li>- Custom tools and automation helpers</li>
               <li>- Text-first communication through forms, social, or freelance platforms</li>
             </ul>
+            <div className="mt-8 rounded-2xl bg-gray-50 p-5 dark:bg-gray-950/80">
+              <p className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-500">
+                Working style
+              </p>
+              <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
+                Clear brief, sensible structure, working build, then refinement. No drama, no mystery, just deliberate progress.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6">
+      <section className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-3 border-b border-gray-200 pb-6 dark:border-gray-800 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-primary font-semibold">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Services
               </p>
-              <h2 className="text-3xl font-bold">What I can build for you</h2>
+              <h2 className="mt-2 text-3xl font-black text-gray-900 dark:text-white sm:text-4xl">
+                What I can build for you
+              </h2>
             </div>
             <Link
               href="/projects/services"
@@ -153,24 +231,32 @@ export default function Home(): ReactElement {
             </Link>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {serviceOfferings.map((service) => (
               <article
                 key={service.id}
-                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow flex flex-col"
+                className="group flex flex-col rounded-3xl border border-gray-200 bg-white p-6 shadow-bs transition-all hover:-translate-y-1 hover:shadow-bs-lg dark:border-gray-800 dark:bg-gray-900"
               >
-                <h3 className="text-xl font-semibold mb-3">{service.name}</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+                  Service
+                </p>
+                <h3 className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
+                  {service.name}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-400">
                   {service.description}
                 </p>
-                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
+                <ul className="mt-5 space-y-2 text-sm text-gray-600 dark:text-gray-400">
                   {service.features.slice(0, 3).map((feature) => (
-                    <li key={feature}>- {feature}</li>
+                    <li key={feature} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
+                      <span>{feature}</span>
+                    </li>
                   ))}
                 </ul>
                 <Link
                   href={service.link}
-                  className="mt-auto inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+                  className="mt-6 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
                 >
                   {service.cta}
                 </Link>
@@ -180,32 +266,33 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <section className="py-14 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950/60">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6">
+      <section className="bg-gray-950 px-4 py-16 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-3 border-b border-white/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-primary font-semibold">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
                 How I work
               </p>
-              <h2 className="text-3xl font-bold">A simple process that keeps things moving</h2>
+              <h2 className="mt-2 text-3xl font-black sm:text-4xl">
+                A simple process that keeps things moving
+              </h2>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xl sm:text-right">
-              Clear brief, sensible structure, working build, then refinement.
-              No drama, no mystery, just deliberate progress.
+            <p className="max-w-xl text-sm leading-7 text-white/70 sm:text-right">
+              Clear brief, sensible structure, working build, then refinement. No drama, no mystery, just deliberate progress.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {processSteps.map((step, index) => (
               <article
                 key={step.id}
-                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md"
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm"
               >
-                <p className="text-sm font-semibold text-primary mb-2">
+                <p className="text-sm font-semibold text-emerald-300">
                   Step {index + 1}
                 </p>
-                <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <h3 className="mt-3 text-xl font-bold text-white">{step.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-white/72">
                   {step.description}
                 </p>
               </article>
@@ -214,24 +301,29 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <section className="py-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto grid gap-6 lg:grid-cols-2">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
-            <h2 className="text-2xl font-bold mb-3">Explore the work</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-5">
-              Browse website projects, custom tools, maker and engineering work,
-              and the blog. The common thread is simple: solve the problem properly,
-              then make the result easy to use.
+      <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8 dark:bg-gray-950/60">
+        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
+          <div className="rounded-3xl bg-white p-8 shadow-bs-lg dark:bg-gray-900">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+              Explore the work
             </p>
-            <div className="space-y-4">
+            <h2 className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
+              Browse the parts of the site that show the range.
+            </h2>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">
+              Website projects, custom tools, maker and engineering work, and the blog all point back to the same idea: solve the problem properly, then make the result easy to use.
+            </p>
+            <div className="mt-6 space-y-4">
               {showcaseItems.map((item) => (
                 <Link
                   key={item.id}
                   href={item.link}
-                  className="block rounded-xl border border-gray-200 dark:border-gray-700 p-4 transition-colors hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-900/50"
+                  className="block rounded-2xl border border-gray-200 p-5 transition-colors hover:border-primary/40 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/60"
                 >
-                  <p className="text-lg font-semibold mb-1">{item.title}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-lg font-bold text-gray-900 dark:text-white">
+                    {item.title}
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-gray-600 dark:text-gray-400">
                     {item.description}
                   </p>
                   <span className="mt-3 inline-flex text-sm font-semibold text-primary">
@@ -242,24 +334,26 @@ export default function Home(): ReactElement {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
-            <h2 className="text-2xl font-bold mb-3">Want to work together?</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-5">
-              The easiest way to start is by message. Send me a brief through
-              the contact form, reach out on social media, or contact me through
-              a freelance platform when those profiles are live. No phone call
-              required just to begin.
+          <div className="rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-8 text-white shadow-bs-lg">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
+              Want to work together?
             </p>
-            <div className="flex flex-wrap gap-3">
+            <h2 className="mt-3 text-3xl font-black sm:text-4xl">
+              Start with a message.
+            </h2>
+            <p className="mt-4 max-w-lg text-base leading-8 text-white/86">
+              The easiest way to begin is with a brief. Send me the problem, the deadline, and the result you want. I can usually tell you quickly whether it is a fit.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/contact"
-                className="inline-flex items-center bg-primary hover:bg-opacity-80 text-white font-bold py-3 px-6 rounded-full transition-transform hover:scale-105"
+                className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-bold text-gray-950 transition-transform hover:scale-[1.01]"
               >
                 Start with a message
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center border border-primary text-primary dark:text-white font-semibold py-3 px-6 rounded-full transition-transform hover:scale-105"
+                className="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
               >
                 Learn more about me
               </Link>
