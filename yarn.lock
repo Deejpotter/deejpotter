@@ -2200,6 +2200,11 @@
     "@storybook/react-dom-shim" "10.3.0-alpha.0"
     react-docgen "^8.0.2"
 
+"@stripe/stripe-js@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-9.5.0.tgz#022d40c27eaa98385e7e66f78ebc401ac3fb86e2"
+  integrity sha512-dTQWkJRw5lhcQipPuw6qZRBK2zY5eWWZ1Srw9mSjhIXSLdsNYO3uaIV+YRMkI0/tB/D7yQdHYStrcZrbeHI5Jg==
+
 "@swc/helpers@0.5.15":
   version "0.5.15"
   resolved "https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.15.tgz"
@@ -7834,6 +7839,11 @@ strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
+
+stripe@^22.1.1:
+  version "22.1.1"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-22.1.1.tgz#b01f0bb7fa7b1c07e32a726a968eafe73335388d"
+  integrity sha512-cmodIYP27tBkJ8G7DuGgWw0PFuemlFZbuF3Wwr1TrjFjUa3T7NIgCe6TVwX8BO2ynu+xtTuDGfHafNDCPt9lXA==
 
 style-to-js@^1.0.0:
   version "1.1.21"
