@@ -35,9 +35,7 @@ export async function POST(request: Request) {
 
     // Create Stripe Payment Intent
     const stripe = await import("stripe");
-    const client = new stripe.default(STRIPE_KEY, {
-      apiVersion: "2025-02-24.acacia",
-    });
+    const client = new stripe.default(STRIPE_KEY);
 
     const paymentIntent = await client.paymentIntents.create({
       amount,

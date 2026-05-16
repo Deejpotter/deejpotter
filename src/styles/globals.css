@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
@@ -40,7 +38,20 @@
   --shadow-bs: 0 8px 16px rgba(0,0,0,0.12);
   --shadow-bs-lg: 0 1rem 3rem rgba(0,0,0,0.175);
 
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
   --font-size-base: 1.1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+
+  --font-family-nunito: var(--font-nunito);
+  --font-family-fredoka: var(--font-fredoka);
+
   --line-height-base: 1.5;
 }
 
