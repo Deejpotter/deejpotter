@@ -29,6 +29,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavbar } from "@/contexts/NavbarContext";
 import AuthButton from "@/components/ui/auth/AuthButton";
+import { CartButton } from "@/components/CartButton";
 
 export default function TopNavbar() {
   const { navItems } = useNavbar();
@@ -223,6 +224,7 @@ export default function TopNavbar() {
 
           {/* ── Right: Auth button & mobile toggle ───────────────────── */}
           <div className="flex items-center gap-3">
+            <CartButton />
             <div className="hidden lg:block">
               <AuthButton buttonSize="sm" />
             </div>

@@ -1,0 +1,150 @@
+{
+  "description": "3D printing material configuration. Edit this file to add/remove materials or adjust pricing. No code changes needed.",
+  "materials": [
+    {
+      "id": "PLA",
+      "label": "PLA",
+      "fullName": "PLA (Polylactic Acid)",
+      "ratePerGram": 0.18,
+      "density_g_per_cm3": 1.24,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 15,
+      "description": "General-purpose filament. Easy to print, low warp, good for most parts.",
+      "colors": ["Black", "White", "Grey", "Blue", "Red", "Green", "Orange", "Yellow", "Purple", "Transparent"],
+      "suggested": true
+    },
+    {
+      "id": "PETG",
+      "label": "PETG",
+      "fullName": "PETG (Polyethylene Terephthalate Glycol)",
+      "ratePerGram": 0.22,
+      "density_g_per_cm3": 1.27,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 15,
+      "description": "Stronger and more durable than PLA. Good for functional parts, outdoor use, and higher temperatures.",
+      "colors": ["Black", "White", "Grey", "Blue", "Red", "Clear"],
+      "suggested": true
+    },
+    {
+      "id": "ABS",
+      "label": "ABS",
+      "fullName": "ABS (Acrylonitrile Butadiene Styrene)",
+      "ratePerGram": 0.24,
+      "density_g_per_cm3": 1.04,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 20,
+      "description": "Tough, heat-resistant plastic. Best for mechanical parts, enclosures, and automotive uses. Requires enclosed printer.",
+      "colors": ["Black", "White", "Grey"],
+      "suggested": true
+    },
+    {
+      "id": "TPU",
+      "label": "TPU",
+      "fullName": "TPU (Thermoplastic Polyurethane)",
+      "ratePerGram": 0.28,
+      "density_g_per_cm3": 1.21,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 15,
+      "description": "Flexible filament. Great for gaskets, bumpers, grips, and wearables.",
+      "colors": ["Black", "White", "Blue", "Red", "Transparent"],
+      "suggested": true
+    },
+    {
+      "id": "PC",
+      "label": "PC",
+      "fullName": "Polycarbonate",
+      "ratePerGram": 0.35,
+      "density_g_per_cm3": 1.20,
+      "defaultLayerHeight": 0.15,
+      "defaultInfill": 25,
+      "description": "Extremely strong and impact-resistant. Requires high-temperature printing (260°C+). Best for engineering-grade parts.",
+      "colors": ["Black", "White", "Clear"],
+      "suggested": false
+    },
+    {
+      "id": "ASA",
+      "label": "ASA",
+      "fullName": "ASA (Acrylonitrile Styrene Acrylate)",
+      "ratePerGram": 0.30,
+      "density_g_per_cm3": 1.07,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 20,
+      "description": "UV-resistant alternative to ABS. Ideal for outdoor parts that need to withstand sunlight.",
+      "colors": ["Black", "White", "Grey"],
+      "suggested": false
+    },
+    {
+      "id": "Nylon",
+      "label": "Nylon (PA)",
+      "fullName": "Nylon (Polyamide)",
+      "ratePerGram": 0.35,
+      "density_g_per_cm3": 1.14,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 20,
+      "description": "Very strong, durable, and slightly flexible. Great for functional parts, gears, and living hinges.",
+      "colors": ["Black", "White", "Natural"],
+      "suggested": false
+    },
+    {
+      "id": "carbon_fiber_pla",
+      "label": "Carbon Fiber PLA",
+      "fullName": "Carbon Fiber Reinforced PLA",
+      "ratePerGram": 0.40,
+      "density_g_per_cm3": 1.30,
+      "defaultLayerHeight": 0.15,
+      "defaultInfill": 20,
+      "description": "PLA infused with carbon fibre. Stiffer and more dimensionally stable than standard PLA. Requires hardened nozzle.",
+      "colors": ["Black"],
+      "suggested": false
+    },
+    {
+      "id": "wood_pla",
+      "label": "Wood-Filled PLA",
+      "fullName": "Wood-Filled PLA Composite",
+      "ratePerGram": 0.32,
+      "density_g_per_cm3": 1.15,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 15,
+      "description": "PLA blended with wood fibres. Looks and smells like wood when printed. Can be sanded and stained.",
+      "colors": ["Natural/Wood", "Dark Wood"],
+      "suggested": false
+    },
+    {
+      "id": "other",
+      "label": "Other (I'll describe it)",
+      "fullName": "Custom material — sourced on request",
+      "ratePerGram": null,
+      "density_g_per_cm3": null,
+      "defaultLayerHeight": 0.2,
+      "defaultInfill": 15,
+      "description": "Don't see the material or colour you need? Tell me what you're looking for and I'll source it.",
+      "colors": [],
+      "suggested": true
+    }
+  ],
+  "settings": {
+    "defaultQuality": "standard",
+    "defaultInfill": 15,
+    "defaultScalePercent": 100,
+    "hourlyRate": 5.00,
+    "currency": "AUD",
+    "qualityPresets": {
+      "draft": { "label": "Draft", "layerHeightMm": 0.3, "timeMultiplier": 0.7, "description": "Fast print, visible layer lines" },
+      "standard": { "label": "Standard", "layerHeightMm": 0.2, "timeMultiplier": 1.0, "description": "Good balance of speed and quality" },
+      "high": { "label": "High", "layerHeightMm": 0.12, "timeMultiplier": 1.6, "description": "Smooth finish, takes longer" }
+    },
+    "infillPresets": {
+      "5": { "label": "5% (Light)", "materialMultiplier": 0.6, "description": "Minimal internal structure. Good for display pieces." },
+      "10": { "label": "10% (Standard)", "materialMultiplier": 0.8, "description": "Decent strength for most parts." },
+      "15": { "label": "15% (Standard+)", "materialMultiplier": 1.0, "description": "Recommended balance of strength and material use." },
+      "20": { "label": "20% (Strong)", "materialMultiplier": 1.2, "description": "Extra strength for functional parts." },
+      "25": { "label": "25% (Very Strong)", "materialMultiplier": 1.4, "description": "Maximum strength. Best for load-bearing parts." }
+    },
+    "scaleRange": {
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "default": 100
+    }
+  }
+}

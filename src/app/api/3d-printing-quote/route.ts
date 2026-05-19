@@ -7,17 +7,30 @@ import {
   type QuoteStatus,
 } from "@/lib/quote-storage";
 import { analyzeQuoteFile } from "@/lib/quote-analysis";
+import { getMaterialIds, getSettings } from "@/lib/printing-materials";
+
+// Build material enum dynamically from config
+const materialIds = getMaterialIds();
+const materialEnum = z.enum(materialIds as [string, ...string[]]);
 
 const quoteSchema = z.object({
   name: z.string().trim().min(2).max(100),
   email: z.string().trim().email(),
   suburb: z.string().trim().min(2).max(120),
-  material: z.enum(["PLA", "PETG", "ABS", "TPU", "Unsure"]),
+  material: materialEnum,
+  customMaterial: z.string().trim().max(200).optional().default(""),
   quantity: z.coerce.number().int().min(1).max(1000),
   localFulfilment: z.enum(["yes", "no", "unsure"]),
   needsNextDay: z.enum(["yes", "no"]),
   notes: z.string().max(3000).optional().default(""),
-});
+  // Interactive builder options
+  quality: z.enum(["draft", "standard", "high"]).optional().default("standard"),
+  infill: z.coerce.number().int().min(5).max(25).optional().default(15),
+  scalePercent: z.coerce.number().int().min(50).max(200).optional().default(100),
+}).refine(
+  (data) => data.material !== "other" || data.customMaterial.length > 0,
+  { message: "Please describe the material or colour you're looking for.", path: ["customMaterial"] }
+);
 
 const patchSchema = z.object({
   id: z.string().uuid(),
@@ -137,7 +150,12 @@ export async function POST(request: Request) {
     const analysis = await analyzeQuoteFile(
       modelFile,
       parsed.data.quantity,
-      parsed.data.material
+      parsed.data.material,
+      {
+        quality: parsed.data.quality,
+        infill: parsed.data.infill,
+        scalePercent: parsed.data.scalePercent,
+      }
     );
 
     const record = await saveQuoteRequest(parsed.data, modelFile, analysis);

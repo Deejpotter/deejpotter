@@ -9,6 +9,7 @@ import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
+import { CartProvider } from "@/lib/cart-context";
 import { defaultMetadata } from "./metadata";
 
 // Initializing the Nunito font with specific options
@@ -48,6 +49,7 @@ export default function RootLayout({
 
   const inner = (
     <AuthProvider>
+      <CartProvider>
       <NavbarProvider>
         <body
           suppressHydrationWarning
@@ -64,6 +66,7 @@ export default function RootLayout({
           </div>
         </body>
       </NavbarProvider>
+      </CartProvider>
     </AuthProvider>
   );
 

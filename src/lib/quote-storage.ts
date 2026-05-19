@@ -19,6 +19,7 @@ export interface QuoteRequestRecord {
   email: string;
   suburb: string;
   material: string;
+  customMaterial?: string;
   quantity: number;
   localFulfilment: "yes" | "no" | "unsure";
   needsNextDay: "yes" | "no";
@@ -34,6 +35,13 @@ export interface QuoteRequestRecord {
   analysis?: QuoteAnalysis | null;
   createdAt: string;
   updatedAt: string;
+  // Interactive builder params
+  quality?: "draft" | "standard" | "high";
+  infill?: number;
+  scalePercent?: number;
+  // Stripe checkout
+  stripeCheckoutUrl?: string | null;
+  stripeSessionId?: string | null;
 }
 
 export interface QuoteRequestInput {
@@ -41,10 +49,14 @@ export interface QuoteRequestInput {
   email: string;
   suburb: string;
   material: string;
+  customMaterial?: string;
   quantity: number;
   localFulfilment: "yes" | "no" | "unsure";
   needsNextDay: "yes" | "no";
   notes: string;
+  quality?: "draft" | "standard" | "high";
+  infill?: number;
+  scalePercent?: number;
 }
 
 function sanitizeFileName(fileName: string): string {

@@ -1,3 +1,5 @@
+import { getMaterialRate, getInfillPreset, getQualityPreset, getSettings } from "@/lib/printing-materials";
+
 export interface BoundingBoxMm {
   x: number;
   y: number;
@@ -14,6 +16,10 @@ export interface QuoteAnalysis {
   estimatedPriceAud?: number;
   previewNote: string;
   confidence: "low" | "medium";
+  /**
+   * If material is "other", no automatic price estimate is possible.
+   */
+  needsManualQuote?: boolean;
 }
 
 interface Vector3 {
@@ -21,14 +27,6 @@ interface Vector3 {
   y: number;
   z: number;
 }
-
-const materialRatePerGram: Record<string, number> = {
-  PLA: 0.18,
-  PETG: 0.22,
-  ABS: 0.24,
-  TPU: 0.28,
-  Unsure: 0.2,
-};
 
 function round(value: number, places = 1): number {
   const factor = 10 ** places;
@@ -120,13 +118,38 @@ function parseAsciiStl(buffer: Buffer): { triangleCount: number; boundingBoxMm?:
   };
 }
 
-export async function analyzeQuoteFile(file: File, quantity: number, material: string): Promise<QuoteAnalysis> {
+export async function analyzeQuoteFile(
+  file: File,
+  quantity: number,
+  material: string,
+  params?: {
+    quality?: "draft" | "standard" | "high";
+    infill?: number;
+    scalePercent?: number;
+  }
+): Promise<QuoteAnalysis> {
   const lowerName = (file.name || "").toLowerCase();
   if (!lowerName.endsWith(".stl")) {
     return {
       fileKind: "other",
       analysisAvailable: false,
       previewNote: "Automatic preflight is available for STL files first. Other formats still go through the full quote workflow.",
+      confidence: "low",
+    };
+  }
+
+  // "Other" material means no automatic pricing — needs manual quote
+  if (material === "other") {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const parsed = parseBinaryStl(buffer) ?? parseAsciiStl(buffer);
+    return {
+      fileKind: "stl",
+      analysisAvailable: false,
+      triangleCount: parsed?.triangleCount,
+      boundingBoxMm: parsed?.boundingBoxMm,
+      needsManualQuote: true,
+      previewNote: "This material needs a custom quote. I'll review the file and get back to you with pricing.",
       confidence: "low",
     };
   }
@@ -150,16 +173,39 @@ export async function analyzeQuoteFile(file: File, quantity: number, material: s
   const complexityHours = parsed.triangleCount / 9000;
   const sizeHours = bboxVolumeCm3 / 45;
   const estimatedPrintHours = Math.max(0.5, (0.45 + sizeHours + complexityHours) * quantity);
-  const perGram = materialRatePerGram[material] ?? materialRatePerGram.Unsure;
-  const estimatedPriceAud = 8 + estimatedMaterialGrams * perGram + estimatedPrintHours * 4.5;
+
+  // Config-driven pricing
+  const perGram = getMaterialRate(material) ?? 0.2;
+  const { hourlyRate } = getSettings();
+
+  // Apply interactive builder multipliers
+  const qualityKey = params?.quality || "standard";
+  const infillVal = params?.infill || 15;
+  const scaleVal = (params?.scalePercent || 100) / 100;
+
+  const qualityPreset = getQualityPreset(qualityKey);
+  const infillPreset = getInfillPreset(String(infillVal));
+
+  const timeMultiplier = qualityPreset?.timeMultiplier ?? 1.0;
+  const materialMultiplier = infillPreset?.materialMultiplier ?? 1.0;
+
+  // Scale affects volume cubically
+  const scaleVolumeMultiplier = scaleVal ** 3;
+
+  // Adjust material by infill + scale
+  const adjustedMaterialGrams = estimatedMaterialGrams * materialMultiplier * scaleVolumeMultiplier;
+  // Adjust time by quality + scale
+  const adjustedPrintHours = estimatedPrintHours * timeMultiplier * (scaleVal ** 0.8);
+
+  const estimatedPriceAud = Math.max(5, 8 + adjustedMaterialGrams * perGram + adjustedPrintHours * hourlyRate);
 
   return {
     fileKind: "stl",
     analysisAvailable: true,
     triangleCount: parsed.triangleCount,
     boundingBoxMm: parsed.boundingBoxMm,
-    estimatedMaterialGrams: round(estimatedMaterialGrams, 1),
-    estimatedPrintHours: round(estimatedPrintHours, 1),
+    estimatedMaterialGrams: round(adjustedMaterialGrams, 1),
+    estimatedPrintHours: round(adjustedPrintHours, 1),
     estimatedPriceAud: round(estimatedPriceAud, 2),
     previewNote:
       "This is an automatic starting estimate based on STL geometry and requested quantity. Final quoting can still change for strength, finish, orientation, supports, and delivery.",
