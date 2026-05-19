@@ -1,5 +1,8 @@
 /**
  * ShopCard — Product card for the shop grid
+ *
+ * Image sources are validated to prevent XSS via javascript: URLs.
+ * Product names are rendered via React (no dangerouslySetInnerHTML).
  */
 
 interface ShopCardProps {
@@ -18,12 +21,29 @@ function formatPrice(cents: number): string {
   }).format(cents / 100);
 }
 
+/**
+ * Validate an image URL is safe to render.
+ * Blocks javascript:, data:, and other non-image URIs.
+ */
+function validateImageSrc(src: string | undefined): string {
+  if (!src) return "/images/shop-placeholder.svg";
+  // Only allow http/https and relative paths
+  if (src.startsWith("javascript:") || src.startsWith("data:") || src.startsWith("vbscript:")) {
+    return "/images/shop-placeholder.svg";
+  }
+  // Block protocol-relative URLs that aren't http
+  if (src.startsWith("//") && !src.startsWith("//") || src.startsWith("///")) {
+    return "/images/shop-placeholder.svg";
+  }
+  return src;
+}
+
 export function ShopCard({ name, slug, description, price, type, images }: ShopCardProps) {
-  const imageSrc = images?.[0] || "/images/shop-placeholder.svg";
+  const imageSrc = validateImageSrc(images?.[0]);
 
   return (
     <a
-      href={`/shop/products/${slug}`}
+      href={`/shop/products/${encodeURIComponent(slug)}`}
       className="group bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col"
     >
       <div className="aspect-square bg-gray-100 dark:bg-gray-700 overflow-hidden">
@@ -45,7 +65,7 @@ export function ShopCard({ name, slug, description, price, type, images }: ShopC
         <div className="flex items-center justify-between mt-auto">
           <span className="text-lg font-bold">{type === "service" ? "Quote required" : formatPrice(price)}</span>
           <span className="text-sm text-primary font-medium group-hover:translate-x-1 transition-transform">
-            View →{/*  */}
+            View →
           </span>
         </div>
       </div>

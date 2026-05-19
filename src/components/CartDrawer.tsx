@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef } from "react";
-import { useCart } from "@/lib/cart-context";
+import { useCart, safeName } from "@/lib/cart-context";
 
 interface CartDrawerProps {
   open: boolean;
@@ -88,7 +88,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   {/* Thumbnail */}
                   <div className="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 flex-shrink-0 overflow-hidden">
                     {item.image ? (
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <img src={item.image || "/images/shop-placeholder.svg"} alt={item.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
                         No img
@@ -98,7 +98,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
                   {/* Details */}
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{item.name}</p>
+                    <p className="font-medium text-sm truncate">{safeName(item.name)}</p>
                     <p className="text-sm text-gray-500">{formatPrice(item.price)}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <button

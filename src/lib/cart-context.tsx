@@ -32,6 +32,17 @@ const CartContext = createContext<CartContextValue | null>(null);
 
 const STORAGE_KEY = "deejpotter-cart";
 
+/**
+ * Sanitize a product name for safe rendering.
+ * Strips any HTML tags and limits length to prevent XSS.
+ */
+export function safeName(name: string): string {
+  return name
+    .replace(/<[^>]*>/g, "") // strip HTML tags
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "") // strip control chars
+    .slice(0, 200);
+}
+
 function loadCart(): CartItem[] {
   if (typeof window === "undefined") return [];
   try {

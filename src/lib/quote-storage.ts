@@ -94,6 +94,12 @@ async function writeIndex(records: QuoteRequestRecord[], root = getQuoteStorageR
   await fs.writeFile(getIndexPath(root), JSON.stringify(records, null, 2) + "\n", "utf8");
 }
 
+/**
+ * Maximum records to keep in the index to prevent unbounded growth.
+ * Older records are trimmed. Files on disk are retained for archival.
+ */
+const MAX_INDEX_RECORDS = 1000;
+
 export async function saveQuoteRequest(
   input: QuoteRequestInput,
   file: File,
@@ -106,15 +112,36 @@ export async function saveQuoteRequest(
   const requestDir = path.join(root, id);
   await fs.mkdir(requestDir, { recursive: true });
 
+  // Sanitised filename prevents path traversal — only safe chars allowed
   const fileStoredAs = sanitizeFileName(file.name || "upload.bin");
   const filePath = path.join(requestDir, fileStoredAs);
+
+  // Verify the resolved path is within the request directory (defence in depth)
+  const resolvedPath = path.resolve(filePath);
+  const resolvedDir = path.resolve(requestDir);
+  if (!resolvedPath.startsWith(resolvedDir)) {
+    throw new Error("Security: file path traversal detected");
+  }
+
   const arrayBuffer = await file.arrayBuffer();
   await fs.writeFile(filePath, Buffer.from(arrayBuffer));
 
   const now = new Date().toISOString();
+  // Only spread known safe fields — not the raw file object or any unknown keys
   const record: QuoteRequestRecord = {
     id,
-    ...input,
+    name: input.name,
+    email: input.email,
+    suburb: input.suburb,
+    material: input.material,
+    customMaterial: input.customMaterial,
+    quantity: input.quantity,
+    localFulfilment: input.localFulfilment,
+    needsNextDay: input.needsNextDay,
+    notes: input.notes,
+    quality: input.quality,
+    infill: input.infill,
+    scalePercent: input.scalePercent,
     fileName: file.name || fileStoredAs,
     fileStoredAs,
     fileType: file.type || "application/octet-stream",
@@ -130,6 +157,13 @@ export async function saveQuoteRequest(
 
   const records = await readIndex(root);
   records.unshift(record);
+
+  // Cap the index at MAX_INDEX_RECORDS to prevent unbounded growth
+  // (files on disk are retained for archival)
+  if (records.length > MAX_INDEX_RECORDS) {
+    records.length = MAX_INDEX_RECORDS;
+  }
+
   await writeIndex(records, root);
 
   return record;
@@ -179,5 +213,12 @@ export async function updateQuoteRequest(
 }
 
 export function getQuoteRequestFilePath(record: QuoteRequestRecord): string {
-  return path.join(getQuoteStorageRoot(), record.id, record.fileStoredAs);
+  const filePath = path.join(getQuoteStorageRoot(), record.id, record.fileStoredAs);
+  // Verify resolved path is within the storage root (path traversal prevention)
+  const resolved = path.resolve(filePath);
+  const root = path.resolve(getQuoteStorageRoot());
+  if (!resolved.startsWith(root)) {
+    throw new Error("Security: path traversal detected");
+  }
+  return resolved;
 }

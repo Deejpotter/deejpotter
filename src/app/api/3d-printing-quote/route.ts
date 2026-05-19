@@ -90,6 +90,26 @@ function isFileLike(value: FormDataEntryValue | null): value is File {
   return !!value && typeof value !== "string" && "name" in value && "size" in value;
 }
 
+/**
+ * Sanitise a filename to prevent path traversal on read-back.
+ * Strips directory separators and limits length.
+ */
+function sanitiseFilename(name: string): string {
+  return name.replace(/[\\/:*?"<>|]/g, "-").slice(0, 200);
+}
+
+/**
+ * Escape HTML entities to prevent stored XSS when rendering quote data.
+ */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
 export async function GET() {
   const { userId } = await getAuthAsync();
   if (!userId) {
@@ -113,15 +133,20 @@ export async function POST(request: Request) {
       email: formData.get("email"),
       suburb: formData.get("suburb"),
       material: formData.get("material"),
+      customMaterial: formData.get("customMaterial") ?? "",
       quantity: formData.get("quantity"),
       localFulfilment: formData.get("localFulfilment"),
       needsNextDay: formData.get("needsNextDay"),
       notes: formData.get("notes") ?? "",
+      quality: formData.get("quality") ?? "standard",
+      infill: formData.get("infill") ?? 15,
+      scalePercent: formData.get("scalePercent") ?? 100,
     });
 
     if (!parsed.success) {
+      const errors = parsed.error.issues.map((i) => i.message).join("; ");
       return NextResponse.json(
-        { error: "Please complete the required quote fields." },
+        { error: `Please complete the required quote fields: ${errors}` },
         { status: 400 }
       );
     }
