@@ -38,6 +38,7 @@ const patchSchema = z.object({
     "new",
     "reviewing",
     "quoted",
+    "awaiting_payment",
     "approved",
     "printing",
     "ready",

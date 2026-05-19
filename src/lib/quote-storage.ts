@@ -5,6 +5,7 @@ export type QuoteStatus =
   | "new"
   | "reviewing"
   | "quoted"
+  | "awaiting_payment"
   | "approved"
   | "printing"
   | "ready"
@@ -160,7 +161,7 @@ export async function getQuoteRequestForCustomer(
 
 export async function updateQuoteRequest(
   id: string,
-  patch: Partial<Pick<QuoteRequestRecord, "status" | "quotedPrice" | "turnaroundEstimate" | "adminNotes">>
+  patch: Partial<Pick<QuoteRequestRecord, "status" | "quotedPrice" | "turnaroundEstimate" | "adminNotes" | "stripeCheckoutUrl" | "stripeSessionId">>
 ): Promise<QuoteRequestRecord | null> {
   const records = await readIndex();
   const index = records.findIndex((record) => record.id === id);

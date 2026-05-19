@@ -36,6 +36,7 @@ const statuses = [
   "new",
   "reviewing",
   "quoted",
+  "awaiting_payment",
   "approved",
   "printing",
   "ready",

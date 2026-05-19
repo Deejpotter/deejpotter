@@ -44,5 +44,6 @@ export async function GET(request: Request) {
     material: record.material,
     quantity: record.quantity,
     estimate: record.analysis ?? null,
+    stripeCheckoutUrl: record.stripeCheckoutUrl ?? null,
   });
 }
