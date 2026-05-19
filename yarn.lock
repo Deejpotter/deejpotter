@@ -2399,10 +2399,10 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.2.3.tgz#c1e305d15a52a3e508d54dca770d202cb63abf2c"
   integrity sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==
 
-"@types/react@19.2.8":
-  version "19.2.8"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.2.8.tgz#307011c9f5973a6abab8e17d0293f48843627994"
-  integrity sha512-3MbSL37jEchWZz2p2mjntRZtPt837ij10ApxKfgmXCTuHWagYg7iA5bqPw6C8BMPfwidlvfPI/fxOc42HLhcyg==
+"@types/react@19.2.14":
+  version "19.2.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.2.14.tgz#39604929b5e3957e3a6fa0001dafb17c7af70bad"
+  integrity sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==
   dependencies:
     csstype "^3.2.2"
 
@@ -5655,12 +5655,12 @@ react-docgen@^8.0.0, react-docgen@^8.0.2:
     resolve "^1.22.1"
     strip-indent "^4.0.0"
 
-react-dom@19.3.0-canary-f93b9fd4-20251217:
-  version "19.3.0-canary-f93b9fd4-20251217"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.3.0-canary-f93b9fd4-20251217.tgz#79d4fbff5d1183f573bdd9f16df06d22a40900fb"
-  integrity sha512-VF/qSobrjtCPxZtm7vcWTpKw7/Rq8pyiylDrlltOxgdb9wA1zIixoikmVYSFC1/Y0c83fHtzs3H/SAx0ZZ3OCg==
+react-dom@19.3.0-canary-56824423-20260414:
+  version "19.3.0-canary-56824423-20260414"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.3.0-canary-56824423-20260414.tgz#d2b01db49828aea56f55eb87baabc2a8d0702fca"
+  integrity sha512-9JnsjDcc3jcVvAYqL03ypPQKpaW/cda8LsIDr5yHXEg19bfA0ewIKwCllY9a3TCYUQ68lQ5Sos0AQZcGcfICPg==
   dependencies:
-    scheduler "0.28.0-canary-f93b9fd4-20251217"
+    scheduler "0.28.0-canary-56824423-20260414"
 
 "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
   version "19.2.4"
@@ -5684,10 +5684,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react@19.3.0-canary-f93b9fd4-20251217:
-  version "19.3.0-canary-f93b9fd4-20251217"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.3.0-canary-f93b9fd4-20251217.tgz#6a6baf1ec02b49df8ba8e50e0bf3b324cd53d01a"
-  integrity sha512-jsuz+5irj+ShRGUQtzh4uliADXLZEUx7zp2fhyry3zf6luSn699DF4b1KdeTwS1cPdAM29YUj8Cr1ot9LLOy6Q==
+react@19.3.0-canary-56824423-20260414:
+  version "19.3.0-canary-56824423-20260414"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.3.0-canary-56824423-20260414.tgz#04132396a7a89be13f6849aa2d6be07ae312a875"
+  integrity sha512-OKBrhemVpiVAsRCwFekueR0N7EEYsWt0WQIUCBMfQcDXcGKUd6hYFWPLqzGr7P5hBKceVEu6WT8OKdFNod63nw==
 
 "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
   version "19.2.4"
@@ -5910,10 +5910,10 @@ saxes@^6.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@0.28.0-canary-f93b9fd4-20251217:
-  version "0.28.0-canary-f93b9fd4-20251217"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.28.0-canary-f93b9fd4-20251217.tgz#a2b47a4841fbb288fb02249e29996c06156462d1"
-  integrity sha512-K9LI8V3InDzDYYv18QxJUly3v21luMac1fBYG8PGs2x4HhOl84rb3hFCXYy5HqCino6v3qrzD92sSB56pX3pkg==
+scheduler@0.28.0-canary-56824423-20260414:
+  version "0.28.0-canary-56824423-20260414"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.28.0-canary-56824423-20260414.tgz#33736b96e7caa339e83c65f8e3b084494eb97bab"
+  integrity sha512-IUlVFNpuOLEFw04u6aNOLdgp3jq37H9tE8bwli870OveiWSn5oGWZO6rO+aZ10ZqEEBcmT5uIua2f03aWIzkGg==
 
 scheduler@^0.27.0:
   version "0.27.0"
