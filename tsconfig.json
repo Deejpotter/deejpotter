@@ -23,7 +23,7 @@
     // This specifies the module system for the project. "esnext" uses the latest module system.
     "module": "esnext",
     // This sets the module resolution strategy to node because I'm using Node.js.
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     // This allows importing JSON modules.
     "resolveJsonModule": true,
     // This ensures every file is a separate module.
