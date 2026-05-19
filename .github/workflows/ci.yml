@@ -32,7 +32,7 @@ jobs:
           NODE_ENV: test
 
       - name: Upload coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage
@@ -45,7 +45,7 @@ jobs:
         run: yarn build
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: typedoc
           path: public/docs || ''
@@ -75,7 +75,7 @@ jobs:
 
       - name: Upload Storybook artifacts
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-artifacts
           path: storybook-static || ''
