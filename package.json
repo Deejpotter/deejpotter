@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "@clerk/nextjs": "^6.36.8",
-    "@floating-ui/react": "^0.27.16",
+    "@floating-ui/react": "^0.27.19",
     "@hookform/resolvers": "^5.2.2",
     "bson-objectid": "^2.0.4",
     "gray-matter": "^4.0.3",
