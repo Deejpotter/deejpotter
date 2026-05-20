@@ -63,12 +63,14 @@ function saveCart(items: CartItem[]) {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window !== "undefined") return loadCart();
+    return [];
+  });
   const [hydrated, setHydrated] = useState(false);
 
-  // Hydrate from localStorage on mount
+  // Hydrate from localStorage on mount — use lazy initializer
   useEffect(() => {
-    setItems(loadCart());
     setHydrated(true);
   }, []);
 

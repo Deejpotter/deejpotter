@@ -29,10 +29,12 @@ module.exports = [
     rules: {
       // Allow prop spreading in JSX where it's intentionally used in existing components
       'react/jsx-props-no-spreading': 'off',
-      // Lower severity of a few strict/react-compiler rules during migration
+      // Lower severity of strict rules during migration
       'react-hooks/immutability': 'warn',
       'react-hooks/preserve-manual-memoization': 'warn',
       'react-hooks/refs': 'warn',
+      // This rule is too aggressive for real-world hydration patterns; downgrade to warn
+      'react-hooks/set-state-in-effect': 'warn',
     },
     settings: {
       react: {

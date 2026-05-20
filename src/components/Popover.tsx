@@ -137,9 +137,9 @@ export const PopoverTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTML
         "data-state": context.open ? "open" : "closed",
         "aria-expanded": context.open,
       } as any);
-      /* eslint-disable react-hooks/refs */
+
       return React.cloneElement(child as any, { ref, ...referenceProps } as any);
-      /* eslint-enable react-hooks/refs */
+
     }
 
     return (
@@ -227,3 +227,4 @@ export const PopoverClose = React.forwardRef<HTMLButtonElement, React.ButtonHTML
     );
   }
 );
+

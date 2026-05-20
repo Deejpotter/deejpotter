@@ -6,7 +6,7 @@
 import { MongoClient, Db, Collection } from "mongodb";
 
 declare global {
-  // eslint-disable-next-line no-var
+
   var _mongoClient: MongoClient | undefined;
 }
 
@@ -38,3 +38,4 @@ export async function getCollection(name: string): Promise<Collection> {
   const db = await getDb();
   return db.collection(name);
 }
+

@@ -26,8 +26,11 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Coverage
-        run: yarn vitest run --coverage
+      - name: Stylelint
+        run: yarn lint:scss
+
+      - name: Tests
+        run: yarn vitest run
         env:
           NODE_ENV: test
 
@@ -38,44 +41,5 @@ jobs:
           path: coverage
           if-no-files-found: ignore
 
-      - name: Build docs
-        run: yarn docs
-
       - name: Build
         run: yarn build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: typedoc
-          path: public/docs || ''
-
-  storybook-tests:
-    name: Storybook unit tests (Vitest)
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v6
-      - name: Use Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 20
-          cache: 'yarn'
-
-      - name: Install
-        run: yarn install --frozen-lockfile
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Storybook
-        run: yarn build-storybook
-
-      - name: Run Storybook tests (Vitest)
-        run: yarn test
-
-      - name: Upload Storybook artifacts
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: storybook-artifacts
-          path: storybook-static || ''

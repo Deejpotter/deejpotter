@@ -188,7 +188,7 @@ export default function QuoteRequestForm(): ReactElement {
               <option value="ASA">ASA — UV-resistant</option>
               <option value="Nylon">Nylon — Very strong</option>
               <option value="wood_pla">Wood-Filled PLA</option>
-              <option value="other">Other (I'll describe it)</option>
+              <option value="other">Other (I&apos;ll describe it)</option>
             </select>
           </div>
 
@@ -197,7 +197,7 @@ export default function QuoteRequestForm(): ReactElement {
             <div className={fieldShell}>
               <label htmlFor="quote-custom-material" className={labelClass}>Describe material / colour</label>
               <input id="quote-custom-material" name="customMaterial" className={inputClass} placeholder="e.g. 'Clear PETG', 'Neon green PLA', 'I need metallic silver filament'" required />
-              <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">I'll source it if I don't stock it.</div>
+              <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">I&apos;ll source it if I don&apos;t stock it.</div>
             </div>
           )}
 
@@ -306,7 +306,7 @@ export default function QuoteRequestForm(): ReactElement {
 
         {material === "other" && (
           <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
-            Custom materials need a manual quote. I'll review your request and get back to you with pricing.
+            Custom materials need a manual quote. I&apos;ll review your request and get back to you with pricing.
           </div>
         )}
 
@@ -348,3 +348,5 @@ export default function QuoteRequestForm(): ReactElement {
     </form>
   );
 }
+
+
