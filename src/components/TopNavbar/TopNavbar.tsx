@@ -30,6 +30,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavbar } from "@/contexts/NavbarContext";
 import AuthButton from "@/components/ui/auth/AuthButton";
 import { CartButton } from "@/components/CartButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function TopNavbar() {
   const { navItems } = useNavbar();
@@ -223,7 +224,8 @@ export default function TopNavbar() {
           </div>
 
           {/* ── Right: Auth button & mobile toggle ───────────────────── */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <CartButton />
             <div className="hidden lg:block">
               <AuthButton buttonSize="sm" />

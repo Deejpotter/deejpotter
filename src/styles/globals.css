@@ -2,6 +2,9 @@
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
+/* Dark mode variant: matches class="dark" on html (set by next-themes) */
+@custom-variant dark (&:where(html.dark, html.dark *));
+
 @theme {
   --color-primary: #1E9952;
   --color-secondary: #3A2C33;

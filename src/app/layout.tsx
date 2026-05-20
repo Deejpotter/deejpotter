@@ -10,6 +10,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
 import { CartProvider } from "@/lib/cart-context";
+import { ThemeProvider } from "next-themes";
 import { defaultMetadata } from "./metadata";
 
 // Initializing the Nunito font with specific options
@@ -34,7 +35,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  colorScheme: "dark",
+  colorScheme: "light dark",
 };
 
 // The RootLayout component is the root component that is used to wrap the pages.
@@ -51,20 +52,22 @@ export default function RootLayout({
     <AuthProvider>
       <CartProvider>
       <NavbarProvider>
-        <body
-          suppressHydrationWarning
-          className="custom-scrollbar bg-light text-dark dark:bg-dark dark:text-light"
-        >
-          {/* Client-only cleanup removes extension-injected attributes that break hydration */}
-          <BodyAttributesCleaner />
-          <div>
-            <TopNavbar />
-            <main className="w-full">
-              {children}
-              <MainFooter />
-            </main>
-          </div>
-        </body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <body
+            suppressHydrationWarning
+            className="custom-scrollbar bg-light text-dark dark:bg-dark dark:text-light"
+          >
+            {/* Client-only cleanup removes extension-injected attributes that break hydration */}
+            <BodyAttributesCleaner />
+            <div>
+              <TopNavbar />
+              <main className="w-full">
+                {children}
+                <MainFooter />
+              </main>
+            </div>
+          </body>
+        </ThemeProvider>
       </NavbarProvider>
       </CartProvider>
     </AuthProvider>
