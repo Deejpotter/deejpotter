@@ -1,0 +1,169 @@
+﻿yarn run v1.22.22
+$ eslint . --ext .ts,.tsx,.js,.jsx
+
+C:\Users\Deej\Repos\deejpotter\src\app\contact\ContactForm.tsx
+  90:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\app\contact\ContactForm.tsx:90:5
+  88 |               : "website");
+  89 |
+> 90 |     setLeadContext({
+     |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  91 |       currentPath: window.location.pathname,
+  92 |       referrer,
+  93 |       source: inferredSource,  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\app\groceries\GroceriesDashboard.tsx
+  47:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\app\groceries\GroceriesDashboard.tsx:47:21
+  45 |   }, []);
+  46 |
+> 47 |   useEffect(() => { load(); }, [load, refreshKey]);
+     |                     ^^^^ Avoid calling setState() directly within an effect
+  48 |
+  49 |   const topCategories = summary ? Object.entries(summary.by_category).slice(0, 10) : [];
+  50 |   const monthLabels = summary ? Object.keys(summary.by_month) : [];  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\app\projects\services\3d-printing\QuoteRequestForm.tsx
+  191:45   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  200:79   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  200:101  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  309:52   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\Deej\Repos\deejpotter\src\app\projects\services\3d-printing\QuoteRequestsAdmin.tsx
+  77:10  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\app\projects\services\3d-printing\QuoteRequestsAdmin.tsx:77:10
+  75 |
+  76 |   useEffect(() => {
+> 77 |     void load();
+     |          ^^^^ Avoid calling setState() directly within an effect
+  78 |   }, []);
+  79 |
+  80 |   const save = async (event: React.FormEvent<HTMLFormElement>, record: QuoteRecord) => {  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\app\projects\tools\box-shipping-calculator\ItemSelectAndCalculate.tsx
+  100:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\app\projects\tools\box-shipping-calculator\ItemSelectAndCalculate.tsx:100:5
+   98 |    */
+   99 |   useEffect(() => {
+> 100 |     setIsMounted(true);
+      |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  101 |   }, []);
+  102 |
+  103 |   /**  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\app\shop\3d-printing\thank-you\page.tsx
+  20:37  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  32:19  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  33:44  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\Deej\Repos\deejpotter\src\app\shop\products\[slug]\page.tsx
+  83:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Deej\Repos\deejpotter\src\components\CartDrawer.tsx
+  91:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Deej\Repos\deejpotter\src\components\Image\ImageFallback.tsx
+  18:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\components\Image\ImageFallback.tsx:18:5
+  16 |
+  17 |   useEffect(() => {
+> 18 |     setImgSrc(src);
+     |     ^^^^^^^^^ Avoid calling setState() directly within an effect
+  19 |   }, [src]);
+  20 |   return (
+  21 |     <Image  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\components\Navbar\Navbar.tsx
+  15:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\components\Navbar\Navbar.tsx:15:5
+  13 |
+  14 |   useEffect(() => {
+> 15 |     setIsLocalCollapsed(isNavCollapsed);
+     |     ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  16 |   }, [isNavCollapsed]);
+  17 |
+  18 |   return (  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\components\Popover.tsx
+  140:7  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/refs')
+
+C:\Users\Deej\Repos\deejpotter\src\components\ShopCard.tsx
+  50:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Deej\Repos\deejpotter\src\components\TopNavbar\TopNavbar.test.tsx
+  18:5  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Deej\Repos\deejpotter\src\lib\cart-context.tsx
+  74:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Deej\Repos\deejpotter\src\lib\cart-context.tsx:74:5
+  72 |   // Hydrate from localStorage on mount ΓÇö use lazy initializer
+  73 |   useEffect(() => {
+> 74 |     setHydrated(true);
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  75 |   }, []);
+  76 |
+  77 |   // Persist to localStorage on change  react-hooks/set-state-in-effect
+
+C:\Users\Deej\Repos\deejpotter\src\lib\db.ts
+  9:3  warning  Unused eslint-disable directive (no problems were reported from 'no-var')
+
+Γ£û 20 problems (14 errors, 6 warnings)
+  0 errors and 2 warnings potentially fixable with the `--fix` option.
+
+yarn : error Command failed with exit code 1.
+At line:1 char:36
++ cd C:\Users\deej\repos\deejpotter; yarn lint 2>&1 | Out-File -FilePat ...
++                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error Command failed with exit code 1.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
