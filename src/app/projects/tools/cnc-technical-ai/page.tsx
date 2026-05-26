@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import ChatInterface from "./ChatInterface";
+import dynamic from "next/dynamic";
+
+const ChatInterface = dynamic(() => import("./ChatInterface"), { ssr: false });
 
 const CncTechnicalAI = () => {
 	const [showConversations, setShowConversations] = useState(false);

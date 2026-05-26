@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-import { listQuoteRequests } from "@/lib/quote-storage";
+import { getQuoteStats } from "@/lib/db-quotes";
 import { listContactLeads } from "@/lib/contact-leads";
 
 export const metadata: Metadata = {
@@ -13,17 +13,17 @@ export const metadata: Metadata = {
 
 async function getStats() {
   try {
-    const [quotes, leads] = await Promise.all([
-      listQuoteRequests().catch(() => []),
+    const [stats, leads] = await Promise.all([
+      getQuoteStats().catch(() => ({ newQuotes: 0, pendingQuotes: 0, activeJobs: 0, completedToday: 0 })),
       listContactLeads().catch(() => []),
     ]);
 
-    const newQuotes = quotes.filter((q) => q.status === "new").length;
-    const pendingQuotes = quotes.filter((q) => q.status === "awaiting_payment" || q.status === "quoted").length;
-    const activePrints = quotes.filter((q) => q.status === "approved" || q.status === "printing").length;
-    const totalLeads = leads.length;
-
-    return { newQuotes, pendingQuotes, activePrints, totalLeads };
+    return {
+      newQuotes: stats.newQuotes,
+      pendingQuotes: stats.pendingQuotes,
+      activePrints: stats.activeJobs,
+      totalLeads: leads.length,
+    };
   } catch {
     return { newQuotes: 0, pendingQuotes: 0, activePrints: 0, totalLeads: 0 };
   }

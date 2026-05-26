@@ -1,6 +1,9 @@
 "use client";
 
-import { ReactElement, useState, useMemo } from "react";
+import { ReactElement, useState, useMemo, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
+
+const ModelDropZone = dynamic(() => import("@/components/ModelDropZone/ModelDropZone"), { ssr: false });
 
 type QuoteEstimate = {
   analysisAvailable: boolean;
@@ -95,6 +98,8 @@ export default function QuoteRequestForm(): ReactElement {
   const [infill, setInfill] = useState(15);
   const [scale, setScale] = useState(100);
   const [quantity, setQuantity] = useState(1);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const clientEstimate = useMemo(
     () => computeClientEstimate({ material, quantity, quality, infill, scale }),
@@ -114,11 +119,23 @@ export default function QuoteRequestForm(): ReactElement {
     setEstimate(null);
 
     const form = event.currentTarget;
-    const formData = new FormData(form);
-    // Append slider values as hidden fields
+    const formData = new FormData();
+    // Build form data manually
+    formData.set("name", (form.querySelector('[name="name"]') as HTMLInputElement)?.value || "");
+    formData.set("email", (form.querySelector('[name="email"]') as HTMLInputElement)?.value || "");
+    formData.set("suburb", (form.querySelector('[name="suburb"]') as HTMLInputElement)?.value || "");
+    formData.set("material", material);
+    formData.set("quantity", String(quantity));
+    formData.set("localFulfilment", (form.querySelector('[name="localFulfilment"]') as HTMLSelectElement)?.value || "no");
+    formData.set("needsNextDay", (form.querySelector('[name="needsNextDay"]') as HTMLSelectElement)?.value || "no");
+    formData.set("notes", (form.querySelector('[name="notes"]') as HTMLTextAreaElement)?.value || "");
     formData.set("quality", quality);
     formData.set("infill", String(infill));
     formData.set("scalePercent", String(scale));
+
+    if (selectedFile) {
+      formData.set("modelFile", selectedFile);
+    }
 
     try {
       const response = await fetch("/api/3d-printing-quote", { method: "POST", body: formData });
@@ -205,10 +222,22 @@ export default function QuoteRequestForm(): ReactElement {
             <label htmlFor="quote-quantity" className={labelClass}>Quantity</label>
             <input id="quote-quantity" name="quantity" type="number" min={1} max={1000} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className={inputClass} required />
           </div>
-          <div className={fieldShell}>
-            <label htmlFor="quote-file" className={labelClass}>Model file</label>
-            <input id="quote-file" name="modelFile" type="file" className={inputClass} accept={acceptedFileTypes} required />
-            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">Accepted: STL, 3MF, OBJ, STEP, STP. 25 MB max.</div>
+          {/* 3D Preview Drop Zone */}
+          <div className="col-span-full">
+            <label className={labelClass}>Model file</label>
+            <ModelDropZone
+              onFileChange={setSelectedFile}
+              acceptedTypes={[".stl", ".3mf", ".obj"]}
+              maxSizeMb={25}
+            />
+            {/* Hidden file input for form submission */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              name="modelFile"
+              className="hidden"
+              accept={acceptedFileTypes}
+            />
           </div>
 
           {/* ── Interactive Builder ── */}

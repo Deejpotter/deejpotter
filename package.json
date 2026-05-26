@@ -32,6 +32,8 @@
     "@clerk/nextjs": "^7.3.7",
     "@floating-ui/react": "^0.27.16",
     "@hookform/resolvers": "^5.2.2",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "bson-objectid": "^2.0.4",
     "gray-matter": "^4.0.3",
     "lucide-react": "^1.16.0",
@@ -46,6 +48,8 @@
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "stripe": "^22.1.1",
+    "svix": "^1.94.0",
+    "three": "^0.184.0",
     "zod": "^4.3.5"
   },
   "resolutions": {

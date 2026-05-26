@@ -95,9 +95,14 @@ const AuthButton: React.FC<AuthButtonProps> = ({
     <div className={`flex items-center ${className}`}>
       {isSignedIn && user ? (
         <div className="flex items-center gap-3">
-          <Link href="/admin/leads" className={`${btnClasses("outline")}`}>
-            Leads
+          <Link href="/account" className={`${btnClasses("outline")}`}>
+            My Account
           </Link>
+          {user.publicMetadata?.role === "admin" && (
+            <Link href="/admin" className={`${btnClasses("outline")}`}>
+              Admin
+            </Link>
+          )}
           {showGravatar && (
             <Gravatar
               email={
