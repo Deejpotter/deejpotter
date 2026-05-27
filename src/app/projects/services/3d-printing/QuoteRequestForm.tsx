@@ -99,6 +99,9 @@ export default function QuoteRequestForm(): ReactElement {
   const [scale, setScale] = useState(100);
   const [quantity, setQuantity] = useState(1);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [serviceType, setServiceType] = useState<"3d_printing" | "laser" | "milling">("3d_printing");
+  const [laserThickness, setLaserThickness] = useState(3);
+  const [laserOp, setLaserOp] = useState<"cut" | "engrave" | "both">("cut");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const clientEstimate = useMemo(
@@ -167,18 +170,46 @@ export default function QuoteRequestForm(): ReactElement {
       <div className="border-b border-gray-100 bg-gray-50/80 px-6 py-5 dark:border-gray-800 dark:bg-gray-950/40 sm:px-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="mb-2 text-3xl font-bold">Request a print quote</h2>
+            <h2 className="mb-2 text-3xl font-bold">
+              {serviceType === "3d_printing"
+                ? "Request a print quote"
+                : serviceType === "laser"
+                  ? "Request a laser quote"
+                  : "Request a milling quote"}
+            </h2>
             <p className="max-w-2xl text-gray-600 dark:text-gray-400">
               Upload your file, choose your options, and get an instant estimate.
             </p>
           </div>
           <span className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
-            STL + STP + OBJ
+            {serviceType === "3d_printing" ? "STL + STP + OBJ" : "DXF + SVG"}
           </span>
         </div>
       </div>
 
       <div className="px-6 py-6 sm:px-8">
+        {/* Service type selector */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {[
+            { id: "3d_printing", label: "🖨️ 3D Printing" },
+            { id: "laser", label: "🔆 Laser" },
+            { id: "milling", label: "⚙️ CNC Milling" },
+          ].map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => setServiceType(s.id as typeof serviceType)}
+              className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
+                serviceType === s.id
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-primary/30"
+              }`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-4 md:grid-cols-2">
           {/* Contact info */}
           <div className={fieldShell}>
@@ -227,7 +258,11 @@ export default function QuoteRequestForm(): ReactElement {
             <label className={labelClass}>Model file</label>
             <ModelDropZone
               onFileChange={setSelectedFile}
-              acceptedTypes={[".stl", ".3mf", ".obj"]}
+              acceptedTypes={
+                serviceType === "3d_printing"
+                  ? [".stl", ".3mf", ".obj"]
+                  : [".dxf", ".svg"]
+              }
               maxSizeMb={25}
             />
             {/* Hidden file input for form submission */}
@@ -238,9 +273,44 @@ export default function QuoteRequestForm(): ReactElement {
               className="hidden"
               accept={acceptedFileTypes}
             />
+            <input type="hidden" name="serviceType" value={serviceType} />
           </div>
 
-          {/* ── Interactive Builder ── */}
+          {/* ── Laser / Milling options ── */}
+          {serviceType !== "3d_printing" && (
+            <>
+              <div className={fieldShell}>
+                <label className={labelClass}>Material thickness (mm)</label>
+                <select
+                  value={laserThickness}
+                  onChange={(e) => setLaserThickness(Number(e.target.value))}
+                  className={selectClass}
+                >
+                  <option value={3}>3mm</option>
+                  <option value={5}>5mm</option>
+                  <option value={6}>6mm</option>
+                  <option value={9}>9mm</option>
+                  <option value={12}>12mm</option>
+                </select>
+              </div>
+              <div className={fieldShell}>
+                <label className={labelClass}>Operation</label>
+                <select
+                  value={laserOp}
+                  onChange={(e) => setLaserOp(e.target.value as "cut" | "engrave" | "both")}
+                  className={selectClass}
+                >
+                  <option value="cut">Cut only</option>
+                  <option value="engrave">Engrave only</option>
+                  <option value="both">Cut + Engrave</option>
+                </select>
+              </div>
+            </>
+          )}
+
+          {/* ── Interactive Builder (3D printing only) ── */}
+          {serviceType === "3d_printing" && (
+            <>
           {/* Quality */}
           <div className={fieldShell}>
             <label className={labelClass}>Print quality</label>
@@ -286,6 +356,8 @@ export default function QuoteRequestForm(): ReactElement {
             </div>
             <input type="hidden" name="scalePercent" value={scale} />
           </div>
+          </>
+          )}
 
           {/* Delivery */}
           <div className={fieldShell}>
