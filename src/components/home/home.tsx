@@ -87,13 +87,10 @@ export default function Home(): ReactElement {
                 Website designer - maker - developer
               </p>
               <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[0.92] sm:text-5xl lg:text-7xl">
-                Building practical digital and physical tools for people who want the work done properly.
+                Your website, your parts, your tools — built so you don&apos;t have to.
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-                I design and build websites, portfolio sites, custom tools, and light fabrication work for small businesses and hobbyists across Australia. If you want local delivery or home visits within about an hour&apos;s drive, that can work too.
-              </p>
-              <p className="mt-5 max-w-3xl text-sm leading-7 text-white/62 sm:text-base">
-                My strongest work tends to live where design, implementation, CAD/CAM, and practical operations meet - the projects where a clean answer is better than a flashy one.
+                I design websites that bring in customers while you run your business. I fabricate parts for people who need a physical result without learning CAD. Based in Frankston, VIC — local pickup and delivery around the Mornington Peninsula.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -166,19 +163,19 @@ export default function Home(): ReactElement {
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-3xl bg-white p-8 shadow-bs-lg dark:bg-gray-900">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Design direction
+              How it works
             </p>
             <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-4xl">
-              Built like a studio homepage, not a brochure.
+              You tell me what you need. I make it happen.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300">
-              The redesign leans on strong typography, generous spacing, a dark hero, and sharper cards with clearer job-to-be-done messaging. The aim is to feel modern, deliberate, and easy to scan in seconds.
+              No drawn-out proposals, no jargon, no getting handed off to someone else. Send me the brief and I&apos;ll tell you honestly whether it&apos;s a fit. If it is, you get a working result — not a long email thread.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                ["1", "Hero first", "One clear positioning statement and one primary action."],
-                ["2", "Proof second", "Services and process show how I actually work."],
-                ["3", "Conversion last", "Keep the contact path obvious and low-friction."],
+                ["1", "You brief me", "Tell me the problem, the deadline, and what success looks like."],
+                ["2", "I build it", "Clear structure, working build, then refinement. No black boxes."],
+                ["3", "You get results", "A site that converts, a part that fits, a tool that works."],
               ].map(([num, title, text]) => (
                 <div key={title} className="rounded-2xl border border-gray-200 p-4 dark:border-gray-800">
                   <p className="text-sm font-bold text-primary">{num}</p>
@@ -191,12 +188,15 @@ export default function Home(): ReactElement {
 
           <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-bs-lg dark:border-gray-800 dark:bg-gray-900">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Best fit
+              Who this is for
             </p>
             <ul className="mt-5 space-y-3 text-gray-700 dark:text-gray-300">
-              <li>- Website design and development projects</li>
-              <li>- Small business and hobbyist projects in Australia</li>
-              <li>- CAD/CAM, 3D printing, laser, and basic milling work</li>
+              <li>- Small businesses who want a website that works without the hassle</li>
+              <li>- Hobbyists and makers who need parts but don&apos;t do CAD</li>
+              <li>- Anyone who&apos;d rather get a result than learn another skill</li>
+              <li>- People who value clear communication and honest pricing</li>
+            </ul>
+            <p className="mt-6 text-sm font-medium text-primary">
               <li>- Custom tools and automation helpers</li>
               <li>- Text-first communication through forms, social, or freelance platforms</li>
             </ul>

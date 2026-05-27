@@ -6,10 +6,10 @@ import { Metadata } from 'next';
  */
 export const defaultMetadata: Metadata = {
   title: {
-    default: 'Deej Potter | Website Designer and Developer',
+    default: 'Deej Potter | Websites, 3D Printing & Fabrication',
     template: '%s | Deej Potter'
   },
-  description: 'Website designer, maker, and developer building practical websites, landing pages, portfolio sites, custom digital tools, and light fabrication work with Next.js, React, TypeScript, and CAD/CAM tools.',
+  description: 'Website design, 3D printing, laser cutting, and CNC milling for small businesses and hobbyists. Upload a file, see your model in 3D, and get an instant price. Based in Frankston VIC.',
   keywords: [
     'Website Designer',
     'Website Developer',
@@ -36,8 +36,8 @@ export const defaultMetadata: Metadata = {
     locale: 'en_US',
     url: 'https://deejpotter.com',
     siteName: 'Deej Potter',
-    title: 'Deej Potter | Website Designer and Developer',
-    description: 'Website designer, maker, and developer building practical websites, portfolio sites, custom digital tools, and light fabrication work for real-world use.',
+    title: 'Deej Potter | Websites, 3D Printing & Fabrication',
+    description: 'Website design, 3D printing, laser cutting, and CNC milling. Upload a file, see your model in 3D, get an instant price. Frankston VIC.',
     images: [
       {
         url: '/og-image.png',

@@ -77,9 +77,7 @@ export default function ThreeDPrintingService(): ReactElement {
               On-demand 3D printing
             </h1>
             <p className="max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-              Practical 3D printing for prototypes, replacement parts, hobby
-              projects, and small-run functional pieces - with local-first
-              service around Frankston and the Mornington Peninsula.
+              Upload your file, see it in 3D, and get a price in seconds. No CAD experience needed — if you don&apos;t have a model, just tell me what you need and I&apos;ll design it.
             </p>
           </div>
 
@@ -143,9 +141,14 @@ export default function ThreeDPrintingService(): ReactElement {
           </section>
 
           <section className="mb-10">
-            <h2 className="mb-4 text-3xl font-bold">Best customer flow</h2>
+            <h2 className="mb-4 text-3xl font-bold">How it works</h2>
             <div className="grid gap-4 md:grid-cols-2">
-              {nextSteps.map((step, index) => (
+              {[
+                "Upload your STL file (or tell me what you need and I&apos;ll model it)",
+                "See a 3D preview and get an instant price based on real geometry",
+                "Choose your material, quality, and delivery",
+                "Pay online. Your part arrives. That&apos;s it.",
+              ].map((step, index) => (
                 <article
                   key={step}
                   className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900"
@@ -168,12 +171,9 @@ export default function ThreeDPrintingService(): ReactElement {
           </section>
 
           <section className="mb-10 rounded-2xl border border-sky-200 bg-sky-50 p-6 text-sky-950 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-50">
-            <h2 className="mb-2 text-2xl font-bold">Automatic preflight now available for STL files</h2>
+            <h2 className="mb-2 text-2xl font-bold">Instant quoting — upload and see your price</h2>
             <p className="mb-0">
-              STL uploads can now return a rough starting estimate based on file
-              geometry, quantity, and material choice. It is still a preliminary
-              figure rather than a locked quote, but it gives customers a much
-              better sense of cost and scale before manual review.
+              Drop your STL file to see a 3D preview and an immediate price estimate based on your model&apos;s actual geometry. No waiting, no guessing, no back-and-forth.
             </p>
           </section>
 
