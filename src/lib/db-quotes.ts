@@ -7,7 +7,6 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import { uploadToR2, getDownloadUrl, isR2Configured } from "./r2-storage";
 import { getCollection } from "./db";
 import {
   QuoteDocSchema,
@@ -32,26 +31,9 @@ function sanitizeFileName(name: string): string {
 async function saveQuoteFile(
   quoteNumber: number,
   file: File,
-): Promise<{ storedAs: string; storageType: "r2" | "local" }> {
-  // Try R2 first
-  if (isR2Configured()) {
-    try {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const result = await uploadToR2(
-        quoteNumber,
-        file.name,
-        buffer,
-        file.type,
-      );
-      if (result) {
-        return { storedAs: file.name, storageType: "r2" };
-      }
-    } catch (err) {
-      console.error("[r2] Upload failed, falling back to local:", err);
-    }
-  }
-
-  // Fall back to local disk
+): Promise<{ storedAs: string; storageType: "local" }> {
+  // Files saved to local disk. API routes call uploadToR2 separately
+  // for R2 storage — this keeps r2-storage imports out of lib modules.
   const root = getQuoteStorageRoot();
   const quoteDir = path.join(root, String(quoteNumber));
   await fs.mkdir(quoteDir, { recursive: true });
@@ -59,7 +41,6 @@ async function saveQuoteFile(
   const storedAs = sanitizeFileName(file.name || "upload.bin");
   const filePath = path.join(quoteDir, storedAs);
 
-  // Path traversal defence
   const resolved = path.resolve(filePath);
   const resolvedDir = path.resolve(quoteDir);
   if (!resolved.startsWith(resolvedDir)) {
@@ -70,24 +51,6 @@ async function saveQuoteFile(
   await fs.writeFile(filePath, buffer);
 
   return { storedAs, storageType: "local" };
-}
-
-export async function getQuoteFileUrl(
-  quoteNumber: number,
-  fileName: string,
-): Promise<string | null> {
-  // Try R2 first
-  if (isR2Configured()) {
-    try {
-      const url = await getDownloadUrl(quoteNumber, fileName);
-      if (url) return url;
-    } catch (err) {
-      console.error("[r2] Download URL generation failed:", err);
-    }
-  }
-
-  // Fall back to local path (returned as-is, not a URL)
-  return null;
 }
 
 export function getQuoteFilePath(
