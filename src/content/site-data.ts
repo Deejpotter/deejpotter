@@ -26,12 +26,12 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "website-design-development",
     name: "Website Design and Development",
     description:
-      "Practical websites, landing pages, portfolio sites, and redesigns built to be clear, responsive, and easy to maintain.",
+      "Clean, responsive websites built to convert visitors into customers. No templates, no page builders — just a site that works for your business.",
     features: [
-      "Small business websites",
-      "Portfolio and personal brand sites",
-      "Landing pages and lead-generation pages",
-      "Redesigns and technical improvements",
+      "Small business and portfolio websites",
+      "Landing pages that actually convert",
+      "Redesigns for sites that feel outdated",
+      "Clear, maintainable code you can hand to any developer",
     ],
     link: "/projects/services/website-design",
     cta: "Start a website project",
@@ -40,12 +40,12 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "website-redesign",
     name: "Website Redesign",
     description:
-      "A focused service for improving sites that already exist but need clearer messaging, better structure, or stronger enquiry flow.",
+      "Your site works but it doesn't work well. A focused redesign that fixes the structure, messaging, and conversion flow — without starting from scratch.",
     features: [
-      "Design refreshes",
-      "Better mobile responsiveness",
-      "Stronger calls to action",
-      "SEO and content structure improvements",
+      "Clearer messaging that actually says what you do",
+      "Better mobile experience",
+      "Faster load times",
+      "Stronger calls to action that get results",
     ],
     link: "/projects/services/website-redesign",
     cta: "Ask about a redesign",
@@ -54,12 +54,12 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "custom-tools-automation",
     name: "Custom Tools and Automation",
     description:
-      "Purpose-built calculators, internal tools, and workflow helpers for situations where off-the-shelf software is not quite right.",
+      "When off-the-shelf software doesn't quite fit. Purpose-built calculators, internal tools, and workflow helpers that save hours of manual work.",
     features: [
-      "Custom calculators",
-      "Small internal utilities",
-      "Operational workflow helpers",
-      "Automation for repetitive digital tasks",
+      "Custom calculators for pricing, quoting, or estimation",
+      "Internal dashboards and admin tools",
+      "Workflow automation for repetitive tasks",
+      "Data tools — imports, exports, reports",
     ],
     link: "/projects/services/custom-tools",
     cta: "Ask about a custom tool",
@@ -68,26 +68,26 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "3d-printing",
     name: "On-Demand 3D Printing",
     description:
-      "On-demand 3D printing for prototypes, replacement parts, hobby projects, and small-run functional pieces around Frankston and the Mornington Peninsula.",
+      "Upload your file, see your model in 3D, and get an instant price. Prototypes, replacement parts, and small-run prints — no CAD experience needed.",
     features: [
-      "Prototype and replacement parts",
-      "Small-run functional prints",
-      "Viable next-day local turnaround",
-      "Planned STL upload and quoting workflow",
+      "Instant quoting from your STL file",
+      "3D model preview before you submit",
+      "PLA and PETG materials",
+      "Local pickup or delivery around Frankston",
     ],
     link: "/projects/services/3d-printing",
-    cta: "Get 3D printing details",
+    cta: "Get a quote",
   },
   {
     id: "cad-cam-fabrication",
-    name: "CAD, CAM, and Fabrication Support",
+    name: "CAD, CAM, and Fabrication",
     description:
-      "CAD/CAM prep, machine-ready files, and light fabrication support for 3D printing, laser work, and basic milling - with honest limits around the Snapmaker A250T 2.0.",
+      "Laser cutting, CNC milling, and CAD file prep for people who need a physical result without learning the software.",
     features: [
-      "CAD models and file prep",
-      "CAM and toolpath setup",
-      "Basic laser and milling work",
-      "Local delivery or home visits within about an hour drive",
+      "Laser engraving and cutting (wood, acrylic)",
+      "CNC milling for signs, panels, and parts",
+      "CAD models and file prep from your sketches or ideas",
+      "DXF and SVG upload with live preview",
     ],
     link: "/projects/services/cad-cam-fabrication",
     cta: "Talk about fabrication",
@@ -95,28 +95,22 @@ export const serviceOfferings: ServiceOffering[] = [
 ];
 export const processSteps: ProcessStep[] = [
   {
-    id: "discover",
-    title: "Discover the real problem",
+    id: "brief",
+    title: "You tell me what you need",
     description:
-      "We start with a clear brief, the current pain points, and the outcome you actually want rather than the first idea that comes to mind.",
-  },
-  {
-    id: "structure",
-    title: "Shape the structure",
-    description:
-      "I map the content, workflow, and navigation so the project has a solid skeleton before the detail work begins.",
+      "Send a brief — the problem, the deadline, what success looks like. I'll tell you honestly whether it's a fit and what it'll cost.",
   },
   {
     id: "build",
-    title: "Build the working version",
+    title: "I build it — no black boxes",
     description:
-      "I implement the site or tool with practical code, clean behaviour, and enough polish to feel deliberate instead of improvised.",
+      "Clear structure, working build, then refinement. You'll see progress, not excuses. If something needs changing, we change it.",
   },
   {
-    id: "refine",
-    title: "Refine and hand over",
+    id: "deliver",
+    title: "You get a working result",
     description:
-      "Then I tighten the copy, accessibility, and responsiveness so the finished piece is easy to use and easy to continue improving.",
+      "A site that converts. A part that fits. A tool that saves you hours. Handed over with instructions, not a headache.",
   },
 ];
 
@@ -125,23 +119,23 @@ export const showcaseItems: ShowcaseItem[] = [
     id: "website-projects",
     title: "Website projects",
     description:
-      "See the portfolio work, redesign thinking, and other public-facing sites that I have built.",
+      "Small business sites, portfolio refreshes, and redesigns — built clean, fast, and easy to maintain.",
     link: "/projects/websites",
     label: "Browse websites",
   },
   {
     id: "tools",
-    title: "Technical tools",
+    title: "Custom tools",
     description:
-      "Calculators, workflow helpers, and problem-solving utilities for real operational tasks.",
+      "Calculators, workflow helpers, and internal tools that save hours of manual work every week.",
     link: "/projects/tools",
     label: "Explore tools",
   },
   {
     id: "services",
-    title: "Services",
+    title: "All services",
     description:
-      "A direct summary of the kinds of work I take on and how I like to approach it.",
+      "Websites, 3D printing, laser cutting, CNC milling, and custom development — everything I take on.",
     link: "/projects/services",
     label: "View services",
   },

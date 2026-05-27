@@ -3,116 +3,104 @@ import Link from "next/link";
 
 export default function About(): ReactElement {
   return (
-    <div>
+    <div className="mx-auto max-w-4xl px-4 py-10 sm:py-12 lg:py-16">
       <section className="mb-12">
-        <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">About Me</h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
-          I am a website designer, maker, and developer with a strong bias toward
-          practical problem solving. I like building things that are clear,
-          useful, maintainable, and actually help the people using them.
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+          About
+        </p>
+        <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          I build things that work.
+        </h1>
+        <p className="mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
+          Websites, custom tools, 3D-printed parts, laser-cut pieces — if it
+          solves a real problem for someone, I want to build it. Based in
+          Frankston, VIC, I work with small businesses and hobbyists across
+          Australia.
         </p>
       </section>
 
-      <section className="mb-12 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold mb-4 flex items-center">
-          <i className="bi bi-briefcase mr-3"></i>My Journey
-        </h2>
-        <div className="space-y-4 text-gray-800 dark:text-gray-300">
-          <p>
-            My path into tech did not begin in a conventional way. I spent
-            years working as a chef in my family&apos;s small restaurant before
-            eventually realising that the work I truly cared about was solving
-            technical problems and building things on the web.
-          </p>
-          <p>
-            After completing a Certificate in IT, I moved further into software
-            and digital work through self-directed learning, client website
-            projects, and professional development roles. That shift taught me
-            something useful: good work is not just about code quality. It is
-            also about communication, constraints, deadlines, and making
-            something genuinely workable for real people.
-          </p>
-          <p>
-            I have built websites for clients, worked as a junior full-stack
-            developer in a team environment, and continue to work across
-            software, operations, CAD/CAM, and technical systems. That mix is part of why
-            I am comfortable moving between design decisions, implementation
-            details, and the practical realities behind a project.
-          </p>
-          <p>
-            These days, I am especially interested in website design and
-            development, workflow tools, automation, and the kinds of projects
-            that sit between software and real-world operations.
-          </p>
+      <section className="mb-12 grid gap-8 md:grid-cols-2">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <h2 className="mb-4 text-2xl font-bold">Where I started</h2>
+          <div className="space-y-3 text-gray-700 dark:text-gray-300">
+            <p>
+              I spent years working as a chef in my family&apos;s restaurant
+              before moving into tech. Running a kitchen teaches you something
+              you can&apos;t learn from a tutorial: get it right under pressure,
+              communicate clearly, and don&apos;t make excuses when things go
+              wrong.
+            </p>
+            <p>
+              After completing a Certificate in IT, I moved into software
+              through self-directed learning, client projects, and junior
+              full-stack development. That mix — kitchen discipline plus
+              technical skills — is why I&apos;m comfortable working across
+              design, code, and fabrication in the same project.
+            </p>
+            <p>
+              I love learning new things and sharing what I figure out. If you
+              want to understand how something works, I&apos;ll explain it — not
+              to show off, but because genuinely understanding your tools makes
+              everything better.
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <h2 className="mb-4 text-2xl font-bold">What I do now</h2>
+          <div className="space-y-3 text-gray-700 dark:text-gray-300">
+            <p>
+              <strong>Websites.</strong> Small business sites, portfolio pages,
+              landing pages, and redesigns. Built clean, fast, and easy to
+              maintain.
+            </p>
+            <p>
+              <strong>Custom tools.</strong> Calculators, internal dashboards,
+              workflow helpers — the stuff that saves hours of manual work
+              every week.
+            </p>
+            <p>
+              <strong>Fabrication.</strong> 3D printing, laser cutting, and CNC
+              milling for prototypes, replacement parts, and one-off pieces. No
+              CAD experience required.
+            </p>
+            <p>
+              <strong>Learning and sharing.</strong> I enjoy figuring things out
+              and helping others do the same. If you have a question, ask.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4 flex items-center">
-            <i className="bi bi-window mr-3"></i>How I work
-          </h2>
-          <div className="space-y-4 text-gray-800 dark:text-gray-300">
+      <section className="mb-12 grid gap-8 md:grid-cols-2">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <h2 className="mb-4 text-2xl font-bold">How I work</h2>
+          <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
-              I prefer projects where there is a real need to solve: a site that
-              needs to convert better, content that needs clearer structure, a
-              workflow that wastes time, or a tool that does not exist yet.
+              I prefer projects where there&apos;s a real need to solve. Send me
+              a written brief — what&apos;s the problem, what&apos;s the
+              deadline, what does success look like. I&apos;ll tell you honestly
+              whether it&apos;s a fit.
             </p>
             <p>
-              My style is practical and iterative. I would rather improve the
-              thing properly than hide weak decisions behind marketing language.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4 flex items-center">
-            <i className="bi bi-chat-dots mr-3"></i>Communication style
-          </h2>
-          <div className="space-y-4 text-gray-800 dark:text-gray-300">
-            <p>
-              I am happy to work through written communication first. Contact
-              forms, email, social messaging, and freelance-platform messages
-              are all fine ways to begin. That usually makes scope, revisions,
-              and expectations easier to keep clear.
-            </p>
-            <p>
-              I do not need to publish phone numbers or physical contact details
-              to do good work. A clear written brief is far more useful.
+              Clear brief → working build → refinement → handover. No drama, no
+              mystery, no getting handed off to someone else.
             </p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4 flex items-center">
-            <i className="bi bi-cpu mr-3"></i>Technical interests
-          </h2>
-          <div className="space-y-4 text-gray-800 dark:text-gray-300">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <h2 className="mb-4 text-2xl font-bold">Let&apos;s work together</h2>
+          <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
-              I enjoy web development, AI-assisted workflows, automation,
-              CAD/CAM, maker tooling, and the broader systems thinking that
-              connects software to operations and fabrication.
-            </p>
-            <p>
-              I am especially drawn to work where software has to be both
-              technically sound and practically useful.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4 flex items-center">
-            <i className="bi bi-hand-thumbs-up mr-3"></i>Working together
-          </h2>
-          <div className="space-y-4 text-gray-800 dark:text-gray-300">
-            <p>
-              If you need a website, redesign, custom tool, or help with a
-              practical fabrication project, send me a message with the basics
-              of what you are trying to achieve.
+              If you need a website, a custom tool, or help with a fabrication
+              project, send me a message. Include the basics of what you&apos;re
+              trying to do — I can usually tell you quickly whether it&apos;s a
+              good fit and give you a rough idea of cost and timing.
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-primary hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded-full transition-transform hover:scale-105"
+              className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
             >
               Send a message
             </Link>
