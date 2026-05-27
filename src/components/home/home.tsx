@@ -197,17 +197,11 @@ export default function Home(): ReactElement {
               <li>- People who value clear communication and honest pricing</li>
             </ul>
             <p className="mt-6 text-sm font-medium text-primary">
-              <li>- Custom tools and automation helpers</li>
-              <li>- Text-first communication through forms, social, or freelance platforms</li>
-            </ul>
-            <div className="mt-8 rounded-2xl bg-gray-50 p-5 dark:bg-gray-950/80">
-              <p className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-500">
-                Working style
-              </p>
-              <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
+              Working style
+            </p>
+            <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
                 Clear brief, sensible structure, working build, then refinement. No drama, no mystery, just deliberate progress.
               </p>
-            </div>
           </div>
         </div>
       </section>
