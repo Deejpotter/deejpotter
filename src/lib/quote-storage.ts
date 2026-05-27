@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { uploadToR2, isR2Configured, getR2Key } from "./r2-storage";
 
 export type QuoteStatus =
   | "new"
@@ -29,6 +30,7 @@ export interface QuoteRequestRecord {
   fileStoredAs: string;
   fileType: string;
   fileSize: number;
+  r2Key?: string | null;
   status: QuoteStatus;
   quotedPrice?: number | null;
   turnaroundEstimate?: string | null;
@@ -124,7 +126,25 @@ export async function saveQuoteRequest(
   }
 
   const arrayBuffer = await file.arrayBuffer();
-  await fs.writeFile(filePath, Buffer.from(arrayBuffer));
+  const fileBuffer = Buffer.from(arrayBuffer);
+
+  // Write to local filesystem first (always works, zero latency)
+  await fs.writeFile(filePath, fileBuffer);
+
+  // Upload to R2 for persistent cloud storage (survives deploys)
+  // Runs in background — failure is logged but doesn't block the request
+  const r2KeyPromise = (async () => {
+    if (!isR2Configured()) {
+      console.warn("r2: not configured, skipping upload for", id);
+      return null;
+    }
+    const key = getR2Key(id, fileStoredAs);
+    const result = await uploadToR2(fileBuffer, fileStoredAs, file.type || "application/octet-stream", id);
+    if (result) {
+      console.info("r2: quote file persisted", { id, key: result, size: file.size });
+    }
+    return result;
+  })();
 
   const now = new Date().toISOString();
   // Only spread known safe fields — not the raw file object or any unknown keys
@@ -146,6 +166,7 @@ export async function saveQuoteRequest(
     fileStoredAs,
     fileType: file.type || "application/octet-stream",
     fileSize: file.size,
+    r2Key: null,
     status: "new",
     quotedPrice: null,
     turnaroundEstimate: null,
@@ -154,6 +175,12 @@ export async function saveQuoteRequest(
     createdAt: now,
     updatedAt: now,
   };
+
+  // Wait for R2 upload to settle so the record includes the r2Key
+  const r2Key = await r2KeyPromise;
+  if (r2Key) {
+    record.r2Key = r2Key;
+  }
 
   const records = await readIndex(root);
   records.unshift(record);
@@ -221,4 +248,35 @@ export function getQuoteRequestFilePath(record: QuoteRequestRecord): string {
     throw new Error("Security: path traversal detected");
   }
   return resolved;
+}
+
+/**
+ * Retrieve a quote file buffer.
+ * Tries R2 first (persistent cloud storage), falls back to local disk.
+ * Returns null if the file cannot be found in either location.
+ */
+export async function getQuoteRequestFileBuffer(
+  record: QuoteRequestRecord
+): Promise<Buffer | null> {
+  // 1. Try R2 if the record has an r2Key
+  if (record.r2Key) {
+    const { downloadFromR2 } = await import("./r2-storage");
+    const buffer = await downloadFromR2(record.r2Key);
+    if (buffer) {
+      console.info("quote: served from R2", { id: record.id, key: record.r2Key });
+      return buffer;
+    }
+    console.warn("quote: R2 download failed, falling back to local", { id: record.id });
+  }
+
+  // 2. Fall back to local filesystem
+  try {
+    const filePath = getQuoteRequestFilePath(record);
+    const buffer = await fs.readFile(filePath);
+    console.info("quote: served from local disk", { id: record.id });
+    return buffer;
+  } catch (error) {
+    console.error("quote: local file read failed", { id: record.id, error });
+    return null;
+  }
 }

@@ -56,3 +56,5 @@ data/3d-printing-quotes/
 
 lint-errors.txt
 lint-output.txt
+
+ecosystem.config.cjs

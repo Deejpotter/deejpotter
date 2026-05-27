@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "node:fs/promises";
-import { getQuoteRequest, getQuoteRequestFilePath } from "@/lib/quote-storage";
+import { getQuoteRequest, getQuoteRequestFileBuffer } from "@/lib/quote-storage";
 
 async function getAuthAsync() {
   try {
@@ -33,16 +32,15 @@ export async function GET(
     return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
   }
 
-  try {
-    const buffer = await fs.readFile(getQuoteRequestFilePath(record));
-    return new NextResponse(buffer, {
-      headers: {
-        "Content-Type": record.fileType || "application/octet-stream",
-        "Content-Disposition": `attachment; filename="${record.fileName}"`,
-      },
-    });
-  } catch (error) {
-    console.error("quote file read error", error);
+  const buffer = await getQuoteRequestFileBuffer(record);
+  if (!buffer) {
     return NextResponse.json({ error: "Could not read the quote file." }, { status: 500 });
   }
+
+  return new NextResponse(new Uint8Array(buffer), {
+    headers: {
+      "Content-Type": record.fileType || "application/octet-stream",
+      "Content-Disposition": `attachment; filename="${record.fileName}"`,
+    },
+  });
 }
