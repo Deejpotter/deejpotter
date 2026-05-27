@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { listQuotes } from "@/lib/db-quotes";
+import PayNowButton from "@/components/PayNowButton";
 
 type QuoteRecord = Awaited<ReturnType<typeof listQuotes>>[number];
 
@@ -119,14 +120,9 @@ export default async function AccountPage() {
                           {quote.turnaroundEstimate}
                         </div>
                       )}
-                      {quote.payment?.stripeCheckoutUrl &&
-                        quote.status === "awaiting_payment" && (
-                          <a
-                            href={quote.payment.stripeCheckoutUrl}
-                            className="mt-2 inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-white hover:bg-primary/90"
-                          >
-                            Pay now
-                          </a>
+                      {(quote.status === "quoted" || quote.status === "awaiting_payment") &&
+                        quote.quotedPrice && (
+                          <PayNowButton quoteNumber={quote.quoteNumber} />
                         )}
                     </div>
                   </div>

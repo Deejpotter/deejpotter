@@ -9,7 +9,7 @@
  */
 
 import { NextResponse } from "next/server";
-import { updateQuoteRequest, getQuoteRequest } from "@/lib/quote-storage";
+import { updateQuote, getQuote } from "@/lib/db-quotes";
 
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY || "";
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
@@ -79,27 +79,38 @@ export async function POST(request: Request) {
     const session = event.data.object;
     const metadata = (session.metadata || {}) as Record<string, string>;
 
-    if (metadata.type === "3d-printing-quote" && metadata.quoteId) {
-      const quoteId = metadata.quoteId;
-      console.info(`Webhook: payment completed for quote ${quoteId}`);
+    // Handle quotes paid via the new quote checkout
+    if (metadata.quoteNumber) {
+      const quoteNumber = Number(metadata.quoteNumber);
+      console.info(`Webhook: payment completed for quote #${quoteNumber}`);
 
       try {
-        const quote = await getQuoteRequest(quoteId);
+        const quote = await getQuote(quoteNumber);
         if (!quote) {
-          console.error(`Webhook: quote ${quoteId} not found`);
+          console.error(`Webhook: quote #${quoteNumber} not found`);
           return NextResponse.json({ received: true });
         }
 
         if (quote.status !== "awaiting_payment") {
-          console.info(`Webhook: quote ${quoteId} status is "${quote.status}" — nothing to do`);
+          console.info(`Webhook: quote #${quoteNumber} status is "${quote.status}" — nothing to do`);
           return NextResponse.json({ received: true });
         }
 
-        await updateQuoteRequest(quoteId, { status: "approved" });
-        console.info(`Webhook: quote ${quoteId} marked as approved (payment confirmed)`);
+        await updateQuote(quoteNumber, {
+          status: "approved",
+          paidAt: new Date().toISOString(),
+        });
+        console.info(`Webhook: quote #${quoteNumber} → approved (paid)`);
       } catch (err) {
-        console.error(`Webhook: failed to update quote ${quoteId}:`, err);
+        console.error(`Webhook: failed to update quote #${quoteNumber}:`, err);
       }
+      return NextResponse.json({ received: true });
+    }
+
+    // Legacy: handle old flat-file style quotes
+    if (metadata.type === "3d-printing-quote" && metadata.quoteId) {
+      console.info(`Webhook: legacy quote ${metadata.quoteId} — skipping (flat files deprecated)`);
+      return NextResponse.json({ received: true });
     }
   }
 
@@ -108,22 +119,27 @@ export async function POST(request: Request) {
     const session = event.data.object;
     const metadata = (session.metadata || {}) as Record<string, string>;
 
-    if (metadata.type === "3d-printing-quote" && metadata.quoteId) {
-      const quoteId = metadata.quoteId;
-
+    if (metadata.quoteNumber) {
+      const quoteNumber = Number(metadata.quoteNumber);
       try {
-        const quote = await getQuoteRequest(quoteId);
+        const quote = await getQuote(quoteNumber);
         if (quote && quote.status === "awaiting_payment") {
-          await updateQuoteRequest(quoteId, {
+          await updateQuote(quoteNumber, {
             status: "quoted",
             stripeCheckoutUrl: null,
             stripeSessionId: null,
           });
-          console.info(`Webhook: quote ${quoteId} returned to "quoted" (session expired)`);
+          console.info(`Webhook: quote #${quoteNumber} → "quoted" (session expired)`);
         }
       } catch (err) {
-        console.error(`Webhook: failed to expire quote ${quoteId}:`, err);
+        console.error(`Webhook: failed to expire quote #${quoteNumber}:`, err);
       }
+      return NextResponse.json({ received: true });
+    }
+
+    if (metadata.type === "3d-printing-quote" && metadata.quoteId) {
+      // Legacy — skip
+      return NextResponse.json({ received: true });
     }
   }
 
