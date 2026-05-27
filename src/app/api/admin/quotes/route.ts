@@ -8,9 +8,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { listQuotes, updateQuote } from "@/lib/db-quotes";
+import { listQuotes, updateQuote, getQuote } from "@/lib/db-quotes";
 import { recalculateAllTurnarounds } from "@/lib/turnaround";
 import { isAdmin } from "@/lib/db-users";
+import { notifyQuoteUpdated } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
   const session = await auth();
@@ -68,6 +69,22 @@ export async function PATCH(req: NextRequest) {
         { error: "Quote not found" },
         { status: 404 },
       );
+    }
+
+    // Send email notification if status or price changed
+    if (patch.status || patch.quotedPrice !== undefined) {
+      const quote = patch.status
+        ? await getQuote(Number(quoteNumber))
+        : await getQuote(Number(quoteNumber));
+      if (quote) {
+        notifyQuoteUpdated(
+          quote.userName || quote.userEmail,
+          quote.userEmail,
+          quote.quoteNumber,
+          patch.status || quote.status,
+          patch.quotedPrice !== undefined ? patch.quotedPrice : quote.quotedPrice,
+        ).catch((err) => console.error("[email] Failed to send update:", err));
+      }
     }
 
     return NextResponse.json(updated);

@@ -4,6 +4,7 @@ import { createQuote } from "@/lib/db-quotes";
 import { analyzeQuoteFile } from "@/lib/quote-analysis";
 import { getMaterialIds } from "@/lib/printing-materials";
 import { upsertUser } from "@/lib/db-users";
+import { notifyQuoteReceived } from "@/lib/email";
 
 const materialIds = getMaterialIds();
 const materialEnum = z.enum(materialIds as [string, ...string[]]);
@@ -199,6 +200,14 @@ export async function POST(request: Request) {
       analysisAvailable: analysis?.analysisAvailable,
       estimatedPriceAud: analysis?.estimatedPriceAud,
     });
+
+    // Fire email notifications (non-blocking)
+    notifyQuoteReceived(
+      parsed.data.name,
+      parsed.data.email,
+      record.quoteNumber,
+      "3d_printing",
+    ).catch((err) => console.error("[email] Failed to send:", err));
 
     return NextResponse.json({
       ok: true,
