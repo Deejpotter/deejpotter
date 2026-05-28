@@ -82,6 +82,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ## Completed (last 10)
 
+- Live site fixes: renamed `privacy/privacy.tsx` → `page.tsx`, `terms/terms.tsx` → `page.tsx` (both were 404ing); created `projects/page.tsx` landing page; fixed contact page missing top padding in `ContactForm.tsx`
 - Branches merged: dev and main unified with full feature set
 - R2 persistent file storage deployed (upload/download/delete, dual-write local+R2)
 - MongoDB DAO layer (db-quotes, db-config, db-users, db-schemas)

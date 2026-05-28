@@ -153,7 +153,7 @@ export default function ContactForm(): ReactElement {
     "w-full rounded-xl border bg-gray-50 p-3 text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-gray-700 dark:text-white";
 
   return (
-    <div>
+    <div className="mx-auto max-w-4xl px-4 py-10 sm:py-12 lg:py-16">
       <section className="mb-12">
         <h1 className="mb-4 text-4xl font-extrabold lg:text-5xl">
           Get in Touch
