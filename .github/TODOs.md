@@ -78,10 +78,19 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - Shop pages have metadata exports with OpenGraph
 - Sitemap includes shop routes
 
+### ✅ STEP 11: Copywriting agent customization — DONE
+**Logic:** Create a reusable custom agent to improve website copy across pages using concise, scannable, people-first writing patterns.
+
+**Sub-steps:**
+11.1. Add `.github/agents/copywriting.agent.md` with role, constraints, and workflow
+11.2. Include style guardrails (no em dash, concise sentences, clear CTAs)
+11.3. Include SEO microcopy outputs (title and meta description options)
+
 ---
 
 ## Completed (last 10)
 
+- Copywriting agent added: `.github/agents/copywriting.agent.md` with people-first rewrite workflow, SEO snippet outputs, and no-em-dash style guardrail
 - Live site fixes: renamed `privacy/privacy.tsx` → `page.tsx`, `terms/terms.tsx` → `page.tsx` (both were 404ing); created `projects/page.tsx` landing page; fixed contact page missing top padding in `ContactForm.tsx`
 - Branches merged: dev and main unified with full feature set
 - R2 persistent file storage deployed (upload/download/delete, dual-write local+R2)
@@ -91,8 +100,6 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - Clerk webhook for user sync to MongoDB
 - Stripe quote checkout flow
 - Email notifications (Resend) with templates
-- Health check endpoint (`/api/health`)
-- PASO copy rewrite on homepage, About, 3D printing, CAD/CAM pages
 
 ---
 
