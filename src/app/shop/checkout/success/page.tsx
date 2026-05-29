@@ -8,7 +8,7 @@ export default function CheckoutSuccessPage() {
       <div className="text-6xl mb-6">🎉</div>
       <h1 className="text-3xl font-extrabold mb-4">Payment Successful</h1>
       <p className="text-gray-600 dark:text-gray-400 mb-8">
-        Thank you for your order. You'll receive a confirmation email shortly.
+        Thank you for your order. You will receive a confirmation email shortly.
       </p>
       <Link href="/shop" className="inline-block px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90">
         Continue Shopping
