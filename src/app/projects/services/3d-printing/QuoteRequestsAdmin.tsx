@@ -49,6 +49,7 @@ export default function QuoteRequestsAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [savingId, setSavingId] = useState<number | null>(null);
   const [filter, setFilter] = useState("all");
+  const [draftPrices, setDraftPrices] = useState<Record<number, string>>({});
 
   const load = async () => {
     setLoading(true);
@@ -278,14 +279,25 @@ export default function QuoteRequestsAdmin() {
                     <input
                       type="number"
                       step="0.01"
-                      value={record.quotedPrice ?? ""}
+                      value={draftPrices[record.quoteNumber] ?? record.quotedPrice ?? ""}
                       onChange={(e) =>
-                        save(record.quoteNumber, {
-                          quotedPrice: e.target.value
-                            ? Number(e.target.value)
-                            : null,
-                        })
+                        setDraftPrices((prev) => ({
+                          ...prev,
+                          [record.quoteNumber]: e.target.value,
+                        }))
                       }
+                      onBlur={() => {
+                        const val = draftPrices[record.quoteNumber];
+                        if (val === undefined) return;
+                        save(record.quoteNumber, {
+                          quotedPrice: val ? Number(val) : null,
+                        });
+                        setDraftPrices((prev) => {
+                          const next = { ...prev };
+                          delete next[record.quoteNumber];
+                          return next;
+                        });
+                      }}
                       disabled={savingId === record.quoteNumber}
                       className={`${inputClass} w-24 text-xs`}
                       placeholder="—"

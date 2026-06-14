@@ -1,35 +1,40 @@
-"use client";
+import type { Metadata } from "next";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import SettingsTabs from "./SettingsTabs";
 
-import { useState } from "react";
-import AdminSettings from "./AdminSettings";
-import ServiceConfigEditor from "./ServiceConfigEditor";
+export const metadata: Metadata = {
+  title: "Settings | Admin | Deej Potter",
+  robots: { index: false },
+};
 
-const TABS = [
-  { id: "business", label: "Business Settings" },
-  { id: "service", label: "Service Config" },
-];
+const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
-export default function SettingsPage() {
-  const [tab, setTab] = useState("business");
+export default async function AdminSettingsPage() {
+  if (!hasClerk) {
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-20 text-center">
+        <h1 className="text-3xl font-extrabold mb-4">Settings</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
+          Authentication is not configured. Set <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code> and <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">CLERK_SECRET_KEY</code> in your <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">.env.local</code> to enable the admin panel.
+        </p>
+        <Link href="/" className="inline-block px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90">
+          Back to Home
+        </Link>
+      </main>
+    );
+  }
 
-  return (
-    <div>
-      <div className="max-w-5xl mx-auto px-4 pt-6 flex gap-4 border-b border-gray-200 dark:border-gray-700">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition -mb-[2px] ${
-              tab === t.id
-                ? "border-primary text-primary"
-                : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-      {tab === "business" ? <AdminSettings /> : <ServiceConfigEditor />}
-    </div>
-  );
+  const user = await currentUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  const role = user.publicMetadata?.role as string | undefined;
+  if (role !== "admin") {
+    redirect("/");
+  }
+
+  return <SettingsTabs />;
 }

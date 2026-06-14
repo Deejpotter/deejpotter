@@ -13,7 +13,11 @@ describe("Home component", () => {
     expect(
       screen.getByRole("heading", { name: /a simple process that keeps things moving/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /explore the work/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /browse the parts of the site that show the range/i,
+      })
+    ).toBeInTheDocument();
 
     expect(
       screen.getByRole("heading", { name: /website design and development/i })
@@ -21,8 +25,8 @@ describe("Home component", () => {
     expect(
       screen.getByRole("heading", { name: /custom tools and automation/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/discover the real problem/i)).toBeInTheDocument();
-    expect(screen.getByText(/shape the structure/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/you tell me what you need/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/i build it/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/browse websites/i)).toBeInTheDocument();
     expect(screen.getByText(/explore tools/i)).toBeInTheDocument();
     expect(screen.getByText(/view services/i)).toBeInTheDocument();

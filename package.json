@@ -105,6 +105,7 @@
     "eslint-plugin-storybook": "^10.4.0",
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^27.4.0",
+    "mongodb-memory-server": "^10.1.2",
     "playwright": "^1.57.0",
     "postcss": "^8.5.6",
     "sass": "^1.99.0",

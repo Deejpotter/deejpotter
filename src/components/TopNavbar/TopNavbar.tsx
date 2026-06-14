@@ -42,6 +42,12 @@ export default function TopNavbar() {
   // Mobile drawer open/close
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // ── Close mobile drawer + dropdowns on route change ──────────────────
+  useEffect(() => {
+    setMobileOpen(false);
+    setOpenMenu(null);
+  }, [pathname]);
+
   // Ref for outside-click detection
   const navRef = useRef<HTMLElement>(null);
 
@@ -215,7 +221,7 @@ export default function TopNavbar() {
                 src="/images/deejPotterLogo.svg"
                 alt="Deej Potter Logo"
                 width={40}
-                height={40}
+                height={38}
               />
               <span className="hidden sm:inline font-bold text-lg text-white">
                 Deej Potter
@@ -287,7 +293,7 @@ export default function TopNavbar() {
                     src="/images/deejPotterLogo.svg"
                     alt="Deej Potter Logo"
                     width={36}
-                    height={36}
+                    height={35}
                   />
                   <span className="font-bold text-white">Deej Potter</span>
                 </Link>

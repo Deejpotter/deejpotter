@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { POST } from './route';
+import { setupMongoMemoryServer, teardownMongoMemoryServer } from '@/lib/mongoMemoryServer';
 
 function makeFormRequest(formData: FormData) {
   return new Request('http://localhost/api/3d-printing-quote', {
@@ -12,7 +13,15 @@ function makeFormRequest(formData: FormData) {
 
 describe('3d-printing-quote route', () => {
   const originalDir = process.env.QUOTE_STORAGE_DIR;
+  const originalMongoUri = process.env.MONGODB_URI;
+  const originalDbName = process.env.DB_NAME;
   let tempDir: string;
+
+  beforeAll(async () => {
+    const { uri } = await setupMongoMemoryServer();
+    process.env.MONGODB_URI = uri;
+    process.env.DB_NAME = 'test';
+  });
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'quote-route-'));
@@ -22,6 +31,12 @@ describe('3d-printing-quote route', () => {
   afterEach(async () => {
     process.env.QUOTE_STORAGE_DIR = originalDir;
     await fs.rm(tempDir, { recursive: true, force: true });
+  });
+
+  afterAll(async () => {
+    process.env.MONGODB_URI = originalMongoUri;
+    process.env.DB_NAME = originalDbName;
+    await teardownMongoMemoryServer();
   });
 
   test('accepts a valid quote request', async () => {

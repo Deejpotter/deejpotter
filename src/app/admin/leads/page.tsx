@@ -1,22 +1,7 @@
 import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
 import LeadInbox from "./LeadInbox";
 import { listContactLeads } from "@/lib/contact-leads";
-
-async function getAuthAsync() {
-  try {
-    const clerk = await import("@clerk/nextjs");
-    const anyClerk = clerk as any;
-    const getter =
-      typeof anyClerk?.auth === "function"
-        ? anyClerk.auth
-        : typeof anyClerk?.getAuth === "function"
-          ? anyClerk.getAuth
-          : () => ({ userId: null });
-    return getter();
-  } catch {
-    return { userId: null };
-  }
-}
 
 export const metadata: Metadata = {
   title: "Lead Inbox | Deej Potter",
@@ -28,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LeadInboxPage() {
-  const { userId } = await getAuthAsync();
+  const { userId } = await auth();
   if (!userId) {
     return (
       <div className="mx-auto max-w-4xl py-16">

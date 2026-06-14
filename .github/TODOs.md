@@ -53,6 +53,13 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ## Phase 2: Build Fixes & Polish (Priority: LOW)
 
+### ✅ STEP 12: Browser warnings and smoke checks - DONE
+- Root layout hydration warning fixed by moving client providers inside `body` and applying `suppressHydrationWarning` on `html`
+- Navbar logo image warning removed by matching the SVG's intrinsic aspect ratio
+- Playwright homepage smoke test updated to the current hero content and CTA
+- TypeScript target deprecation warning cleared with a modern target and explicit deprecation suppression
+- Root and `src` `middleware` files migrated to `src/proxy.ts` with redirect and admin protection preserved
+
 ### ✅ STEP 7: Build — PASSING
 - Build passes with exit code 0
 - All packages installed including AWS SDK, three-stdlib
@@ -90,6 +97,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ## Completed (last 10)
 
+- Browser verification cleanup: fixed root layout hydration, logo aspect-ratio warning, stale Playwright smoke test, TypeScript deprecation warning, and migrated deprecated middleware to `src/proxy.ts`
 - Copywriting agent added: `.github/agents/copywriting.agent.md` with people-first rewrite workflow, SEO snippet outputs, and no-em-dash style guardrail
 - Live site fixes: renamed `privacy/privacy.tsx` → `page.tsx`, `terms/terms.tsx` → `page.tsx` (both were 404ing); created `projects/page.tsx` landing page; fixed contact page missing top padding in `ContactForm.tsx`
 - Branches merged: dev and main unified with full feature set
@@ -99,7 +107,6 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - Customer account page (`/account`)
 - Clerk webhook for user sync to MongoDB
 - Stripe quote checkout flow
-- Email notifications (Resend) with templates
 
 ---
 

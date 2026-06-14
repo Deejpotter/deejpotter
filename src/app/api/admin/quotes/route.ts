@@ -35,7 +35,11 @@ export async function GET(req: NextRequest) {
       limit,
     });
 
-    return NextResponse.json(quotes);
+    const safe = quotes.map((q) => ({
+      ...q,
+      _id: q._id?.toString?.(),
+    }));
+    return NextResponse.json(safe);
   } catch (err) {
     return NextResponse.json(
       { error: "Failed to load quotes" },

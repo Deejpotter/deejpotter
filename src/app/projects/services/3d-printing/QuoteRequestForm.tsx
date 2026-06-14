@@ -255,7 +255,9 @@ export default function QuoteRequestForm(): ReactElement {
           </div>
           {/* 3D Preview Drop Zone */}
           <div className="col-span-full">
-            <label className={labelClass}>Model file</label>
+            <label htmlFor="quote-model-file" className={labelClass}>
+              Model file
+            </label>
             <ModelDropZone
               onFileChange={setSelectedFile}
               acceptedTypes={
@@ -267,11 +269,16 @@ export default function QuoteRequestForm(): ReactElement {
             />
             {/* Hidden file input for form submission */}
             <input
+              id="quote-model-file"
               type="file"
               ref={fileInputRef}
               name="modelFile"
-              className="hidden"
+              className="sr-only"
               accept={acceptedFileTypes}
+              onChange={(e) => {
+                const file = e.target.files?.[0] ?? null;
+                setSelectedFile(file);
+              }}
             />
             <input type="hidden" name="serviceType" value={serviceType} />
           </div>

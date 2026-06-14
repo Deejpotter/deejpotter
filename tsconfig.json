@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    // This specifies the ECMAScript target version. "es5" is widely compatible with many browsers.
-    "target": "es5",
+    // This specifies the ECMAScript target version. Next.js 16 targets modern browsers and runtimes.
+    "target": "es2017",
     // This includes type definitions from these libraries.
     "lib": [
       "dom",

@@ -8,10 +8,12 @@ describe("CAD/CAM and fabrication service page", () => {
     render(<CadCamFabricationService />);
 
     expect(
-      screen.getByRole("heading", { name: /cad, cam, and fabrication support/i })
+      screen.getByRole("heading", { name: /cad, cam, and fabrication/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /what i can help with/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /what this is not/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /frequently asked questions/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /laser cutting and engraving/i })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /who this is for/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /questions people ask/i })).toBeInTheDocument();
   });
 });

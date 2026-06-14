@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
+const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
 async function getStats() {
   try {
     const [stats, leads] = await Promise.all([
@@ -30,9 +32,23 @@ async function getStats() {
 }
 
 export default async function AdminDashboardPage() {
+  if (!hasClerk) {
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-20 text-center">
+        <h1 className="text-3xl font-extrabold mb-4">Admin Dashboard</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
+          Authentication is not configured. Set <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code> and <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">CLERK_SECRET_KEY</code> in your <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">.env.local</code> to enable the admin panel.
+        </p>
+        <Link href="/" className="inline-block px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90">
+          Back to Home
+        </Link>
+      </main>
+    );
+  }
+
   const user = await currentUser();
   if (!user) {
-    redirect("/");
+    redirect("/sign-in");
   }
 
   // Check admin role from Clerk publicMetadata
@@ -82,6 +98,8 @@ export default async function AdminDashboardPage() {
           <AdminNavItem href="/admin/3d-printing" title="3D Printing Quotes" desc="Review, price, and manage print quote requests" />
           <AdminNavItem href="/admin/leads" title="Lead Inbox" desc="View and manage contact form submissions" />
           <AdminNavItem href="/admin/settings" title="Settings" desc="Test mode toggle, Stripe status, materials config" />
+          <AdminNavItem href="/admin/orders" title="Shop Orders" desc="View and manage customer orders" />
+          <AdminNavItem href="/admin/products" title="Shop Products" desc="Manage product catalog and Gelato sync" />
         </div>
       </div>
     </main>
