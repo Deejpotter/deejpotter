@@ -145,6 +145,11 @@ export async function GET(request: Request) {
     });
   }
 
+  const { userId } = await getAuthAsync();
+  if (!userId) {
+    return NextResponse.json("Unauthorized", { status: 401 });
+  }
+
   try {
     const docs = await performMongoOperation(collection!, (c) =>
       c.find({}).toArray()

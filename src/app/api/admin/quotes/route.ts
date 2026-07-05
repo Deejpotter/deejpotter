@@ -7,19 +7,19 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { listQuotes, updateQuote, getQuote } from "@/lib/db-quotes";
 import { recalculateAllTurnarounds } from "@/lib/turnaround";
-import { isAdmin } from "@/lib/db-users";
+import { requireAdmin } from "@/lib/admin-auth";
 import { notifyQuoteUpdated } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    await requireAdmin();
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error && e.message === "FORBIDDEN" ? "Forbidden" : "Unauthorized" },
+      { status: e instanceof Error && e.message === "FORBIDDEN" ? 403 : 401 },
+    );
   }
 
   try {
@@ -49,12 +49,13 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    await requireAdmin();
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error && e.message === "FORBIDDEN" ? "Forbidden" : "Unauthorized" },
+      { status: e instanceof Error && e.message === "FORBIDDEN" ? 403 : 401 },
+    );
   }
 
   try {
@@ -77,9 +78,7 @@ export async function PATCH(req: NextRequest) {
 
     // Send email notification if status or price changed
     if (patch.status || patch.quotedPrice !== undefined) {
-      const quote = patch.status
-        ? await getQuote(Number(quoteNumber))
-        : await getQuote(Number(quoteNumber));
+      const quote = await getQuote(Number(quoteNumber));
       if (quote) {
         notifyQuoteUpdated(
           quote.userName || quote.userEmail,
@@ -101,12 +100,13 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function POST() {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    await requireAdmin();
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error && e.message === "FORBIDDEN" ? "Forbidden" : "Unauthorized" },
+      { status: e instanceof Error && e.message === "FORBIDDEN" ? 403 : 401 },
+    );
   }
 
   try {

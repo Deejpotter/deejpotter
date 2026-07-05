@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { auth } from "@clerk/nextjs/server";
+import { isAdmin } from "@/lib/db-users";
 import {
   listContactLeads,
   saveContactLead,
@@ -35,26 +37,13 @@ const patchSchema = z.object({
   status: z.enum(contactStatuses),
 });
 
-async function getAuthAsync() {
-  try {
-    const clerk = await import("@clerk/nextjs");
-    const anyClerk = clerk as any;
-    const getter =
-      typeof anyClerk?.auth === "function"
-        ? anyClerk.auth
-        : typeof anyClerk?.getAuth === "function"
-          ? anyClerk.getAuth
-          : () => ({ userId: null });
-    return getter();
-  } catch {
-    return { userId: null };
-  }
-}
-
 export async function GET() {
-  const { userId } = await getAuthAsync();
-  if (!userId) {
+  const session = await auth();
+  if (!session.userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!(await isAdmin(session.userId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {
@@ -110,9 +99,12 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const { userId } = await getAuthAsync();
-  if (!userId) {
+  const session = await auth();
+  if (!session.userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!(await isAdmin(session.userId))) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {

@@ -1,28 +1,14 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { isAdmin } from "@/lib/db-users";
 import { getQuoteRequest, getQuoteRequestFileBuffer } from "@/lib/quote-storage";
-
-async function getAuthAsync() {
-  try {
-    const _clerk = await import("@clerk/nextjs");
-    const anyClerk = _clerk as any;
-    const getter =
-      typeof anyClerk?.auth === "function"
-        ? anyClerk.auth
-        : typeof anyClerk?.getAuth === "function"
-          ? anyClerk.getAuth
-          : () => ({ userId: null });
-    return getter();
-  } catch {
-    return { userId: null };
-  }
-}
 
 export async function GET(
   _request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  const { userId } = await getAuthAsync();
-  if (!userId) {
+  const session = await auth();
+  if (!session.userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -30,6 +16,11 @@ export async function GET(
   const record = await getQuoteRequest(id);
   if (!record) {
     return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
+  }
+
+  const admin = await isAdmin(session.userId);
+  if (!admin) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const buffer = await getQuoteRequestFileBuffer(record);

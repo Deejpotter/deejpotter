@@ -106,12 +106,6 @@ export async function POST(request: Request) {
       }
       return NextResponse.json({ received: true });
     }
-
-    // Legacy: handle old flat-file style quotes
-    if (metadata.type === "3d-printing-quote" && metadata.quoteId) {
-      console.info(`Webhook: legacy quote ${metadata.quoteId} — skipping (flat files deprecated)`);
-      return NextResponse.json({ received: true });
-    }
   }
 
   // ── Handle checkout.session.expired ──────────────────────────────
@@ -134,11 +128,6 @@ export async function POST(request: Request) {
       } catch (err) {
         console.error(`Webhook: failed to expire quote #${quoteNumber}:`, err);
       }
-      return NextResponse.json({ received: true });
-    }
-
-    if (metadata.type === "3d-printing-quote" && metadata.quoteId) {
-      // Legacy — skip
       return NextResponse.json({ received: true });
     }
   }

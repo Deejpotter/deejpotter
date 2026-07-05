@@ -6,6 +6,14 @@ vi.mock("@clerk/nextjs", () => ({
   auth: () => ({ userId: "user_123" }),
 }));
 
+vi.mock("@clerk/nextjs/server", () => ({
+  auth: () => ({ userId: "user_123" }),
+}));
+
+vi.mock("@/lib/db-users", () => ({
+  isAdmin: () => Promise.resolve(true),
+}));
+
 const tempDir = path.join(process.cwd(), "tmp", "contact-leads-test");
 
 beforeEach(async () => {

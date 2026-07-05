@@ -80,6 +80,7 @@ describe('mongo-crud route - additional scenarios', () => {
         constructor(id: string) { if (id === 'invalid') throw new Error('bad'); }
       },
     }));
+    vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
 
     // ensure allowlist empty
     process.env.ALLOWED_COLLECTIONS = '';
@@ -96,6 +97,7 @@ describe('mongo-crud route - additional scenarios', () => {
   test('GET rejects disallowed collection when ALLOWED_COLLECTIONS set', async () => {
     const mock = createMongoMock({});
     vi.doMock('mongodb', () => ({ MongoClient: mock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
 
     setAllowedCollections('allowed');
     const route = await import('./route');
@@ -109,6 +111,7 @@ describe('mongo-crud route - additional scenarios', () => {
   test('GET returns 500 when db throws', async () => {
     const mock = createMongoMock({ find: async () => { throw new Error('boom'); } });
     vi.doMock('mongodb', () => ({ MongoClient: mock.FakeClient, ObjectId: class { constructor(id: string) {} } }));
+    vi.doMock('@clerk/nextjs', () => ({ auth: () => ({ userId: 'user-1' }) }));
 
     const route = await import('./route');
     const res = await route.GET(makeRequest('http://localhost/api/mongo-crud?collection=test'));
