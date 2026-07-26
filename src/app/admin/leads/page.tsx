@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
+import { hasClerk, requireAdminPage } from "@/lib/admin-auth";
 import LeadInbox from "./LeadInbox";
 import { listContactLeads } from "@/lib/contact-leads";
 
@@ -13,19 +14,21 @@ export const metadata: Metadata = {
 };
 
 export default async function LeadInboxPage() {
-  const { userId } = await auth();
-  if (!userId) {
+  if (!hasClerk) {
     return (
-      <div className="mx-auto max-w-4xl py-16">
-        <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <h1 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">Lead Inbox</h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Sign in to view customer leads.
-          </p>
-        </div>
-      </div>
+      <main className="mx-auto max-w-2xl px-4 py-20 text-center">
+        <h1 className="text-3xl font-extrabold mb-4">Lead Inbox</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
+          Authentication is not configured.
+        </p>
+        <Link href="/" className="inline-block px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90">
+          Back to Home
+        </Link>
+      </main>
     );
   }
+
+  await requireAdminPage();
 
   const leads = await listContactLeads();
 

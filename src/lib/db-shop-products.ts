@@ -12,7 +12,7 @@ function toProduct(doc: Record<string, unknown>): Product {
 }
 
 export async function listProducts(filters?: {
-  type?: "pod" | "digital" | "service";
+  type?: "digital" | "service";
   published?: boolean;
   limit?: number;
   offset?: number;

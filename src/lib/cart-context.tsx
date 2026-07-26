@@ -13,9 +13,8 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  type: "pod" | "digital" | "service";
+  type: "digital" | "service";
   image?: string;
-  gelatoProductId?: string;
 }
 
 interface CartContextValue {

@@ -45,14 +45,14 @@ export default function QuoteStatusLookup(): ReactElement {
     declined: "Declined",
   };
 
-  const handlePayNow = async (quoteId: string) => {
+  const handlePayNow = async (quoteNumber: string) => {
     setPaying(true);
     setError(null);
     try {
       const res = await fetch("/api/shop/3d-printing-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quoteId, email }),
+        body: JSON.stringify({ quoteNumber: Number(quoteNumber), email }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -103,7 +103,7 @@ export default function QuoteStatusLookup(): ReactElement {
           <div>
             <h2 className="mb-2 text-3xl font-bold">Check your quote status</h2>
             <p className="max-w-2xl text-gray-600 dark:text-gray-400">
-              Enter your request ID and the same email address used on the quote request.
+              Enter your quote number and the same email address used on the quote request.
             </p>
           </div>
           <span className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
@@ -116,14 +116,16 @@ export default function QuoteStatusLookup(): ReactElement {
         <form className="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] md:items-end" onSubmit={onSubmit}>
           <div>
             <label htmlFor="status-request-id" className="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-100">
-              Request ID
+              Quote number
             </label>
             <input
               id="status-request-id"
               className={inputClass}
               value={requestId}
               onChange={(event) => setRequestId(event.target.value)}
-              placeholder="Paste your quote request ID"
+              placeholder="e.g. 1001"
+              inputMode="numeric"
+              pattern="[0-9]+"
               required
             />
           </div>
@@ -159,7 +161,7 @@ export default function QuoteStatusLookup(): ReactElement {
           <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sky-950 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-50" role="status">
             <div className="mb-2 text-xl font-bold">Quote status: {statusLabels[result.status] || result.status}</div>
             <div className="mb-2 text-sm">
-              Request {result.requestId} - {result.fileName} - {result.material} x {result.quantity}
+              Quote {result.requestId} - {result.fileName} - {result.material} x {result.quantity}
             </div>
             <div className="mb-1">
               {result.quotedPrice != null

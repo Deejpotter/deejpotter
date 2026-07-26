@@ -4,116 +4,98 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ---
 
-## Phase 1: E-commerce Frontend (Priority: HIGH)
+## Phase 1: E-commerce Frontend
 
 ### ✅ STEP 1: Shop landing page — DONE
-- `src/app/shop/page.tsx` — hero section, product grid from `/api/shop/products`
-- `src/components/ShopCard.tsx` — product card with image, price, type badge
-- Responsive grid (1→2→3→4 columns)
+- `src/app/shop/page.tsx` — product grid from `/api/shop/products`
 
 ### ✅ STEP 2: Product detail page — DONE
-- `src/app/shop/products/[slug]/page.tsx` — image, pricing, tags, service config
-- `AddToCartButton` component with cart context integration
-- POD/digital/service type handling
+- `src/app/shop/products/[slug]/page.tsx` — detail view + AddToCartButton
 
-### ⬜ STEP 3: Cart drawer UI — Cart context done, needs drawer component
-**Logic:** The cart context (`src/lib/cart-context.tsx`) handles state + localStorage persistence. Need a visual cart drawer that slides in from the right with item list, quantity controls, and checkout button.
+### ✅ STEP 3: Cart drawer UI — DONE
+- `src/components/CartDrawer.tsx`, `CartButton.tsx`, wired in TopNavbar
 
+### ✅ STEP 4: Checkout with Stripe — DONE
+- `src/app/shop/checkout/page.tsx` — Stripe Elements
+- `src/app/api/shop/create-payment-intent/route.ts` — creates order + payment intent
+- `src/lib/db-shop-orders.ts` — order persistence
+- Stripe webhook handles `payment_intent.succeeded` for shop orders
+- Success/cancelled pages exist
+
+### ⬜ STEP 5: Populate shop with products
 **Sub-steps:**
-3.1. Create `src/components/CartDrawer.tsx` — slide-out panel with items, totals, checkout CTA
-3.2. Add cart badge to TopNavbar showing item count
-3.3. Wire drawer open/close to a cart icon in the nav
+5.1. Run `scripts/add-test-product.mjs` against MongoDB
+5.2. Add real product images under `public/images/products/`
+5.3. Use `/admin/products` to manage catalog
 
-### ⬜ STEP 4: Checkout with Stripe — needs checkout page
-**Logic:** Cart context exists. Stripe payment-intent route exists at `/api/shop/create-payment-intent`. Need a checkout page with Stripe Elements for card collection.
-
-**Sub-steps:**
-4.1. Create `src/app/shop/checkout/page.tsx` — order summary + payment form
-4.2. Integrate Stripe Elements for card input
-4.3. Call `/api/shop/create-payment-intent` on submit
-4.4. Handle success (redirect to thank-you) and failure states
-4.5. Create `/shop/checkout/success` and `/shop/checkout/cancelled` pages
-
-### ⬜ STEP 5: Gelato product sync
-**Logic:** The `/api/shop/gelato-products` route exists. Need to sync POD catalog into local DB.
-
-**Sub-steps:**
-5.1. Create admin button/script to fetch Gelato catalog → MongoDB
-5.2. Display Gelato-sourced products with "Sold by Gelato" badge
-
-### ⬜ STEP 6: Admin order management
-**Logic:** Admin needs to view and manage shop orders.
-
-**Sub-steps:**
-6.1. Create `/admin/orders` page with status filtering
-6.2. Admin can update order status
-6.3. Link to Stripe dashboard / Gelato tracking
+### ⬜ STEP 6: Digital download delivery
+**Logic:** Digital products need post-purchase download link delivery (email or account page).
 
 ---
 
-## Phase 2: Build Fixes & Polish (Priority: LOW)
+## Phase 2: Admin & Auth
 
-### ✅ STEP 12: Browser warnings and smoke checks - DONE
-- Root layout hydration warning fixed by moving client providers inside `body` and applying `suppressHydrationWarning` on `html`
-- Navbar logo image warning removed by matching the SVG's intrinsic aspect ratio
-- Playwright homepage smoke test updated to the current hero content and CTA
-- TypeScript target deprecation warning cleared with a modern target and explicit deprecation suppression
-- Root and `src` `middleware` files migrated to `src/proxy.ts` with redirect and admin protection preserved
+### ✅ Admin dashboard, quotes, leads, settings — DONE
 
-### ✅ STEP 7: Build — PASSING
-- Build passes with exit code 0
-- All packages installed including AWS SDK, three-stdlib
-- Pre-existing warning: NFT trace through blog.ts (non-critical)
+### ✅ Admin shop orders — DONE
+- `/admin/orders` — list, filter, status updates, Stripe links
 
-### ✅ STEP 8: Environment variables — DONE
-- `.env.example` includes Stripe, Clerk, MongoDB, Gelato, OpenRouter, R2 vars
-- R2 env vars set on Render production and staging
+### ✅ Admin shop products — DONE
+- `/admin/products` — CRUD, publish toggle
+
+### ✅ Unified admin auth — DONE
+- `requireAdminPage()` checks MongoDB + Clerk metadata
+- Leads page now admin-guarded
 
 ---
 
-## Phase 3: Content & SEO (Priority: LOW)
+## Phase 3: Quote System
 
-### ⬜ STEP 9: Populate shop with products
-**Logic:** Shop is live but empty (no products in MongoDB `shop_products` collection).
+### ✅ MongoDB quote migration — DONE
+- Status lookup and file download use `db-quotes` (quote numbers)
+- Legacy `quote-storage.ts` removed
 
-**Sub-steps:**
-9.1. Run `scripts/add-test-product.mjs` to seed initial product
-9.2. Add real POD products via Gelato catalog sync
-9.3. Create product images
+### ⬜ STL client estimate — placeholder math remains in QuoteRequestForm (server analysis is real)
 
-### ✅ STEP 10: SEO metadata — DONE
-- Shop pages have metadata exports with OpenGraph
-- Sitemap includes shop routes
+---
 
-### ✅ STEP 11: Copywriting agent customization — DONE
-**Logic:** Create a reusable custom agent to improve website copy across pages using concise, scannable, people-first writing patterns.
+## Phase 4: Gelato / POD (moved out)
 
-**Sub-steps:**
-11.1. Add `.github/agents/copywriting.agent.md` with role, constraints, and workflow
-11.2. Include style guardrails (no em dash, concise sentences, clear CTAs)
-11.3. Include SEO microcopy outputs (title and meta description options)
+Print-on-demand and Gelato integration moved to sibling repo: `../deejpotter-gelato/`
+
+deejpotter shop now supports **digital** and **service** products only.
+
+---
+
+## Phase 5: Build & CI
+
+### ✅ CI pipeline — PASSING (Node 22)
+- Lint, stylelint, vitest (178 tests), build
+
+### ✅ Workflow fixes — DONE
+- Removed broken Playwright workflow stub
+- Stylelint workflow uses Node 22
+- `.nvmrc` aligned to Node 22
 
 ---
 
 ## Completed (last 10)
 
-- Browser verification cleanup: fixed root layout hydration, logo aspect-ratio warning, stale Playwright smoke test, TypeScript deprecation warning, and migrated deprecated middleware to `src/proxy.ts`
-- Copywriting agent added: `.github/agents/copywriting.agent.md` with people-first rewrite workflow, SEO snippet outputs, and no-em-dash style guardrail
-- Live site fixes: renamed `privacy/privacy.tsx` → `page.tsx`, `terms/terms.tsx` → `page.tsx` (both were 404ing); created `projects/page.tsx` landing page; fixed contact page missing top padding in `ContactForm.tsx`
-- Branches merged: dev and main unified with full feature set
-- R2 persistent file storage deployed (upload/download/delete, dual-write local+R2)
-- MongoDB DAO layer (db-quotes, db-config, db-users, db-schemas)
-- Admin dashboard with settings, service config, quote board
-- Customer account page (`/account`)
-- Clerk webhook for user sync to MongoDB
-- Stripe quote checkout flow
+- Gelato/POD removed; placeholder repo at `deejpotter-gelato`
+- Shop order flow: db-shop-orders, webhook, admin orders/products pages
+- Quote status lookup migrated to MongoDB quote numbers
+- Admin auth unified via requireAdminPage; leads page secured
+- CI/workflow fixes, gitignore cleanup, vitest canvas stub
+- Cart drawer + Stripe checkout completed
+- Clerk auth routes, design/copywriting agents
+- Live route 404 fixes (privacy, terms, projects page)
+- R2 persistent file storage for quote uploads
+- MongoDB DAO layer (db-quotes, db-config, db-users)
 
 ---
 
 ## Notes
 
-- Shop API routes exist and are functional
-- Cart context works (localStorage persistence, add/remove/update)
-- Main blockers were: branch divergence (resolved), missing packages (resolved)
-- `three-stdlib` added — STL viewer builds correctly
-- All three URL surfaces confirmed healthy (HTTP 200)
+- Run tests: `yarn vitest run` (requires Node 22)
+- Seed shop: `node scripts/add-test-product.mjs` (needs MONGODB_URI)
+- Gelato merch site: see `../deejpotter-gelato/README.md`

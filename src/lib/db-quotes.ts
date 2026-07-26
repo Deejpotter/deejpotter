@@ -28,6 +28,13 @@ function sanitizeFileName(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, "-");
 }
 
+async function fileToBuffer(file: File): Promise<Buffer> {
+  if (typeof file.arrayBuffer === "function") {
+    return Buffer.from(await file.arrayBuffer());
+  }
+  return Buffer.from(await new Response(file as unknown as Blob).arrayBuffer());
+}
+
 async function saveQuoteFile(
   quoteNumber: number,
   file: File,
@@ -47,7 +54,7 @@ async function saveQuoteFile(
     throw new Error("Security: file path traversal detected");
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const buffer = await fileToBuffer(file);
   await fs.writeFile(filePath, buffer);
 
   return { storedAs, storageType: "local" };
@@ -65,6 +72,19 @@ export function getQuoteFilePath(
     throw new Error("Security: path traversal detected");
   }
   return resolved;
+}
+
+export async function readQuoteFileBuffer(
+  quoteNumber: number,
+  fileStoredAs: string,
+): Promise<Buffer | null> {
+  if (!fileStoredAs) return null;
+  try {
+    const filePath = getQuoteFilePath(String(quoteNumber), fileStoredAs);
+    return await fs.readFile(filePath);
+  } catch {
+    return null;
+  }
 }
 
 // ─── CRUD Operations ────────────────────────────────────────────────

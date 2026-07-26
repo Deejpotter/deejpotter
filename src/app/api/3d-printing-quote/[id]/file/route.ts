@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { isAdmin } from "@/lib/db-users";
-import { getQuoteRequest, getQuoteRequestFileBuffer } from "@/lib/quote-storage";
+import { getQuote, readQuoteFileBuffer } from "@/lib/db-quotes";
 
 export async function GET(
   _request: Request,
@@ -13,7 +13,12 @@ export async function GET(
   }
 
   const { id } = await context.params;
-  const record = await getQuoteRequest(id);
+  const quoteNumber = Number(id);
+  if (!Number.isFinite(quoteNumber) || quoteNumber <= 0) {
+    return NextResponse.json({ error: "Invalid quote number." }, { status: 400 });
+  }
+
+  const record = await getQuote(quoteNumber);
   if (!record) {
     return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
   }
@@ -23,7 +28,7 @@ export async function GET(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const buffer = await getQuoteRequestFileBuffer(record);
+  const buffer = await readQuoteFileBuffer(quoteNumber, record.fileStoredAs);
   if (!buffer) {
     return NextResponse.json({ error: "Could not read the quote file." }, { status: 500 });
   }

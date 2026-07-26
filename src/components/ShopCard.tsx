@@ -10,7 +10,7 @@ interface ShopCardProps {
   slug: string;
   description: string;
   price: number;
-  type: "pod" | "digital" | "service";
+  type: "digital" | "service";
   images: string[];
 }
 
@@ -57,7 +57,7 @@ export function ShopCard({ name, slug, description, price, type, images }: ShopC
       <div className="p-4 flex flex-col flex-1">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-            {type === "pod" ? "Print-on-Demand" : type === "digital" ? "Digital" : "Service"}
+            {type === "digital" ? "Digital" : "Service"}
           </span>
         </div>
         <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">{name}</h3>

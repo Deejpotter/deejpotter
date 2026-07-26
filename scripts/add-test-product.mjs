@@ -14,7 +14,7 @@ const testProduct = {
   description: "A test product for 3D printing services. Upload your design and get a custom quote.",
   price: 5000, // $50.00 AUD
   type: "service",
-  images: ["/images/products/3d-print-placeholder.jpg"],
+  images: ["/images/shop-placeholder.svg"],
   tags: ["3d-printing", "custom", "service"],
   published: true,
   serviceConfig: {

@@ -24,16 +24,12 @@ I initially built this project with Angular, but I've recently migrated it to Ne
 
 - **Tailwind CSS**: Primary styling system (migration complete across critical components). We follow a Tailwind-first approach for all UI components.
 
-## Testing & Component workflow (Vitest-first + Playwright) ✅
+## Testing (Vitest + optional Playwright)
 
-We follow a Vitest-first, Tailwind-first workflow for UI changes:
-
-1. Implement and validate UI components using Tailwind and unit tests (Vitest + React Testing Library).
-2. Add unit tests covering behavior and accessibility (default, empty, error, edge cases).
-3. Add Playwright E2E and visual snapshot tests for critical pages/components (navbar, hero, cut-calculator).
-4. Integrate the component into pages only after tests and visual snapshots pass; remove legacy CSS/framework code in the same PR.
-
-Benefits: fast unit feedback, reliable visual regression, smaller PRs, and automated E2E checks.
+- **Node 22** required (`package.json` engines, `.nvmrc`)
+- Unit/component tests: `yarn test` (Vitest + React Testing Library)
+- CI runs lint, stylelint, vitest, and build on push to `main`/`dev`
+- Playwright E2E specs exist under `e2e/` for local use (`yarn test:e2e`); not run in CI
 
 - **Next.js**: The main framework used for building the website.
 

@@ -4,3 +4,4 @@
  * like toBeInTheDocument(), toHaveClass(), toHaveAttribute(), etc.
  */
 import "@testing-library/jest-dom";
+import "./src/test/setupTests";

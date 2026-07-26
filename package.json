@@ -18,7 +18,7 @@
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test --project=chromium",
     "test:a11y": "playwright test e2e/a11y.spec.ts --project=chromium",
-    "a11y:report": "playwright show-report --reporter=list"
+    "a11y:report": "playwright show-report"
   },
   "browserslist": [
     "> 0.5%",
@@ -96,7 +96,7 @@
     "@typescript-eslint/eslint-plugin": "^8.59.4",
     "@typescript-eslint/parser": "^8.59.4",
     "@vitest/coverage-v8": "^4.1.6",
-    "@vitest/ui": "^2.1.8",
+    "@vitest/ui": "^4.1.6",
     "autoprefixer": "^10.5.0",
     "axe-core": "^4.11.1",
     "eslint": "^9.39.2",

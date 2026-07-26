@@ -1,9 +1,5 @@
 "use client";
 
-/**
- * AddToCartButton — Client component for adding items to the cart
- */
-
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 
@@ -11,9 +7,8 @@ interface CartProduct {
   _id: string;
   name: string;
   price: number;
-  type: "pod" | "digital" | "service";
+  type: "digital" | "service";
   images: string[];
-  gelatoProductId?: string;
 }
 
 export function AddToCartButton({ product }: { product: CartProduct }) {
@@ -39,7 +34,6 @@ export function AddToCartButton({ product }: { product: CartProduct }) {
       quantity: 1,
       type: product.type,
       image: product.images?.[0],
-      gelatoProductId: product.gelatoProductId,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);

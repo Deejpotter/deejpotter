@@ -9,7 +9,7 @@ import { COLLECTIONS, productSchema, type Product } from "@/lib/shop-schemas";
 import { z } from "zod";
 
 const querySchema = z.object({
-  type: z.enum(["pod", "digital", "service"]).optional(),
+  type: z.enum(["digital", "service"]).optional(),
   published: z.coerce.boolean().optional(),
   limit: z.coerce.number().int().min(1).max(100).optional().default(50),
   offset: z.coerce.number().int().min(0).optional().default(0),

@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * /shop/checkout — Stripe Checkout page
- *
- * Shows order summary from cart and collects payment via Stripe Elements.
- * Requires NEXT_PUBLIC_STRIPE_KEY in environment.
- */
-
 import { useState } from "react";
 import { useCart, safeName } from "@/lib/cart-context";
 import { loadStripe, type StripeElementsOptions } from "@stripe/stripe-js";
@@ -19,9 +12,7 @@ function formatPrice(cents: number): string {
   return new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD" }).format(cents / 100);
 }
 
-// ── Inner payment form ──
-
-function CheckoutForm() {
+function CheckoutForm({ orderId }: { orderId: string }) {
   const stripe = useStripe();
   const elements = useElements();
   const { items, total, clearCart } = useCart();
@@ -36,34 +27,10 @@ function CheckoutForm() {
     setError(null);
 
     try {
-      // Create payment intent
-      const res = await fetch("/api/shop/create-payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((i) => ({
-            productId: i.productId,
-            name: safeName(i.name),
-            price: i.price,
-            quantity: i.quantity,
-            type: i.type,
-          })),
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Payment setup failed");
-      }
-
-      const { clientSecret } = await res.json();
-
-      // Confirm with Stripe
       const result = await stripe.confirmPayment({
         elements,
-        clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/shop/checkout/success`,
+          return_url: `${window.location.origin}/shop/checkout/success?orderId=${encodeURIComponent(orderId)}`,
         },
         redirect: "if_required",
       });
@@ -72,11 +39,11 @@ function CheckoutForm() {
         throw new Error(result.error.message || "Payment failed");
       }
 
-      // Payment succeeded
       clearCart();
-      window.location.href = "/shop/checkout/success";
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      window.location.href = `/shop/checkout/success?orderId=${encodeURIComponent(orderId)}`;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      setError(message);
     } finally {
       setProcessing(false);
     }
@@ -105,12 +72,11 @@ function CheckoutForm() {
   );
 }
 
-// ── Main checkout page ──
-
 export default function CheckoutPage() {
   const { items, total, itemCount } = useCart();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
   const [initError, setInitError] = useState<string | null>(null);
   const [initializing, setInitializing] = useState(false);
 
@@ -144,16 +110,17 @@ export default function CheckoutPage() {
         throw new Error(data.error || "Could not initialize payment");
       }
 
-      const { clientSecret: secret } = await res.json();
-      setClientSecret(secret);
-    } catch (err: any) {
-      setInitError(err.message || "Payment initialization failed");
+      const data = await res.json();
+      setClientSecret(data.clientSecret);
+      setOrderId(data.orderId);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Payment initialization failed";
+      setInitError(message);
     } finally {
       setInitializing(false);
     }
   }
 
-  // Empty cart
   if (itemCount === 0) {
     return (
       <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
@@ -173,7 +140,6 @@ export default function CheckoutPage() {
       <h1 className="text-3xl sm:text-4xl font-extrabold mb-8">Checkout</h1>
 
       <div className="grid gap-8 lg:grid-cols-5">
-        {/* Payment form */}
         <div className="lg:col-span-3">
           {!stripePromise && (
             <div className="p-6 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-sm mb-4">
@@ -181,7 +147,7 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {!clientSecret ? (
+          {!clientSecret || !orderId ? (
             <div className="space-y-4">
               <p className="text-gray-600 dark:text-gray-400">
                 Click below to start the payment process.
@@ -202,12 +168,11 @@ export default function CheckoutPage() {
               stripe={stripePromise}
               options={{ clientSecret, appearance: { theme: "stripe" } } as StripeElementsOptions}
             >
-              <CheckoutForm />
+              <CheckoutForm orderId={orderId} />
             </Elements>
           ) : null}
         </div>
 
-        {/* Order summary */}
         <div className="lg:col-span-2">
           <div className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 sticky top-24">
             <h2 className="font-bold text-lg mb-4">Order Summary</h2>

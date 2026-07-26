@@ -2,7 +2,7 @@
  * /shop/products/[slug] — Product detail page
  *
  * Server-rendered product page. Fetches product by slug from the MongoDB API.
- * Supports POD, digital, and service product types.
+ * Supports digital and service product types.
  */
 
 import { notFound } from "next/navigation";
@@ -15,10 +15,9 @@ interface ProductDetail {
   description: string;
   price: number;
   compareAtPrice: number | null;
-  type: "pod" | "digital" | "service";
+  type: "digital" | "service";
   images: string[];
   tags: string[];
-  gelatoProductId?: string;
   downloadUrl?: string;
   serviceConfig?: {
     requiresQuote: boolean;
@@ -73,7 +72,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const imageSrc = product.images?.[0] || "/images/shop-placeholder.svg";
   const typeLabel =
-    product.type === "pod" ? "Print-on-Demand" : product.type === "digital" ? "Digital Download" : "Service";
+    product.type === "digital" ? "Digital Download" : "Service";
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

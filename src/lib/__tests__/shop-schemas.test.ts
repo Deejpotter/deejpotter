@@ -22,14 +22,13 @@ describe("shop-schemas", () => {
       expect(result.success).toBe(false);
     });
 
-    it("accepts POD products with gelato IDs", () => {
+    it("accepts digital products with download URL", () => {
       const result = productSchema.safeParse({
-        name: "T-Shirt",
-        slug: "t-shirt",
+        name: "CAD Template Pack",
+        slug: "cad-template-pack",
         price: 2500,
-        type: "pod",
-        gelatoProductId: "gel_123",
-        gelatoVariantId: "var_456",
+        type: "digital",
+        downloadUrl: "https://example.com/download",
       });
       expect(result.success).toBe(true);
     });
@@ -60,7 +59,7 @@ describe("shop-schemas", () => {
     it("accepts order with shipping address", () => {
       const result = orderSchema.safeParse({
         email: "test@example.com",
-        items: [{ productId: "p1", name: "Item", price: 2000, quantity: 2, type: "pod" }],
+        items: [{ productId: "p1", name: "Item", price: 2000, quantity: 2, type: "digital" }],
         total: 4000,
         status: "paid",
         shippingAddress: {

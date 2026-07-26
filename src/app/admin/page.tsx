@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-
+import { hasClerk, requireAdminPage } from "@/lib/admin-auth";
 import { getQuoteStats } from "@/lib/db-quotes";
 import { listContactLeads } from "@/lib/contact-leads";
 
@@ -10,8 +8,6 @@ export const metadata: Metadata = {
   title: "Admin Dashboard | Deej Potter",
   robots: { index: false },
 };
-
-const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
 async function getStats() {
   try {
@@ -46,16 +42,7 @@ export default async function AdminDashboardPage() {
     );
   }
 
-  const user = await currentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
-
-  // Check admin role from Clerk publicMetadata
-  const role = user.publicMetadata?.role as string | undefined;
-  if (role !== "admin") {
-    redirect("/");
-  }
+  await requireAdminPage();
 
   const stats = await getStats();
 
@@ -99,7 +86,7 @@ export default async function AdminDashboardPage() {
           <AdminNavItem href="/admin/leads" title="Lead Inbox" desc="View and manage contact form submissions" />
           <AdminNavItem href="/admin/settings" title="Settings" desc="Test mode toggle, Stripe status, materials config" />
           <AdminNavItem href="/admin/orders" title="Shop Orders" desc="View and manage customer orders" />
-          <AdminNavItem href="/admin/products" title="Shop Products" desc="Manage product catalog and Gelato sync" />
+          <AdminNavItem href="/admin/products" title="Shop Products" desc="Manage product catalog" />
         </div>
       </div>
     </main>

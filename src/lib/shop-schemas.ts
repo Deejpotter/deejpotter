@@ -6,7 +6,7 @@ import { z } from "zod";
 
 // ── Product Types ──
 
-export type ProductType = "pod" | "digital" | "service";
+export type ProductType = "digital" | "service";
 
 export const productSchema = z.object({
   name: z.string().min(1).max(200),
@@ -14,13 +14,9 @@ export const productSchema = z.object({
   description: z.string().max(5000).default(""),
   price: z.number().nonnegative(), // in AUD cents (or 0 for quote-based services)
   compareAtPrice: z.number().nonnegative().nullable().optional(),
-  type: z.enum(["pod", "digital", "service"] as const),
+  type: z.enum(["digital", "service"] as const),
   images: z.array(z.string()).default([]),
   tags: z.array(z.string()).default([]),
-
-  // Gelato POD-specific
-  gelatoProductId: z.string().optional(),
-  gelatoVariantId: z.string().optional(),
 
   // Digital product
   downloadUrl: z.string().optional(),
@@ -47,11 +43,8 @@ export const cartItemSchema = z.object({
   name: z.string(),
   price: z.number(),
   quantity: z.number().int().min(1).max(100),
-  type: z.enum(["pod", "digital", "service"]),
+  type: z.enum(["digital", "service"]),
   image: z.string().optional(),
-  // Gelato order details
-  gelatoProductId: z.string().optional(),
-  fileUrl: z.string().optional(), // for POD upload
 });
 
 export type CartItem = z.infer<typeof cartItemSchema>;
@@ -102,7 +95,6 @@ export const orderSchema = z.object({
     })
     .optional(),
   stripePaymentIntentId: z.string().optional(),
-  gelatoOrderId: z.string().optional(), // reference for POD orders
   trackingUrl: z.string().optional(),
   notes: z.string().max(3000).optional(),
   createdAt: z.string().optional(),
@@ -120,7 +112,7 @@ export const createPaymentIntentSchema = z.object({
       name: z.string(),
       price: z.number(),
       quantity: z.number().int().min(1),
-      type: z.enum(["pod", "digital", "service"]),
+      type: z.enum(["digital", "service"]),
     })
   ).min(1, "Cart must have at least one item"),
   email: z.string().email().optional(),
