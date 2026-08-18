@@ -49,7 +49,7 @@ export default function QuoteStatusLookup(): ReactElement {
     setPaying(true);
     setError(null);
     try {
-      const res = await fetch("/api/shop/3d-printing-checkout", {
+      const res = await fetch("/api/quotes/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quoteNumber: Number(quoteNumber), email }),

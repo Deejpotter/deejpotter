@@ -10,7 +10,6 @@
 
 import { NextResponse } from "next/server";
 import { updateQuote, getQuote } from "@/lib/db-quotes";
-import { updateOrderStatus, getOrderById } from "@/lib/db-shop-orders";
 
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY || "";
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
@@ -72,40 +71,6 @@ export async function POST(request: Request) {
     const toRemove = entries.slice(0, 500);
     for (const e of toRemove) {
       processedEvents.delete(e);
-    }
-  }
-
-  // ── Handle payment_intent.succeeded (shop orders) ────────────────
-  if (event.type === "payment_intent.succeeded") {
-    const paymentIntent = event.data.object;
-    const metadata = (paymentIntent.metadata || {}) as Record<string, string>;
-
-    if (metadata.type === "shop_order" && metadata.orderId) {
-      try {
-        const order = await getOrderById(metadata.orderId);
-        if (!order) {
-          console.error(`Webhook: shop order ${metadata.orderId} not found`);
-          return NextResponse.json({ received: true });
-        }
-
-        if (order.status === "paid") {
-          return NextResponse.json({ received: true });
-        }
-
-        const receiptEmail =
-          (paymentIntent.receipt_email as string | null) ||
-          (paymentIntent.charges as { data?: Array<{ billing_details?: { email?: string } }> })?.data?.[0]
-            ?.billing_details?.email;
-
-        await updateOrderStatus(metadata.orderId, "paid", {
-          stripePaymentIntentId: paymentIntent.id as string,
-          email: receiptEmail || undefined,
-        });
-        console.info(`Webhook: shop order ${metadata.orderId} → paid`);
-      } catch (err) {
-        console.error(`Webhook: failed to update shop order ${metadata.orderId}:`, err);
-      }
-      return NextResponse.json({ received: true });
     }
   }
 

@@ -85,8 +85,6 @@ export default async function AdminDashboardPage() {
           <AdminNavItem href="/admin/3d-printing" title="3D Printing Quotes" desc="Review, price, and manage print quote requests" />
           <AdminNavItem href="/admin/leads" title="Lead Inbox" desc="View and manage contact form submissions" />
           <AdminNavItem href="/admin/settings" title="Settings" desc="Test mode toggle, Stripe status, materials config" />
-          <AdminNavItem href="/admin/orders" title="Shop Orders" desc="View and manage customer orders" />
-          <AdminNavItem href="/admin/products" title="Shop Products" desc="Manage product catalog" />
         </div>
       </div>
     </main>

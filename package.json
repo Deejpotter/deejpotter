@@ -38,8 +38,6 @@
     "@react-email/components": "^1.0.12",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
-    "@stripe/react-stripe-js": "^6.4.0",
-    "@stripe/stripe-js": "^9.7.0",
     "bson-objectid": "^2.0.4",
     "gray-matter": "^4.0.3",
     "lucide-react": "^1.16.0",

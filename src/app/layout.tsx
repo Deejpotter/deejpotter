@@ -9,7 +9,6 @@ import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
-import { CartProvider } from "@/lib/cart-context";
 import { ThemeProvider } from "next-themes";
 import { defaultMetadata } from "./metadata";
 
@@ -50,19 +49,17 @@ export default function RootLayout({
 
   const appShell = (
     <AuthProvider>
-      <CartProvider>
-        <NavbarProvider>
-          {/* Client-only cleanup removes extension-injected attributes that break hydration */}
-          <BodyAttributesCleaner />
-          <div>
-            <TopNavbar />
-            <main className="w-full">
-              {children}
-              <MainFooter />
-            </main>
-          </div>
-        </NavbarProvider>
-      </CartProvider>
+      <NavbarProvider>
+        {/* Client-only cleanup removes extension-injected attributes that break hydration */}
+        <BodyAttributesCleaner />
+        <div>
+          <TopNavbar />
+          <main className="w-full">
+            {children}
+            <MainFooter />
+          </main>
+        </div>
+      </NavbarProvider>
     </AuthProvider>
   );
 

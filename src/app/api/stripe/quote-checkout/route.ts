@@ -82,8 +82,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: "payment",
-      success_url: `${BASE_URL}/shop/3d-printing/thank-you?quoteNumber=${quote.quoteNumber}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${BASE_URL}/shop/3d-printing/cancelled?quoteNumber=${quote.quoteNumber}`,
+      success_url: `${BASE_URL}/projects/services/3d-printing/thank-you?quoteNumber=${quote.quoteNumber}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${BASE_URL}/projects/services/3d-printing/cancelled?quoteNumber=${quote.quoteNumber}`,
       metadata: {
         quoteNumber: String(quote.quoteNumber),
         serviceType: quote.serviceType,

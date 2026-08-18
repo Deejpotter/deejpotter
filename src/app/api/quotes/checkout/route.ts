@@ -1,5 +1,5 @@
 /**
- * /api/shop/3d-printing-checkout — Creates a Stripe Checkout Session for a quote
+ * /api/quotes/checkout — Creates a Stripe Checkout Session for a quote
  *
  * Called from the customer-facing status lookup page when a quote has been
  * priced and is ready for payment. Uses MongoDB quote numbers (no login required).
@@ -106,8 +106,8 @@ export async function POST(request: Request) {
         quoteNumber: String(quote.quoteNumber),
         type: "3d-printing-quote",
       },
-      success_url: `${BASE_URL}/shop/3d-printing/thank-you?quoteNumber=${quote.quoteNumber}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${BASE_URL}/shop/3d-printing/cancelled?quoteNumber=${quote.quoteNumber}`,
+      success_url: `${BASE_URL}/projects/services/3d-printing/thank-you?quoteNumber=${quote.quoteNumber}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${BASE_URL}/projects/services/3d-printing/cancelled?quoteNumber=${quote.quoteNumber}`,
     });
 
     await updateQuote(quote.quoteNumber, {

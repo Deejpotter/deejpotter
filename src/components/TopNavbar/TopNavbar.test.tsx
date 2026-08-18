@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, waitFor, fireEvent, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NavbarProvider } from "@/contexts/NavbarContext";
-import { CartProvider } from "@/lib/cart-context";
 import TopNavbar from "./TopNavbar";
 
 vi.mock("next/link", () => ({
@@ -41,11 +40,9 @@ describe("TopNavbar", () => {
 
   const renderNavbar = () =>
     render(
-      <CartProvider>
-        <NavbarProvider>
-          <TopNavbar />
-        </NavbarProvider>
-      </CartProvider>
+      <NavbarProvider>
+        <TopNavbar />
+      </NavbarProvider>
     );
 
   const getProjectsButton = () =>
