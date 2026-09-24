@@ -62,6 +62,5 @@ lint-output.txt
 # development artifacts
 next-dev.log
 tmp/
-sb-original/
 
 ecosystem.config.cjs

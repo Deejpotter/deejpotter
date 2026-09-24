@@ -15,7 +15,6 @@ module.exports = [
       'test-results/**',
       'coverage/**',
       'tmp/**',
-      'sb-original/**',
     ],
   },
   // spread the Next.js-provided flat config entries first
