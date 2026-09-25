@@ -39,7 +39,7 @@ export default function Services(): ReactElement {
             Practical digital work, built properly
           </h1>
           <p className="mx-auto max-w-3xl text-lg text-gray-600 dark:text-gray-300">
-            I help with website design and development, custom tools, CAD/CAM support, light fabrication, and selected technical projects that need a clear result rather than a pile of vague promises.
+            I build websites and custom tools, and do 3D printing, laser cutting, and CNC work. Here&apos;s what I offer.
           </p>
         </section>
 

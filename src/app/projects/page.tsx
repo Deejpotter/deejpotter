@@ -18,7 +18,7 @@ const categories = [
     label: "Websites",
     href: "/projects/websites",
     description:
-      "Websites I've designed and developed for clients and as personal projects — responsive, accessible, and optimised for SEO.",
+      "Websites I've built for clients and for myself.",
     icon: "🌐",
   },
   {
@@ -26,7 +26,7 @@ const categories = [
     label: "Tools & Calculators",
     href: "/projects/tools",
     description:
-      "Custom calculators and technical tools — cut optimisers, CNC helpers, and other utilities built to solve real problems.",
+      "Calculators and technical tools, like cut optimisers and CNC helpers.",
     icon: "🔧",
   },
   {
@@ -42,7 +42,7 @@ const categories = [
     label: "Engineering",
     href: "/projects/engineering",
     description:
-      "Hardware and embedded projects — ESP32 wireless cars, CYD controllers, and other builds that combine firmware with electronics.",
+      "Hardware and electronics builds, like ESP32 wireless cars and CYD controllers.",
     icon: "⚙️",
   },
   {
@@ -50,7 +50,7 @@ const categories = [
     label: "Games",
     href: "/projects/games",
     description:
-      "Unity WebGL games playable in the browser — from base-defence shooters to Geek Pride Day platformers.",
+      "Unity games you can play in the browser, from base-defence shooters to platformers.",
     icon: "🎮",
   },
   {
@@ -58,7 +58,7 @@ const categories = [
     label: "Services",
     href: "/projects/services",
     description:
-      "Website design, custom tools, CAD/CAM support, 3D printing, and laser cutting — practical work with a clear deliverable.",
+      "Websites, custom tools, 3D printing, laser cutting, and CNC work.",
     icon: "🛠️",
   },
 ];
@@ -105,8 +105,8 @@ export default function Projects(): ReactElement {
           Want to work on something together?
         </h2>
         <p className="mb-6 text-gray-600 dark:text-gray-400">
-          If you have a project idea — a website, a tool, a fabrication job —
-          send me a short brief and I&apos;ll tell you whether it&apos;s a fit.
+          If you have a website, tool, or fabrication job in mind, send me a
+          short brief and I&apos;ll tell you whether it&apos;s a fit.
         </p>
         <Link
           href="/contact"

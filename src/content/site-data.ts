@@ -26,40 +26,40 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "website-design-development",
     name: "Website Design and Development",
     description:
-      "Clean, responsive websites built to convert visitors into customers. No templates, no page builders — just a site that works for your business.",
+      "Websites for small businesses and personal projects. Built by hand, quick to load, and easy to update.",
     features: [
-      "Small business and portfolio websites",
-      "Landing pages that actually convert",
-      "Redesigns for sites that feel outdated",
-      "Clear, maintainable code you can hand to any developer",
+      "Small business and portfolio sites",
+      "Landing pages",
+      "Redesigns of sites that feel outdated",
+      "Clean code any developer can pick up later",
     ],
     link: "/projects/services/website-design",
-    cta: "Start a website project",
+    cta: "Start a website",
   },
   {
     id: "custom-tools-automation",
     name: "Custom Tools and Automation",
     description:
-      "When off-the-shelf software doesn't quite fit. Purpose-built calculators, internal tools, and workflow helpers that save hours of manual work.",
+      "Calculators, dashboards, and small tools for the jobs off-the-shelf software doesn't quite handle.",
     features: [
-      "Custom calculators for pricing, quoting, or estimation",
-      "Internal dashboards and admin tools",
-      "Workflow automation for repetitive tasks",
-      "Data tools — imports, exports, reports",
+      "Pricing and quoting calculators",
+      "Dashboards and admin tools",
+      "Automating repetitive tasks",
+      "Imports, exports, and reports",
     ],
     link: "/projects/services/custom-tools",
-    cta: "Ask about a custom tool",
+    cta: "Ask about a tool",
   },
   {
     id: "3d-printing",
-    name: "On-Demand 3D Printing",
+    name: "3D Printing",
     description:
-      "Upload your file, see your model in 3D, and get an instant price. Prototypes, replacement parts, and small-run prints — no CAD experience needed.",
+      "Upload a model, check it in 3D, and get a price straight away. Good for prototypes, replacement parts, and small runs.",
     features: [
-      "Instant quoting from your STL file",
-      "3D model preview before you submit",
-      "PLA and PETG materials",
-      "Local pickup or delivery around Frankston",
+      "Instant quote from your STL file",
+      "3D preview before you send it",
+      "PLA and PETG",
+      "Pickup or delivery around Frankston",
     ],
     link: "/projects/services/3d-printing",
     cta: "Get a quote",
@@ -68,35 +68,35 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "cad-cam-fabrication",
     name: "CAD, CAM, and Fabrication",
     description:
-      "Laser cutting, CNC milling, and CAD file prep for people who need a physical result without learning the software.",
+      "Laser cutting, CNC milling, and CAD work. Send me a sketch or an idea and I'll turn it into a real part.",
     features: [
-      "Laser engraving and cutting (wood, acrylic)",
+      "Laser cutting and engraving (wood, acrylic)",
       "CNC milling for signs, panels, and parts",
-      "CAD models and file prep from your sketches or ideas",
-      "DXF and SVG upload with live preview",
+      "CAD models from sketches or photos",
+      "DXF and SVG upload with a live preview",
     ],
     link: "/projects/services/cad-cam-fabrication",
-    cta: "Talk about fabrication",
+    cta: "Ask about fabrication",
   },
 ];
 export const processSteps: ProcessStep[] = [
   {
     id: "brief",
-    title: "You tell me what you need",
+    title: "Tell me what you need",
     description:
-      "Send a brief — the problem, the deadline, what success looks like. I'll tell you honestly whether it's a fit and what it'll cost.",
+      "Send a short brief: the problem, the deadline, and what done looks like. I'll tell you straight whether I can help and roughly what it'll cost.",
   },
   {
     id: "build",
-    title: "I build it — no black boxes",
+    title: "I build it",
     description:
-      "Clear structure, working build, then refinement. You'll see progress, not excuses. If something needs changing, we change it.",
+      "You'll see progress as I go, and if something needs changing, we change it.",
   },
   {
     id: "deliver",
-    title: "You get a working result",
+    title: "You get the finished thing",
     description:
-      "A site that converts. A part that fits. A tool that saves you hours. Handed over with instructions, not a headache.",
+      "A working site, a part that fits, or a tool that does the job, plus notes on how to use it.",
   },
 ];
 
@@ -105,7 +105,7 @@ export const showcaseItems: ShowcaseItem[] = [
     id: "website-projects",
     title: "Website projects",
     description:
-      "Small business sites, portfolio refreshes, and redesigns — built clean, fast, and easy to maintain.",
+      "Small business sites, portfolios, and redesigns.",
     link: "/projects/websites",
     label: "Browse websites",
   },
@@ -113,7 +113,7 @@ export const showcaseItems: ShowcaseItem[] = [
     id: "tools",
     title: "Custom tools",
     description:
-      "Calculators, workflow helpers, and internal tools that save hours of manual work every week.",
+      "Calculators, workflow helpers, and small tools that save manual work.",
     link: "/projects/tools",
     label: "Explore tools",
   },
@@ -121,7 +121,7 @@ export const showcaseItems: ShowcaseItem[] = [
     id: "services",
     title: "All services",
     description:
-      "Websites, 3D printing, laser cutting, CNC milling, and custom development — everything I take on.",
+      "Websites, custom tools, 3D printing, laser cutting, and CNC milling.",
     link: "/projects/services",
     label: "View services",
   },

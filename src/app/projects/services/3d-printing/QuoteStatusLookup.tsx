@@ -34,11 +34,11 @@ export default function QuoteStatusLookup(): ReactElement {
   const [paying, setPaying] = useState(false);
 
   const statusLabels: Record<string, string> = {
-    new: "New — awaiting review",
+    new: "New: waiting for review",
     reviewing: "Under review",
-    quoted: "Quoted — ready for payment",
+    quoted: "Quoted: ready to pay",
     awaiting_payment: "Awaiting payment confirmation",
-    approved: "Approved — printing in queue",
+    approved: "Approved: in the print queue",
     printing: "Printing",
     ready: "Ready for pickup/shipping",
     completed: "Completed",

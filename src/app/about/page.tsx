@@ -12,10 +12,9 @@ export default function About(): ReactElement {
           I build things that work.
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-          Websites, custom tools, 3D-printed parts, laser-cut pieces — if it
-          solves a real problem for someone, I want to build it. Based in
-          Frankston, VIC, I work with small businesses and hobbyists across
-          Australia.
+          I build websites, custom tools, 3D-printed parts, and laser-cut
+          pieces. I&apos;m based in Frankston, VIC, and work with small
+          businesses and hobbyists around Australia.
         </p>
       </section>
 
@@ -33,15 +32,14 @@ export default function About(): ReactElement {
             <p>
               After completing a Certificate in IT, I moved into software
               through self-directed learning, client projects, and junior
-              full-stack development. That mix — kitchen discipline plus
-              technical skills — is why I&apos;m comfortable working across
+              full-stack development. That mix of kitchen discipline and
+              technical skills is why I&apos;m comfortable working across
               design, code, and fabrication in the same project.
             </p>
             <p>
               I love learning new things and sharing what I figure out. If you
-              want to understand how something works, I&apos;ll explain it — not
-              to show off, but because genuinely understanding your tools makes
-              everything better.
+              want to understand how something works, I&apos;m happy to
+              explain it. Knowing how your tools work makes everything easier.
             </p>
           </div>
         </div>
@@ -56,8 +54,7 @@ export default function About(): ReactElement {
             </p>
             <p>
               <strong>Custom tools.</strong> Calculators, internal dashboards,
-              workflow helpers — the stuff that saves hours of manual work
-              every week.
+              and workflow helpers that save hours of manual work.
             </p>
             <p>
               <strong>Fabrication.</strong> 3D printing, laser cutting, and CNC
@@ -78,13 +75,13 @@ export default function About(): ReactElement {
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
               I prefer projects where there&apos;s a real need to solve. Send me
-              a written brief — what&apos;s the problem, what&apos;s the
-              deadline, what does success look like. I&apos;ll tell you honestly
-              whether it&apos;s a fit.
+              a short written brief: what the problem is, when you need it,
+              and what done looks like. I&apos;ll tell you honestly whether
+              it&apos;s a fit.
             </p>
             <p>
-              Clear brief → working build → refinement → handover. No drama, no
-              mystery, no getting handed off to someone else.
+              I work from a clear brief, get something working, refine it,
+              then hand it over. You deal with me the whole way through.
             </p>
           </div>
         </div>
@@ -95,7 +92,7 @@ export default function About(): ReactElement {
             <p>
               If you need a website, a custom tool, or help with a fabrication
               project, send me a message. Include the basics of what you&apos;re
-              trying to do — I can usually tell you quickly whether it&apos;s a
+              trying to do and I can usually tell you quickly whether it&apos;s a
               good fit and give you a rough idea of cost and timing.
             </p>
             <Link

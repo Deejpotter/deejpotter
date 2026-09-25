@@ -15,7 +15,7 @@ describe("Home component", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: /browse the parts of the site that show the range/i,
+        name: /a few things i.ve made/i,
       })
     ).toBeInTheDocument();
 
@@ -25,7 +25,7 @@ describe("Home component", () => {
     expect(
       screen.getByRole("heading", { name: /custom tools and automation/i })
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/you tell me what you need/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/tell me what you need/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/i build it/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/browse websites/i)).toBeInTheDocument();
     expect(screen.getByText(/explore tools/i)).toBeInTheDocument();

@@ -19,7 +19,7 @@ const benefits = [
   },
   {
     title: "Clear quoting path",
-    body: "The goal is to move toward an STL upload workflow with fast quoting, so customers can get pricing before paying and only print what they actually need.",
+    body: "The goal is to move toward an STL upload workflow with fast quoting, so you can see the price before paying and only print what you need.",
   },
 ];
 
@@ -77,7 +77,7 @@ export default function ThreeDPrintingService(): ReactElement {
               On-demand 3D printing
             </h1>
             <p className="max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-              Upload your file, see it in 3D, and get a price in seconds. No CAD experience needed — if you don&apos;t have a model, just tell me what you need and I&apos;ll design it.
+              Upload your file, see it in 3D, and get a price in seconds. No CAD experience needed. If you don&apos;t have a model, tell me what you need and I&apos;ll design it.
             </p>
           </div>
 
@@ -171,7 +171,7 @@ export default function ThreeDPrintingService(): ReactElement {
           </section>
 
           <section className="mb-10 rounded-2xl border border-sky-200 bg-sky-50 p-6 text-sky-950 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-50">
-            <h2 className="mb-2 text-2xl font-bold">Instant quoting — upload and see your price</h2>
+            <h2 className="mb-2 text-2xl font-bold">Instant quotes: upload a file and see the price</h2>
             <p className="mb-0">
               Drop your STL file to see a 3D preview and an immediate price estimate based on your model&apos;s actual geometry. No waiting, no guessing, no back-and-forth.
             </p>
