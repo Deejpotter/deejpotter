@@ -11,7 +11,7 @@ I started out working in my parents' restaurant, but I've always been more inter
 This is my portfolio and small business site. Here's what you'll find:
 
 1. **About, Privacy and Terms pages**
-2. **Contact page**: A contact form handled by a Next.js Route Handler (`/api/contact`) that sends email through Resend.
+2. **Contact page**: A contact form that posts to `/api/contact` and saves each message to MongoDB. Messages show up at `/admin/leads` (no email is sent for these yet).
 3. **Blog**: posts written by hand, as Markdown in `src/content/blog-md` or formatted pages in `src/content/blog`, with an RSS feed at `/blog/rss.xml`.
 4. **Projects**: Websites, games, apps, tools, engineering projects and services.
 5. **3D printing quotes**: Customers upload models, get a quote, and pay for accepted quotes with Stripe. There is no general shop; payments only go through quotes.
@@ -29,7 +29,7 @@ I first built this with Angular and later moved it to Next.js. It started out on
 - **MongoDB**: Quotes, contact leads, grocery orders, users and settings.
 - **Stripe**: Payments for accepted quotes, with a webhook at `/api/webhooks/stripe`.
 - **Cloudflare R2 (S3 API)**: Storage for uploaded quote files. See `R2_SETUP.md`.
-- **Resend**: Transactional email.
+- **Resend**: Quote emails (new quote received, quote updated), sent from `noreply@deejpotter.com`.
 - **React Three Fiber**: 3D model previews.
 - **Vitest + React Testing Library**: Unit and component tests.
 - **Playwright**: End-to-end specs in `e2e/` for local use.

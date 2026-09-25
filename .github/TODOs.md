@@ -53,6 +53,15 @@ deejpotter no longer has a shop; service payments go through quotes.
 ### ✅ R2 on production — DONE
 - All four R2 variables set on the production Render service (see `R2_SETUP.md`)
 
+### ✅ Environment variables — DONE
+- `ADMIN_USER_IDS` and `RESEND_API_KEY` set on both Render services
+
+### ⬜ Confirm Resend sending
+- Check deejpotter.com is verified in Resend, then submit a test quote and look for `[email] Sent:` in the Render logs
+
+### ⬜ Contact form email
+- Contact messages are saved to `/admin/leads` but send no email; decide whether to add a notification
+
 ---
 
 ## Phase 6: Build & CI
@@ -69,7 +78,8 @@ deejpotter no longer has a shop; service payments go through quotes.
 
 ## Completed (last 10)
 
-- Admin link shown for MongoDB-role admins (navbar and account page)
+- Contact form always posts to /api/contact (fixed failed submissions)
+- Admins set by ADMIN_USER_IDS; quote submissions no longer demote admins; footer gap fixed
 - Laser engraving only; broken laser/milling quote tabs removed; API rejects laser cutting
 - Contact leads and grocery orders moved to MongoDB; indexes created on first use
 - Security: Next.js 16.3.6, Clerk proxy restored, mongo-crud admin-only, quote payment ownership check
@@ -78,7 +88,6 @@ deejpotter no longer has a shop; service payments go through quotes.
 - Generic shop removed; quote-based service payments kept
 - Docs refreshed; leftover files removed (Netlify, Jest, old reports)
 - Quote status lookup migrated to MongoDB quote numbers
-- Admin auth unified via requireAdminPage; leads page secured
 
 ---
 

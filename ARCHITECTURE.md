@@ -29,7 +29,11 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 **Why:** Already integrated in the site. Provides OAuth, session management, MFA. We store only the minimum user data in MongoDB (`users` collection: clerkId, email, name, role) — auth stays in Clerk. Customer accounts can be created without Clerk (email-only quote flow), but account features require sign-in.
 
 ### Resend for email
-**Why:** Native React email support (`react-email` components), simple API, free tier (100 emails/day), Next.js App Router compatible. Emails fire non-blocking — if `RESEND_API_KEY` isn't set, they silently skip. No crash risk.
+**Why:** Native React email support (`react-email` components), simple API, free tier (100 emails/day), Next.js App Router compatible. Emails fire non-blocking. If `RESEND_API_KEY` isn't set, they skip with a log line, so nothing crashes.
+
+Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `ADMIN_EMAIL`) and `notifyQuoteUpdated` (admin changes a quote). Contact form messages are saved to MongoDB and shown at `/admin/leads` but don't send email. Emails come from `EMAIL_FROM` (default `Deej Potter <noreply@deejpotter.com>`), so deejpotter.com has to be verified in Resend.
+
+**2026-09-25:** `RESEND_API_KEY` set on both Render services.
 
 ### Cloudflare R2 for file storage
 **Why:** Render's disk is ephemeral — files lost on every deploy. R2 is S3-compatible, no egress fees, $0.015/GB/month. Files stored under `deejpotter/cad/{quoteNumber}/{filename}`. Fallback: if R2 env vars aren't set, files save to local disk (same as legacy system). This means the system works immediately on deploy without R2, and can be upgraded by adding env vars.
@@ -113,8 +117,9 @@ src/
 │   ├── turnaround.ts      # Business hours + queue calculator
 │   ├── email.ts           # Resend email templates + triggers
 │   ├── r2-storage.ts      # Cloudflare R2 upload/download/delete
-│   ├── quote-analysis.ts  # Server-side STL parsing (legacy)
-│   └── quote-storage.ts   # Legacy flat-file storage (to be deprecated)
+│   ├── contact-leads.ts   # Contact form messages (MongoDB)
+│   ├── admin-auth.ts      # ADMIN_USER_IDS check
+│   └── quote-analysis.ts  # Server-side STL parsing
 ├── app/
 │   ├── account/           # Customer dashboard
 │   ├── admin/             # Admin dashboard + settings + service config
@@ -143,9 +148,15 @@ src/
 | `STRIPE_SECRET_KEY` | Yes | Stripe payments |
 | `STRIPE_WEBHOOK_SECRET` | Yes | Stripe webhook verification |
 | `NEXT_PUBLIC_BASE_URL` | Yes | Site URL (for Stripe redirects) |
-| `RESEND_API_KEY` | Optional | Email notifications (silent skip if absent) |
+| `ADMIN_USER_IDS` | Yes | Clerk user IDs allowed into `/admin` (comma-separated) |
+| `RESEND_API_KEY` | Optional | Quote emails (skipped with a log line if absent) |
+| `EMAIL_FROM` | Optional | Sender address (default `Deej Potter <noreply@deejpotter.com>`) |
+| `ADMIN_EMAIL` | Optional | Where admin notifications go (default `deejpotter@gmail.com`) |
 | `CLERK_WEBHOOK_SECRET` | Optional | Clerk user sync (fallback upserts on submit) |
 | `R2_ACCOUNT_ID` | Optional | Cloudflare R2 file storage (local fallback) |
 | `R2_ACCESS_KEY_ID` | Optional | R2 auth |
 | `R2_SECRET_ACCESS_KEY` | Optional | R2 auth |
 | `R2_BUCKET_NAME` | Optional | R2 bucket name (default: "deejpotter") |
+
+### Contact form endpoint
+The contact form always posts to its own `/api/contact`. It used to honour `NEXT_PUBLIC_CONTACT_ENDPOINT` / `NEXT_PUBLIC_BACKEND_URL`, and a leftover value sent submissions to another address, which Chrome blocked with a local network permission prompt. Those variables are no longer read and can be deleted from Render.
