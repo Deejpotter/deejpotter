@@ -134,7 +134,7 @@ const DEFAULT_LASER_MATERIALS: MaterialConfig[] = [
     fullName: "Plywood (3mm)",
     ratePerGram: null,
     density: null,
-    description: "Standard laser plywood. Good for cutting and engraving.",
+    description: "Standard laser plywood. Engraves cleanly.",
     colors: ["Natural"],
     suggested: true,
     enabled: true,
@@ -146,7 +146,7 @@ const DEFAULT_LASER_MATERIALS: MaterialConfig[] = [
     fullName: "Plywood (6mm)",
     ratePerGram: null,
     density: null,
-    description: "Thicker plywood. Multiple passes may be needed for cutting.",
+    description: "Thicker plywood for sturdier engraved pieces.",
     colors: ["Natural"],
     suggested: true,
     enabled: true,
@@ -169,7 +169,7 @@ const DEFAULT_LASER_MATERIALS: MaterialConfig[] = [
 const DEFAULT_LASER_SETTINGS: ServiceSettings = {
   hourlyRate: 5,
   currency: "AUD",
-  cutPricePerMm: 0.05,
+  // Laser is engraving only, so there's no cut price.
   engravePricePerMm2: 0.001,
   setupFee: 5,
 };
@@ -228,7 +228,7 @@ const SERVICE_DEFAULTS = {
     settings: DEFAULT_3D_SETTINGS,
   },
   laser: {
-    displayName: "Laser Engraving & Cutting",
+    displayName: "Laser Engraving",
     materials: DEFAULT_LASER_MATERIALS,
     settings: DEFAULT_LASER_SETTINGS,
   },

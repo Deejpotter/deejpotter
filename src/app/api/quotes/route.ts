@@ -47,7 +47,10 @@ export async function POST(request: Request) {
         infill: Number(formData.get("infill")) || 15,
         scalePercent: Number(formData.get("scalePercent")) || 100,
         thickness: Number(formData.get("thickness")) || undefined,
-        operation: formData.get("operation") || "cut",
+                // Laser work is engraving only; milling cuts by default.
+        operation:
+          formData.get("operation") ||
+          (formData.get("serviceType") === "laser" ? "engrave" : "cut"),
       },
       delivery: {
         method: formData.get("delivery") || "shipped",
@@ -56,6 +59,13 @@ export async function POST(request: Request) {
       },
       notes: formData.get("notes") || "",
     });
+
+    if (parsed.success && parsed.data.serviceType === "laser" && parsed.data.params.operation !== "engrave") {
+      return NextResponse.json(
+        { error: "Laser work is engraving only. I don't offer laser cutting." },
+        { status: 400 },
+      );
+    }
 
     if (!parsed.success) {
       const errors = parsed.error.issues.map((i) => i.message).join("; ");

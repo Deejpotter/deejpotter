@@ -73,7 +73,7 @@ export const serviceOfferings: ServiceOffering[] = [
       "Laser engraving on wood and acrylic",
       "CNC milling for signs, panels, and parts",
       "CAD models from sketches or photos",
-      "DXF and SVG upload with a live preview",
+      "Send a DXF, SVG, sketch, or photo",
     ],
     link: "/projects/services/cad-cam-fabrication",
     cta: "Ask about fabrication",
