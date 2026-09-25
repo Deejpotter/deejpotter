@@ -13,14 +13,14 @@ describe("Tailwind-converted project pages", () => {
     expect(
       screen.getByRole("heading", { name: /website design and development/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /typical deliverables/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /what you get/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /frequently asked questions/i })).toBeInTheDocument();
   });
 
   test("custom tools service page renders its key sections", () => {
     render(<CustomToolsService />);
     expect(screen.getByRole("heading", { name: /custom tools and automation/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /best starting brief/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /what to send me/i })).toBeInTheDocument();
   });
 
   test("tools overview page renders its key sections", () => {
