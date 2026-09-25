@@ -53,7 +53,7 @@ function emailShell(title: string, body: string): string {
       <h1 style="color:#fff;margin:0;font-size:20px">Deej Potter</h1>
     </td></tr>
     <tr><td style="padding:24px">
-      <h2 style="margin:0 0 12px;font-size:18px;color:#111">${title}</h2>
+      <h2 style="margin:0 0 12px;font-size:18px;color:#111">${escapeHtml(title)}</h2>
       ${body}
     </td></tr>
     <tr><td style="background:#f9fafb;padding:16px 24px;border-top:1px solid #e5e7eb">
@@ -121,7 +121,8 @@ export function quoteUpdatedEmail(name: string, quoteNumber: number, status: str
 export function newQuoteAdminEmail(name: string, email: string, quoteNumber: number, serviceType: string): { subject: string; html: string } {
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
-  const subject = `New quote #${quoteNumber} from ${safeName}`;
+  // Subjects are plain text: strip line breaks (header injection) but don't HTML-escape.
+  const subject = `New quote #${quoteNumber} from ${name.replace(/[\r\n]+/g, " ")}`;
   const body = `
     <p style="margin:0 0 12px;font-size:15px;color:#374151">
       <strong>${safeName}</strong> (${safeEmail}) submitted a new ${serviceType.replace("_", " ")} quote.

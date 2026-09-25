@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { isAdmin } from "@/lib/db-users";
+import { isAdminUser } from "@/lib/admin-auth";
 import { getQuote, readQuoteFileBuffer } from "@/lib/db-quotes";
 
 export async function GET(
@@ -23,7 +23,7 @@ export async function GET(
     return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
   }
 
-  const admin = await isAdmin(session.userId);
+  const admin = await isAdminUser(session.userId);
   if (!admin) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }

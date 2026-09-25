@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@clerk/nextjs/server";
-import { isAdmin } from "@/lib/db-users";
+import { isAdminUser } from "@/lib/admin-auth";
 import {
   listContactLeads,
   saveContactLead,
@@ -42,7 +42,7 @@ export async function GET() {
   if (!session.userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  if (!(await isAdmin(session.userId))) {
+  if (!(await isAdminUser(session.userId))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -103,7 +103,7 @@ export async function PATCH(request: Request) {
   if (!session.userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  if (!(await isAdmin(session.userId))) {
+  if (!(await isAdminUser(session.userId))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

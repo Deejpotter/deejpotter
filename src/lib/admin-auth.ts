@@ -11,6 +11,16 @@ export type AdminAuthError = "UNAUTHORIZED" | "FORBIDDEN";
 export const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
 /**
+ * True if the user is an admin by MongoDB role or Clerk publicMetadata.role.
+ * Every admin check should use this so pages and APIs agree.
+ */
+export async function isAdminUser(userId: string): Promise<boolean> {
+  if (await isAdmin(userId)) return true;
+  const user = await currentUser();
+  return user?.publicMetadata?.role === "admin";
+}
+
+/**
  * Verify the current user is authenticated and has admin role (API routes).
  */
 export async function requireAdmin(): Promise<{ userId: string }> {
@@ -18,11 +28,8 @@ export async function requireAdmin(): Promise<{ userId: string }> {
   if (!session.userId) {
     throw new Error("UNAUTHORIZED" as AdminAuthError);
   }
-  if (!(await isAdmin(session.userId))) {
-    const user = await currentUser();
-    if (user?.publicMetadata?.role !== "admin") {
-      throw new Error("FORBIDDEN" as AdminAuthError);
-    }
+  if (!(await isAdminUser(session.userId))) {
+    throw new Error("FORBIDDEN" as AdminAuthError);
   }
   return { userId: session.userId };
 }
@@ -40,13 +47,7 @@ export async function requireAdminPage(): Promise<{ userId: string }> {
     redirect("/sign-in");
   }
 
-  const mongoAdmin = await isAdmin(session.userId);
-  if (mongoAdmin) {
-    return { userId: session.userId };
-  }
-
-  const user = await currentUser();
-  if (user?.publicMetadata?.role === "admin") {
+  if (await isAdminUser(session.userId)) {
     return { userId: session.userId };
   }
 

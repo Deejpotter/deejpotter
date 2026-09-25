@@ -1,5 +1,8 @@
 import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 
+// Admin check is covered in apiMongoCrudMutations.test.ts; treat the caller as an admin here.
+vi.mock("@/lib/admin-auth", () => ({ isAdminUser: () => Promise.resolve(true) }));
+
 // Use the real `zod` implementation for deterministic validation in tests
 // (No module mocking for `zod` to avoid import-time race conditions)
 

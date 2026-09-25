@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { getQuote, updateQuote } from "@/lib/db-quotes";
 import type Stripe from "stripe";
 
@@ -15,6 +15,27 @@ async function getStripe(): Promise<Stripe> {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+/**
+ * A user owns a quote if it was created under their Clerk ID, or (for quotes
+ * submitted before signing in) it was sent from one of their verified emails.
+ */
+async function ownsQuote(
+  userId: string,
+  quote: Record<string, unknown>,
+): Promise<boolean> {
+  if (quote.userId) return quote.userId === userId;
+  if (typeof quote.userEmail !== "string" || !quote.userEmail) return false;
+  const user = await currentUser();
+  const quoteEmail = quote.userEmail.toLowerCase();
+  return Boolean(
+    user?.emailAddresses?.some(
+      (e) =>
+        e.emailAddress.toLowerCase() === quoteEmail &&
+        e.verification?.status === "verified",
+    ),
+  );
+}
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -41,7 +62,9 @@ export async function POST(req: NextRequest) {
     }
 
     const quote = await getQuote(Number(quoteNumber));
-    if (!quote) {
+    // Quote numbers are sequential, so check ownership and answer 404 for
+    // other people's quotes rather than revealing that they exist.
+    if (!quote || !(await ownsQuote(session.userId, quote))) {
       return NextResponse.json(
         { error: "Quote not found" },
         { status: 404 },
