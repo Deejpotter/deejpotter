@@ -68,9 +68,9 @@ export const serviceOfferings: ServiceOffering[] = [
     id: "cad-cam-fabrication",
     name: "CAD, CAM, and Fabrication",
     description:
-      "Laser cutting, CNC milling, and CAD work. Send me a sketch or an idea and I'll turn it into a real part.",
+      "Laser engraving, CNC milling, and CAD work. Send me a sketch or an idea and I'll turn it into a real part.",
     features: [
-      "Laser cutting and engraving (wood, acrylic)",
+      "Laser engraving on wood and acrylic",
       "CNC milling for signs, panels, and parts",
       "CAD models from sketches or photos",
       "DXF and SVG upload with a live preview",
@@ -121,7 +121,7 @@ export const showcaseItems: ShowcaseItem[] = [
     id: "services",
     title: "All services",
     description:
-      "Websites, custom tools, 3D printing, laser cutting, and CNC milling.",
+      "Websites, custom tools, 3D printing, laser engraving, and CNC milling.",
     link: "/projects/services",
     label: "View services",
   },

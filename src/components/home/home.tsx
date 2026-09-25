@@ -35,7 +35,7 @@ const quickLinks = [
 const heroBullets = [
   "Small business websites and portfolio refreshes",
   "Custom tools, calculators, and automation helpers",
-  "CAD/CAM, 3D printing, laser, and basic milling support",
+  "CAD/CAM, 3D printing, laser engraving, and basic milling",
 ];
 
 export default function Home(): ReactElement {
@@ -90,7 +90,7 @@ export default function Home(): ReactElement {
                 I build websites, custom tools, and physical parts.
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-                I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print or laser cut parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
+                I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print, engrave, or mill parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -143,7 +143,7 @@ export default function Home(): ReactElement {
                 {[
                   "Website design and development projects",
                   "Small business and hobbyist projects in Australia",
-                  "CAD/CAM, 3D printing, laser, and basic milling work",
+                  "CAD/CAM, 3D printing, laser engraving, and basic milling",
                   "Custom tools and automation helpers",
                 ].map((item) => (
                   <div

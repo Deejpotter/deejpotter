@@ -9,7 +9,7 @@ export const defaultMetadata: Metadata = {
     default: 'Deej Potter | Websites, 3D Printing & Fabrication',
     template: '%s | Deej Potter'
   },
-  description: 'Website design, 3D printing, laser cutting, and CNC milling for small businesses and hobbyists. Upload a file, see your model in 3D, and get an instant price. Based in Frankston VIC.',
+  description: 'Website design, 3D printing, laser engraving, and CNC milling for small businesses and hobbyists. Upload a file, see your model in 3D, and get an instant price. Based in Frankston VIC.',
   keywords: [
     'Website Designer',
     'Website Developer',
@@ -18,7 +18,7 @@ export const defaultMetadata: Metadata = {
     'CAD/CAM',
     'Fabrication',
     '3D Printing',
-    'Laser Cutting',
+    'Laser Engraving',
     'Milling',
     'Next.js',
     'React',
@@ -37,7 +37,7 @@ export const defaultMetadata: Metadata = {
     url: 'https://deejpotter.com',
     siteName: 'Deej Potter',
     title: 'Deej Potter | Websites, 3D Printing & Fabrication',
-    description: 'Website design, 3D printing, laser cutting, and CNC milling. Upload a file, see your model in 3D, get an instant price. Frankston VIC.',
+    description: 'Website design, 3D printing, laser engraving, and CNC milling. Upload a file, see your model in 3D, get an instant price. Frankston VIC.',
     images: [
       {
         url: '/og-image.png',

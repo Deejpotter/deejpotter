@@ -12,7 +12,7 @@ export default function About(): ReactElement {
           I build things that work.
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-          I build websites, custom tools, 3D-printed parts, and laser-cut
+          I build websites, custom tools, 3D-printed parts, and laser-engraved
           pieces. I&apos;m based in Frankston, VIC, and work with small
           businesses and hobbyists around Australia.
         </p>
@@ -57,7 +57,7 @@ export default function About(): ReactElement {
               and workflow helpers that save hours of manual work.
             </p>
             <p>
-              <strong>Fabrication.</strong> 3D printing, laser cutting, and CNC
+              <strong>Fabrication.</strong> 3D printing, laser engraving, and CNC
               milling for prototypes, replacement parts, and one-off pieces. No
               CAD experience required.
             </p>

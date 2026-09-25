@@ -5,14 +5,14 @@ import { generatePageMetadata } from "@/app/metadata";
 
 export const metadata = generatePageMetadata(
   "CAD, CAM, and Fabrication",
-  "Laser cutting, CNC milling, and CAD file prep for prototypes, one-off parts, and small-run fabrication. Upload a DXF or SVG and get an instant preview.",
+  "Laser engraving, CNC milling, and CAD file prep for prototypes, one-off parts, and small-run fabrication. Upload a DXF or SVG and get an instant preview.",
   "/projects/services/cad-cam-fabrication"
 );
 
 const whatIDo = [
   {
-    title: "Laser cutting and engraving",
-    desc: "Wood and acrylic up to 6mm. Upload a DXF or SVG to see your design and get a price. Cut, engrave, or both.",
+    title: "Laser engraving",
+    desc: "Names, logos, and designs engraved into wood or acrylic. Upload a DXF or SVG to see your design and get a price.",
   },
   {
     title: "CNC milling",
@@ -33,12 +33,12 @@ const faqs = [
   {
     question: "What materials do you work with?",
     answer:
-      "Wood and acrylic are my standard materials for both laser and milling. If you need something specific like aluminium or carbon fibre, send me an email and I can test it. I can't laser cut metal, though.",
+      "Wood and acrylic are my standard materials for engraving and milling. If you need something specific like aluminium or carbon fibre, send me an email and I can test it. I only engrave with the laser, I don't cut with it.",
   },
   {
     question: "How accurate is the preview?",
     answer:
-      "The preview shows you the actual cut lines or engraving paths from your file. The real result will match what you see, within the tolerances of my machine.",
+      "The preview shows you the actual engraving or milling paths from your file. The real result will match what you see, within the tolerances of my machine.",
   },
   {
     question: "What if the job is too big or complex?",
@@ -64,7 +64,7 @@ export default function CadCamFabricationService(): ReactElement {
           serviceType: "CAD/CAM and light fabrication",
           url: "https://deejpotter.com/projects/services/cad-cam-fabrication",
           description:
-            "Laser cutting, CNC milling, and CAD file prep for prototypes, one-off parts, and small-run fabrication.",
+            "Laser engraving, CNC milling, and CAD file prep for prototypes, one-off parts, and small-run fabrication.",
         })}
       </Script>
 
@@ -77,8 +77,7 @@ export default function CadCamFabricationService(): ReactElement {
             CAD, CAM, and fabrication
           </h1>
           <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
-            Laser cutting, CNC milling, and CAD file prep for people who need a
-            physical result without learning the software. Upload a DXF or SVG,
+            Laser engraving, CNC milling, and CAD file prep for people who need a physical result without learning the software. Upload a DXF or SVG,
             see your design, and get a price.
           </p>
 

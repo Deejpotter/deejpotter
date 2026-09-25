@@ -58,7 +58,7 @@ const categories = [
     label: "Services",
     href: "/projects/services",
     description:
-      "Websites, custom tools, 3D printing, laser cutting, and CNC work.",
+      "Websites, custom tools, 3D printing, laser engraving, and CNC work.",
     icon: "🛠️",
   },
 ];

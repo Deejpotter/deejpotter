@@ -100,8 +100,7 @@ export default function QuoteRequestForm(): ReactElement {
   const [quantity, setQuantity] = useState(1);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [serviceType, setServiceType] = useState<"3d_printing" | "laser" | "milling">("3d_printing");
-  const [laserThickness, setLaserThickness] = useState(3);
-  const [laserOp, setLaserOp] = useState<"cut" | "engrave" | "both">("cut");
+  const [millThickness, setMillThickness] = useState(3);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const clientEstimate = useMemo(
@@ -174,7 +173,7 @@ export default function QuoteRequestForm(): ReactElement {
               {serviceType === "3d_printing"
                 ? "Request a print quote"
                 : serviceType === "laser"
-                  ? "Request a laser quote"
+                  ? "Request a laser engraving quote"
                   : "Request a milling quote"}
             </h2>
             <p className="max-w-2xl text-gray-600 dark:text-gray-400">
@@ -192,7 +191,7 @@ export default function QuoteRequestForm(): ReactElement {
         <div className="mb-6 flex flex-wrap gap-2">
           {[
             { id: "3d_printing", label: "🖨️ 3D Printing" },
-            { id: "laser", label: "🔆 Laser" },
+            { id: "laser", label: "🔆 Laser engraving" },
             { id: "milling", label: "⚙️ CNC Milling" },
           ].map((s) => (
             <button
@@ -283,36 +282,22 @@ export default function QuoteRequestForm(): ReactElement {
             <input type="hidden" name="serviceType" value={serviceType} />
           </div>
 
-          {/* ── Laser / Milling options ── */}
-          {serviceType !== "3d_printing" && (
-            <>
-              <div className={fieldShell}>
-                <label className={labelClass}>Material thickness (mm)</label>
-                <select
-                  value={laserThickness}
-                  onChange={(e) => setLaserThickness(Number(e.target.value))}
-                  className={selectClass}
-                >
-                  <option value={3}>3mm</option>
-                  <option value={5}>5mm</option>
-                  <option value={6}>6mm</option>
-                  <option value={9}>9mm</option>
-                  <option value={12}>12mm</option>
-                </select>
-              </div>
-              <div className={fieldShell}>
-                <label className={labelClass}>Operation</label>
-                <select
-                  value={laserOp}
-                  onChange={(e) => setLaserOp(e.target.value as "cut" | "engrave" | "both")}
-                  className={selectClass}
-                >
-                  <option value="cut">Cut only</option>
-                  <option value="engrave">Engrave only</option>
-                  <option value="both">Cut + Engrave</option>
-                </select>
-              </div>
-            </>
+          {/* ── Milling options (laser is engraving only, so thickness doesn't apply) ── */}
+          {serviceType === "milling" && (
+            <div className={fieldShell}>
+              <label className={labelClass}>Material thickness (mm)</label>
+              <select
+                value={millThickness}
+                onChange={(e) => setMillThickness(Number(e.target.value))}
+                className={selectClass}
+              >
+                <option value={3}>3mm</option>
+                <option value={5}>5mm</option>
+                <option value={6}>6mm</option>
+                <option value={9}>9mm</option>
+                <option value={12}>12mm</option>
+              </select>
+            </div>
           )}
 
           {/* ── Interactive Builder (3D printing only) ── */}
