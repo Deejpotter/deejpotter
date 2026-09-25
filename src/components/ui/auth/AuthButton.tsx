@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "./AuthProvider";
@@ -67,6 +67,29 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 }) => {
   const { user, login, signup, logout, isLoaded, isSignedIn } = useAuth();
 
+  // Ask the server whether this user is an admin, so admins set up by
+  // MongoDB role (not just Clerk metadata) also see the Admin link.
+  // The answer is stored with the user ID it belongs to, so a different
+  // user signing in never inherits the previous user's Admin link.
+  const userId = isSignedIn ? user?.id : undefined;
+  const [adminFor, setAdminFor] = useState<string | null>(null);
+  useEffect(() => {
+    if (!userId) return;
+    let cancelled = false;
+    fetch("/api/admin/me")
+      .then((res) => (res.ok ? res.json() : { isAdmin: false }))
+      .then((data) => {
+        if (!cancelled) setAdminFor(data?.isAdmin ? userId : null);
+      })
+      .catch(() => {
+        if (!cancelled) setAdminFor(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
+  const isAdmin = Boolean(userId) && adminFor === userId;
+
   // Show loading state while Clerk is initializing
   if (!isLoaded) {
     return (
@@ -98,7 +121,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
           <Link href="/account" className={`${btnClasses("outline")}`}>
             My Account
           </Link>
-          {user.publicMetadata?.role === "admin" && (
+          {isAdmin && (
             <Link href="/admin" className={`${btnClasses("outline")}`}>
               Admin
             </Link>
