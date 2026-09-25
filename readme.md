@@ -18,7 +18,7 @@ This is my portfolio and small business site. Here's what you'll find:
 6. **Admin area**: Quotes, leads and settings, protected by Clerk and an admin check.
 7. **Groceries**: A small personal groceries tool.
 
-I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions, but those have all been replaced with Next.js Route Handlers, Clerk and MongoDB. Netlify is still used for hosting (`netlify.toml`).
+I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions, but those have all been replaced with Next.js Route Handlers, Clerk and MongoDB. The site is hosted on Render, which runs it as a Node server (`yarn build` then `yarn start`). `netlify.toml` is left over from the old Netlify setup.
 
 ## Technologies and Tools
 
