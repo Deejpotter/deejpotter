@@ -3,7 +3,7 @@
   "version": "3.0.1",
   "private": true,
   "engines": {
-    "node": ">=22 <23"
+    "node": ">=24 <25"
   },
   "scripts": {
     "dev": "next dev",
@@ -87,7 +87,7 @@
     "@types/bootstrap": "^5.2.10",
     "@types/jsdom": "^27",
     "@types/md5": "^2.3.6",
-    "@types/node": "^25.9.0",
+    "@types/node": "^24",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.7",
     "@typescript-eslint/eslint-plugin": "^8.59.4",
