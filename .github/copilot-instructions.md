@@ -28,7 +28,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 
 - Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/globals.css`.
 - Styling uses **Tailwind CSS v4** with CSS-first configuration (`@theme` blocks in `src/styles/globals.css`). Custom design tokens for colors, spacing and typography are defined there. Legacy SCSS files may still exist but Tailwind utilities are the standard.
-- Blog posts are Markdown files in `src/content/blog-md`, loaded by `src/lib/blog.ts`. Decap CMS at `/cms` (`public/cms`) edits them.
+- Blog posts are written by hand: Markdown files in `src/content/blog-md` or TSX pages in `src/content/blog`, both loaded by `src/lib/blog.ts` (see `src/content/blog-md/README.md`). There is no CMS.
 - Tests use Vitest + React Testing Library for unit/component tests and Playwright for E2E and visual tests. See `vitest.config.ts` and `playwright.config.ts`.
 - When converting or adding UI components, add a top-of-file comment describing the purpose, rationale (e.g., Tailwind-first and accessibility considerations), and the testing approach (Vitest unit tests + Playwright visual test). Also include short block comments above major implementation sections explaining _why_ the structure was chosen (accessibility, performance, or testability), not only _what_ the code does.
 - Alias imports use `@/` mapped to `src/` (resolved via `vitest.config.ts` for tests and `tsconfig.json` for the app).
@@ -48,7 +48,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 
 ## Integration Points & Environment
 
-- Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `R2_SETUP.md`).
+- Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `R2_SETUP.md`). R2 is only used once its variables are set; until then uploads fall back to the ephemeral local disk.
 - Contact form: `src/app/contact` posts to `src/app/api/contact/route.ts`, which saves leads to the `contact_leads` collection. Admins see them at `/admin/leads`.
 - Quotes: the 3D printing form posts to `/api/3d-printing-quote`. Laser work is engraving only (no laser cutting); laser and milling jobs are requested through the contact form.
 - Local env example: see `.env.example` for required environment variables to run local dev and deploy to new hosts.

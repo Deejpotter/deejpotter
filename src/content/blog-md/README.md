@@ -1,24 +1,11 @@
-# Decap CMS content
+# Markdown blog posts
 
-This folder is now the live home for Decap-authored Markdown blog posts.
+Blog posts can be written two ways:
 
-Current state:
-- the site reads published Markdown posts from `src/content/blog-md/*.md`
-- existing TSX posts in `src/content/blog/*.tsx` still work in parallel
-- Decap is scaffolded under `public/cms/`
-- drafts are supported through frontmatter and are excluded from the public blog by default
-
-Frontmatter shape:
-- title
-- slug
-- date
-- excerpt
-- tags
-- draft
-- bookstackUrl (optional)
-
-Notes:
-- use `.md` files with frontmatter
-- keep slugs unique across both Markdown and TSX posts
-- normal editorial posts should prefer Markdown
-- keep TSX for posts that genuinely need custom React rendering
+1. **Markdown (this folder).** Add a `.md` file here with front matter like
+   `openclaw-android-pairing-request-churn.md`: `title`, `slug`, `date`,
+   `excerpt`, `tags`, and `draft`. `src/lib/blog.ts` picks it up automatically.
+   Set `draft: true` to keep a post off the site.
+2. **A formatted page.** For posts that need custom layout, write a TSX file in
+   `src/content/blog/` (see `portfolio-migration.tsx`) and register it in
+   `src/lib/blog.ts`.
