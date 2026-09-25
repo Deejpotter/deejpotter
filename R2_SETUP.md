@@ -6,8 +6,9 @@ Cloudflare R2 provides persistent object storage for uploaded files (3D models, 
 
 ## How it works
 
-- **Uploads**: Files are saved to the local filesystem AND uploaded to R2 in the background. The R2 object key is stored in the quote record.
-- **Downloads**: The file download endpoint tries R2 first, falls back to local disk.
+- R2 is only used when all four variables below are set (`isR2Configured()` in `src/lib/r2-storage.ts`).
+- **Uploads**: `saveQuoteFile` in `src/lib/db-quotes.ts` uploads to R2. If R2 isn't configured, or the upload fails, it saves to local disk instead (which Render wipes on deploy).
+- **Downloads**: `readQuoteFileBuffer` tries R2 first, then falls back to local disk.
 - **Bucket path**: `deejpotter/quotes/{quoteId}/{filename}`
 
 ## Prerequisites
@@ -41,7 +42,7 @@ R2_BUCKET_NAME=deejpotter
 |-------------|-------|
 | Local dev | `.env` (already in `krasus/.env`) |
 | Render staging | Render Dashboard → deejpotter-staging → Environment |
-| Render production | Render Dashboard → deejpotter → Environment |
+| Render production | Render Dashboard → deejpotter → Environment (`R2_ACCOUNT_ID` and `R2_BUCKET_NAME` set 2026-09-25; the two keys still need adding) |
 
 ## Important: S3 keys vs API tokens
 
