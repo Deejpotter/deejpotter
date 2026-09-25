@@ -74,7 +74,7 @@ deejpotter no longer has a shop; service payments go through quotes.
 - Contact leads and grocery orders moved to MongoDB; indexes created on first use
 - Security: Next.js 16.3.6, Clerk proxy restored, mongo-crud admin-only, quote payment ownership check
 - Content: redesign folded into web design; plain first-person copy without em dashes
-- Decap CMS moved to /cms
+- Decap CMS removed; blog posts written by hand
 - Generic shop removed; quote-based service payments kept
 - Docs refreshed; leftover files removed (Netlify, Jest, old reports)
 - Quote status lookup migrated to MongoDB quote numbers

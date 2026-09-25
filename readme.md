@@ -12,13 +12,13 @@ This is my portfolio and small business site. Here's what you'll find:
 
 1. **About, Privacy and Terms pages**
 2. **Contact page**: A contact form handled by a Next.js Route Handler (`/api/contact`) that sends email through Resend.
-3. **Blog**: Markdown posts from `src/content/blog-md`, with an RSS feed at `/blog/rss.xml`.
+3. **Blog**: posts written by hand, as Markdown in `src/content/blog-md` or formatted pages in `src/content/blog`, with an RSS feed at `/blog/rss.xml`.
 4. **Projects**: Websites, games, apps, tools, engineering projects and services.
 5. **3D printing quotes**: Customers upload models, get a quote, and pay for accepted quotes with Stripe. There is no general shop; payments only go through quotes.
 6. **Admin area**: Quotes, leads and settings, protected by Clerk and an admin check.
 7. **Groceries**: A small personal groceries tool.
 
-I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions, but those have all been replaced with Next.js Route Handlers, Clerk and MongoDB. The site is hosted on Render, which runs it as a Node server (`yarn build` then `yarn start`). `dev` deploys to staging and `main` to production.
+I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions. Forms, Identity and Functions have been replaced with Next.js Route Handlers, Clerk and MongoDB, and the CMS was dropped: blog posts are written by hand (see `src/content/blog-md/README.md`). The site is hosted on Render, which runs it as a Node server (`yarn build` then `yarn start`). `dev` deploys to staging and `main` to production.
 
 ## Technologies and Tools
 
