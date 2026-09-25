@@ -11,7 +11,7 @@ describe("CAD/CAM and fabrication service page", () => {
       screen.getByRole("heading", { name: /cad, cam, and fabrication/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /laser cutting and engraving/i })
+      screen.getByRole("heading", { name: /^laser engraving$/i })
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /who this is for/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /questions people ask/i })).toBeInTheDocument();
