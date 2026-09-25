@@ -3,7 +3,7 @@
 ## Overview
 
 Next.js 16 (App Router) + MongoDB Atlas + Clerk + Stripe + Cloudflare R2.
-Multi-service quoting platform: 3D printing, laser engraving, CNC milling.
+Multi-service quoting platform: 3D printing, laser engraving (engraving only, no cutting), CNC milling. The public quote form handles 3D printing; laser and milling jobs come in through the contact form for now.
 
 ---
 
@@ -17,7 +17,9 @@ Multi-service quoting platform: 3D printing, laser engraving, CNC milling.
 - Query filtering (admin can filter by status, service type)
 - Dashboard stats without scanning all documents
 
-**Collections:** `quotes`, `settings`, `service_configs`, `users`
+**Collections:** `quotes`, `settings`, `service_configs`, `users`, `contact_leads`, `grocery_orders`
+
+**2026-09-25:** Contact leads and grocery orders moved off local JSON files into MongoDB too (Render's disk is wiped on every deploy). Indexes are created by `ensureIndexes()` on the first `getCollection()` call in each process.
 
 ### Clerk for auth (not custom)
 **Why:** Already integrated in the site. Provides OAuth, session management, MFA. We store only the minimum user data in MongoDB (`users` collection: clerkId, email, name, role) — auth stays in Clerk. Customer accounts can be created without Clerk (email-only quote flow), but account features require sign-in.

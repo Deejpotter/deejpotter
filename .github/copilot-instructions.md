@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-This is a Next.js portfolio site (see `readme.md`). It's a static-first app with dynamic pieces powered by Netlify:
+This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
 
 - App code and routes: `src/app` (Next.js App Router).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
-- Auth and client state: `src/contexts` (notably `AuthContext.tsx` which uses Clerk via `@clerk/nextjs`).
-- API routes: `src/app/api/mongo-crud/route.ts` (Next.js Route Handlers replacing Netlify Functions).
+- Auth: Clerk (`@clerk/nextjs`). `src/proxy.ts` runs `clerkMiddleware()` (Next.js 16's name for middleware). Client auth state lives in `src/components/ui/auth/AuthProvider.tsx`; server-side admin checks use `isAdminUser()` / `requireAdminPage()` in `src/lib/admin-auth.ts`.
+- API routes: `src/app/api/*/route.ts` (Next.js Route Handlers). Data access goes through `src/lib/db.ts` (`getCollection()`, which also creates indexes on first use) and the `src/lib/db-*.ts` modules.
 - Static assets and games: `public/` (Unity WebGL in `public/basicBases/Build/`).
 - **Docs**: TypeDoc output goes to `public/docs` (`typedoc.json` and `yarn docs`).
 
@@ -28,7 +28,7 @@ This is a Next.js portfolio site (see `readme.md`). It's a static-first app with
 
 - Pages live in `src/app/*`; components are kept in `src/components/*` and global styles in `src/styles/globals.css`.
 - Styling uses **Tailwind CSS v4** with CSS-first configuration (`@theme` blocks in `src/styles/globals.css`). Custom design tokens for colors, spacing and typography are defined there. Legacy SCSS files may still exist but Tailwind utilities are the standard.
-- MDX content support exists (`@next/mdx`, `src/lib/mdx.ts`) — prefer existing MDX utils when adding content-driven pages.
+- Blog posts are Markdown files in `src/content/blog-md`, loaded by `src/lib/blog.ts`. Decap CMS at `/cms` (`public/cms`) edits them.
 - Tests use Vitest + React Testing Library for unit/component tests and Playwright for E2E and visual tests. See `vitest.config.ts` and `playwright.config.ts`.
 - When converting or adding UI components, add a top-of-file comment describing the purpose, rationale (e.g., Tailwind-first and accessibility considerations), and the testing approach (Vitest unit tests + Playwright visual test). Also include short block comments above major implementation sections explaining _why_ the structure was chosen (accessibility, performance, or testability), not only _what_ the code does.
 - Alias imports use `@/` mapped to `src/` (resolved via `vitest.config.ts` for tests and `tsconfig.json` for the app).
@@ -37,23 +37,20 @@ This is a Next.js portfolio site (see `readme.md`). It's a static-first app with
 ## Developer Workflows (must-know commands)
 
 - Local dev: `yarn dev` — Next.js dev server.
-- Build (CI / production): `yarn build` — runs `prebuild` (TypeDoc) then `next build`.
+- Build (CI / production): `yarn build` (`next build`).
 - Run tests: `yarn test`.
 - Lint: `yarn lint`.
 - Docs: `yarn docs` (writes to `public/docs`).
-- CI: A GitHub Actions workflow runs lint, tests, docs and build on pushes and PRs (`.github/workflows/ci.yml`).
+- CI: GitHub Actions runs lint, stylelint, Vitest and the build on pushes and PRs (`.github/workflows/ci.yml`).
 - Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
 
-Tip: Netlify development (functions and identity) may require the Netlify CLI (`netlify dev`) to fully emulate production functions and Identity flows.
-
-⚠️ Migration note: The repo is migrating away from Netlify functions and (optionally) Netlify Identity — see `.github/TODOs.md` and `.github/hosting-eval.md` for the migration plan and hosting recommendations (Vercel/Render/Coolify). When adding server endpoints prefer `src/app/api/*/route.ts` route handlers for portability.
+- Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR.
 
 ## Integration Points & Environment
 
-- Netlify hosting — see `netlify.toml` for build and function settings (external_node_modules includes `mongodb`). Note: the project is migrating away from Netlify; see `.github/hosting-eval.md` and `.github/TODOs.md` for details.
-- Auth: currently implemented with Clerk (`@clerk/nextjs`) in `src/contexts/AuthContext.tsx` (login/signup/logout handled client-side). If you prefer a different provider (Auth0/Supabase), outline migration steps and update `AuthContext` accordingly.
-- Netlify Forms: contact form is wired through the site (see contact page in `src/app/contact` and `public/__forms.html`). If leaving Netlify, replace form handling with Next.js route handlers.
-- Serverless functions: `netlify/functions/mongoCrud.ts` has been replaced by `src/app/api/mongo-crud/route.ts` which uses Next.js Route Handlers and environment variables `MONGODB_URI` and `DB_NAME`.
+- Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `R2_SETUP.md`).
+- Contact form: `src/app/contact` posts to `src/app/api/contact/route.ts`, which saves leads to the `contact_leads` collection. Admins see them at `/admin/leads`.
+- Quotes: the 3D printing form posts to `/api/3d-printing-quote`. Laser work is engraving only (no laser cutting); laser and milling jobs are requested through the contact form.
 - Local env example: see `.env.example` for required environment variables to run local dev and deploy to new hosts.
 
 ## Project-Specific Conventions
@@ -67,9 +64,9 @@ Tip: Netlify development (functions and identity) may require the Netlify CLI (`
 
 - `src/components/TopNavbar/TopNavbar.tsx` — Primary navigation with mega-menu dropdowns (hover + click), mobile drawer.
 - `src/contexts/NavbarContext.tsx` — Navigation state (items, dropdown open/close) via React reducer + context.
-- `src/contexts/AuthContext.tsx` — Clerk-based auth flows.
-- `src/app/contact/page.tsx` & `public/__forms.html` — Netlify Forms integration.
-- `typedoc.json` + `package.json#scripts` — docs generation and prebuild hook.
+- `src/components/ui/auth/AuthProvider.tsx` & `AuthButton.tsx` — Clerk auth state and the navbar sign-in / Admin buttons.
+- `src/proxy.ts` — Clerk request handling and the www to apex redirect.
+- `typedoc.json` + `yarn docs` — docs generation.
 - `public/basicBases/Build/` — Unity WebGL assets; treat as static assets.
 - `vitest.config.ts` — Test runner config with `@/` alias resolution and jsdom environment.
 
