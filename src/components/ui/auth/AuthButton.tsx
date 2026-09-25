@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "./AuthProvider";
@@ -67,6 +67,25 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 }) => {
   const { user, login, signup, logout, isLoaded, isSignedIn } = useAuth();
 
+  // Ask the server whether this user is an admin, so admins set up by
+  // MongoDB role (not just Clerk metadata) also see the Admin link.
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    if (!isSignedIn) return;
+    let cancelled = false;
+    fetch("/api/admin/me")
+      .then((res) => (res.ok ? res.json() : { isAdmin: false }))
+      .then((data) => {
+        if (!cancelled) setIsAdmin(Boolean(data?.isAdmin));
+      })
+      .catch(() => {
+        if (!cancelled) setIsAdmin(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isSignedIn]);
+
   // Show loading state while Clerk is initializing
   if (!isLoaded) {
     return (
@@ -98,7 +117,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
           <Link href="/account" className={`${btnClasses("outline")}`}>
             My Account
           </Link>
-          {user.publicMetadata?.role === "admin" && (
+          {isSignedIn && isAdmin && (
             <Link href="/admin" className={`${btnClasses("outline")}`}>
               Admin
             </Link>

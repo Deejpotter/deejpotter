@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { listQuotes } from "@/lib/db-quotes";
 import PayNowButton from "@/components/PayNowButton";
+import { isAdminUser } from "@/lib/admin-auth";
 
 export const metadata = {
   title: "My Account | Deej Potter",
@@ -34,6 +35,7 @@ export default async function AccountPage() {
   const quotes = await listQuotes({ userEmail: email, limit: 50 }).catch(
     () => [],
   );
+  const isAdmin = await isAdminUser(user.id).catch(() => false);
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
@@ -47,6 +49,14 @@ export default async function AccountPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Your quote requests and order history.
         </p>
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className="mt-4 inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
+          >
+            Admin dashboard
+          </Link>
+        )}
       </div>
 
       <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden">
