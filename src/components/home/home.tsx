@@ -225,7 +225,7 @@ export default function Home(): ReactElement {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
             {serviceOfferings.map((service) => (
               <article
                 key={service.id}

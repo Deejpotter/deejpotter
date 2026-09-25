@@ -20,7 +20,6 @@ const contactFormSchema = z.object({
   projectType: z
     .enum([
       "website",
-      "redesign",
       "custom-tool",
       "support",
       "other",
@@ -159,8 +158,8 @@ export default function ContactForm(): ReactElement {
           Get in Touch
         </h1>
         <p className="max-w-3xl text-lg text-gray-700 dark:text-gray-300">
-          If you want help with a website, redesign, custom page, or a small
-          technical tool, send me a message here. I prefer to begin through text
+          If you want help with a new website or a redesign, a custom tool, or
+          a small technical project, send me a message here. I prefer to begin through text
           so we can sort out the goals, scope, and next steps clearly.
         </p>
         <p className="mt-4 max-w-3xl text-sm text-gray-600 dark:text-gray-400">
@@ -242,8 +241,7 @@ export default function ContactForm(): ReactElement {
                 {...register("projectType")}
               >
                 <option value="">Select one</option>
-                <option value="website">New website</option>
-                <option value="redesign">Website redesign</option>
+                <option value="website">Website (new build or redesign)</option>
                 <option value="custom-tool">Custom tool or calculator</option>
                 <option value="support">Support / maintenance</option>
                 <option value="other">Other</option>

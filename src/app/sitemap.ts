@@ -21,7 +21,6 @@ const staticRoutes = [
   "/projects/services/3d-printing",
   "/projects/services/custom-tools",
   "/projects/services/website-design",
-  "/projects/services/website-redesign",
   "/projects/tools/20-series-cut-calculator",
   "/projects/tools/box-shipping-calculator",
   "/projects/tools/cnc-calibration-tool",

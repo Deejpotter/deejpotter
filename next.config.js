@@ -24,6 +24,16 @@ const nextConfig = {
   async rewrites() {
     return [{ source: "/cms", destination: "/cms/index.html" }];
   },
+  // The redesign service was retired; send old links to the website service.
+  async redirects() {
+    return [
+      {
+        source: "/projects/services/website-redesign",
+        destination: "/projects/services/website-design",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

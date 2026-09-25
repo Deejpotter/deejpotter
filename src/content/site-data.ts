@@ -37,20 +37,6 @@ export const serviceOfferings: ServiceOffering[] = [
     cta: "Start a website project",
   },
   {
-    id: "website-redesign",
-    name: "Website Redesign",
-    description:
-      "Your site works but it doesn't work well. A focused redesign that fixes the structure, messaging, and conversion flow — without starting from scratch.",
-    features: [
-      "Clearer messaging that actually says what you do",
-      "Better mobile experience",
-      "Faster load times",
-      "Stronger calls to action that get results",
-    ],
-    link: "/projects/services/website-redesign",
-    cta: "Ask about a redesign",
-  },
-  {
     id: "custom-tools-automation",
     name: "Custom Tools and Automation",
     description:
