@@ -69,22 +69,26 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 
   // Ask the server whether this user is an admin, so admins set up by
   // MongoDB role (not just Clerk metadata) also see the Admin link.
-  const [isAdmin, setIsAdmin] = useState(false);
+  // The answer is stored with the user ID it belongs to, so a different
+  // user signing in never inherits the previous user's Admin link.
+  const userId = isSignedIn ? user?.id : undefined;
+  const [adminFor, setAdminFor] = useState<string | null>(null);
   useEffect(() => {
-    if (!isSignedIn) return;
+    if (!userId) return;
     let cancelled = false;
     fetch("/api/admin/me")
       .then((res) => (res.ok ? res.json() : { isAdmin: false }))
       .then((data) => {
-        if (!cancelled) setIsAdmin(Boolean(data?.isAdmin));
+        if (!cancelled) setAdminFor(data?.isAdmin ? userId : null);
       })
       .catch(() => {
-        if (!cancelled) setIsAdmin(false);
+        if (!cancelled) setAdminFor(null);
       });
     return () => {
       cancelled = true;
     };
-  }, [isSignedIn]);
+  }, [userId]);
+  const isAdmin = Boolean(userId) && adminFor === userId;
 
   // Show loading state while Clerk is initializing
   if (!isLoaded) {
@@ -117,7 +121,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
           <Link href="/account" className={`${btnClasses("outline")}`}>
             My Account
           </Link>
-          {isSignedIn && isAdmin && (
+          {isAdmin && (
             <Link href="/admin" className={`${btnClasses("outline")}`}>
               Admin
             </Link>

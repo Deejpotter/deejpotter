@@ -30,6 +30,12 @@ describe("GET /api/admin/me", () => {
     expect(isAdminUserMock).toHaveBeenCalledWith("user_1");
   });
 
+  test("hides the link if auth fails", async () => {
+    authMock.mockRejectedValue(new Error("clerk down"));
+    const res = await GET();
+    expect(await res.json()).toEqual({ isAdmin: false });
+  });
+
   test("hides the link if the admin check fails", async () => {
     authMock.mockResolvedValue({ userId: "user_1" });
     isAdminUserMock.mockRejectedValue(new Error("db down"));
