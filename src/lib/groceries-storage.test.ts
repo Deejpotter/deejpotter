@@ -69,6 +69,37 @@ describe("groceries storage", () => {
     expect(list[0].total).toBe(20);
   });
 
+  test("a concurrent insert of the same order ends up as one replaced order", async () => {
+    const fake = orders.current as ReturnType<typeof createFakeCollection>;
+    const realReplace = fake.replaceOne.bind(fake);
+    let calls = 0;
+    // Simulate losing the race: another request inserts the order first and
+    // our upsert hits the unique index.
+    fake.replaceOne = async (filter, replacement, options) => {
+      calls++;
+      if (calls === 1) {
+        await realReplace(filter, { ...replacement, total: 1 }, { upsert: true });
+        throw Object.assign(new Error("E11000 duplicate key"), { code: 11000 });
+      }
+      return realReplace(filter, replacement, options);
+    };
+
+    await saveOrder(makeOrder({ total: 20 }));
+
+    const list = await listOrders();
+    expect(list).toHaveLength(1);
+    expect(list[0].total).toBe(20);
+  });
+
+  test("other write errors are not swallowed", async () => {
+    const fake = orders.current as ReturnType<typeof createFakeCollection>;
+    fake.replaceOne = async () => {
+      throw Object.assign(new Error("network"), { code: 6 });
+    };
+
+    await expect(saveOrder(makeOrder())).rejects.toThrow("network");
+  });
+
   test("deletes orders", async () => {
     await saveOrder(makeOrder());
 

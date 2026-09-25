@@ -16,6 +16,7 @@ declare global {
   var __mongoClient: MongoClient | undefined;
   // eslint-disable-next-line no-var
   var __mongoConnected: boolean | undefined;
+  var __mongoIndexes: Promise<void> | undefined;
 }
 
 const POOL_SIZE = Number(process.env.MONGO_POOL_SIZE) || 10;
@@ -134,6 +135,10 @@ export async function getCollection<T extends Document>(
   name: string,
 ): Promise<Collection<T>> {
   const db = await getDb();
+  // Make sure indexes (including the unique ones that stop duplicate
+  // upserts) exist before the first query in this process.
+  global.__mongoIndexes ??= ensureIndexes(db);
+  await global.__mongoIndexes;
   return db.collection<T>(name);
 }
 
@@ -150,6 +155,7 @@ export async function closeConnection(): Promise<void> {
     }
     global.__mongoClient = undefined;
     global.__mongoConnected = false;
+    global.__mongoIndexes = undefined;
     console.log("[db] MongoDB connection closed");
   }
 }
@@ -180,36 +186,40 @@ export async function healthCheck(): Promise<{
  * Ensure indexes exist for the quotes collection.
  * Call once during startup or when collection is first accessed.
  */
-export async function ensureIndexes(): Promise<void> {
-  const quotes = await getCollection("quotes");
-  const users = await getCollection("users");
-  const serviceConfigs = await getCollection("service_configs");
+export async function ensureIndexes(db?: Db): Promise<void> {
+  const database = db ?? (await getDb());
+  const specs: [collection: string, keys: Record<string, 1 | -1>, unique?: boolean][] = [
+    // Quotes
+    ["quotes", { userEmail: 1, createdAt: -1 }],
+    ["quotes", { userId: 1, createdAt: -1 }],
+    ["quotes", { status: 1, createdAt: -1 }],
+    ["quotes", { serviceType: 1, status: 1 }],
+    ["quotes", { createdAt: -1 }],
+    // Users
+    ["users", { clerkId: 1 }, true],
+    ["users", { email: 1 }],
+    // Service configs
+    ["service_configs", { serviceType: 1 }, true],
+    // Contact leads and grocery orders (moved off local disk)
+    ["contact_leads", { id: 1 }, true],
+    ["contact_leads", { createdAt: -1 }],
+    ["grocery_orders", { order_number: 1 }, true],
+    ["grocery_orders", { date: -1 }],
+  ];
 
-  // Quotes indexes
-  await quotes.createIndex({ userEmail: 1, createdAt: -1 });
-  await quotes.createIndex({ userId: 1, createdAt: -1 });
-  await quotes.createIndex({ status: 1, createdAt: -1 });
-  await quotes.createIndex({ serviceType: 1, status: 1 });
-  await quotes.createIndex({ createdAt: -1 });
-
-  // Users indexes
-  await users.createIndex({ clerkId: 1 }, { unique: true });
-  await users.createIndex({ email: 1 });
-
-  // Service configs index
-  await serviceConfigs.createIndex({ serviceType: 1 }, { unique: true });
-
-  // Contact leads and grocery orders (moved off local disk)
-  const contactLeads = await getCollection("contact_leads");
-  await contactLeads.createIndex({ id: 1 }, { unique: true });
-  await contactLeads.createIndex({ createdAt: -1 });
-  const groceryOrders = await getCollection("grocery_orders");
-  await groceryOrders.createIndex({ order_number: 1 }, { unique: true });
-  await groceryOrders.createIndex({ date: -1 });
-
-  if (process.env.NODE_ENV !== "production") {
-    console.log("[db] Indexes ensured on quotes, users, service_configs, contact_leads, grocery_orders");
-  }
+  // Create each index separately so one failure (for example existing
+  // duplicate data blocking a unique index) doesn't stop the rest or the app.
+  const results = await Promise.allSettled(
+    specs.map(([collection, keys, unique]) =>
+      database.collection(collection).createIndex(keys, unique ? { unique: true } : {}),
+    ),
+  );
+  results.forEach((result, i) => {
+    if (result.status === "rejected") {
+      const [collection, keys] = specs[i];
+      console.error(`[db] Could not create index on ${collection} ${JSON.stringify(keys)}:`, result.reason);
+    }
+  });
 }
 
 // Register graceful shutdown

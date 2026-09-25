@@ -27,6 +27,7 @@ export interface GroceryOrder {
 }
 
 const COLLECTION = "grocery_orders";
+const DUPLICATE_KEY = 11000;
 
 // Leave Mongo's internal _id out of everything we return.
 const withoutMongoId = { projection: { _id: 0 } } as const;
@@ -43,7 +44,15 @@ export async function orderExists(orderNumber: string): Promise<boolean> {
 export async function saveOrder(order: GroceryOrder): Promise<void> {
   const orders = await ordersCollection();
   // Re-importing the same order replaces it rather than duplicating it.
-  await orders.replaceOne({ order_number: order.order_number }, { ...order }, { upsert: true });
+  // The unique index on order_number stops two concurrent imports from both
+  // inserting; the one that loses gets a duplicate key error, and retrying
+  // turns it into a plain replace of the order the other one just inserted.
+  try {
+    await orders.replaceOne({ order_number: order.order_number }, { ...order }, { upsert: true });
+  } catch (err) {
+    if ((err as { code?: number }).code !== DUPLICATE_KEY) throw err;
+    await orders.replaceOne({ order_number: order.order_number }, { ...order });
+  }
 }
 
 export async function listOrders(): Promise<{ order_number: string; date: string; store_name: string; total: number; item_count: number }[]> {
