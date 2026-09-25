@@ -21,6 +21,10 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 
 **2026-09-25:** Contact leads and grocery orders moved off local JSON files into MongoDB too (Render's disk is wiped on every deploy). Indexes are created by `ensureIndexes()` on the first `getCollection()` call in each process.
 
+### Admins from an environment variable
+**Date:** 2026-09-25
+**Why:** Admin access is a server setting, not user data. `isAdminUser()` in `src/lib/admin-auth.ts` checks the signed-in Clerk user ID against `ADMIN_USER_IDS` (comma-separated). Nothing in the app or database can grant or remove admin access. This replaced a MongoDB role, which a bug in `upsertUser` reset to "customer" on every quote submission, and a Clerk `publicMetadata.role` fallback.
+
 ### Clerk for auth (not custom)
 **Why:** Already integrated in the site. Provides OAuth, session management, MFA. We store only the minimum user data in MongoDB (`users` collection: clerkId, email, name, role) — auth stays in Clerk. Customer accounts can be created without Clerk (email-only quote flow), but account features require sign-in.
 
@@ -91,7 +95,7 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 ### User sync (Clerk ↔ MongoDB)
 - **Primary path:** Clerk webhook (`/api/webhooks/clerk`) on user.create/update/delete
 - **Fallback:** Quote submission also upserts user (covers case where webhook isn't set up)
-- **Syncs:** clerkId, email, name, role (admin/customer)
+- **Syncs:** clerkId, email, name (a `role` field defaults to "customer" but is not used for access)
 - **Does NOT sync:** passwords, sessions, OAuth tokens (Clerk owns those)
 
 ---
@@ -105,7 +109,7 @@ src/
 │   ├── db-schemas.ts      # Zod schemas for all collections
 │   ├── db-quotes.ts       # Quote CRUD + file storage
 │   ├── db-config.ts       # Settings + service config (materials, pricing)
-│   ├── db-users.ts        # User sync + admin role checks
+│   ├── db-users.ts        # User sync
 │   ├── turnaround.ts      # Business hours + queue calculator
 │   ├── email.ts           # Resend email templates + triggers
 │   ├── r2-storage.ts      # Cloudflare R2 upload/download/delete

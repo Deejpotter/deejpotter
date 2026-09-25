@@ -6,10 +6,8 @@
  * 3. Requires sign-in for /admin and /groceries. The admin role check
  *    happens in the page itself via requireAdminPage().
  *
- * To set your admin role:
- * 1. Go to https://dashboard.clerk.com
- * 2. Find your user
- * 3. Set publicMetadata: { "role": "admin" }
+ * Admins are listed by Clerk user ID in the ADMIN_USER_IDS environment
+ * variable (comma-separated). See isAdminUser() in src/lib/admin-auth.ts.
  */
 
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";

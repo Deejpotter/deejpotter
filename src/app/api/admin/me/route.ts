@@ -1,7 +1,7 @@
 /**
  * GET /api/admin/me — Tells the client whether the signed-in user is an admin.
  *
- * Uses the same check as the admin pages (Mongo role or Clerk metadata), so
+ * Uses the same check as the admin pages (ADMIN_USER_IDS), so
  * the navbar's Admin link matches what /admin actually allows.
  */
 

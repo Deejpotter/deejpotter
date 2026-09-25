@@ -67,8 +67,8 @@ const AuthButton: React.FC<AuthButtonProps> = ({
 }) => {
   const { user, login, signup, logout, isLoaded, isSignedIn } = useAuth();
 
-  // Ask the server whether this user is an admin, so admins set up by
-  // MongoDB role (not just Clerk metadata) also see the Admin link.
+  // Ask the server whether this user is an admin (listed in ADMIN_USER_IDS),
+  // since that list is only available on the server.
   // The answer is stored with the user ID it belongs to, so a different
   // user signing in never inherits the previous user's Admin link.
   const userId = isSignedIn ? user?.id : undefined;
