@@ -1,6 +1,14 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+/**
+ * lib/contact-leads.ts — Contact form leads, stored in MongoDB.
+ *
+ * Leads used to live in a JSON file on disk, which Render wipes on every
+ * deploy. They now live in the "contact_leads" collection. Each lead keeps
+ * a string `id` (UUID) so the admin inbox and status updates don't depend
+ * on Mongo's ObjectId.
+ */
+
 import { randomUUID } from "node:crypto";
+import { getCollection } from "./db";
 
 export type LeadContext = {
   currentPath: string;
@@ -32,37 +40,16 @@ export type ContactLeadRecord = ContactLeadInput & {
   updatedAt: string;
 };
 
-function getRootDir() {
-  return process.env.CONTACT_LEADS_DIR || path.join(process.cwd(), "data", "contact-leads");
-}
+const COLLECTION = "contact_leads";
 
-function getIndexPath(root = getRootDir()) {
-  return path.join(root, "index.json");
-}
+// Leave Mongo's internal _id out of everything we return.
+const withoutMongoId = { projection: { _id: 0 } } as const;
 
-async function ensureRoot(root = getRootDir()) {
-  await fs.mkdir(root, { recursive: true });
-}
-
-async function readIndex(root = getRootDir()): Promise<ContactLeadRecord[]> {
-  await ensureRoot(root);
-  try {
-    const raw = await fs.readFile(getIndexPath(root), "utf8");
-    const parsed = JSON.parse(raw) as ContactLeadRecord[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeIndex(records: ContactLeadRecord[], root = getRootDir()) {
-  await ensureRoot(root);
-  await fs.writeFile(getIndexPath(root), JSON.stringify(records, null, 2) + "\n", "utf8");
+function leadsCollection() {
+  return getCollection<ContactLeadRecord>(COLLECTION);
 }
 
 export async function saveContactLead(input: ContactLeadInput): Promise<ContactLeadRecord> {
-  const root = getRootDir();
-  const records = await readIndex(root);
   const now = new Date().toISOString();
   const record: ContactLeadRecord = {
     id: randomUUID(),
@@ -87,32 +74,25 @@ export async function saveContactLead(input: ContactLeadInput): Promise<ContactL
     },
   };
 
-  records.unshift(record);
-  await writeIndex(records, root);
+  const leads = await leadsCollection();
+  // insertOne adds _id to the object it's given, so insert a copy.
+  await leads.insertOne({ ...record });
   return record;
 }
 
 export async function listContactLeads(): Promise<ContactLeadRecord[]> {
-  const records = await readIndex();
-  return [...records].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const leads = await leadsCollection();
+  return leads.find({}, withoutMongoId).sort({ createdAt: -1 }).toArray();
 }
 
 export async function updateContactLeadStatus(
   id: string,
   status: ContactLeadStatus
 ): Promise<ContactLeadRecord | null> {
-  const root = getRootDir();
-  const records = await readIndex(root);
-  const index = records.findIndex((record) => record.id === id);
-  if (index === -1) return null;
-
-  const next: ContactLeadRecord = {
-    ...records[index],
-    status,
-    updatedAt: new Date().toISOString(),
-  };
-
-  records[index] = next;
-  await writeIndex(records, root);
-  return next;
+  const leads = await leadsCollection();
+  return leads.findOneAndUpdate(
+    { id },
+    { $set: { status, updatedAt: new Date().toISOString() } },
+    { returnDocument: "after", ...withoutMongoId }
+  );
 }
