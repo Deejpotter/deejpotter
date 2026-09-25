@@ -7,19 +7,19 @@ import QuoteStatusLookup from "./QuoteStatusLookup";
 const benefits = [
   {
     title: "On-demand printing",
-    body: "Print parts as needed instead of carrying stock you may not use. A good fit for prototypes, replacements, hobby projects, and small-run functional parts.",
+    body: "Get parts printed when you need them. Good for prototypes, replacements, hobby projects, and small runs.",
   },
   {
-    title: "Next-day local turnaround when viable",
-    body: "For nearby customers and manageable files, next-day turnaround can be offered when print time and finishing requirements make it realistic.",
+    title: "Next-day turnaround for locals",
+    body: "If you're nearby and the print isn't huge, I can often have it ready the next day.",
   },
   {
-    title: "Local-first service",
-    body: "A practical option for customers in Frankston and the broader Mornington Peninsula who want a local person to handle the job rather than sending it into a faceless queue.",
+    title: "Local and personal",
+    body: "I'm in Frankston, so if you're around the Mornington Peninsula you can deal with me directly and pick up your part.",
   },
   {
-    title: "Clear quoting path",
-    body: "The goal is to move toward an STL upload workflow with fast quoting, so customers can get pricing before paying and only print what they actually need.",
+    title: "Instant quotes",
+    body: "Upload your file and see the price before you pay anything.",
   },
 ];
 
@@ -28,22 +28,22 @@ const useCases = [
   "Replacement brackets and small functional parts",
   "Hobby and maker projects",
   "Small-run custom pieces",
-  "Test-fit parts before committing to larger production",
+  "Test prints before a bigger run",
 ];
 
 const quoteFactors = [
   "File size and print time",
   "Material required",
   "Part dimensions and quantity",
-  "Whether the job needs support cleanup or extra finishing",
+  "Whether it needs support removal or extra finishing",
   "Delivery or pickup requirements",
 ];
 
 const nextSteps = [
   "Upload the STL or other supported model file.",
-  "Confirm location if you want to ask about next-day local turnaround.",
+  "Let me know if you're local and want it next day.",
   "Get a quote based on print time, material, and handling.",
-  "Approve the job and have it printed on demand.",
+  "Approve the quote and I'll print it.",
 ];
 
 export default function ThreeDPrintingService(): ReactElement {
@@ -77,7 +77,7 @@ export default function ThreeDPrintingService(): ReactElement {
               On-demand 3D printing
             </h1>
             <p className="max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-              Upload your file, see it in 3D, and get a price in seconds. No CAD experience needed — if you don&apos;t have a model, just tell me what you need and I&apos;ll design it.
+              Upload your file, see it in 3D, and get a price in seconds. No CAD experience needed. If you don&apos;t have a model, tell me what you need and I&apos;ll design it.
             </p>
           </div>
 
@@ -110,9 +110,7 @@ export default function ThreeDPrintingService(): ReactElement {
             <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h2 className="mb-3 text-2xl font-bold">How quoting works</h2>
               <p className="text-gray-600 dark:text-gray-400">
-                The upload form below can now give a preliminary STL-based
-                preflight estimate, but final quotes still need to account for a
-                few practical variables before pricing is locked in:
+                The upload form gives you an estimate straight away. The final price also depends on a few things:
               </p>
               <ul className="mt-4 space-y-2 text-gray-700 dark:text-gray-300">
                 {quoteFactors.map((factor) => (
@@ -128,15 +126,10 @@ export default function ThreeDPrintingService(): ReactElement {
           <section className="mb-10 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-sky-500/10 p-6 shadow-sm dark:from-primary/15 dark:via-primary/10 dark:to-sky-500/10">
             <h2 className="mb-3 text-3xl font-bold">Next-day local turnaround</h2>
             <p className="mb-3 text-gray-700 dark:text-gray-300">
-              Next-day turnaround is something worth offering, but only when it
-              is genuinely realistic. That normally means the customer is local,
-              the file is not excessively large, and the print can be completed
-              without blowing out into a multi-day job or heavy post-processing.
+              If you&apos;re local and the print is a reasonable size, I can often have it ready the next day. Big prints or parts that need a lot of cleanup take longer.
             </p>
             <p className="mb-0 text-gray-700 dark:text-gray-300">
-              In other words: yes, this can be a strong offer - but it should be
-              presented as available <strong>where viable</strong>, not as an
-              unconditional promise.
+              Tell me when you need it and I&apos;ll let you know if next day is doable.
             </p>
           </section>
 
@@ -145,7 +138,7 @@ export default function ThreeDPrintingService(): ReactElement {
             <div className="grid gap-4 md:grid-cols-2">
               {[
                 "Upload your STL file (or tell me what you need and I&apos;ll model it)",
-                "See a 3D preview and get an instant price based on real geometry",
+                "See a 3D preview and get an instant price",
                 "Choose your material, quality, and delivery",
                 "Pay online. Your part arrives. That&apos;s it.",
               ].map((step, index) => (
@@ -171,18 +164,16 @@ export default function ThreeDPrintingService(): ReactElement {
           </section>
 
           <section className="mb-10 rounded-2xl border border-sky-200 bg-sky-50 p-6 text-sky-950 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-50">
-            <h2 className="mb-2 text-2xl font-bold">Instant quoting — upload and see your price</h2>
+            <h2 className="mb-2 text-2xl font-bold">Instant quotes: upload a file and see the price</h2>
             <p className="mb-0">
-              Drop your STL file to see a 3D preview and an immediate price estimate based on your model&apos;s actual geometry. No waiting, no guessing, no back-and-forth.
+              Drop in your STL file to see a 3D preview and a price estimate straight away.
             </p>
           </section>
 
           <section className="text-center">
             <h2 className="mb-3 text-3xl font-bold">Need something custom instead?</h2>
             <p className="mx-auto mb-6 max-w-3xl text-gray-600 dark:text-gray-400">
-              If the job needs more than straightforward printing, start with a
-              message and include the file, dimensions, quantity, and whether
-              you are local and hoping for fast turnaround.
+              If the job is more than a simple print, send me a message with the file, sizes, how many you need, and whether you&apos;re local.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link

@@ -87,10 +87,10 @@ export default function Home(): ReactElement {
                 Website designer - maker - developer
               </p>
               <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[0.92] sm:text-5xl lg:text-7xl">
-                Your website, your parts, your tools — built so you don&apos;t have to.
+                I build websites, custom tools, and physical parts.
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-                I design websites that bring in customers while you run your business. I fabricate parts for people who need a physical result without learning CAD. Based in Frankston, VIC — local pickup and delivery around the Mornington Peninsula.
+                I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print or laser cut parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -134,10 +134,10 @@ export default function Home(): ReactElement {
                 What I help with
               </p>
               <h2 className="mt-3 text-2xl font-bold text-white">
-                Clear structure. Clean execution. No wasted motion.
+                Small jobs with a clear goal.
               </h2>
               <p className="mt-4 text-sm leading-7 text-white/70">
-                I work best on websites and digital tools that need thoughtful structure, clean implementation, and a practical result.
+                I work best on projects where the goal is clear and the result just needs to work.
               </p>
               <div className="mt-6 grid gap-3">
                 {[
@@ -166,16 +166,16 @@ export default function Home(): ReactElement {
               How it works
             </p>
             <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-4xl">
-              You tell me what you need. I make it happen.
+              Tell me what you need and I&apos;ll build it.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300">
-              No drawn-out proposals, no jargon, no getting handed off to someone else. Send me the brief and I&apos;ll tell you honestly whether it&apos;s a fit. If it is, you get a working result — not a long email thread.
+              No long proposals or jargon, and you deal with me the whole way. Send me a brief and I&apos;ll tell you honestly whether it&apos;s a good fit.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                ["1", "You brief me", "Tell me the problem, the deadline, and what success looks like."],
-                ["2", "I build it", "Clear structure, working build, then refinement. No black boxes."],
-                ["3", "You get results", "A site that converts, a part that fits, a tool that works."],
+                ["1", "You send a brief", "The problem, the deadline, and what done looks like."],
+                ["2", "I build it", "You see progress along the way, and we adjust as needed."],
+                ["3", "You get the result", "A working site, a part that fits, or a tool that does the job."],
               ].map(([num, title, text]) => (
                 <div key={title} className="rounded-2xl border border-gray-200 p-4 dark:border-gray-800">
                   <p className="text-sm font-bold text-primary">{num}</p>
@@ -191,7 +191,7 @@ export default function Home(): ReactElement {
               Who this is for
             </p>
             <ul className="mt-5 space-y-3 text-gray-700 dark:text-gray-300">
-              <li>- Small businesses who want a website that works without the hassle</li>
+              <li>- Small businesses that need a website without the hassle</li>
               <li>- Hobbyists and makers who need parts but don&apos;t do CAD</li>
               <li>- Anyone who&apos;d rather get a result than learn another skill</li>
               <li>- People who value clear communication and honest pricing</li>
@@ -200,7 +200,7 @@ export default function Home(): ReactElement {
               Working style
             </p>
             <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
-                Clear brief, sensible structure, working build, then refinement. No drama, no mystery, just deliberate progress.
+                I start with a clear brief, get something working, then refine it. You&apos;ll always know where things are at.
               </p>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function Home(): ReactElement {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
             {serviceOfferings.map((service) => (
               <article
                 key={service.id}
@@ -302,10 +302,10 @@ export default function Home(): ReactElement {
               Explore the work
             </p>
             <h2 className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
-              Browse the parts of the site that show the range.
+              A few things I&apos;ve made.
             </h2>
             <p className="mt-4 text-gray-600 dark:text-gray-400">
-              Website projects, custom tools, maker and engineering work, and the blog all point back to the same idea: solve the problem properly, then make the result easy to use.
+              Websites, tools, maker projects, and blog posts about how I built them.
             </p>
             <div className="mt-6 space-y-4">
               {showcaseItems.map((item) => (

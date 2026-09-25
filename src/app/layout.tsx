@@ -9,7 +9,6 @@ import { NavbarProvider } from "@/contexts/NavbarContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
-import { CartProvider } from "@/lib/cart-context";
 import { ThemeProvider } from "next-themes";
 import { defaultMetadata } from "./metadata";
 
@@ -48,37 +47,44 @@ export default function RootLayout({
 }) {
   const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
-  const inner = (
+  const appShell = (
     <AuthProvider>
-      <CartProvider>
       <NavbarProvider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <body
-            suppressHydrationWarning
-            className="custom-scrollbar bg-light text-dark dark:bg-dark dark:text-light"
-          >
-            {/* Client-only cleanup removes extension-injected attributes that break hydration */}
-            <BodyAttributesCleaner />
-            <div>
-              <TopNavbar />
-              <main className="w-full">
-                {children}
-                <MainFooter />
-              </main>
-            </div>
-          </body>
-        </ThemeProvider>
+        {/* Client-only cleanup removes extension-injected attributes that break hydration */}
+        <BodyAttributesCleaner />
+        <div>
+          <TopNavbar />
+          <main className="w-full">
+            {children}
+            <MainFooter />
+          </main>
+        </div>
       </NavbarProvider>
-      </CartProvider>
     </AuthProvider>
   );
 
   return (
     // The root HTML element with language set to English and classes for the fonts
     // Removed h-100 as min-h-screen on body is sufficient
-    <html lang="en" className={`${nunito.variable} ${fredoka.variable}`}>
-      {/* Only initialize Clerk in environments with a publishable key configured */}
-      {hasClerk ? <ClerkProvider>{inner}</ClerkProvider> : inner}
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${nunito.variable} ${fredoka.variable}`}
+    >
+      <body
+        suppressHydrationWarning
+        className="custom-scrollbar bg-light text-dark dark:bg-dark dark:text-light"
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* Only initialize Clerk in environments with a publishable key configured */}
+          {hasClerk ? <ClerkProvider>{appShell}</ClerkProvider> : appShell}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

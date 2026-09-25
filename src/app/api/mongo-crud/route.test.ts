@@ -7,6 +7,9 @@ vi.mock('@clerk/nextjs', () => ({
 
 import { GET, POST, PUT, DELETE } from './route';
 
+// Admin check is covered in apiMongoCrudMutations.test.ts; treat the caller as an admin here.
+vi.mock("@/lib/admin-auth", () => ({ isAdminUser: () => Promise.resolve(true) }));
+
 function makeRequest(url: string, options: any = {}) {
   return new Request(url, options);
 }

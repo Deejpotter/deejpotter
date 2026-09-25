@@ -16,6 +16,10 @@ vi.mock("@clerk/nextjs", () => ({
   auth: vi.fn(() => ({ userId: "test-user-123" })),
 }));
 
+vi.mock("@/lib/admin-auth", () => ({
+  isAdminUser: vi.fn(() => Promise.resolve(true)),
+}));
+
 beforeAll(async () => {
   const { uri } = await setupMongoMemoryServer();
   process.env.MONGODB_URI = uri;

@@ -6,6 +6,7 @@
  */
 
 import { Resend } from "resend";
+import { escapeHtml } from "./utils";
 
 const FROM_ADDRESS = process.env.EMAIL_FROM || "Deej Potter <noreply@deejpotter.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "deejpotter@gmail.com";
@@ -52,7 +53,7 @@ function emailShell(title: string, body: string): string {
       <h1 style="color:#fff;margin:0;font-size:20px">Deej Potter</h1>
     </td></tr>
     <tr><td style="padding:24px">
-      <h2 style="margin:0 0 12px;font-size:18px;color:#111">${title}</h2>
+      <h2 style="margin:0 0 12px;font-size:18px;color:#111">${escapeHtml(title)}</h2>
       ${body}
     </td></tr>
     <tr><td style="background:#f9fafb;padding:16px 24px;border-top:1px solid #e5e7eb">
@@ -66,9 +67,10 @@ function emailShell(title: string, body: string): string {
 }
 
 export function quoteReceivedEmail(name: string, quoteNumber: number): { subject: string; html: string } {
+  const safeName = escapeHtml(name);
   const subject = `Quote #${quoteNumber} received — we'll review your file`;
   const body = `
-    <p style="margin:0 0 12px;font-size:15px;color:#374151">Hi ${name},</p>
+    <p style="margin:0 0 12px;font-size:15px;color:#374151">Hi ${safeName},</p>
     <p style="margin:0 0 12px;font-size:15px;color:#374151">
       Thanks for your quote request. I've received your file and will review it within
       the next business day.
@@ -87,6 +89,7 @@ export function quoteReceivedEmail(name: string, quoteNumber: number): { subject
 }
 
 export function quoteUpdatedEmail(name: string, quoteNumber: number, status: string, price?: number | null): { subject: string; html: string } {
+  const safeName = escapeHtml(name);
   const statusLabels: Record<string, string> = {
     reviewing: "being reviewed",
     quoted: "ready with pricing",
@@ -101,7 +104,7 @@ export function quoteUpdatedEmail(name: string, quoteNumber: number, status: str
 
   const subject = `Quote #${quoteNumber} update — ${statusLabel}`;
   const body = `
-    <p style="margin:0 0 12px;font-size:15px;color:#374151">Hi ${name},</p>
+    <p style="margin:0 0 12px;font-size:15px;color:#374151">Hi ${safeName},</p>
     <p style="margin:0 0 12px;font-size:15px;color:#374151">
       Your quote <strong>#${quoteNumber}</strong> has been updated: <strong>${statusLabel}</strong>.
     </p>
@@ -116,10 +119,13 @@ export function quoteUpdatedEmail(name: string, quoteNumber: number, status: str
 }
 
 export function newQuoteAdminEmail(name: string, email: string, quoteNumber: number, serviceType: string): { subject: string; html: string } {
-  const subject = `New quote #${quoteNumber} from ${name}`;
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  // Subjects are plain text: strip line breaks (header injection) but don't HTML-escape.
+  const subject = `New quote #${quoteNumber} from ${name.replace(/[\r\n]+/g, " ")}`;
   const body = `
     <p style="margin:0 0 12px;font-size:15px;color:#374151">
-      <strong>${name}</strong> (${email}) submitted a new ${serviceType.replace("_", " ")} quote.
+      <strong>${safeName}</strong> (${safeEmail}) submitted a new ${serviceType.replace("_", " ")} quote.
     </p>
     <p style="margin:0 0 12px;font-size:15px;color:#374151">
       <strong>Quote:</strong> #${quoteNumber}

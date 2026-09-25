@@ -1,18 +1,40 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { vi } from 'vitest';
 import { POST } from './route';
+import { setupMongoMemoryServer, teardownMongoMemoryServer } from '@/lib/mongoMemoryServer';
+
+vi.mock('@/lib/quote-analysis', () => ({
+  analyzeQuoteFile: vi.fn(async () => ({
+    fileKind: 'stl' as const,
+    analysisAvailable: true,
+    previewNote: 'Test analysis',
+    confidence: 'medium' as const,
+  })),
+}));
+
+vi.mock('@/lib/email', () => ({
+  notifyQuoteReceived: vi.fn(async () => undefined),
+}));
 
 function makeFormRequest(formData: FormData) {
-  return new Request('http://localhost/api/3d-printing-quote', {
-    method: 'POST',
-    body: formData,
-  });
+  return {
+    formData: async () => formData,
+  } as unknown as Request;
 }
 
 describe('3d-printing-quote route', () => {
   const originalDir = process.env.QUOTE_STORAGE_DIR;
+  const originalMongoUri = process.env.MONGODB_URI;
+  const originalDbName = process.env.DB_NAME;
   let tempDir: string;
+
+  beforeAll(async () => {
+    const { uri } = await setupMongoMemoryServer();
+    process.env.MONGODB_URI = uri;
+    process.env.DB_NAME = 'test';
+  });
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'quote-route-'));
@@ -22,6 +44,12 @@ describe('3d-printing-quote route', () => {
   afterEach(async () => {
     process.env.QUOTE_STORAGE_DIR = originalDir;
     await fs.rm(tempDir, { recursive: true, force: true });
+  });
+
+  afterAll(async () => {
+    process.env.MONGODB_URI = originalMongoUri;
+    process.env.DB_NAME = originalDbName;
+    await teardownMongoMemoryServer();
   });
 
   test('accepts a valid quote request', async () => {
@@ -34,7 +62,7 @@ describe('3d-printing-quote route', () => {
     formData.set('localFulfilment', 'yes');
     formData.set('needsNextDay', 'yes');
     formData.set('notes', 'Need two brackets.');
-    formData.append('modelFile', new File(['solid data'], 'bracket.stl', { type: 'model/stl' }), 'bracket.stl');
+    formData.append('modelFile', new File(['solid data'], 'bracket.stl', { type: 'model/stl' }));
 
     const response = await POST(makeFormRequest(formData));
     const body = await response.json();
@@ -70,7 +98,7 @@ describe('3d-printing-quote route', () => {
     formData.set('quantity', '1');
     formData.set('localFulfilment', 'yes');
     formData.set('needsNextDay', 'no');
-    formData.append('modelFile', new File(['hello'], 'notes.txt', { type: 'text/plain' }), 'notes.txt');
+    formData.append('modelFile', new File(['hello'], 'notes.txt', { type: 'text/plain' }));
 
     const response = await POST(makeFormRequest(formData));
     const body = await response.json();

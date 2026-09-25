@@ -7,11 +7,13 @@
 import { test, expect } from "@playwright/test";
 
 test("calculate cuts and render results (PoC)", async ({ page }) => {
-  await page.goto("/projects/tools/20-series-cut-calculator");
+  await page.goto("/projects/tools/20-series-cut-calculator", {
+    waitUntil: "networkidle",
+  });
 
   // Ensure the page loaded and the Calculate button is available
-  const calcBtn = page.getByRole("button", { name: /Calculate Cuts/i });
-  await expect(calcBtn).toBeVisible();
+  const calcBtn = page.getByRole("button", { name: /calculate optimal cuts/i });
+  await expect(calcBtn).toBeVisible({ timeout: 15000 });
 
   // Click calculate and wait for the Results Summary section
   await calcBtn.click();

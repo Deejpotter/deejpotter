@@ -2,10 +2,13 @@ import { test, expect } from "@playwright/test";
 import fs from "fs";
 
 test("hero styles render and screenshot", async ({ page }) => {
-  await page.goto("http://localhost:3000", { waitUntil: "domcontentloaded" });
+  await page.goto("/", { waitUntil: "networkidle" });
 
-  const h1 = page.locator("h1", { hasText: "Welcome to My Portfolio" });
-  await expect(h1).toHaveCount(1);
+  const h1 = page.getByRole("heading", {
+    level: 1,
+    name: "Your website, your parts, your tools — built so you don't have to.",
+  });
+  await expect(h1).toHaveCount(1, { timeout: 15000 });
 
   const fontSize = await h1.evaluate((el) => getComputedStyle(el).fontSize);
   const color = await h1.evaluate((el) => getComputedStyle(el).color);
@@ -46,9 +49,9 @@ test("hero styles render and screenshot", async ({ page }) => {
   // ensure body background is not transparent (should be set by theme or utilities)
   expect(bg).not.toBe("transparent");
 
-  // ensure the gradient class exists on the page (class on section)
-  const section = page.locator("section.primary-light-gradient");
-  await expect(section).toHaveCount(1);
+  // ensure the live hero still exposes its primary CTA
+  const primaryCta = page.getByRole("link", { name: "Start with a message" }).first();
+  await expect(primaryCta).toHaveCount(1);
 
   // take a screenshot for visual inspection
   const outDir = "test-results/playwright";

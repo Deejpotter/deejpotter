@@ -16,34 +16,34 @@ const whatIDo = [
   },
   {
     title: "CNC milling",
-    desc: "Signs, panels, and practical parts from wood or acrylic. DXF upload with live preview — see your toolpath before committing.",
+    desc: "Signs, panels, and practical parts from wood or acrylic. Upload a DXF and see the toolpath before you commit.",
   },
   {
     title: "CAD file prep",
-    desc: "Got a sketch, an idea, or a rough file? I'll clean it up, prep it for production, or model it from scratch. No CAD skills required on your end.",
+    desc: "Got a sketch, an idea, or a rough file? I will clean it up, prep it for production, or model it from scratch. No CAD skills required on your end.",
   },
 ];
 
 const faqs = [
   {
-    question: "I don't have a DXF or SVG. Can I still get something made?",
+    question: "I do not have a DXF or SVG. Can I still get something made?",
     answer:
-      "Yes. Send me what you have — a sketch, a photo, a description — and I'll model it for you. You don't need to know CAD.",
+      "Yes. Send me what you have, like a sketch, a photo, or a description, and I will model it for you. You do not need to know CAD.",
   },
   {
     question: "What materials do you work with?",
     answer:
-      "Wood and acrylic are my standard materials for both laser and milling. If you need something specific like aluminium or carbon fibre, send me an email and I can test it — but I can't laser metal.",
+      "Wood and acrylic are my standard materials for both laser and milling. If you need something specific like aluminium or carbon fibre, send me an email and I can test it. I can't laser cut metal, though.",
   },
   {
     question: "How accurate is the preview?",
     answer:
-      "The preview shows you the actual cut lines or engraving paths from your file. The real result will match what you see — within the tolerances of my machine.",
+      "The preview shows you the actual cut lines or engraving paths from your file. The real result will match what you see, within the tolerances of my machine.",
   },
   {
     question: "What if the job is too big or complex?",
     answer:
-      "I'll tell you. No point taking on work I can't do properly. If it's beyond my setup, I'll let you know and point you in the right direction.",
+      "I will tell you. There is no point taking on work I cannot do properly. If it's beyond my setup, I will let you know and point you in the right direction.",
   },
 ];
 
@@ -108,7 +108,7 @@ export default function CadCamFabricationService(): ReactElement {
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-                  <span>People who have a sketch or idea but don't do CAD</span>
+                  <span>People who have a sketch or idea but do not use CAD</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
@@ -120,8 +120,8 @@ export default function CadCamFabricationService(): ReactElement {
               <h2 className="mb-3 text-2xl font-bold">How it starts</h2>
               <p className="mb-3 text-gray-700 dark:text-gray-300">
                 Upload your file to see a live preview and get a price. Or send
-                me a message with what you're trying to make — a sketch, a
-                description, a rough idea. I'll tell you whether it fits and
+                me a message with what you are trying to make: a sketch, a
+                description, or a rough idea. I will tell you whether it fits and
                 give you a price.
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">

@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
 
 # next.js
 /.next/
@@ -56,5 +58,9 @@ data/3d-printing-quotes/
 
 lint-errors.txt
 lint-output.txt
+
+# development artifacts
+next-dev.log
+tmp/
 
 ecosystem.config.cjs

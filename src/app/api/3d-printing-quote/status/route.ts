@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getQuoteRequestForCustomer } from "@/lib/quote-storage";
+import { getQuoteForCustomer } from "@/lib/db-quotes";
 
 const querySchema = z.object({
-  requestId: z.string().uuid(),
+  requestId: z.coerce.number().int().positive(),
   email: z.string().trim().email(),
 });
 
@@ -16,34 +16,36 @@ export async function GET(request: Request) {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Enter a valid request ID and matching email address." },
+      { error: "Enter a valid quote number and matching email address." },
       { status: 400 }
     );
   }
 
-  const record = await getQuoteRequestForCustomer(
+  const record = await getQuoteForCustomer(
     parsed.data.requestId,
     parsed.data.email
   );
 
   if (!record) {
     return NextResponse.json(
-      { error: "Quote request not found for that request ID and email." },
+      { error: "Quote request not found for that quote number and email." },
       { status: 404 }
     );
   }
 
+  const params = (record.params || {}) as Record<string, unknown>;
+
   return NextResponse.json({
-    requestId: record.id,
+    requestId: String(record.quoteNumber),
     status: record.status,
-    quotedPrice: record.quotedPrice,
-    turnaroundEstimate: record.turnaroundEstimate,
+    quotedPrice: record.quotedPrice ?? null,
+    turnaroundEstimate: record.turnaroundEstimate ?? null,
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     fileName: record.fileName,
-    material: record.material,
-    quantity: record.quantity,
+    material: String(params.material || ""),
+    quantity: Number(params.quantity || 1),
     estimate: record.analysis ?? null,
-    stripeCheckoutUrl: record.stripeCheckoutUrl ?? null,
+    stripeCheckoutUrl: record.payment?.stripeCheckoutUrl ?? null,
   });
 }

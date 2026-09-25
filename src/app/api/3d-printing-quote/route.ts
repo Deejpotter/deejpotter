@@ -5,6 +5,7 @@ import { analyzeQuoteFile } from "@/lib/quote-analysis";
 import { getMaterialIds } from "@/lib/printing-materials";
 import { upsertUser } from "@/lib/db-users";
 import { notifyQuoteReceived } from "@/lib/email";
+import { escapeHtml } from "@/lib/utils";
 
 const materialIds = getMaterialIds();
 const materialEnum = z.enum(materialIds as [string, ...string[]]);
@@ -69,18 +70,6 @@ function isFileLike(value: FormDataEntryValue | null): value is File {
  */
 function sanitiseFilename(name: string): string {
   return name.replace(/[\\/:*?"<>|]/g, "-").slice(0, 200);
-}
-
-/**
- * Escape HTML entities to prevent stored XSS when rendering quote data.
- */
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#x27;");
 }
 
 export async function POST(request: Request) {

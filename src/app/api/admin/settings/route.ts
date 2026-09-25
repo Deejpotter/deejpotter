@@ -6,18 +6,23 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { getSettings, updateSettings } from "@/lib/db-config";
-import { isAdmin } from "@/lib/db-users";
+import { requireAdmin } from "@/lib/admin-auth";
+
+async function requireAdminOrError() {
+  try {
+    await requireAdmin();
+    return null;
+  } catch (e) {
+    return e instanceof Error && e.message === "FORBIDDEN"
+      ? NextResponse.json({ error: "Forbidden" }, { status: 403 })
+      : NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+}
 
 export async function GET() {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const error = await requireAdminOrError();
+  if (error) return error;
 
   try {
     const settings = await getSettings();
@@ -31,13 +36,8 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const error = await requireAdminOrError();
+  if (error) return error;
 
   try {
     const body = await req.json();

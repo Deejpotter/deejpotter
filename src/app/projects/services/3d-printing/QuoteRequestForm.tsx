@@ -37,11 +37,11 @@ const QUALITY_PRESETS = [
 ] as const;
 
 const INFILL_PRESETS = [
-  { id: "5", label: "5% — Light", matMul: 0.6 },
-  { id: "10", label: "10% — Standard", matMul: 0.8 },
-  { id: "15", label: "15% — Standard+", matMul: 1.0 },
-  { id: "20", label: "20% — Strong", matMul: 1.2 },
-  { id: "25", label: "25% — Very Strong", matMul: 1.4 },
+  { id: "5", label: "5% (Light)", matMul: 0.6 },
+  { id: "10", label: "10% (Standard)", matMul: 0.8 },
+  { id: "15", label: "15% (Standard+)", matMul: 1.0 },
+  { id: "20", label: "20% (Strong)", matMul: 1.2 },
+  { id: "25", label: "25% (Very Strong)", matMul: 1.4 },
 ] as const;
 
 // Material pricing lookup for client-side estimate
@@ -227,14 +227,14 @@ export default function QuoteRequestForm(): ReactElement {
           <div className={fieldShell}>
             <label htmlFor="quote-material" className={labelClass}>Material</label>
             <select id="quote-material" name="material" className={selectClass} value={material} onChange={(e) => handleMaterialChange(e.target.value)}>
-              <option value="PLA">PLA — General purpose</option>
-              <option value="PETG">PETG — Strong, durable</option>
-              <option value="ABS">ABS — Tough, heat-resistant</option>
-              <option value="TPU">TPU — Flexible</option>
-              <option value="carbon_fiber_pla">Carbon Fiber PLA — Stiff</option>
-              <option value="PC">Polycarbonate — Extreme strength</option>
-              <option value="ASA">ASA — UV-resistant</option>
-              <option value="Nylon">Nylon — Very strong</option>
+              <option value="PLA">PLA (general purpose)</option>
+              <option value="PETG">PETG (strong, durable)</option>
+              <option value="ABS">ABS (tough, heat-resistant)</option>
+              <option value="TPU">TPU (flexible)</option>
+              <option value="carbon_fiber_pla">Carbon Fiber PLA (stiff)</option>
+              <option value="PC">Polycarbonate (very strong)</option>
+              <option value="ASA">ASA (UV-resistant)</option>
+              <option value="Nylon">Nylon (very strong)</option>
               <option value="wood_pla">Wood-Filled PLA</option>
               <option value="other">Other (I&apos;ll describe it)</option>
             </select>
@@ -255,7 +255,9 @@ export default function QuoteRequestForm(): ReactElement {
           </div>
           {/* 3D Preview Drop Zone */}
           <div className="col-span-full">
-            <label className={labelClass}>Model file</label>
+            <label htmlFor="quote-model-file" className={labelClass}>
+              Model file
+            </label>
             <ModelDropZone
               onFileChange={setSelectedFile}
               acceptedTypes={
@@ -267,11 +269,16 @@ export default function QuoteRequestForm(): ReactElement {
             />
             {/* Hidden file input for form submission */}
             <input
+              id="quote-model-file"
               type="file"
               ref={fileInputRef}
               name="modelFile"
-              className="hidden"
+              className="sr-only"
               accept={acceptedFileTypes}
+              onChange={(e) => {
+                const file = e.target.files?.[0] ?? null;
+                setSelectedFile(file);
+              }}
             />
             <input type="hidden" name="serviceType" value={serviceType} />
           </div>
@@ -340,10 +347,10 @@ export default function QuoteRequestForm(): ReactElement {
             <input type="range" min={5} max={25} step={5} value={infill} onChange={(e) => setInfill(Number(e.target.value))} className="w-full accent-primary" />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               {INFILL_PRESETS.map((p) => (
-                <span key={p.id} className={Number(p.id) === infill ? "font-bold text-primary" : ""}>{p.label.split(" —")[0]}</span>
+                <span key={p.id} className={Number(p.id) === infill ? "font-bold text-primary" : ""}>{p.label.split(" (")[0]}</span>
               ))}
             </div>
-            <div className="text-xs text-gray-500 mt-1">{INFILL_PRESETS.find((p) => Number(p.id) === infill)?.label.split(" —")[1]}</div>
+            <div className="text-xs text-gray-500 mt-1">{INFILL_PRESETS.find((p) => Number(p.id) === infill)?.label.split(" (")[1]?.replace(")", "")}</div>
             <input type="hidden" name="infill" value={infill} />
           </div>
 
@@ -363,8 +370,8 @@ export default function QuoteRequestForm(): ReactElement {
           <div className={fieldShell}>
             <label htmlFor="quote-local" className={labelClass}>Local delivery / pickup</label>
             <select id="quote-local" name="localFulfilment" className={selectClass} defaultValue="yes">
-              <option value="yes">Yes — local</option>
-              <option value="no">No — not local</option>
+              <option value="yes">Yes, I&apos;m local</option>
+              <option value="no">No, I&apos;m not local</option>
               <option value="unsure">Not sure</option>
             </select>
           </div>
@@ -433,7 +440,7 @@ export default function QuoteRequestForm(): ReactElement {
                     {estimate.boundingBoxMm && <div className="mb-1 text-sm">Size: {estimate.boundingBoxMm.x} × {estimate.boundingBoxMm.y} × {estimate.boundingBoxMm.z} mm</div>}
                   </>
                 ) : (
-                  <div className="mb-1 text-sm">{estimate.needsManualQuote ? "Custom material — manual quote needed." : "Automatic preflight was not available for this file."}</div>
+                  <div className="mb-1 text-sm">{estimate.needsManualQuote ? "Custom material, so this needs a manual quote." : "Automatic preflight was not available for this file."}</div>
                 )}
                 <div className="mt-2 text-sm text-emerald-900/80 dark:text-emerald-100/80">{estimate.previewNote}</div>
               </div>

@@ -8,6 +8,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { getCollection } from "./db";
+import { downloadFromR2, getR2Key, isR2Configured, uploadToR2 } from "./r2-storage";
 import {
   QuoteDocSchema,
   QuoteInputSchema,
@@ -28,17 +29,36 @@ function sanitizeFileName(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]/g, "-");
 }
 
+async function fileToBuffer(file: File): Promise<Buffer> {
+  if (typeof file.arrayBuffer === "function") {
+    return Buffer.from(await file.arrayBuffer());
+  }
+  return Buffer.from(await new Response(file as unknown as Blob).arrayBuffer());
+}
+
 async function saveQuoteFile(
   quoteNumber: number,
   file: File,
-): Promise<{ storedAs: string; storageType: "local" }> {
-  // Files saved to local disk. API routes call uploadToR2 separately
-  // for R2 storage — this keeps r2-storage imports out of lib modules.
+): Promise<{ storedAs: string; storageType: "r2" | "local" }> {
+  const storedAs = sanitizeFileName(file.name || "upload.bin");
+  const buffer = await fileToBuffer(file);
+
+  // Prefer R2 so files survive serverless deploys (local disk is not durable there).
+  if (isR2Configured()) {
+    const key = await uploadToR2(
+      buffer,
+      storedAs,
+      file.type || "application/octet-stream",
+      String(quoteNumber),
+    );
+    if (key) return { storedAs, storageType: "r2" };
+  }
+
+  // Fallback for local development: save to disk.
   const root = getQuoteStorageRoot();
   const quoteDir = path.join(root, String(quoteNumber));
   await fs.mkdir(quoteDir, { recursive: true });
 
-  const storedAs = sanitizeFileName(file.name || "upload.bin");
   const filePath = path.join(quoteDir, storedAs);
 
   const resolved = path.resolve(filePath);
@@ -47,7 +67,6 @@ async function saveQuoteFile(
     throw new Error("Security: file path traversal detected");
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
   await fs.writeFile(filePath, buffer);
 
   return { storedAs, storageType: "local" };
@@ -65,6 +84,26 @@ export function getQuoteFilePath(
     throw new Error("Security: path traversal detected");
   }
   return resolved;
+}
+
+export async function readQuoteFileBuffer(
+  quoteNumber: number,
+  fileStoredAs: string,
+): Promise<Buffer | null> {
+  if (!fileStoredAs) return null;
+
+  // Files uploaded while R2 was configured live there; older ones may be on disk.
+  if (isR2Configured()) {
+    const fromR2 = await downloadFromR2(getR2Key(String(quoteNumber), fileStoredAs));
+    if (fromR2) return fromR2;
+  }
+
+  try {
+    const filePath = getQuoteFilePath(String(quoteNumber), fileStoredAs);
+    return await fs.readFile(filePath);
+  } catch {
+    return null;
+  }
 }
 
 // ─── CRUD Operations ────────────────────────────────────────────────

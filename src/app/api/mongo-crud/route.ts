@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { MongoClient, ObjectId, Collection } from "mongodb";
 import * as zod from "zod";
+import { isAdminUser } from "@/lib/admin-auth";
 const z: any = (zod as any).z ?? (zod as any).default ?? (zod as any);
 // Resolve auth at call time so test mocks (vi.doMock) are respected when the route is imported multiple times
 async function getAuthAsync() {
@@ -145,6 +146,15 @@ export async function GET(request: Request) {
     });
   }
 
+  const { userId } = await getAuthAsync();
+  if (!userId) {
+    return NextResponse.json("Unauthorized", { status: 401 });
+  }
+  // Generic collection access (including users) is admin-only.
+  if (!(await isAdminUser(userId))) {
+    return NextResponse.json("Forbidden", { status: 403 });
+  }
+
   try {
     const docs = await performMongoOperation(collection!, (c) =>
       c.find({}).toArray()
@@ -170,6 +180,10 @@ export async function POST(request: Request) {
   const { userId } = await getAuthAsync();
   if (!userId) {
     return NextResponse.json("Unauthorized", { status: 401 });
+  }
+  // Generic collection access (including users) is admin-only.
+  if (!(await isAdminUser(userId))) {
+    return NextResponse.json("Forbidden", { status: 403 });
   }
 
   let parsedBody: Document | null = null;
@@ -226,6 +240,10 @@ export async function PUT(request: Request) {
   if (!userId) {
     return NextResponse.json("Unauthorized", { status: 401 });
   }
+  // Generic collection access (including users) is admin-only.
+  if (!(await isAdminUser(userId))) {
+    return NextResponse.json("Forbidden", { status: 403 });
+  }
 
   let parsedBody: Document | null = null;
   try {
@@ -278,6 +296,10 @@ export async function DELETE(request: Request) {
   const { userId } = await getAuthAsync();
   if (!userId) {
     return NextResponse.json("Unauthorized", { status: 401 });
+  }
+  // Generic collection access (including users) is admin-only.
+  if (!(await isAdminUser(userId))) {
+    return NextResponse.json("Forbidden", { status: 403 });
   }
 
   try {

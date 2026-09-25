@@ -43,6 +43,12 @@ vi.mock("mongodb", () => {
 
 vi.mock("@clerk/nextjs", () => ({ auth: () => ({ userId: "test-user" }) }));
 
+// Admin check is mocked so each test can choose admin or non-admin.
+const { isAdminUser } = vi.hoisted(() => ({
+  isAdminUser: vi.fn(() => Promise.resolve(true)),
+}));
+vi.mock("@/lib/admin-auth", () => ({ isAdminUser }));
+
 import { POST } from "@/app/api/mongo-crud/route";
 
 describe("mongo-crud mutating operations (mocked)", () => {
@@ -50,6 +56,18 @@ describe("mongo-crud mutating operations (mocked)", () => {
     process.env.MONGODB_URI = "mongodb://localhost:27017/test";
     process.env.DB_NAME = "test";
     process.env.ALLOWED_COLLECTIONS = "test";
+  });
+
+  test("POST from a signed-in non-admin returns 403", async () => {
+    isAdminUser.mockResolvedValueOnce(false);
+    const req = new Request("http://localhost/api?collection=test", {
+      method: "POST",
+      body: JSON.stringify({ name: "test" }),
+    });
+
+    const res = await POST(req as any);
+
+    expect(res.status).toBe(403);
   });
 
   test("POST with auth inserts document successfully", async () => {

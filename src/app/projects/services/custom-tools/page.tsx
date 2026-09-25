@@ -3,10 +3,10 @@ import Link from "next/link";
 import Script from "next/script";
 
 const examples = [
-  "Custom calculators for pricing, stock, sizing, or estimates",
-  "Internal workflow helpers that remove repetitive admin work",
-  "Operational dashboards and technical utility pages",
-  "Small automation tools where a full software platform would be overkill",
+  "Calculators for pricing, stock, sizing, or estimates",
+  "Helpers that take care of repetitive admin work",
+  "Dashboards and handy utility pages",
+  "Small automations where a big software package would be overkill",
 ];
 
 export default function CustomToolsService(): ReactElement {
@@ -39,9 +39,7 @@ export default function CustomToolsService(): ReactElement {
             Custom tools and automation
           </h1>
           <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
-            Sometimes the real problem is not the website itself - it is the
-            repetitive process behind the work. That is where custom tools can
-            help.
+            Sometimes the thing slowing you down isn&apos;t your website, it&apos;s a repetitive job behind the scenes. A small custom tool can fix that.
           </p>
 
           <section className="mb-10 grid gap-6 lg:grid-cols-[1fr_0.95fr] lg:items-start">
@@ -59,27 +57,19 @@ export default function CustomToolsService(): ReactElement {
             <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h2 className="mb-3 text-2xl font-bold">When a custom tool makes sense</h2>
               <p className="text-gray-700 dark:text-gray-300">
-                A custom tool is often the right choice when there is a small,
-                specific problem that keeps costing time, attention, or
-                accuracy - but not enough of a problem to justify a giant
-                software system.
+                A custom tool makes sense when a small, specific problem keeps eating your time but isn&apos;t worth buying a big software system for.
               </p>
               <p className="mb-0 text-gray-700 dark:text-gray-300">
-                Good examples include internal calculators, quoting helpers,
-                dashboards, admin shortcuts, and workflow tools that remove
-                repeated manual steps.
+                Think quoting calculators, dashboards, admin shortcuts, or anything that saves you doing the same steps by hand.
               </p>
             </div>
           </section>
 
           <section className="mb-10">
             <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
-              <h2 className="mb-3 text-2xl font-bold">Best starting brief</h2>
+              <h2 className="mb-3 text-2xl font-bold">What to send me</h2>
               <p className="mb-0 text-gray-700 dark:text-gray-300">
-                The clearest way to start is to describe the repetitive task,
-                what is currently painful, and what a better outcome would look
-                like. That is usually enough to tell whether a small custom
-                build is the right move.
+                Tell me what the task is, what&apos;s annoying about it now, and what you&apos;d like to happen instead. That&apos;s usually enough for me to tell whether a custom tool will help.
               </p>
             </div>
           </section>

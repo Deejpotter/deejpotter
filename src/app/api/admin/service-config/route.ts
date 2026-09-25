@@ -7,22 +7,22 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import {
   getAllServiceConfigs,
   getServiceConfig,
   updateServiceConfig,
 } from "@/lib/db-config";
-import { isAdmin } from "@/lib/db-users";
+import { requireAdmin } from "@/lib/admin-auth";
 import { ServiceTypeEnum } from "@/lib/db-schemas";
 
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    await requireAdmin();
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error && e.message === "FORBIDDEN" ? "Forbidden" : "Unauthorized" },
+      { status: e instanceof Error && e.message === "FORBIDDEN" ? 403 : 401 },
+    );
   }
 
   try {
@@ -43,12 +43,13 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdmin(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    await requireAdmin();
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error && e.message === "FORBIDDEN" ? "Forbidden" : "Unauthorized" },
+      { status: e instanceof Error && e.message === "FORBIDDEN" ? 403 : 401 },
+    );
   }
 
   try {

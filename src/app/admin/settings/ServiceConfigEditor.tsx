@@ -35,6 +35,8 @@ const SERVICE_TABS = [
   { id: "milling", label: "CNC Milling" },
 ];
 
+let newMaterialIdCounter = 0;
+
 export default function ServiceConfigEditor() {
   const [configs, setConfigs] = useState<ServiceConfig[]>([]);
   const [activeTab, setActiveTab] = useState("3d_printing");
@@ -79,7 +81,7 @@ export default function ServiceConfigEditor() {
 
   function addMaterial() {
     if (!activeConfig) return;
-    const newId = `new_material_${Date.now()}`;
+    const newId = `new_material_${++newMaterialIdCounter}`;
     updateConfig({
       materials: [
         ...activeConfig.materials,

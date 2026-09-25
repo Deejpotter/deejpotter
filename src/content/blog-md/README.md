@@ -5,7 +5,7 @@ This folder is now the live home for Decap-authored Markdown blog posts.
 Current state:
 - the site reads published Markdown posts from `src/content/blog-md/*.md`
 - existing TSX posts in `src/content/blog/*.tsx` still work in parallel
-- Decap is scaffolded under `public/admin/`
+- Decap is scaffolded under `public/cms/`
 - drafts are supported through frontmatter and are excluded from the public blog by default
 
 Frontmatter shape:

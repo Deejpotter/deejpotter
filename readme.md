@@ -8,45 +8,39 @@ I started out working in my parents' restaurant, but I've always been more inter
 
 ## This Project
 
-This portfolio website is my playground where I get to showcase my coding projects and talk about my journey in tech. Here's what you'll find:
+This is my portfolio and small business site. Here's what you'll find:
 
-1. **About Page**: Just a bit about me and how I ended up in the tech world.
-2. **Contact Page**: A simple contact form built with Netlify Forms. Try it out, send me a message and I'll get back to you.
-3. **Website Projects**: Some of the websites I've built. I've used Netlify CMS to manage the content.
-4. **Games**: I've made a few WebGL games, which I've showcased here.
-5. **Technical Apps**: Here, I've showcased some technical apps with dynamic functionality that I've built.
-6. **Engineering Projects**: A section dedicated to engineering projects, including the "Wireless Car" project.
-7. **Privacy and Terms**: Pages outlining the privacy policy and terms of service.
+1. **About, Privacy and Terms pages**
+2. **Contact page**: A contact form handled by a Next.js Route Handler (`/api/contact`) that sends email through Resend.
+3. **Blog**: Markdown posts from `src/content/blog-md`, with an RSS feed at `/blog/rss.xml`.
+4. **Projects**: Websites, games, apps, tools, engineering projects and services.
+5. **3D printing quotes**: Customers upload models, get a quote, and pay for accepted quotes with Stripe. There is no general shop; payments only go through quotes.
+6. **Admin area**: Quotes, leads and settings, protected by Clerk and an admin check.
+7. **Groceries**: A small personal groceries tool.
 
-I initially built this project with Angular, but I've recently migrated it to Next.js for the SSG SEO benefits. I'm using Netlify CMS for content management, Netlify Forms for the contact form, and Netlify Identity for user authentication. I'm also using Netlify Functions to handle dynamic functionality. And, it's hosted on Netlify, of course.
+I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions, but those have all been replaced with Next.js Route Handlers, Clerk and MongoDB. The site is hosted on Render, which runs it as a Node server (`yarn build` then `yarn start`). `netlify.toml` is left over from the old Netlify setup.
 
 ## Technologies and Tools
 
-- **Tailwind CSS**: Primary styling system (migration complete across critical components). We follow a Tailwind-first approach for all UI components.
+- **Next.js 16 (App Router) and React 19**
+- **TypeScript**
+- **Tailwind CSS v4**: CSS-first configuration with `@theme` blocks in `globals.css`.
+- **Clerk**: Sign-in and user accounts.
+- **MongoDB**: Quotes, leads, users and settings.
+- **Stripe**: Payments for accepted quotes, with a webhook at `/api/webhooks/stripe`.
+- **Cloudflare R2 (S3 API)**: Storage for uploaded quote files. See `R2_SETUP.md`.
+- **Resend**: Transactional email.
+- **React Three Fiber**: 3D model previews.
+- **Vitest + React Testing Library**: Unit and component tests.
+- **Playwright**: End-to-end specs in `e2e/` for local use.
 
-## Testing & Component workflow (Vitest-first + Playwright) ✅
+## Testing
 
-We follow a Vitest-first, Tailwind-first workflow for UI changes:
-
-1. Implement and validate UI components using Tailwind and unit tests (Vitest + React Testing Library).
-2. Add unit tests covering behavior and accessibility (default, empty, error, edge cases).
-3. Add Playwright E2E and visual snapshot tests for critical pages/components (navbar, hero, cut-calculator).
-4. Integrate the component into pages only after tests and visual snapshots pass; remove legacy CSS/framework code in the same PR.
-
-Benefits: fast unit feedback, reliable visual regression, smaller PRs, and automated E2E checks.
-
-- **Next.js**: The main framework used for building the website.
-
-- **Netlify CMS**: For managing the content of the website.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Netlify Forms**: For handling the contact form submissions.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Netlify Identity**: For user authentication.⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-- **Netlify Functions**: For handling dynamic functionality. ⚠️ This project is migrating away from Netlify in favor of Next.js Route Handlers and more portable hosting (see `.github/TODOs.md` and `.github/hosting-eval.md`).
-
-- **Tailwind CSS v4**: For styling the website, using the new CSS-first configuration with `@theme` blocks in `globals.css`. Custom design tokens (colors, spacing, typography) are defined there.
-
-- **React**: For building the user interface components.
-
-- **Vitest**: Test runner with jsdom environment and `@testing-library/react` for component tests. Config in `vitest.config.ts`, setup in `vitest.setup.ts`.
+- **Node 22** required (`package.json` engines, `.nvmrc`)
+- Unit/component tests: `yarn test`
+- Some API route tests start an in-memory MongoDB, which downloads a MongoDB binary the first time they run.
+- CI runs lint, stylelint, Vitest and the build on push to `main`/`dev`
+- Playwright E2E specs: `yarn test:e2e` (not run in CI)
 
 ## Code style
 
@@ -81,7 +75,7 @@ Visit `http://localhost:3000` to view the application.
 ## Running tests
 
 - Unit & component tests: `yarn test` (Vitest + React Testing Library)
-- E2E & visual tests: `npx playwright test` (Playwright)
+- E2E tests: `yarn test:e2e` (Playwright, local only)
 
 When converting or adding components, add Vitest unit tests and Playwright visual checks for critical pages/components.
 

@@ -5,33 +5,33 @@ import Script from "next/script";
 const deliverables = [
   "Small business websites",
   "Portfolio and personal brand sites",
-  "Landing pages focused on enquiries or bookings",
-  "Content and layout improvements for existing websites",
-  "Responsive frontends that work cleanly across devices",
+  "Landing pages for enquiries or bookings",
+  "Redesigns and fixes for existing sites",
+  "Sites that work properly on phones",
 ];
 
 const process = [
-  "Clarify the goal, audience, and primary action the site needs to drive.",
-  "Plan structure, messaging, and pages so the site is easy to navigate.",
-  "Build or improve the frontend with performance, responsiveness, and maintainability in mind.",
-  "Refine calls to action, contact flow, and content so the site is easier to use and easier to trust.",
+  "Work out who the site is for and what you want visitors to do.",
+  "Plan the pages and wording so it's easy to find your way around.",
+  "Build it (or fix what you have) so it's fast, works on any screen, and is easy to update.",
+  "Tidy up the details, like buttons, the contact form, and the text, until it feels right.",
 ];
 
 const faqs = [
   {
     question: "What kinds of website projects are the best fit?",
     answer:
-      "Small business websites, portfolio sites, landing pages, and practical redesigns are the strongest fit. The work tends to go best when the goal is clear and the site needs to do a real job.",
+      "Small business sites, portfolios, landing pages, and redesigns. It goes best when you know what you want the site to do.",
   },
   {
     question: "Do I need to start with a phone call?",
     answer:
-      "No. Written communication is the preferred starting point. A short message or brief usually makes the first steps clearer and more efficient.",
+      "No. I prefer to start by message. A short note about what you need is plenty.",
   },
   {
     question: "Can you improve an existing website instead of rebuilding from scratch?",
     answer:
-      "Yes. Some projects need a full rebuild, but many benefit more from targeted improvement to structure, design, content, performance, or conversion paths.",
+      "Yes. Sometimes a rebuild makes sense, but often fixing the layout, wording, or speed of what you have is enough.",
   },
 ];
 
@@ -77,27 +77,21 @@ export default function WebsiteDesignService(): ReactElement {
             Website design and development
           </h1>
           <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
-            Practical websites for businesses, brands, and projects that need
-            to look clear, work properly, and make it easy for people to take
-            the next step.
+            Websites for small businesses and personal projects that look good, load fast, and make it easy for people to get in touch.
           </p>
 
           <section className="mb-10 grid gap-6 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold">What this service is for</h2>
               <p className="text-gray-700 dark:text-gray-300">
-                This is the right fit when you need a website that does a real
-                job - explaining what you offer, building trust, attracting
-                enquiries, or presenting your work more clearly.
+                This is for you if you need a site that explains what you do and makes it easy for people to contact you.
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                Some projects start from scratch. Others are already online but
-                need a stronger structure, better messaging, cleaner design, or
-                a more usable contact flow. Both are valid.
+                I can build one from scratch, or fix up a site you already have if it&apos;s looking dated or hard to use.
               </p>
             </div>
             <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
-              <h2 className="mb-3 text-2xl font-bold">Typical deliverables</h2>
+              <h2 className="mb-3 text-2xl font-bold">What you get</h2>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 {deliverables.map((item) => (
                   <li key={item} className="flex gap-3">
@@ -110,7 +104,7 @@ export default function WebsiteDesignService(): ReactElement {
           </section>
 
           <section className="mb-10">
-            <h2 className="mb-4 text-3xl font-bold">How I approach website work</h2>
+            <h2 className="mb-4 text-3xl font-bold">How I work</h2>
             <div className="grid gap-4 md:grid-cols-2">
               {process.map((step, index) => (
                 <article
@@ -149,7 +143,7 @@ export default function WebsiteDesignService(): ReactElement {
           <section className="text-center">
             <h2 className="mb-3 text-3xl font-bold">Want to talk about a website?</h2>
             <p className="mb-6 text-gray-600 dark:text-gray-400">
-              Start with a written brief. A short message is enough to begin.
+              Send me a message about what you need. A few lines is enough to start.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link

@@ -4,8 +4,6 @@ import Link from "next/link";
 import { listQuotes } from "@/lib/db-quotes";
 import PayNowButton from "@/components/PayNowButton";
 
-type QuoteRecord = Awaited<ReturnType<typeof listQuotes>>[number];
-
 export const metadata = {
   title: "My Account | Deej Potter",
   robots: { index: false },
@@ -132,6 +130,7 @@ export default async function AccountPage() {
           </div>
         )}
       </div>
+
     </main>
   );
 }

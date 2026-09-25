@@ -1,38 +1,34 @@
 import { NextResponse } from "next/server";
-import { getQuoteRequest, getQuoteRequestFileBuffer } from "@/lib/quote-storage";
-
-async function getAuthAsync() {
-  try {
-    const _clerk = await import("@clerk/nextjs");
-    const anyClerk = _clerk as any;
-    const getter =
-      typeof anyClerk?.auth === "function"
-        ? anyClerk.auth
-        : typeof anyClerk?.getAuth === "function"
-          ? anyClerk.getAuth
-          : () => ({ userId: null });
-    return getter();
-  } catch {
-    return { userId: null };
-  }
-}
+import { auth } from "@clerk/nextjs/server";
+import { isAdminUser } from "@/lib/admin-auth";
+import { getQuote, readQuoteFileBuffer } from "@/lib/db-quotes";
 
 export async function GET(
   _request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  const { userId } = await getAuthAsync();
-  if (!userId) {
+  const session = await auth();
+  if (!session.userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { id } = await context.params;
-  const record = await getQuoteRequest(id);
+  const quoteNumber = Number(id);
+  if (!Number.isFinite(quoteNumber) || quoteNumber <= 0) {
+    return NextResponse.json({ error: "Invalid quote number." }, { status: 400 });
+  }
+
+  const record = await getQuote(quoteNumber);
   if (!record) {
     return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
   }
 
-  const buffer = await getQuoteRequestFileBuffer(record);
+  const admin = await isAdminUser(session.userId);
+  if (!admin) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const buffer = await readQuoteFileBuffer(quoteNumber, record.fileStoredAs);
   if (!buffer) {
     return NextResponse.json({ error: "Could not read the quote file." }, { status: 500 });
   }
