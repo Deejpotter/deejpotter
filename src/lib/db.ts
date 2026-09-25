@@ -199,8 +199,16 @@ export async function ensureIndexes(): Promise<void> {
   // Service configs index
   await serviceConfigs.createIndex({ serviceType: 1 }, { unique: true });
 
+  // Contact leads and grocery orders (moved off local disk)
+  const contactLeads = await getCollection("contact_leads");
+  await contactLeads.createIndex({ id: 1 }, { unique: true });
+  await contactLeads.createIndex({ createdAt: -1 });
+  const groceryOrders = await getCollection("grocery_orders");
+  await groceryOrders.createIndex({ order_number: 1 }, { unique: true });
+  await groceryOrders.createIndex({ date: -1 });
+
   if (process.env.NODE_ENV !== "production") {
-    console.log("[db] Indexes ensured on quotes, users, service_configs");
+    console.log("[db] Indexes ensured on quotes, users, service_configs, contact_leads, grocery_orders");
   }
 }
 

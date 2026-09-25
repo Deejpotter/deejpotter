@@ -1,12 +1,12 @@
 /**
- * lib/groceries-storage.ts — Local JSON storage for parsed grocery orders.
+ * lib/groceries-storage.ts — Parsed grocery orders, stored in MongoDB.
  *
- * Each order is stored as a JSON file in data/groceries/orders/.
- * An index.json file tracks all orders for fast listing.
+ * Orders used to be JSON files on disk, which Render wipes on every deploy.
+ * They now live in the "grocery_orders" collection, one document per order,
+ * keyed by order_number (unique index in db.ts ensureIndexes).
  */
 
-import fs from "node:fs/promises";
-import path from "node:path";
+import { getCollection } from "./db";
 
 export interface GroceryItem {
   name: string;
@@ -26,114 +26,51 @@ export interface GroceryOrder {
   importedAt: string;
 }
 
-function getStorageRoot(): string {
-  return process.env.GROCERY_STORAGE_DIR || path.join(process.cwd(), "data", "groceries");
-}
+const COLLECTION = "grocery_orders";
 
-async function ensureRoot(): Promise<void> {
-  await fs.mkdir(path.join(getStorageRoot(), "orders"), { recursive: true });
-}
+// Leave Mongo's internal _id out of everything we return.
+const withoutMongoId = { projection: { _id: 0 } } as const;
 
-function indexPath(): string {
-  return path.join(getStorageRoot(), "index.json");
-}
-
-function orderPath(orderNumber: string): string {
-  return path.join(getStorageRoot(), "orders", `${orderNumber}.json`);
-}
-
-async function readIndex(): Promise<string[]> {
-  await ensureRoot();
-  try {
-    const raw = await fs.readFile(indexPath(), "utf8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeIndex(ids: string[]): Promise<void> {
-  await ensureRoot();
-  await fs.writeFile(indexPath(), JSON.stringify(ids, null, 2));
+function ordersCollection() {
+  return getCollection<GroceryOrder>(COLLECTION);
 }
 
 export async function orderExists(orderNumber: string): Promise<boolean> {
-  try {
-    await fs.access(orderPath(orderNumber));
-    return true;
-  } catch {
-    return false;
-  }
+  const orders = await ordersCollection();
+  return (await orders.countDocuments({ order_number: orderNumber }, { limit: 1 })) > 0;
 }
 
 export async function saveOrder(order: GroceryOrder): Promise<void> {
-  await ensureRoot();
-  const filePath = orderPath(order.order_number);
-
-  // Verify path is within storage root (path traversal protection)
-  const resolved = path.resolve(filePath);
-  if (!resolved.startsWith(path.resolve(getStorageRoot()))) {
-    throw new Error("Security: path traversal detected");
-  }
-
-  await fs.writeFile(filePath, JSON.stringify(order, null, 2));
-
-  // Update index
-  const index = await readIndex();
-  if (!index.includes(order.order_number)) {
-    index.push(order.order_number);
-    index.sort();
-    await writeIndex(index);
-  }
+  const orders = await ordersCollection();
+  // Re-importing the same order replaces it rather than duplicating it.
+  await orders.replaceOne({ order_number: order.order_number }, { ...order }, { upsert: true });
 }
 
 export async function listOrders(): Promise<{ order_number: string; date: string; store_name: string; total: number; item_count: number }[]> {
-  const ids = await readIndex();
-  const orders: { order_number: string; date: string; store_name: string; total: number; item_count: number }[] = [];
+  const orders = await ordersCollection();
+  const docs = await orders
+    .find({}, { projection: { _id: 0, order_number: 1, date: 1, store_name: 1, total: 1, items: 1 } })
+    .sort({ date: -1 })
+    .toArray();
 
-  for (const id of ids) {
-    try {
-      const raw = await fs.readFile(orderPath(id), "utf8");
-      const order = JSON.parse(raw) as GroceryOrder;
-      orders.push({
-        order_number: order.order_number,
-        date: order.date,
-        store_name: order.store_name,
-        total: order.total,
-        item_count: order.items.length,
-      });
-    } catch {
-      // Skip corrupted entries
-    }
-  }
-
-  // Sort by date descending
-  orders.sort((a, b) => b.date.localeCompare(a.date));
-  return orders;
+  return docs.map((order) => ({
+    order_number: order.order_number,
+    date: order.date,
+    store_name: order.store_name,
+    total: order.total,
+    item_count: order.items?.length ?? 0,
+  }));
 }
 
 export async function getOrder(orderNumber: string): Promise<GroceryOrder | null> {
-  try {
-    const raw = await fs.readFile(orderPath(orderNumber), "utf8");
-    return JSON.parse(raw) as GroceryOrder;
-  } catch {
-    return null;
-  }
+  const orders = await ordersCollection();
+  return orders.findOne({ order_number: orderNumber }, withoutMongoId);
 }
 
 export async function deleteOrder(orderNumber: string): Promise<boolean> {
-  try {
-    await fs.unlink(orderPath(orderNumber));
-    const index = await readIndex();
-    const filtered = index.filter((id) => id !== orderNumber);
-    if (filtered.length !== index.length) {
-      await writeIndex(filtered);
-    }
-    return true;
-  } catch {
-    return false;
-  }
+  const orders = await ordersCollection();
+  const result = await orders.deleteOne({ order_number: orderNumber });
+  return result.deletedCount > 0;
 }
 
 export async function getSpendingSummary(): Promise<{
@@ -143,35 +80,33 @@ export async function getSpendingSummary(): Promise<{
   by_category: Record<string, number>;
   by_month: Record<string, number>;
 }> {
-  const ids = await readIndex();
+  const orders = await ordersCollection();
+  // A personal grocery history is small, so summing in JS is simpler than
+  // an aggregation pipeline and keeps the rounding rules in one place.
+  const all = await orders.find({}, withoutMongoId).toArray();
+
   let total_spend = 0;
   const by_store: Record<string, number> = {};
   const by_category: Record<string, number> = {};
   const by_month: Record<string, number> = {};
 
-  for (const id of ids) {
-    try {
-      const raw = await fs.readFile(orderPath(id), "utf8");
-      const order = JSON.parse(raw) as GroceryOrder;
-      total_spend += order.total;
+  for (const order of all) {
+    total_spend += order.total;
 
-      by_store[order.store_name] = (by_store[order.store_name] || 0) + order.total;
+    by_store[order.store_name] = (by_store[order.store_name] || 0) + order.total;
 
-      const month = order.date.slice(0, 7); // YYYY-MM
-      by_month[month] = (by_month[month] || 0) + order.total;
+    const month = order.date.slice(0, 7); // YYYY-MM
+    by_month[month] = (by_month[month] || 0) + order.total;
 
-      for (const item of order.items) {
-        const cat = item.category || "Uncategorised";
-        by_category[cat] = (by_category[cat] || 0) + item.total_price;
-      }
-    } catch {
-      // skip
+    for (const item of order.items ?? []) {
+      const cat = item.category || "Uncategorised";
+      by_category[cat] = (by_category[cat] || 0) + item.total_price;
     }
   }
 
   return {
     total_spend: Math.round(total_spend * 100) / 100,
-    total_orders: ids.length,
+    total_orders: all.length,
     by_store,
     by_category: Object.fromEntries(
       Object.entries(by_category)

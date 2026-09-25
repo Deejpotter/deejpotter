@@ -1,6 +1,5 @@
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import fs from "node:fs/promises";
-import path from "node:path";
+import { beforeEach, expect, test, vi } from "vitest";
+import { createFakeCollection } from "@/test-utils/fake-collection";
 
 vi.mock("@clerk/nextjs", () => ({
   auth: () => ({ userId: "user_123" }),
@@ -14,16 +13,14 @@ vi.mock("@/lib/db-users", () => ({
   isAdmin: () => Promise.resolve(true),
 }));
 
-const tempDir = path.join(process.cwd(), "tmp", "contact-leads-test");
+// Leads are stored in MongoDB; use an in-memory collection instead.
+const { leads } = vi.hoisted(() => ({ leads: { current: null as unknown } }));
+vi.mock("@/lib/db", () => ({
+  getCollection: async () => leads.current,
+}));
 
-beforeEach(async () => {
-  process.env.CONTACT_LEADS_DIR = tempDir;
-  await fs.rm(tempDir, { recursive: true, force: true });
-});
-
-afterEach(async () => {
-  await fs.rm(tempDir, { recursive: true, force: true });
-  delete process.env.CONTACT_LEADS_DIR;
+beforeEach(() => {
+  leads.current = createFakeCollection();
 });
 
 test("contact route stores lead data", async () => {
@@ -59,9 +56,7 @@ test("contact route stores lead data", async () => {
   expect(json.ok).toBe(true);
   expect(json.requestId).toBeTruthy();
 
-  const indexPath = path.join(tempDir, "index.json");
-  const raw = await fs.readFile(indexPath, "utf8");
-  const records = JSON.parse(raw);
+  const records = (leads.current as ReturnType<typeof createFakeCollection>).docs();
   expect(records).toHaveLength(1);
   expect(records[0].email).toBe("jane@example.com");
   expect(records[0].leadContext.source).toBe("Google");
@@ -87,6 +82,7 @@ test("contact route lists leads for authenticated admin users", async () => {
   const leads = await response.json();
   expect(leads).toHaveLength(1);
   expect(leads[0].name).toBe("Jane Doe");
+  expect(leads[0]).not.toHaveProperty("_id");
 });
 
 test("contact route updates lead status for authenticated admin users", async () => {
