@@ -18,7 +18,7 @@ This is my portfolio and small business site. Here's what you'll find:
 6. **Admin area**: Quotes, leads and settings, protected by Clerk and an admin check.
 7. **Groceries**: A small personal groceries tool.
 
-I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions, but those have all been replaced with Next.js Route Handlers, Clerk and MongoDB. The site is hosted on Render, which runs it as a Node server (`yarn build` then `yarn start`). `netlify.toml` is left over from the old Netlify setup.
+I first built this with Angular and later moved it to Next.js. It started out on Netlify CMS, Forms, Identity and Functions, but those have all been replaced with Next.js Route Handlers, Clerk and MongoDB. The site is hosted on Render, which runs it as a Node server (`yarn build` then `yarn start`). `dev` deploys to staging and `main` to production.
 
 ## Technologies and Tools
 
@@ -26,7 +26,7 @@ I first built this with Angular and later moved it to Next.js. It started out on
 - **TypeScript**
 - **Tailwind CSS v4**: CSS-first configuration with `@theme` blocks in `globals.css`.
 - **Clerk**: Sign-in and user accounts.
-- **MongoDB**: Quotes, leads, users and settings.
+- **MongoDB**: Quotes, contact leads, grocery orders, users and settings.
 - **Stripe**: Payments for accepted quotes, with a webhook at `/api/webhooks/stripe`.
 - **Cloudflare R2 (S3 API)**: Storage for uploaded quote files. See `R2_SETUP.md`.
 - **Resend**: Transactional email.

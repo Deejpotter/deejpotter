@@ -28,6 +28,9 @@ The generic shop (product pages, cart, shop checkout, admin orders/products) was
 
 ### ⬜ STL client estimate — placeholder math remains in QuoteRequestForm (server analysis is real)
 
+### ⬜ Laser engraving and milling quote flow
+The quote form is 3D printing only. Laser (engraving only) and milling jobs come in through the contact form. A real flow needs a 2D (DXF/SVG) uploader and the form posting to `/api/quotes` with the service type.
+
 ---
 
 ## Phase 4: Gelato / POD (moved out)
@@ -38,7 +41,21 @@ deejpotter no longer has a shop; service payments go through quotes.
 
 ---
 
-## Phase 5: Build & CI
+## Phase 5: Hosting & storage
+
+### ✅ Render hosting — DONE
+- `dev` deploys to staging, `main` to production. Netlify and Vercel removed.
+
+### ✅ Persistent data — DONE
+- Contact leads and grocery orders stored in MongoDB (Render's disk is ephemeral)
+- Indexes created automatically on first database use
+
+### ⬜ R2 on production
+- Set the R2 variables on the production Render service (see `R2_SETUP.md`) so uploaded quote files persist
+
+---
+
+## Phase 6: Build & CI
 
 ### ✅ CI pipeline — PASSING (Node 22)
 - Lint, stylelint, vitest, build
@@ -52,16 +69,16 @@ deejpotter no longer has a shop; service payments go through quotes.
 
 ## Completed (last 10)
 
+- Admin link shown for MongoDB-role admins (navbar and account page)
+- Laser engraving only; broken laser/milling quote tabs removed; API rejects laser cutting
+- Contact leads and grocery orders moved to MongoDB; indexes created on first use
+- Security: Next.js 16.3.6, Clerk proxy restored, mongo-crud admin-only, quote payment ownership check
+- Content: redesign folded into web design; plain first-person copy without em dashes
+- Decap CMS moved to /cms
 - Generic shop removed; quote-based service payments kept
-- Docs refreshed; leftover files (sb-original, next-dev.log, test hero page) removed
-- Gelato/POD removed; placeholder repo at `deejpotter-gelato`
-- Shop order flow: db-shop-orders, webhook, admin orders/products pages
+- Docs refreshed; leftover files removed (Netlify, Jest, old reports)
 - Quote status lookup migrated to MongoDB quote numbers
 - Admin auth unified via requireAdminPage; leads page secured
-- CI/workflow fixes, gitignore cleanup, vitest canvas stub
-- Cart drawer + Stripe checkout completed
-- Clerk auth routes, design/copywriting agents
-- Live route 404 fixes (privacy, terms, projects page)
 
 ---
 
