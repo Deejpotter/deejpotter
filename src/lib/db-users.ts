@@ -26,16 +26,23 @@ export async function upsertUser(data: {
     updatedAt: now,
   });
 
+  // Only change the role when one is passed in explicitly. Quote submissions
+  // and the Clerk webhook call this without a role, and must not demote an
+  // existing admin back to "customer". New users default to "customer".
   await col.updateOne(
     { clerkId: doc.clerkId },
     {
       $set: {
         email: doc.email,
         name: doc.name,
-        role: doc.role,
+        ...(data.role ? { role: data.role } : {}),
         updatedAt: now,
       },
-      $setOnInsert: { clerkId: doc.clerkId, createdAt: now },
+      $setOnInsert: {
+        clerkId: doc.clerkId,
+        createdAt: now,
+        ...(data.role ? {} : { role: "customer" }),
+      },
     },
     { upsert: true },
   );

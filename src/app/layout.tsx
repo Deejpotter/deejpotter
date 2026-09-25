@@ -52,12 +52,11 @@ export default function RootLayout({
       <NavbarProvider>
         {/* Client-only cleanup removes extension-injected attributes that break hydration */}
         <BodyAttributesCleaner />
-        <div>
+        {/* Full-height column so the footer sits at the bottom of short pages */}
+        <div className="flex min-h-screen flex-col">
           <TopNavbar />
-          <main className="w-full">
-            {children}
-            <MainFooter />
-          </main>
+          <main className="w-full flex-1">{children}</main>
+          <MainFooter />
         </div>
       </NavbarProvider>
     </AuthProvider>
