@@ -70,17 +70,13 @@ export async function POST(req: NextRequest) {
         const primaryEmail =
           (data.email_addresses as Array<{ email_address: string }>)?.[0]
             ?.email_address || "";
-        const publicMetadata = data.public_metadata as
-          | { role?: string }
-          | undefined;
 
         if (primaryEmail) {
           await upsertUser({
             clerkId: data.id as string,
             email: primaryEmail,
             name: `${(data.first_name as string) || ""} ${(data.last_name as string) || ""}`.trim() || primaryEmail,
-            role:
-              publicMetadata?.role === "admin" ? "admin" : "customer",
+            // No role: admin access comes from ADMIN_USER_IDS, not the user record.
           });
           console.log(`[clerk] User ${eventType}: ${primaryEmail}`);
         }

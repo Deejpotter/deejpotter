@@ -6,7 +6,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 
 - App code and routes: `src/app` (Next.js App Router).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
-- Auth: Clerk (`@clerk/nextjs`). `src/proxy.ts` runs `clerkMiddleware()` (Next.js 16's name for middleware). Client auth state lives in `src/components/ui/auth/AuthProvider.tsx`; server-side admin checks use `isAdminUser()` / `requireAdminPage()` in `src/lib/admin-auth.ts`.
+- Auth: Clerk (`@clerk/nextjs`). `src/proxy.ts` runs `clerkMiddleware()` (Next.js 16's name for middleware). Client auth state lives in `src/components/ui/auth/AuthProvider.tsx`; server-side admin checks use `isAdminUser()` / `requireAdminPage()` in `src/lib/admin-auth.ts`, which allow the Clerk user IDs listed in the `ADMIN_USER_IDS` environment variable.
 - API routes: `src/app/api/*/route.ts` (Next.js Route Handlers). Data access goes through `src/lib/db.ts` (`getCollection()`, which also creates indexes on first use) and the `src/lib/db-*.ts` modules.
 - Static assets and games: `public/` (Unity WebGL in `public/basicBases/Build/`).
 - **Docs**: TypeDoc output goes to `public/docs` (`typedoc.json` and `yarn docs`).

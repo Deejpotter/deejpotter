@@ -15,7 +15,7 @@ The generic shop (product pages, cart, shop checkout, admin orders/products) was
 ### ✅ Admin dashboard, 3D printing quotes, leads, settings — DONE
 
 ### ✅ Unified admin auth — DONE
-- `requireAdminPage()` checks MongoDB + Clerk metadata
+- `requireAdminPage()` / `isAdminUser()` check the `ADMIN_USER_IDS` environment variable
 - Leads page now admin-guarded
 
 ---

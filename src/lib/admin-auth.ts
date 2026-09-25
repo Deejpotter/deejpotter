@@ -2,22 +2,35 @@
  * admin-auth.ts — Shared admin authentication helpers
  */
 
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { isAdmin } from "./db-users";
 
 export type AdminAuthError = "UNAUTHORIZED" | "FORBIDDEN";
 
 export const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
 /**
- * True if the user is an admin by MongoDB role or Clerk publicMetadata.role.
+ * Clerk user IDs allowed into the admin area, from the ADMIN_USER_IDS
+ * environment variable (comma-separated, e.g. "user_abc,user_def").
+ *
+ * Admins are a server setting rather than user data: nothing in the app or
+ * database can grant or remove admin access, only the environment can.
+ */
+export function getAdminUserIds(): Set<string> {
+  return new Set(
+    (process.env.ADMIN_USER_IDS || "")
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean),
+  );
+}
+
+/**
+ * True if the user is listed in ADMIN_USER_IDS.
  * Every admin check should use this so pages and APIs agree.
  */
 export async function isAdminUser(userId: string): Promise<boolean> {
-  if (await isAdmin(userId)) return true;
-  const user = await currentUser();
-  return user?.publicMetadata?.role === "admin";
+  return Boolean(userId) && getAdminUserIds().has(userId);
 }
 
 /**

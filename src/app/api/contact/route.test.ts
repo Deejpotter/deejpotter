@@ -9,9 +9,8 @@ vi.mock("@clerk/nextjs/server", () => ({
   auth: () => ({ userId: "user_123" }),
 }));
 
-vi.mock("@/lib/db-users", () => ({
-  isAdmin: () => Promise.resolve(true),
-}));
+// The signed-in test user is an admin via ADMIN_USER_IDS.
+process.env.ADMIN_USER_IDS = "user_123";
 
 // Leads are stored in MongoDB; use an in-memory collection instead.
 const { leads } = vi.hoisted(() => ({ leads: { current: null as unknown } }));

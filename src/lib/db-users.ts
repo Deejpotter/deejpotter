@@ -65,18 +65,4 @@ export async function deleteUser(clerkId: string) {
   await col.deleteOne({ clerkId });
 }
 
-export async function isAdmin(clerkId: string): Promise<boolean> {
-  const user = await getUserByClerkId(clerkId);
-  return user?.role === "admin";
-}
 
-export async function setUserRole(
-  clerkId: string,
-  role: "customer" | "admin",
-) {
-  const col = await getCollection("users");
-  await col.updateOne(
-    { clerkId },
-    { $set: { role, updatedAt: new Date().toISOString() } },
-  );
-}
