@@ -50,8 +50,8 @@ deejpotter no longer has a shop; service payments go through quotes.
 - Contact leads and grocery orders stored in MongoDB (Render's disk is ephemeral)
 - Indexes created automatically on first database use
 
-### ⬜ R2 on production
-- Set the R2 variables on the production Render service (see `R2_SETUP.md`) so uploaded quote files persist
+### ✅ R2 on production — DONE
+- All four R2 variables set on the production Render service (see `R2_SETUP.md`)
 
 ---
 

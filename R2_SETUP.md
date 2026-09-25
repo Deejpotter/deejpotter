@@ -42,7 +42,7 @@ R2_BUCKET_NAME=deejpotter
 |-------------|-------|
 | Local dev | `.env` (already in `krasus/.env`) |
 | Render staging | Render Dashboard → deejpotter-staging → Environment |
-| Render production | Render Dashboard → deejpotter → Environment (`R2_ACCOUNT_ID` and `R2_BUCKET_NAME` set 2026-09-25; the two keys still need adding) |
+| Render production | Render Dashboard → deejpotter → Environment (all four set 2026-09-25) |
 
 ## Important: S3 keys vs API tokens
 
