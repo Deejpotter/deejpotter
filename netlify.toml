@@ -4,11 +4,8 @@ command = "yarn build"
 # This is the directory that Netlify will publish.
 publish = ".next"
 
-# All admin requests should go to admin/index because it's a single page app.
-[[redirects]]
-from = "/admin/*"
-to = "/admin/index.html"
-status = 200
+# Decap CMS lives at /cms (public/cms). It uses hash routing, so it needs no rewrite.
+# Don't add a rewrite for /admin/*: netlify.toml rules run before Next.js and would hide the Next.js admin pages.
 
 [dev]
 command = "yarn dev"

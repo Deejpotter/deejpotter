@@ -19,6 +19,11 @@ const nextConfig = {
   },
   // Add MDX support for .md and .mdx files
   pageExtensions: ["js", "jsx", "ts", "tsx"],
+  // Serve the Decap CMS page (public/cms/index.html) at /cms and /cms/.
+  // Next.js doesn't map public folders to their index.html on its own.
+  async rewrites() {
+    return [{ source: "/cms", destination: "/cms/index.html" }];
+  },
 };
 
 module.exports = nextConfig;

@@ -4,8 +4,8 @@
 
 ### 1. Repo-backed admin UI scaffold
 
-- `public/admin/index.html`
-- `public/admin/config.yml`
+- `public/cms/index.html`
+- `public/cms/config.yml`
 
 The CMS is wired as a repo-backed Decap setup, not a separate hosted content store.
 
@@ -58,6 +58,6 @@ Markdown posts are rendered on `/blog/[slug]` using:
 
 If you want this fully polished for daily writing, the next step is:
 
-1. add an `/admin` link somewhere private or documented
+1. add an `/cms` link somewhere private or documented
 2. test the Decap login flow against GitHub auth for the real hosted site
 3. optionally migrate more existing posts from TSX to Markdown over time
