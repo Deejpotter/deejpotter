@@ -113,16 +113,11 @@ export default function ContactForm(): ReactElement {
     setErrorMessage(null);
 
     try {
-      const contactEndpoint =
-        process.env.NEXT_PUBLIC_CONTACT_ENDPOINT ||
-        process.env.NEXT_PUBLIC_BACKEND_URL ||
-        "/api/contact";
-
       const payload = {
         ...data,
         leadContext,
       };
-      const response = await fetch(contactEndpoint, {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
