@@ -51,7 +51,8 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 - **Dynamic:** pages that depend on the request — admin (auth), account (per user), sign-in/up, and Stripe return pages (`searchParams`).
 - **Client data:** tool pages and the quote status lookup fetch their own data in the browser.
 - **When to use ISR:** when a *public* page reads data that changes without a deploy (MongoDB). Render it on the server with `export const revalidate = <seconds>` as a safety net, and call `revalidatePath()` from the admin API that changes the data so edits appear immediately.
-- **Candidate:** the 3D printing page, if the admin-editable service config in MongoDB becomes the source of materials and prices. Today the page, form, and quote API all use `config/printing-materials.json`; the MongoDB config is only edited in admin and isn't read by the public site (it also only seeds PLA and PETG).
+- **In use:** the 3D printing page is ISR (`revalidate = 3600`). It reads enabled materials and prices from the MongoDB service config, and the admin service-config API calls `revalidatePath()` on save. The quote API validates and prices against the same config. If the database is unreachable at build or regeneration, the page falls back to `config/printing-materials.json`.
+- **Seeding (2026-09-26):** the JSON materials seed the MongoDB config once (`materialsSeeded` flag), so materials removed in admin don't come back. Quality/infill presets and the hourly rate still come from the JSON file.
 
 **Next.js 16 conventions:** route `params` and `searchParams` are Promises and must be awaited. Page metadata must be exported from `page.tsx` or `layout.tsx` (client-component pages use a pass-through `layout.tsx`); the root template appends "| Deej Potter", so page titles don't include it.
 

@@ -5,13 +5,29 @@ import Link from "next/link";
 import Script from "next/script";
 import QuoteRequestForm, { type QuoteMaterialOption } from "./QuoteRequestForm";
 import { loadConfig } from "@/lib/printing-materials";
+import { getEnabledMaterials } from "@/lib/db-config";
 import QuoteStatusLookup from "./QuoteStatusLookup";
 
-// Read at build time (the page is static), so the estimate uses the same
-// materials and rates the quote API validates against.
-const quoteMaterials: QuoteMaterialOption[] = loadConfig().materials.map(
-  ({ id, label, ratePerGram }) => ({ id, label, ratePerGram })
-);
+// ISR: served static, regenerated at most hourly. Saving materials in admin
+// also calls revalidatePath() for this page, so edits show up straight away.
+export const revalidate = 3600;
+
+/**
+ * Materials and rates from the admin-editable MongoDB config (the same list
+ * the quote API validates against). Falls back to the JSON config if the
+ * database can't be reached, so a build or regeneration never fails on it.
+ */
+async function getQuoteMaterials(): Promise<QuoteMaterialOption[]> {
+  try {
+    const materials = await getEnabledMaterials("3d_printing");
+    if (materials.length > 0) {
+      return materials.map(({ id, label, ratePerGram }) => ({ id, label, ratePerGram }));
+    }
+  } catch (error) {
+    console.warn("[3d-printing] Using JSON materials, database unavailable:", error);
+  }
+  return loadConfig().materials.map(({ id, label, ratePerGram }) => ({ id, label, ratePerGram }));
+}
 
 const benefits = [
   {
@@ -55,7 +71,8 @@ const nextSteps = [
   "Approve the quote and I'll print it.",
 ];
 
-export default function ThreeDPrintingService(): ReactElement {
+export default async function ThreeDPrintingService(): Promise<ReactElement> {
+  const quoteMaterials = await getQuoteMaterials();
   return (
     <>
       <Script id="schema-3d-printing-service" type="application/ld+json">
