@@ -37,11 +37,11 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 
 ## Next.js 16 rules (these have caused real bugs)
 
-- Route `params` and `searchParams` are **Promises**: `const { slug } = await params;`. Reading `params.slug` directly made every blog post 404.
-- Metadata is only read from `page.tsx` or `layout.tsx`. A file named `metadata.tsx` is ignored unless the page re-exports it (`export { metadata } from "./metadata";`). Client-component pages can't export metadata; put it in a pass-through `layout.tsx` beside them.
-- The root layout's title template adds "| Deej Potter". Page titles must not include it.
-- Rendering: pages are **static by default**, which is right for content that ships with the code. Use ISR (`export const revalidate = <seconds>`) only when a public page reads MongoDB, and call `revalidatePath()` from the admin API that changes that data. Current example: `/projects/services/3d-printing`. Details in `ARCHITECTURE.md` ("Rendering and caching").
-- Route handlers are dynamic by default. Add `export const dynamic = "force-static"` when the output only changes on deploy (see `blog/rss.xml`).
+- Route `params` and `searchParams` are **Promises**: `const { slug } = await params;`. Synchronous access was removed in Next.js 16 ([Vercel, 2026c](#ref-vercel-2026c)). Reading `params.slug` directly made every blog post 404.
+- Metadata is only read from `page.tsx` or `layout.tsx`, and only in Server Components ([Vercel, 2026a](#ref-vercel-2026a)). A file named `metadata.tsx` is ignored unless the page re-exports it (`export { metadata } from "./metadata";`). Client-component pages can't export metadata; put it in a pass-through `layout.tsx` beside them.
+- The root layout's title template adds "| Deej Potter" to child segments ([Vercel, 2026a](#ref-vercel-2026a)). Page titles must not include it.
+- Rendering: pages are **static by default**, which is right for content that ships with the code. Use ISR (`export const revalidate = <seconds>`) only when a public page reads MongoDB, and call `revalidatePath()` from the admin API that changes that data ([Vercel, 2026b](#ref-vercel-2026b)). Current example: `/projects/services/3d-printing`. Details in `ARCHITECTURE.md` ("Rendering and caching").
+- `GET` route handlers are dynamic by default ([Vercel, 2026d](#ref-vercel-2026d)). Add `export const dynamic = "force-static"` when the output only changes on deploy (see `blog/rss.xml`).
 - Unknown URLs render `src/app/not-found.tsx`; runtime errors render `src/app/error.tsx`.
 
 ## Developer Workflows (must-know commands)
@@ -54,7 +54,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - CI: GitHub Actions runs lint, stylelint, Vitest and the build on pushes and PRs (`.github/workflows/ci.yml`).
 - Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
 - Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see readme "Local database").
-- Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var.
+- Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var, which overrides `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)).
 - Render: use the `render` CLI (logged in) for services, deploys and logs. It can't set env vars; use the Render MCP `update_environment_variables` for that.
 
 - Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR.
@@ -74,6 +74,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - Explain intent with comments — the repo contains many well-scoped explanatory comments; preserve or extend them.
 - Use `use client` only when necessary in server components (Next.js App Router rule).
 - When changing public-facing data shapes, update TypeDoc and add tests for API surface changes.
+- Docs referencing: cite external claims (framework behaviour, release schedules, standards) in APA 7 style. In-text citations link to the entry in a `## References` section at the end of the file, e.g. `([Vercel, 2026a](#ref-vercel-2026a))` pointing at `<a id="ref-vercel-2026a"></a>`. Open each source and confirm it states the claim before citing it; cite the specific page, not a docs homepage. Same-author same-year letters (2026a, 2026b) are assigned per reference list, alphabetically by title.
 
 ## Quick file pointers (examples)
 
@@ -100,3 +101,17 @@ Tools degrade gracefully when optional keys are missing (DuckDuckGo works withou
 ## Security posture
 
 - Enforce timeouts and buffer limits for command execution.
+
+---
+
+## References
+
+<a id="ref-render-node"></a>Render. (n.d.). *Setting your Node.js version*. Render Docs. Retrieved September 26, 2026, from https://render.com/docs/node-version
+
+<a id="ref-vercel-2026a"></a>Vercel. (2026a, August 25). *generateMetadata*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-metadata
+
+<a id="ref-vercel-2026b"></a>Vercel. (2026b, June 23). *How to implement Incremental Static Regeneration (ISR)*. Next.js Docs. https://nextjs.org/docs/app/guides/incremental-static-regeneration
+
+<a id="ref-vercel-2026c"></a>Vercel. (2026c, August 25). *How to upgrade to version 16*. Next.js Docs. https://nextjs.org/docs/app/guides/upgrading/version-16
+
+<a id="ref-vercel-2026d"></a>Vercel. (2026d, April 30). *route.js*. Next.js Docs. https://nextjs.org/docs/app/api-reference/file-conventions/route
