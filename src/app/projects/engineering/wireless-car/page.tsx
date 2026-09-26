@@ -153,14 +153,14 @@ const implementationSections: ImplementationSection[] = [
 
 export default function WirelessCar(): ReactElement {
   return (
-    <div className="mx-auto max-w-6xl space-y-10 py-8 sm:py-12 lg:py-16">
-      <section className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:p-10">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+    <div className="mx-auto max-w-6xl space-y-6 py-8 sm:py-8 lg:py-10">
+      <section className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5 lg:p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-3xl">
             <span className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
               Engineering deep-dive
             </span>
-            <h1 className="mb-4 text-4xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-5xl">
+            <h1 className="mb-4 text-3xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-4xl">
               ESP32 Wireless Car
             </h1>
             <p className="text-lg text-gray-700 dark:text-gray-300">
@@ -195,8 +195,8 @@ export default function WirelessCar(): ReactElement {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <section className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Project Overview</h2>
           <div className="space-y-4 text-gray-700 dark:text-gray-300">
             <p>
@@ -212,7 +212,7 @@ export default function WirelessCar(): ReactElement {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-gray-100 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        <div className="rounded-3xl border border-gray-100 bg-gray-50 p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
           <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Performance Results</h2>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {performance.map(([value, label]) => (
@@ -229,7 +229,7 @@ export default function WirelessCar(): ReactElement {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Hardware Components</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {hardware.map((item) => (
-            <article key={item.title} className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <article key={item.title} className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
               <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">{item.title}</h3>
               <dl className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
                 {item.points.map(([label, value]) => (
@@ -246,7 +246,7 @@ export default function WirelessCar(): ReactElement {
 
       <section className="space-y-4">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Key Features</h2>
-        <ul className="grid gap-3 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:grid-cols-2">
+        <ul className="grid gap-3 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:grid-cols-2">
           {[
             ["Precision Position Tracking", "Encoders provide 960 pulses per wheel revolution for ±5mm accuracy over 1 meter."],
             ["PID Speed Control", "Maintains consistent speed despite battery voltage drop or terrain variations."],
@@ -296,7 +296,7 @@ export default function WirelessCar(): ReactElement {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Challenges Solved</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {challenges.map((item) => (
-            <article key={item.title} className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <article key={item.title} className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
               <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">{item.title}</h3>
               <p className="mb-3 text-gray-700 dark:text-gray-300">
                 <strong>Problem:</strong> {item.problem}
@@ -311,7 +311,7 @@ export default function WirelessCar(): ReactElement {
 
       <section className="space-y-4">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Future Improvements</h2>
-        <ul className="grid gap-3 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:grid-cols-2">
+        <ul className="grid gap-3 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:grid-cols-2">
           {future.map((item) => (
             <li key={item} className="rounded-2xl border border-gray-200 bg-gray-50 p-4 text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
               {item}
@@ -323,7 +323,7 @@ export default function WirelessCar(): ReactElement {
       <section className="space-y-4">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Related Projects</h2>
         <div className="grid gap-4 md:grid-cols-2">
-          <article className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <article className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">CYD Wireless Controller</h3>
             <p className="mb-4 text-gray-700 dark:text-gray-300">
               ESP32 display-based controller project for the wireless car. Features touch interface and real-time telemetry display.
@@ -338,7 +338,7 @@ export default function WirelessCar(): ReactElement {
             </a>
           </article>
 
-          <article className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <article className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Simple Drawbot Software</h3>
             <p className="mb-4 text-gray-700 dark:text-gray-300">
               G-code generator for pen plotters and CNC drawing machines. Similar motor control concepts applied to precision positioning.
@@ -355,7 +355,7 @@ export default function WirelessCar(): ReactElement {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-blue-200 bg-blue-50 p-6 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100">
+      <section className="rounded-3xl border border-blue-200 bg-blue-50 p-5 text-blue-900 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100">
         <h2 className="mb-3 text-2xl font-bold">Key Takeaways</h2>
         <div className="space-y-4 text-blue-900/90 dark:text-blue-100/90">
           <p>
@@ -369,7 +369,7 @@ export default function WirelessCar(): ReactElement {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900">
+      <section className="rounded-3xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-900">
         <p className="text-gray-800 dark:text-gray-200">
           <strong>Want more details?</strong> Read the full technical write-up: {" "}
           <Link href="/blog/esp32-wireless-car" className="font-semibold text-primary underline decoration-primary/30 underline-offset-4">

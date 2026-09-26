@@ -59,12 +59,12 @@ export default function Tools(): ReactElement {
         `}
       </Script>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-10">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Tools
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Tools & Calculators
           </h1>
           <p className="max-w-4xl text-lg text-gray-600 dark:text-gray-400">
@@ -74,10 +74,10 @@ export default function Tools(): ReactElement {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {toolProjects.map((project) => (
             <article key={project.id} className="rounded-2xl border border-gray-200 bg-white shadow-md dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex h-full flex-col p-6">
+              <div className="flex h-full flex-col p-5">
                 <div className="mb-4 flex justify-center">
                   <Image
                     src={project.image}
@@ -145,7 +145,7 @@ export default function Tools(): ReactElement {
           ))}
         </div>
 
-        <section className="mt-10 rounded-2xl border border-sky-200 bg-sky-50 p-6 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30">
+        <section className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30">
           <h2 className="mb-2 text-2xl font-bold">
             More tools coming soon
           </h2>

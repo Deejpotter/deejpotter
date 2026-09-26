@@ -16,16 +16,16 @@ export default function GroceriesPage() {
   }, []);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
+    <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Finance</p>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1">Groceries Spend Visualiser</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight mt-1">Groceries Spend Visualiser</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">
           Upload Woolworths order PDFs to track spending by category, store, and month.
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
         <div>
           <GroceriesUploader onImported={handleImported} />
           <BatchImportButton onImported={handleImported} />

@@ -78,7 +78,7 @@ export default function PdfImport({
           }
         }}
       >
-        <div className="p-6 text-center sm:p-8">
+        <div className="p-5 text-center sm:p-5">
           <input
             type="file"
             accept={accept}

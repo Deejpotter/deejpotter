@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function AdminSettingsPage() {
   if (!hasClerk) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-20 text-center">
+      <main className="mx-auto max-w-2xl px-4 py-12 text-center">
         <h1 className="text-3xl font-extrabold mb-4">Settings</h1>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           Authentication is not configured.

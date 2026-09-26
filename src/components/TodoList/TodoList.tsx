@@ -12,12 +12,12 @@ export type TodoListModel = {
 
 export default function TodoList(): ReactElement | null {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900">
         <div className="border-b border-gray-100 bg-primary px-6 py-5 text-white dark:border-gray-800">
           <h2 className="text-2xl font-bold">Todo List</h2>
         </div>
-        <div className="p-6">
+        <div className="p-5">
           <ul className="space-y-3">
             <li className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm dark:border-gray-800 dark:bg-gray-950/30">
               <span className="text-gray-800 dark:text-gray-200">Item 1</span>

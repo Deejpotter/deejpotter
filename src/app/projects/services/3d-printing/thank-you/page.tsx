@@ -13,8 +13,8 @@ export default async function ThankYouPage({
   const { quoteId } = await searchParams;
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-20 text-center">
-      <div className="text-6xl mb-6">🎉</div>
+    <main className="max-w-2xl mx-auto px-4 py-12 text-center">
+      <div className="text-5xl mb-6">🎉</div>
       <h1 className="text-3xl font-extrabold mb-4">Payment received!</h1>
       <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
         Your payment went through. I&apos;ll start working on your print and send you an update.
@@ -26,7 +26,7 @@ export default async function ThankYouPage({
         </p>
       )}
 
-      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 mb-8 text-left">
+      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 mb-8 text-left">
         <h2 className="font-semibold mb-2">What happens next?</h2>
         <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
           <li>1. I&apos;ll review your model and prepare it for printing</li>

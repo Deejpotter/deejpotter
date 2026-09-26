@@ -65,13 +65,13 @@ const categories = [
 
 export default function Projects(): ReactElement {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:py-12 lg:py-16">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:py-8 lg:py-10">
       {/* Page header */}
-      <section className="mb-12">
+      <section className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           Projects
         </p>
-        <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
+        <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
           Things I&apos;ve built.
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
@@ -86,7 +86,7 @@ export default function Projects(): ReactElement {
           <Link
             key={cat.id}
             href={cat.href}
-            className="group flex flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-primary/40 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-primary/60"
+            className="group flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-primary/40 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-primary/60"
           >
             <span className="mb-3 text-3xl">{cat.icon}</span>
             <h2 className="mb-2 text-xl font-bold text-gray-900 group-hover:text-primary dark:text-white dark:group-hover:text-primary">
@@ -100,7 +100,7 @@ export default function Projects(): ReactElement {
       </section>
 
       {/* CTA */}
-      <section className="mt-12 rounded-2xl border border-gray-200 bg-gray-50 p-8 dark:border-gray-800 dark:bg-gray-900">
+      <section className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-900">
         <h2 className="mb-2 text-2xl font-bold">
           Want to work on something together?
         </h2>

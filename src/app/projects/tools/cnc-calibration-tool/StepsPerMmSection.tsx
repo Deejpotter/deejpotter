@@ -35,7 +35,7 @@ const StepsPerMmSection = () => {
       <div className="border-b border-gray-100 bg-primary px-6 py-5 text-white dark:border-gray-700">
         <h2 className="text-xl font-bold">Steps per millimeter</h2>
       </div>
-      <div className="space-y-4 p-6 lg:p-8">
+      <div className="space-y-4 p-5 lg:p-6">
         <p className="text-gray-700 dark:text-gray-300">
           The steps per millimeter (steps/mm) calculation is used to calibrate the X, Y, Z, and E axes of your CNC machine.
           The calculator adjusts your steps/mm based on the measured value so the new value matches the target.
@@ -104,7 +104,7 @@ const StepsPerMmSection = () => {
 
         <div className="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-5 text-center dark:border-gray-700 dark:bg-gray-900">
           <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">New Steps/mm Value</h3>
-          <p className="text-4xl font-extrabold text-primary">{newSteps || "—"}</p>
+          <p className="text-3xl font-extrabold text-primary">{newSteps || "—"}</p>
           {newSteps && (
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
               Enter this value, up to 2 decimal places, into Marlin for the axis you are calibrating. For example <code>M92 X{newSteps}</code>.

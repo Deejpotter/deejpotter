@@ -76,7 +76,7 @@ export default function LeadInbox({ initialLeads }: { initialLeads: Lead[] }) {
       ) : (
         leads.map((lead) => (
           <article key={lead.id} className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-            <div className="flex flex-wrap items-start justify-between gap-4 border-b border-gray-100 p-6 dark:border-gray-700">
+            <div className="flex flex-wrap items-start justify-between gap-4 border-b border-gray-100 p-5 dark:border-gray-700">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{lead.name}</h2>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -93,7 +93,7 @@ export default function LeadInbox({ initialLeads }: { initialLeads: Lead[] }) {
               </span>
             </div>
 
-            <div className="grid gap-6 p-6 lg:grid-cols-[1.4fr_0.8fr]">
+            <div className="grid gap-4 p-5 lg:grid-cols-[1.4fr_0.8fr]">
               <div className="space-y-4">
                 <div>
                   <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-gray-500 dark:text-gray-400">Message</h3>

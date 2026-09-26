@@ -42,11 +42,11 @@ export function GroceriesUploader({ onImported }: { onImported: () => void }) {
   };
 
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
       <h2 className="font-semibold text-lg mb-4">Upload Woolworths order PDF</h2>
 
       <div
-        className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
+        className={`border-2 border-dashed rounded-xl p-5 text-center transition-colors cursor-pointer ${
           dragOver
             ? "border-primary bg-primary/5"
             : "border-gray-300 dark:border-gray-600 hover:border-primary/50"
@@ -63,7 +63,7 @@ export function GroceriesUploader({ onImported }: { onImported: () => void }) {
           className="hidden"
           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
         />
-        <div className="text-4xl mb-3">📄</div>
+        <div className="text-3xl mb-3">📄</div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           {uploading ? "Parsing receipt..." : "Drop a Woolworths PDF here, or click to browse"}
         </p>

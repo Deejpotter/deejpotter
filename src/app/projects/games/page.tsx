@@ -74,12 +74,12 @@ export default function Games(): ReactElement {
         `}
       </Script>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-10">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Games
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Game Development Projects
           </h1>
           <p className="max-w-4xl text-lg text-gray-600 dark:text-gray-400">
@@ -89,10 +89,10 @@ export default function Games(): ReactElement {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {gameProjects.map((project) => (
             <article key={project.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition-transform hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex h-full flex-col p-6">
+              <div className="flex h-full flex-col p-5">
                 <div className="mb-4 overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 dark:border-gray-800">
                   {project.image ? (
                     <Image
@@ -103,7 +103,7 @@ export default function Games(): ReactElement {
                       className="h-40 w-full object-cover opacity-90"
                     />
                   ) : (
-                    <div className="flex h-40 w-full items-center justify-center text-5xl">
+                    <div className="flex h-40 w-full items-center justify-center text-4xl">
                       🎮
                     </div>
                   )}
@@ -129,8 +129,8 @@ export default function Games(): ReactElement {
           ))}
         </div>
 
-        <section className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+        <section className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
             <h2 className="mb-4 text-3xl font-bold">Game Development Skills</h2>
             <p className="text-gray-700 dark:text-gray-300">
               Game development is a fun way to practice programming skills and
@@ -146,7 +146,7 @@ export default function Games(): ReactElement {
             </ul>
           </div>
 
-          <aside className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm dark:border-emerald-900/50 dark:bg-emerald-950/30">
+          <aside className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm dark:border-emerald-900/50 dark:bg-emerald-950/30">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-100">
               Want something custom?
             </p>

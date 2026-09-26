@@ -72,7 +72,7 @@ export default function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-4xl py-8 sm:py-12 lg:py-16">
+    <div className="mx-auto max-w-4xl py-8 sm:py-8 lg:py-10">
       <nav aria-label="breadcrumb" className="mb-6 text-sm text-gray-500 dark:text-gray-400">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
@@ -85,8 +85,8 @@ export default function BlogPostPage({ params }: PageProps) {
         </ol>
       </nav>
 
-      <header className="mb-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:p-10">
-        <h1 className="mb-3 text-4xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-5xl">
+      <header className="mb-8 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5 lg:p-6">
+        <h1 className="mb-3 text-3xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-4xl">
           {post.title}
         </h1>
         <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
@@ -109,7 +109,7 @@ export default function BlogPostPage({ params }: PageProps) {
         )}
       </header>
 
-      <article className="blog-content rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:p-10">
+      <article className="blog-content rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5 lg:p-6">
         {post.sourceType === "markdown" && post.markdown ? renderMarkdown(post.markdown) : post.content}
       </article>
 

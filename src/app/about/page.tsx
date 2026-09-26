@@ -3,12 +3,12 @@ import Link from "next/link";
 
 export default function About(): ReactElement {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:py-12 lg:py-16">
-      <section className="mb-12">
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:py-8 lg:py-10">
+      <section className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           About
         </p>
-        <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
+        <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
           I build things that work.
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
@@ -18,8 +18,8 @@ export default function About(): ReactElement {
         </p>
       </section>
 
-      <section className="mb-12 grid gap-8 md:grid-cols-2">
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <section className="mb-8 grid gap-5 md:grid-cols-2">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <h2 className="mb-4 text-2xl font-bold">Where I started</h2>
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
@@ -44,7 +44,7 @@ export default function About(): ReactElement {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <h2 className="mb-4 text-2xl font-bold">What I do now</h2>
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
@@ -69,8 +69,8 @@ export default function About(): ReactElement {
         </div>
       </section>
 
-      <section className="mb-12 grid gap-8 md:grid-cols-2">
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <section className="mb-8 grid gap-5 md:grid-cols-2">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <h2 className="mb-4 text-2xl font-bold">How I work</h2>
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
@@ -86,7 +86,7 @@ export default function About(): ReactElement {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <h2 className="mb-4 text-2xl font-bold">Let&apos;s work together</h2>
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>

@@ -30,7 +30,7 @@ async function getStats() {
 export default async function AdminDashboardPage() {
   if (!hasClerk) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-20 text-center">
+      <main className="mx-auto max-w-2xl px-4 py-12 text-center">
         <h1 className="text-3xl font-extrabold mb-4">Admin Dashboard</h1>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           Authentication is not configured. Set <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code> and <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">CLERK_SECRET_KEY</code> in your <code className="rounded bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-sm font-mono">.env.local</code> to enable the admin panel.
@@ -54,14 +54,14 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
+    <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Admin</p>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1">Dashboard</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight mt-1">Dashboard</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage quotes, materials, and site settings.</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         {cards.map((card) => (
           <Link
             key={card.label}
