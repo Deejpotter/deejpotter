@@ -109,8 +109,10 @@ export default function TopNavbar() {
           would make it the containing block for the fixed mobile drawer. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 border-b border-white/10 bg-gray-950/85 backdrop-blur-md"
+        className="absolute inset-0 -z-10 bg-gray-950/85 backdrop-blur-md"
       />
+      {/* Brand accent line along the bottom edge */}
+      <div aria-hidden="true" className="gradient-line absolute inset-x-0 bottom-0 h-px" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center gap-6 h-14">
           {/* ── Left: Logo & site name ───────────────────────────────── */}
@@ -193,8 +195,10 @@ export default function TopNavbar() {
                       .replace(/\s+/g, "-")}-dropdown`}
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
-                    className="nav-dropdown-in absolute inset-x-0 top-full z-50 border-b border-white/10 bg-gray-950/95 shadow-bs-lg backdrop-blur-md"
+                    className="nav-dropdown-in absolute inset-x-0 top-full z-50 bg-gradient-to-b from-gray-950/95 to-primary/45 shadow-bs-lg backdrop-blur-md"
                   >
+                    {/* Dark at the top for legibility, brand green wash below */}
+                    <div aria-hidden="true" className="gradient-line absolute inset-x-0 bottom-0 h-px" />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
                       <div className="flex gap-5">
                         {item.items.map((category) => (
