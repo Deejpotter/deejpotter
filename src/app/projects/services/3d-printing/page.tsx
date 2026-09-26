@@ -1,8 +1,17 @@
+// Page title/description live in ./metadata.tsx; Next.js only reads them from the page or layout.
+export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import QuoteRequestForm from "./QuoteRequestForm";
+import QuoteRequestForm, { type QuoteMaterialOption } from "./QuoteRequestForm";
+import { loadConfig } from "@/lib/printing-materials";
 import QuoteStatusLookup from "./QuoteStatusLookup";
+
+// Read at build time (the page is static), so the estimate uses the same
+// materials and rates the quote API validates against.
+const quoteMaterials: QuoteMaterialOption[] = loadConfig().materials.map(
+  ({ id, label, ratePerGram }) => ({ id, label, ratePerGram })
+);
 
 const benefits = [
   {
@@ -156,7 +165,7 @@ export default function ThreeDPrintingService(): ReactElement {
           </section>
 
           <section className="mb-6">
-            <QuoteRequestForm />
+            <QuoteRequestForm materials={quoteMaterials} />
           </section>
 
           <section className="mb-6">

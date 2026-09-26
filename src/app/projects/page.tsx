@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Projects | Deej Potter",
+  title: "Projects",
   description:
     "A collection of websites, tools, apps, engineering projects, and games built by Deej Potter.",
 };

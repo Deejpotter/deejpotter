@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getAllPosts, getAllTags, getFeaturedPosts, formatDate } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Insights, Build Notes, and Website Strategy | Deej Potter",
+  title: "Insights, Build Notes, and Website Strategy",
   description:
     "Practical articles on websites, automation, custom tools, and the engineering decisions behind Deej Potter's client work.",
 };

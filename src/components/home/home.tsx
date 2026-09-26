@@ -11,7 +11,7 @@ const quickLinks = [
   {
     href: "/contact",
     label: "Start with a message",
-    tone: "bg-white text-gray-950",
+    tone: "btn-gradient",
     primary: true,
   },
   {
@@ -27,7 +27,7 @@ const quickLinks = [
   {
     href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
     label: "LinkedIn",
-    tone: "border border-emerald-300/40 text-emerald-200 hover:bg-emerald-400/10",
+    tone: "border border-white/15 text-white/90 hover:bg-white/5",
     external: true,
   },
 ];
@@ -70,7 +70,16 @@ export default function Home(): ReactElement {
         })}
       </Script>
 
-      <section className="bg-gray-950 px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8">
+      <section className="relative isolate overflow-hidden bg-gray-950 px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8">
+        {/* Soft brand glows behind the hero */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-32 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 top-24 -z-10 h-[22rem] w-[22rem] rounded-full bg-info/20 blur-3xl"
+        />
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
             <p className="text-xs uppercase tracking-[0.35em] text-white/55">
@@ -87,7 +96,8 @@ export default function Home(): ReactElement {
                 Website designer - maker - developer
               </p>
               <h1 className="mt-5 max-w-4xl text-3xl font-black leading-[0.92] sm:text-4xl lg:text-6xl">
-                I build websites, custom tools, and physical parts.
+                I build websites, custom tools, and{" "}
+                <span className="text-gradient">physical parts.</span>
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
                 I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print, engrave, or mill parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
@@ -229,7 +239,7 @@ export default function Home(): ReactElement {
             {serviceOfferings.map((service) => (
               <article
                 key={service.id}
-                className="group flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-bs transition-all hover:-translate-y-1 hover:shadow-bs-lg dark:border-gray-800 dark:bg-gray-900"
+                className="glow-card group flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-bs dark:border-gray-800 dark:bg-gray-900"
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
                   Service

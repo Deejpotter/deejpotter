@@ -6,7 +6,7 @@ import PayNowButton from "@/components/PayNowButton";
 import { isAdminUser } from "@/lib/admin-auth";
 
 export const metadata = {
-  title: "My Account | Deej Potter",
+  title: "My Account",
   robots: { index: false },
 };
 

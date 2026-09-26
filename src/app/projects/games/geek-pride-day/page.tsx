@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { ReactElement } from "react";
 
 export const metadata: Metadata = {
-  title: "Geek Pride Day Platformer Prototype | Deej Potter",
+  title: "Geek Pride Day Platformer Prototype",
   description:
     "A small browser platformer prototype built from the Geek Pride Day asset pack, ready to embed in a blog post or share directly.",
 };

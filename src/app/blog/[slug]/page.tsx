@@ -5,25 +5,33 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getAllPostSlugs, getPostBySlug, formatDate } from "@/lib/blog";
 
+// Next.js 16 passes route params as a Promise
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
+
+// Posts come from markdown in the repo, so the full list is known at build
+// time. Anything else is a 404 without rendering on demand.
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return { title: "Post Not Found" };
   }
 
   return {
-    title: `${post.title} | Deej Potter`,
+    title: `${post.title}`,
     description: post.excerpt,
     openGraph: {
       title: post.title,
@@ -64,8 +72,9 @@ function renderMarkdown(markdown: string) {
   );
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();

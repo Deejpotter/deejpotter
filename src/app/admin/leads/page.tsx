@@ -5,7 +5,7 @@ import LeadInbox from "./LeadInbox";
 import { listContactLeads } from "@/lib/contact-leads";
 
 export const metadata: Metadata = {
-  title: "Lead Inbox | Deej Potter",
+  title: "Lead Inbox",
   description: "Private lead inbox for customer contact tracking.",
   robots: {
     index: false,

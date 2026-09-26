@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Payment Received | Deej Potter",
+  title: "Payment Received",
   robots: { index: false },
 };
 
