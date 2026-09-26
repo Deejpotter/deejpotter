@@ -126,6 +126,8 @@ export async function analyzeQuoteFile(
     quality?: "draft" | "standard" | "high";
     infill?: number;
     scalePercent?: number;
+    /** Rate from the MongoDB service config; falls back to the JSON config */
+    ratePerGram?: number | null;
   }
 ): Promise<QuoteAnalysis> {
   const lowerName = (file.name || "").toLowerCase();
@@ -175,7 +177,7 @@ export async function analyzeQuoteFile(
   const estimatedPrintHours = Math.max(0.5, (0.45 + sizeHours + complexityHours) * quantity);
 
   // Config-driven pricing
-  const perGram = getMaterialRate(material) ?? 0.2;
+  const perGram = params?.ratePerGram ?? getMaterialRate(material) ?? 0.2;
   const { hourlyRate } = getSettings();
 
   // Apply interactive builder multipliers

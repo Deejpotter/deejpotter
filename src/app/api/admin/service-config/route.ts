@@ -7,6 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import {
   getAllServiceConfigs,
   getServiceConfig,
@@ -65,6 +66,10 @@ export async function PATCH(req: NextRequest) {
 
     const parsed = ServiceTypeEnum.parse(serviceType);
     const updated = await updateServiceConfig(parsed, patch);
+    // The public quote page is ISR; regenerate it so edits show immediately
+    if (parsed === "3d_printing") {
+      revalidatePath("/projects/services/3d-printing");
+    }
     return NextResponse.json(updated);
   } catch (err) {
     return NextResponse.json(
