@@ -36,7 +36,7 @@ I first built this with Angular and later moved it to Next.js. It started out on
 
 ## Testing
 
-- **Node 22** required (`package.json` engines, `.nvmrc`)
+- **Node 24** required (`package.json` engines, `.nvmrc`)
 - Unit/component tests: `yarn test`
 - Some API route tests start an in-memory MongoDB, which downloads a MongoDB binary the first time they run.
 - CI runs lint, stylelint, Vitest and the build on push to `main`/`dev`
