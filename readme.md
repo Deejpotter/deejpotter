@@ -26,7 +26,7 @@ I first built this with Angular and later moved it to Next.js. It started out on
 - **TypeScript**
 - **Tailwind CSS v4**: CSS-first configuration with `@theme` blocks in `globals.css`.
 - **Clerk**: Sign-in and user accounts.
-- **MongoDB**: Quotes, contact leads, grocery orders, users and settings.
+- **MongoDB**: Quotes, contact leads, grocery orders, users, settings, and the admin-editable service config (3D printing materials and prices).
 - **Stripe**: Payments for accepted quotes, with a webhook at `/api/webhooks/stripe`.
 - **Cloudflare R2 (S3 API)**: Storage for uploaded quote files. See `R2_SETUP.md`.
 - **Resend**: Quote emails (new quote received, quote updated), sent from `noreply@deejpotter.com`.
@@ -71,6 +71,29 @@ yarn build
 ```
 
 Visit `http://localhost:3000` to view the application.
+
+## Local database
+
+Local development uses its own MongoDB database, `deejpotter_dev`, on the same Atlas cluster as the site (which uses `deejpotter`). Copy `.env.example` to `.env`, fill in `MONGODB_URI`, and keep `DB_NAME=deejpotter_dev` so nothing you do locally touches the site's data. `next dev`, `next build` and the tests all read it.
+
+To refresh the dev database from the site's data with the MongoDB Shell (`winget install MongoDB.Shell`):
+
+```js
+// refresh-dev-db.js: run with  mongosh "<MONGODB_URI>" --file refresh-dev-db.js
+const src = db.getSiblingDB("deejpotter");
+const dev = db.getSiblingDB("deejpotter_dev");
+for (const name of src.getCollectionNames()) {
+  const docs = src.getCollection(name).find().toArray();
+  dev.getCollection(name).drop();
+  if (docs.length) dev.getCollection(name).insertMany(docs);
+}
+```
+
+The site only holds test data so far. Once it has real customers, copy only the non-personal collections (`service_configs`, `settings`) instead.
+
+## How pages are rendered
+
+Most pages are static (built once at deploy). The 3D printing page uses ISR because its materials and prices come from the admin-editable MongoDB config. See "Rendering and caching" in `ARCHITECTURE.md` before adding caching or data fetching to a page.
 
 ## Running tests
 
