@@ -1,3 +1,11 @@
+import { generatePageMetadata } from "@/app/metadata";
+
+export const metadata = generatePageMetadata(
+  "Basic Bases Privacy Policy",
+  "Privacy policy for the Basic Bases game.",
+  "/projects/games/basic-bases/basic-bases-privacy"
+);
+
 import { ReactElement } from "react";
 
 export default function BasicBasesPrivacy(): ReactElement {

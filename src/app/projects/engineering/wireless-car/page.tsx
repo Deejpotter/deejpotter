@@ -3,11 +3,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "ESP32 Wireless Car | Deej Potter",
+  title: "ESP32 Wireless Car",
   description:
     "Precision-controlled wireless RC car built with ESP32, featuring dual motor control with encoders, PID speed control, and Wi-Fi web interface. Technical deep-dive into motor control, encoder integration, and wireless communication.",
   openGraph: {
-    title: "ESP32 Wireless Car | Deej Potter",
+    title: "ESP32 Wireless Car",
     description:
       "Precision-controlled wireless RC car built with ESP32, featuring encoders, PID control, and a web interface.",
     type: "article",

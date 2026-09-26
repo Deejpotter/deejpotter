@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Game Development Projects | Deej Potter",
+  title: "Game Development Projects",
   description:
     "Discover the games I've developed, from browser-based experiences to Unity projects. Explore my creative approach to game design, mechanics, and player engagement.",
   openGraph: {
-    title: "Game Development Projects | Deej Potter",
+    title: "Game Development Projects",
     description:
       "Discover the games I've developed, from browser-based experiences to Unity projects. Explore my creative approach to game design, mechanics, and player engagement.",
     url: "https://deejpotter.com/projects/games",

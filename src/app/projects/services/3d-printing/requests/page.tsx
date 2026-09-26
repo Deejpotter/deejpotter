@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "3D Printing Quote Board",
+  robots: { index: false, follow: false },
+};
+
 import { ReactElement } from "react";
 import Link from "next/link";
 import QuoteRequestsAdmin from "../QuoteRequestsAdmin";

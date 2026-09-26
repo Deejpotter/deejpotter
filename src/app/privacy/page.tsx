@@ -1,3 +1,11 @@
+import { generatePageMetadata } from "@/app/metadata";
+
+export const metadata = generatePageMetadata(
+  "Privacy Policy",
+  "How deejpotter.com collects, uses, and protects your personal information.",
+  "/privacy"
+);
+
 import { ReactElement } from "react";
 
 export default function Privacy(): ReactElement {

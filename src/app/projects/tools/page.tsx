@@ -1,3 +1,11 @@
+import { generatePageMetadata } from "@/app/metadata";
+
+export const metadata = generatePageMetadata(
+  "Tools and Calculators",
+  "Free calculators and tools for makers: extrusion cut optimisers, box shipping, and CNC calibration.",
+  "/projects/tools"
+);
+
 import { ReactElement } from "react";
 import Link from "next/link";
 import Image from "next/image";

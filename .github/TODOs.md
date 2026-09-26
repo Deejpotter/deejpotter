@@ -4,17 +4,27 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ---
 
-## Dependency refresh (branch `chore/deps-refresh`)
+## Design + Next.js pass (2026-09-26)
 
-- [x] 1. Branch from up-to-date `dev`
-- [x] 2. GitHub Actions on checkout/setup-node v7 (already on `dev`; #98/#104 obsolete)
-- [x] 3. Node 24: `engines`, `.nvmrc`, workflow `node-version`, `@types/node` 24.x
-- [x] 4. Remove Babel/Jest leftovers if unused (vitest is the runner)
-- [x] 5. Patch/minor updates to latest within current majors, regenerate `yarn.lock`
-- [x] 6. Verify: tsc, vitest, eslint, stylelint, `next build`
-- [x] 7. Push and open PR into `dev`
-- [x] 8. Close superseded Dependabot PRs (#77, #87, #97, #98, #104, #107, #108)
-- [ ] 9. Node 24 on Render: staging done 2026-09-26; production when dev is merged to main
+- [x] 1. Brand gradients: verify dropdown, commit (one PR with the rest)
+- [x] 2. Blog post 404 fix
+  - [x] 2.1 Await `params` (Next 16) in `blog/[slug]` page + `generateMetadata`
+  - [x] 2.2 `dynamicParams = false` so unknown slugs 404 at build
+  - [x] 2.3 Confirm posts render locally
+- [x] 3. Per-page titles and descriptions
+  - [x] 3.1 Title template in `src/app/metadata.ts`
+  - [x] 3.2 `metadata` on server pages missing it
+  - [x] 3.3 `layout.tsx` metadata for client-only pages
+- [ ] 4. Branded `not-found.tsx` and `error.tsx`
+- [ ] 5. Quote form materials/prices from `config/printing-materials.json` via the server page (no hard-coded copy)
+- [ ] 6. Rendering/caching approach in `ARCHITECTURE.md` (static default; ISR + `revalidatePath` when public pages read MongoDB)
+- [ ] 7. Verify: tsc, vitest, eslint, `next build` route table, browser checks
+- [ ] 8. PR into `dev`, check staging, ask before production
+- [ ] Decision needed: make MongoDB service config the source for public 3D printing materials (then ISR the page)
+
+## Dependency follow-ups
+
+- Node 24 + minor/patch refresh done (#119, #120); both Render services on `NODE_VERSION=24`
 - [ ] Later (separate PRs): vitest 5 + jsdom 30 + jest-dom 7; svix 2; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
 
 ---

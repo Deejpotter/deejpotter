@@ -1,3 +1,11 @@
+import { generatePageMetadata } from "@/app/metadata";
+
+export const metadata = generatePageMetadata(
+  "Terms and Conditions",
+  "The terms that apply when you use deejpotter.com and its services.",
+  "/terms"
+);
+
 import { ReactElement } from "react";
 
 export default function Terms(): ReactElement {

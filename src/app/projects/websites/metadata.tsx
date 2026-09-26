@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Web Development Projects | Deej Potter",
+  title: "Web Development Projects",
   description:
     "Explore the websites I've designed and developed. View my portfolio of responsive, accessible, and modern web projects that showcase my skills as a web developer.",
   openGraph: {
-    title: "Web Development Projects | Deej Potter",
+    title: "Web Development Projects",
     description:
       "Explore the websites I've designed and developed. View my portfolio of responsive, accessible, and modern web projects that showcase my skills as a web developer.",
     url: "https://deejpotter.com/projects/websites",

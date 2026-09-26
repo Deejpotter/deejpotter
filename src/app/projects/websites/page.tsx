@@ -1,3 +1,5 @@
+// Page title/description live in ./metadata.tsx; Next.js only reads them from the page or layout.
+export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
 import Image from "next/image";

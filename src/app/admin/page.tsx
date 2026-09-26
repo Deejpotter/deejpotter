@@ -5,7 +5,7 @@ import { getQuoteStats } from "@/lib/db-quotes";
 import { listContactLeads } from "@/lib/contact-leads";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | Deej Potter",
+  title: "Admin Dashboard",
   robots: { index: false },
 };
 

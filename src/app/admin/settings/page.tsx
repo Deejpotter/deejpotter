@@ -4,7 +4,7 @@ import { hasClerk, requireAdminPage } from "@/lib/admin-auth";
 import SettingsTabs from "./SettingsTabs";
 
 export const metadata: Metadata = {
-  title: "Settings | Admin | Deej Potter",
+  title: "Settings | Admin",
   robots: { index: false },
 };
 
