@@ -11,8 +11,8 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 3. Node 24: `engines`, `.nvmrc`, workflow `node-version`, `@types/node` 24.x
 - [x] 4. Remove Babel/Jest leftovers if unused (vitest is the runner)
 - [x] 5. Patch/minor updates to latest within current majors, regenerate `yarn.lock`
-- [ ] 6. Verify: tsc, vitest, eslint, stylelint, `next build`
-- [ ] 7. Push and open PR into `dev`
+- [x] 6. Verify: tsc, vitest, eslint, stylelint, `next build`
+- [x] 7. Push and open PR into `dev`
 - [ ] 8. Close superseded Dependabot PRs (#77, #87, #97, #98, #104, #107, #108)
 - [ ] 9. Set Node 24 on both Render services (manual)
 - [ ] Later (separate PRs): vitest 5 + jsdom 30 + jest-dom 7; svix 2; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
