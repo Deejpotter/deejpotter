@@ -63,9 +63,9 @@ export function GroceriesDashboard({ refreshKey }: { refreshKey: number }) {
       </div>
 
       {/* Charts row */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         {/* Monthly trend */}
-        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <h2 className="font-semibold mb-4">Monthly spending</h2>
           {monthLabels.length === 0 ? (
             <p className="text-sm text-gray-400">No data yet.</p>
@@ -92,7 +92,7 @@ export function GroceriesDashboard({ refreshKey }: { refreshKey: number }) {
         </section>
 
         {/* Category breakdown */}
-        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <h2 className="font-semibold mb-4">Top categories</h2>
           {topCategories.length === 0 ? (
             <p className="text-sm text-gray-400">No data yet.</p>

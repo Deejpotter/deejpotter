@@ -1,3 +1,5 @@
+// Page title/description live in ./metadata.tsx; Next.js only reads them from the page or layout.
+export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -73,8 +75,8 @@ export default function Apps(): ReactElement {
         `}
       </Script>
 
-      <section className="mb-12">
-        <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">
+      <section className="mb-8">
+        <h1 className="text-3xl lg:text-4xl font-extrabold mb-4">
           Technical Applications
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
@@ -85,13 +87,13 @@ export default function Apps(): ReactElement {
         </p>
       </section>
 
-      <section className="grid md:grid-cols-2 gap-8">
+      <section className="grid md:grid-cols-2 gap-5">
         {appProjects.map((project) => (
           <div
             key={project.id}
             className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden"
           >
-            <div className="p-6 flex-grow">
+            <div className="p-5 flex-grow">
               <div className="text-center mb-4">
                 <Image
                   src={project.image}
@@ -118,7 +120,7 @@ export default function Apps(): ReactElement {
                 ))}
               </div>
             </div>
-            <div className="p-6 pt-0 bg-gray-50 dark:bg-gray-700">
+            <div className="p-5 pt-0 bg-gray-50 dark:bg-gray-700">
               {project.external ? (
                 <a
                   href={project.link}
@@ -141,7 +143,7 @@ export default function Apps(): ReactElement {
         ))}
       </section>
 
-      <section className="mt-12 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+      <section className="mt-8 bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-4">
           Application Development Approach
         </h2>
@@ -184,10 +186,10 @@ export default function Apps(): ReactElement {
         </ul>
       </section>
 
-      <section className="mt-12">
+      <section className="mt-8">
         <h2 className="text-3xl font-bold mb-6">Technology Stack</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-5">
             <h3 className="text-xl font-bold mb-4">Frontend</h3>
             <ul className="list-none space-y-2 text-gray-600 dark:text-gray-400">
               <li>
@@ -205,7 +207,7 @@ export default function Apps(): ReactElement {
               </li>
             </ul>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-5">
             <h3 className="text-xl font-bold mb-4">Backend</h3>
             <ul className="list-none space-y-2 text-gray-600 dark:text-gray-400">
               <li>

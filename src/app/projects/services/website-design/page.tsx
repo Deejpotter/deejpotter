@@ -1,3 +1,5 @@
+// Page title/description live in ./metadata.tsx; Next.js only reads them from the page or layout.
+export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
@@ -68,19 +70,19 @@ export default function WebsiteDesignService(): ReactElement {
         })}
       </Script>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Service
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Website design and development
           </h1>
-          <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
+          <p className="mb-6 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
             Websites for small businesses and personal projects that look good, load fast, and make it easy for people to get in touch.
           </p>
 
-          <section className="mb-10 grid gap-6 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
+          <section className="mb-6 grid gap-4 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold">What this service is for</h2>
               <p className="text-gray-700 dark:text-gray-300">
@@ -90,7 +92,7 @@ export default function WebsiteDesignService(): ReactElement {
                 I can build one from scratch, or fix up a site you already have if it&apos;s looking dated or hard to use.
               </p>
             </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h2 className="mb-3 text-2xl font-bold">What you get</h2>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 {deliverables.map((item) => (
@@ -103,7 +105,7 @@ export default function WebsiteDesignService(): ReactElement {
             </div>
           </section>
 
-          <section className="mb-10">
+          <section className="mb-6">
             <h2 className="mb-4 text-3xl font-bold">How I work</h2>
             <div className="grid gap-4 md:grid-cols-2">
               {process.map((step, index) => (
@@ -120,7 +122,7 @@ export default function WebsiteDesignService(): ReactElement {
             </div>
           </section>
 
-          <section className="mb-10">
+          <section className="mb-6">
             <h2 className="mb-4 text-3xl font-bold">Frequently asked questions</h2>
             <div className="space-y-3">
               {faqs.map((faq, index) => (

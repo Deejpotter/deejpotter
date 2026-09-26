@@ -125,7 +125,7 @@ export default function QuoteRequestsAdmin() {
 
   if (error) {
     return (
-      <div className="p-10 text-center">
+      <div className="p-6 text-center">
         <p className="text-red-500 mb-4">{error}</p>
         <button
           onClick={load}
@@ -166,7 +166,7 @@ export default function QuoteRequestsAdmin() {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-gray-500 text-center py-10">
+        <p className="text-gray-500 text-center py-6">
           No quotes found.
         </p>
       ) : (

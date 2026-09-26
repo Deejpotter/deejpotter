@@ -4,9 +4,9 @@
  *
  * Structure:
  *  ┌─────────────────────────────────────────────────────┐
- *  │  [Nav links]         [Logo / Name]       [Auth] [≡] │  ← header bar (h-16)
+ *  │  [Logo / Name]  [Nav links]              [Auth] [≡] │  ← sticky header bar (h-14)
  *  ├─────────────────────────────────────────────────────┤
- *  │  Full-width dropdown (desktop, fixed under bar)     │  ← appears on hover / click
+ *  │  Full-width dropdown (desktop, anchored to header)  │  ← appears on hover / click
  *  └─────────────────────────────────────────────────────┘
  *
  * Desktop dropdowns:
@@ -104,18 +104,40 @@ export default function TopNavbar() {
   }, []);
 
   return (
-    <header ref={navRef} className="w-full bg-transparent z-30">
+    <header ref={navRef} className="sticky top-0 z-40 w-full">
+      {/* Background lives on its own layer: backdrop-filter on the header itself
+          would make it the containing block for the fixed mobile drawer. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gray-950/85 backdrop-blur-md"
+      />
+      {/* Brand accent line along the bottom edge */}
+      <div aria-hidden="true" className="gradient-line absolute inset-x-0 bottom-0 h-px" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* ── Left: Desktop nav links ──────────────────────────────── */}
+        <div className="flex items-center gap-6 h-14">
+          {/* ── Left: Logo & site name ───────────────────────────────── */}
+          <Link href="/" className="flex shrink-0 items-center gap-2">
+            <Image
+              src="/images/deejPotterLogo.svg"
+              alt="Deej Potter Logo"
+              width={32}
+              height={30}
+            />
+            <span className="hidden sm:inline font-bold text-base text-white">
+              Deej Potter
+            </span>
+          </Link>
+
+          {/* ── Desktop nav links ────────────────────────────────────── */}
           <nav
-            className="hidden lg:flex lg:items-center lg:space-x-4"
+            className="hidden lg:flex lg:items-center lg:gap-1"
             aria-label="Primary"
           >
             {navItems.map((item) => (
+              // Not positioned, so the dropdown panel anchors to the header
+              // and moves with it when the page scrolls.
               <div
                 key={item.label}
-                className="relative"
                 onMouseEnter={() => item.items && handleMouseEnter(item.label)}
                 onMouseLeave={() => item.items && handleMouseLeave()}
               >
@@ -130,7 +152,7 @@ export default function TopNavbar() {
                     onClick={() =>
                       setOpenMenu((s) => (s === item.label ? null : item.label))
                     }
-                    className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30 inline-flex items-center gap-1 ${
+                    className={`px-3 py-2 rounded text-sm font-medium transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 inline-flex items-center gap-1 ${
                       pathname.startsWith(item.href || "")
                         ? "text-primary"
                         : "text-gray-200"
@@ -156,7 +178,7 @@ export default function TopNavbar() {
                   /* Plain nav link (no dropdown) */
                   <Link
                     href={item.href || "#"}
-                    className={`px-3 py-2 rounded text-sm font-medium hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                    className={`px-3 py-2 rounded text-sm font-medium transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 ${
                       pathname.startsWith(item.href || "")
                         ? "text-primary"
                         : "text-gray-200"
@@ -173,16 +195,17 @@ export default function TopNavbar() {
                       .replace(/\s+/g, "-")}-dropdown`}
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
-                    className="fixed left-0 right-0 top-16 border-t border-primary/20 bg-gradient-to-b from-primary/0 to-primary/95 shadow-md backdrop-blur-md"
-                    style={{ zIndex: 50 }}
+                    className="nav-dropdown-in absolute inset-x-0 top-full z-50 bg-gradient-to-b from-gray-950/95 to-primary/45 shadow-bs-lg backdrop-blur-md"
                   >
+                    {/* Dark at the top for legibility, brand green wash below */}
+                    <div aria-hidden="true" className="gradient-line absolute inset-x-0 bottom-0 h-px" />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                      <div className="flex gap-8">
+                      <div className="flex gap-5">
                         {item.items.map((category) => (
                           <div key={category.label} className="min-w-[140px]">
                             <Link
                               href={category.href || "#"}
-                              className="block text-sm font-semibold text-white hover:text-primary mb-2"
+                              className="block text-sm font-semibold text-white transition-colors hover:text-primary mb-2"
                               onClick={() => setOpenMenu(null)}
                             >
                               {category.label}
@@ -194,7 +217,7 @@ export default function TopNavbar() {
                                   <li key={sub.label}>
                                     <Link
                                       href={sub.href || "#"}
-                                      className="block text-sm text-gray-300 hover:text-primary px-1 py-0.5 rounded"
+                                      className="block text-sm text-gray-300 transition-colors hover:text-primary px-1 py-0.5 rounded"
                                       onClick={() => setOpenMenu(null)}
                                     >
                                       {sub.label}
@@ -213,23 +236,8 @@ export default function TopNavbar() {
             ))}
           </nav>
 
-          {/* ── Center: Logo & site name ─────────────────────────────── */}
-          <div className="flex-1 flex items-center justify-center lg:justify-center">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/images/deejPotterLogo.svg"
-                alt="Deej Potter Logo"
-                width={40}
-                height={38}
-              />
-              <span className="hidden sm:inline font-bold text-lg text-white">
-                Deej Potter
-              </span>
-            </Link>
-          </div>
-
           {/* ── Right: Auth button & mobile toggle ───────────────────── */}
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
             <div className="hidden lg:block">
               <AuthButton buttonSize="sm" />

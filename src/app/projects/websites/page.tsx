@@ -1,3 +1,5 @@
+// Page title/description live in ./metadata.tsx; Next.js only reads them from the page or layout.
+export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -60,12 +62,12 @@ export default function Websites(): ReactElement {
         `}
       </Script>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-10">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Websites
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Website Development Projects
           </h1>
           <p className="max-w-3xl text-lg text-gray-600 dark:text-gray-400">
@@ -75,13 +77,13 @@ export default function Websites(): ReactElement {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {websiteProjects.map((project) => (
             <article
               key={project.id}
               className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition-shadow hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
             >
-              <div className="flex h-full flex-col p-6">
+              <div className="flex h-full flex-col p-5">
                 <div className="mb-4 flex justify-center">
                   <Image
                     src={project.image}
@@ -129,8 +131,8 @@ export default function Websites(): ReactElement {
           ))}
         </div>
 
-        <section className="mt-12 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-          <div className="rounded-2xl bg-white p-6 shadow-md dark:bg-gray-900">
+        <section className="mt-8 grid gap-4 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+          <div className="rounded-2xl bg-white p-5 shadow-md dark:bg-gray-900">
             <h2 className="mb-4 text-3xl font-bold">My Web Development Approach</h2>
             <p className="text-gray-600 dark:text-gray-400">
               When building websites, I focus on creating solutions that are not
@@ -147,7 +149,7 @@ export default function Websites(): ReactElement {
             </ul>
           </div>
 
-          <aside className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-sky-500/10 p-6 shadow-sm dark:border-primary/30">
+          <aside className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-sky-500/10 p-5 shadow-sm dark:border-primary/30">
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
               Interested in working together?
             </p>

@@ -1,5 +1,8 @@
 import { getAllPosts } from "@/lib/blog";
 
+// Posts only change on deploy, so build the feed once instead of per request
+export const dynamic = "force-static";
+
 function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

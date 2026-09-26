@@ -11,7 +11,7 @@ const quickLinks = [
   {
     href: "/contact",
     label: "Start with a message",
-    tone: "bg-white text-gray-950",
+    tone: "btn-gradient",
     primary: true,
   },
   {
@@ -27,7 +27,7 @@ const quickLinks = [
   {
     href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
     label: "LinkedIn",
-    tone: "border border-emerald-300/40 text-emerald-200 hover:bg-emerald-400/10",
+    tone: "border border-white/15 text-white/90 hover:bg-white/5",
     external: true,
   },
 ];
@@ -70,7 +70,16 @@ export default function Home(): ReactElement {
         })}
       </Script>
 
-      <section className="bg-gray-950 px-4 pb-16 pt-8 text-white sm:px-6 lg:px-8">
+      <section className="relative isolate overflow-hidden bg-gray-950 px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8">
+        {/* Soft brand glows behind the hero */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-32 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 top-24 -z-10 h-[22rem] w-[22rem] rounded-full bg-info/20 blur-3xl"
+        />
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
             <p className="text-xs uppercase tracking-[0.35em] text-white/55">
@@ -81,13 +90,14 @@ export default function Home(): ReactElement {
             </p>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
             <div>
               <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
                 Website designer - maker - developer
               </p>
-              <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[0.92] sm:text-5xl lg:text-7xl">
-                I build websites, custom tools, and physical parts.
+              <h1 className="mt-5 max-w-4xl text-3xl font-black leading-[0.92] sm:text-4xl lg:text-6xl">
+                I build websites, custom tools, and{" "}
+                <span className="text-gradient">physical parts.</span>
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
                 I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print, engrave, or mill parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
@@ -117,7 +127,7 @@ export default function Home(): ReactElement {
                 )}
               </div>
 
-              <div className="mt-10 grid gap-3 sm:grid-cols-3">
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {heroBullets.map((item) => (
                   <div
                     key={item}
@@ -129,7 +139,7 @@ export default function Home(): ReactElement {
               </div>
             </div>
 
-            <aside className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/30 backdrop-blur-sm">
+            <aside className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/30 backdrop-blur-sm">
               <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">
                 What I help with
               </p>
@@ -159,13 +169,13 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8 dark:bg-gray-950">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-3xl bg-white p-8 shadow-bs-lg dark:bg-gray-900">
+      <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8 dark:bg-gray-950">
+        <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-3xl bg-white p-5 shadow-bs-lg dark:bg-gray-900">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               How it works
             </p>
-            <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-3xl">
               Tell me what you need and I&apos;ll build it.
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300">
@@ -186,7 +196,7 @@ export default function Home(): ReactElement {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-bs-lg dark:border-gray-800 dark:bg-gray-900">
+          <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-bs-lg dark:border-gray-800 dark:bg-gray-900">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Who this is for
             </p>
@@ -206,14 +216,14 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <section className="px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-gray-200 pb-6 dark:border-gray-800 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                 Services
               </p>
-              <h2 className="mt-2 text-3xl font-black text-gray-900 dark:text-white sm:text-4xl">
+              <h2 className="mt-2 text-3xl font-black text-gray-900 dark:text-white sm:text-3xl">
                 What I can build for you
               </h2>
             </div>
@@ -225,19 +235,19 @@ export default function Home(): ReactElement {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {serviceOfferings.map((service) => (
               <article
                 key={service.id}
-                className="group flex flex-col rounded-3xl border border-gray-200 bg-white p-6 shadow-bs transition-all hover:-translate-y-1 hover:shadow-bs-lg dark:border-gray-800 dark:bg-gray-900"
+                className="glow-card group flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-bs dark:border-gray-800 dark:bg-gray-900"
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
                   Service
                 </p>
-                <h3 className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
+                <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white">
                   {service.name}
                 </h3>
-                <p className="mt-3 text-sm leading-7 text-gray-600 dark:text-gray-400">
+                <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
                   {service.description}
                 </p>
                 <ul className="mt-5 space-y-2 text-sm text-gray-600 dark:text-gray-400">
@@ -260,14 +270,14 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <section className="bg-gray-950 px-4 py-16 text-white sm:px-6 lg:px-8">
+      <section className="bg-gray-950 px-4 py-10 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-white/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
                 How I work
               </p>
-              <h2 className="mt-2 text-3xl font-black sm:text-4xl">
+              <h2 className="mt-2 text-3xl font-black sm:text-3xl">
                 A simple process that keeps things moving
               </h2>
             </div>
@@ -276,11 +286,11 @@ export default function Home(): ReactElement {
             </p>
           </div>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {processSteps.map((step, index) => (
               <article
                 key={step.id}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm"
+                className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
               >
                 <p className="text-sm font-semibold text-emerald-300">
                   Step {index + 1}
@@ -295,9 +305,9 @@ export default function Home(): ReactElement {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8 dark:bg-gray-950/60">
-        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
-          <div className="rounded-3xl bg-white p-8 shadow-bs-lg dark:bg-gray-900">
+      <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8 dark:bg-gray-950/60">
+        <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-2">
+          <div className="rounded-3xl bg-white p-5 shadow-bs-lg dark:bg-gray-900">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Explore the work
             </p>
@@ -328,11 +338,11 @@ export default function Home(): ReactElement {
             </div>
           </div>
 
-          <div className="rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-8 text-white shadow-bs-lg">
+          <div className="rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-5 text-white shadow-bs-lg">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
               Want to work together?
             </p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-black sm:text-3xl">
               Start with a message.
             </h2>
             <p className="mt-4 max-w-lg text-base leading-8 text-white/86">

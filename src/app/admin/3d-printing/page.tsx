@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Admin3DPrintingPage() {
   if (!hasClerk) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-20 text-center">
+      <main className="mx-auto max-w-2xl px-4 py-12 text-center">
         <h1 className="text-3xl font-extrabold mb-4">3D Printing Quotes</h1>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           Authentication is not configured.
@@ -26,10 +26,10 @@ export default async function Admin3DPrintingPage() {
   await requireAdminPage();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
+    <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Admin</p>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1">3D Printing Quotes</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight mt-1">3D Printing Quotes</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Review new requests, set prices, manage statuses, and track print jobs.
         </p>

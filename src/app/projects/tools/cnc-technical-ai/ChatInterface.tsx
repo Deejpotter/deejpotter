@@ -194,7 +194,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <LayoutContainer className="min-h-[calc(100vh-9rem)]">
-      <div className="grid min-h-[calc(100vh-9rem)] gap-6 lg:grid-cols-[320px_1fr]">
+      <div className="grid min-h-[calc(100vh-9rem)] gap-4 lg:grid-cols-[320px_1fr]">
         <aside className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <div className="mb-4 flex items-center gap-2">
             <MessageSquare size={20} className="text-primary" />
@@ -256,7 +256,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         </aside>
 
         <section className="flex min-h-0 flex-col rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <div className="flex-1 overflow-y-auto p-5 sm:p-6">
+          <div className="flex-1 overflow-y-auto p-5 sm:p-5">
             {messages.length === 0 ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400">
                 <MessageSquare size={48} className="mb-4 text-primary" />

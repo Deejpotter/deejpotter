@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Payment Cancelled | Deej Potter",
+  title: "Payment Cancelled",
   robots: { index: false },
 };
 
@@ -13,8 +13,8 @@ export default async function CancelledPage({
   const { quoteId } = await searchParams;
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-20 text-center">
-      <div className="text-6xl mb-6">🕊️</div>
+    <main className="max-w-2xl mx-auto px-4 py-12 text-center">
+      <div className="text-5xl mb-6">🕊️</div>
       <h1 className="text-3xl font-extrabold mb-4">Payment cancelled</h1>
       <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
         No charge was made. Your quote is still saved and you can pay whenever you&apos;re ready.

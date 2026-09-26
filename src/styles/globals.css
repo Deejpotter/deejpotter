@@ -43,7 +43,7 @@
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
-  --font-size-base: 1.1rem;
+  --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
@@ -89,6 +89,96 @@
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--color-primary);
     border-radius: 5px;
+  }
+
+  /* ── Brand gradients ─────────────────────────────────────────────── */
+
+  /* Green → blue gradient text for a key phrase */
+  .text-gradient {
+    background-image: linear-gradient(
+      100deg,
+      #34d399 0%,
+      var(--color-primary) 45%,
+      var(--color-info) 100%
+    );
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Thin glowing accent line (header/dropdown edges, section dividers) */
+  .gradient-line {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-primary) 80%, transparent) 30%,
+      color-mix(in oklab, var(--color-info) 70%, transparent) 70%,
+      transparent
+    );
+  }
+
+  /* Primary call to action: brand gradient with a soft glow */
+  .btn-gradient {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-primary),
+      #10b981 60%,
+      var(--color-info)
+    );
+    color: #fff;
+    box-shadow: 0 8px 24px -8px
+      color-mix(in oklab, var(--color-primary) 70%, transparent);
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease;
+  }
+
+  .btn-gradient:hover {
+    box-shadow: 0 10px 32px -6px
+      color-mix(in oklab, var(--color-primary) 90%, transparent);
+  }
+
+  /* Card that lifts with a green glow and border on hover */
+  .glow-card {
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease,
+      border-color 200ms ease;
+  }
+
+  .glow-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+    box-shadow: 0 16px 40px -16px
+      color-mix(in oklab, var(--color-primary) 55%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glow-card:hover {
+      transform: none;
+    }
+  }
+
+  /* Navbar dropdown: quick fade + slide down on open */
+  .nav-dropdown-in {
+    animation: nav-dropdown-in 160ms ease-out;
+  }
+
+  @keyframes nav-dropdown-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-dropdown-in {
+      animation: none;
+    }
   }
 
   .fade-in {

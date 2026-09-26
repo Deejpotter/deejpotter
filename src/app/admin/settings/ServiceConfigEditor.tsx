@@ -143,12 +143,12 @@ export default function ServiceConfigEditor() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
+    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           Admin
         </p>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1">
+        <h1 className="text-3xl font-extrabold tracking-tight mt-1">
           Service Config
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -197,7 +197,7 @@ export default function ServiceConfigEditor() {
       {activeConfig && (
         <div className="space-y-6">
           {/* Enable/disable */}
-          <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+          <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
             <label className="flex items-center gap-3">
               <input
                 type="checkbox"
@@ -212,7 +212,7 @@ export default function ServiceConfigEditor() {
           </section>
 
           {/* Pricing settings */}
-          <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+          <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
             <h2 className="text-lg font-semibold mb-4">Pricing</h2>
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
@@ -269,7 +269,7 @@ export default function ServiceConfigEditor() {
           </section>
 
           {/* Materials */}
-          <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+          <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Materials</h2>
               <button

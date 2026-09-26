@@ -4,21 +4,21 @@ import type { Metadata } from "next";
 import { ReactElement } from "react";
 
 export const metadata: Metadata = {
-  title: "Geek Pride Day Platformer Prototype | Deej Potter",
+  title: "Geek Pride Day Platformer Prototype",
   description:
     "A small browser platformer prototype built from the Geek Pride Day asset pack, ready to embed in a blog post or share directly.",
 };
 
 export default function GeekPrideDayPage(): ReactElement {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
         <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
           <div className="border-b border-gray-200 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 px-6 py-5 dark:border-gray-800">
             <p className="mb-1 text-sm font-semibold uppercase tracking-[0.24em] text-emerald-400">
               Geek Pride Day prototype
             </p>
-            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-3xl">
               Playable browser game preview
             </h1>
           </div>
@@ -32,7 +32,7 @@ export default function GeekPrideDayPage(): ReactElement {
           </div>
         </section>
 
-        <aside className="space-y-6 rounded-3xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-800 dark:bg-gray-900">
+        <aside className="space-y-6 rounded-3xl border border-gray-200 bg-white p-5 shadow-xl dark:border-gray-800 dark:bg-gray-900">
           <div className="flex items-start gap-4">
             <Image
               src="/geek-pride-day/resource/The-worker-in-a-yellow-hard-hat-and-blue-overalls-performs-a.webp"

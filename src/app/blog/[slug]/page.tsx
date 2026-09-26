@@ -5,25 +5,33 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getAllPostSlugs, getPostBySlug, formatDate } from "@/lib/blog";
 
+// Next.js 16 passes route params as a Promise
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
+
+// Posts come from markdown in the repo, so the full list is known at build
+// time. Anything else is a 404 without rendering on demand.
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return { title: "Post Not Found" };
   }
 
   return {
-    title: `${post.title} | Deej Potter`,
+    title: `${post.title}`,
     description: post.excerpt,
     openGraph: {
       title: post.title,
@@ -64,15 +72,16 @@ function renderMarkdown(markdown: string) {
   );
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
   return (
-    <div className="mx-auto max-w-4xl py-8 sm:py-12 lg:py-16">
+    <div className="mx-auto max-w-4xl py-8 sm:py-8 lg:py-10">
       <nav aria-label="breadcrumb" className="mb-6 text-sm text-gray-500 dark:text-gray-400">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
@@ -85,8 +94,8 @@ export default function BlogPostPage({ params }: PageProps) {
         </ol>
       </nav>
 
-      <header className="mb-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:p-10">
-        <h1 className="mb-3 text-4xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-5xl">
+      <header className="mb-8 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5 lg:p-6">
+        <h1 className="mb-3 text-3xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-4xl">
           {post.title}
         </h1>
         <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
@@ -109,7 +118,7 @@ export default function BlogPostPage({ params }: PageProps) {
         )}
       </header>
 
-      <article className="blog-content rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:p-10">
+      <article className="blog-content rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5 lg:p-6">
         {post.sourceType === "markdown" && post.markdown ? renderMarkdown(post.markdown) : post.content}
       </article>
 

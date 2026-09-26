@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getAllPosts, getAllTags, getFeaturedPosts, formatDate } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Insights, Build Notes, and Website Strategy | Deej Potter",
+  title: "Insights, Build Notes, and Website Strategy",
   description:
     "Practical articles on websites, automation, custom tools, and the engineering decisions behind Deej Potter's client work.",
 };
@@ -14,14 +14,14 @@ export default function BlogPage() {
   const tags = getAllTags();
 
   return (
-    <div className="space-y-10">
-      <section className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-8 lg:p-10">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)] lg:items-center">
+    <div className="space-y-6">
+      <section className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-5 lg:p-6">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)] lg:items-center">
           <div>
             <span className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
               Blog, build notes, and practical guides
             </span>
-            <h1 className="mb-4 text-4xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-5xl">
+            <h1 className="mb-4 text-3xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-4xl">
               Articles that show how Deej thinks, builds, and solves problems
             </h1>
             <p className="mb-6 text-lg text-gray-700 dark:text-gray-300">
@@ -50,7 +50,7 @@ export default function BlogPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-900">
+          <div className="rounded-3xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-900">
             <h2 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">What you will find here</h2>
             <ul className="space-y-2 text-gray-700 dark:text-gray-300">
               <li>website design and redesign thinking</li>
@@ -77,7 +77,7 @@ export default function BlogPage() {
                 key={post.slug}
                 className="flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
               >
-                <div className="flex h-full flex-col p-6">
+                <div className="flex h-full flex-col p-5">
                   <div className="mb-3 text-sm text-gray-500 dark:text-gray-400">
                     <time dateTime={post.date}>{formatDate(post.date)}</time>
                     <span className="mx-2">·</span>
@@ -143,7 +143,7 @@ export default function BlogPage() {
                 key={post.slug}
                 className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
               >
-                <div className="p-6 lg:p-8">
+                <div className="p-5 lg:p-6">
                   <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                     <time dateTime={post.date}>{formatDate(post.date)}</time>
                     <span>·</span>

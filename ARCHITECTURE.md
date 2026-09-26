@@ -44,6 +44,17 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 ### DXF/SVG 2D preview — canvas-based, not Three.js
 **Why:** DXF files are 2D linework. Rendering with Three.js is overkill and adds complexity. A canvas renderer with regex-based DXF entity extraction is simpler, lighter, and sufficient for showing the outline. SVGs render as native `<img>` elements. If high-fidelity DXF rendering is needed later, `dxf-render` library can replace the custom parser.
 
+### Rendering and caching: static by default
+**Why:** Almost every public page's content ships with the code (page copy, `src/content`, markdown blog posts, `config/printing-materials.json`), so it only changes on deploy. Static generation at build time is the fastest option and needs no cache rules. ISR would only add regeneration work for content that can't change between deploys.
+
+- **Static (default):** marketing pages, tools, blog list, and blog posts (`generateStaticParams` + `dynamicParams = false`, so unknown slugs 404 at build).
+- **Dynamic:** pages that depend on the request — admin (auth), account (per user), sign-in/up, and Stripe return pages (`searchParams`).
+- **Client data:** tool pages and the quote status lookup fetch their own data in the browser.
+- **When to use ISR:** when a *public* page reads data that changes without a deploy (MongoDB). Render it on the server with `export const revalidate = <seconds>` as a safety net, and call `revalidatePath()` from the admin API that changes the data so edits appear immediately.
+- **Candidate:** the 3D printing page, if the admin-editable service config in MongoDB becomes the source of materials and prices. Today the page, form, and quote API all use `config/printing-materials.json`; the MongoDB config is only edited in admin and isn't read by the public site (it also only seeds PLA and PETG).
+
+**Next.js 16 conventions:** route `params` and `searchParams` are Promises and must be awaited. Page metadata must be exported from `page.tsx` or `layout.tsx` (client-component pages use a pass-through `layout.tsx`); the root template appends "| Deej Potter", so page titles don't include it.
+
 ---
 
 ## Known Issues & Workarounds

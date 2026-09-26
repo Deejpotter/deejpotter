@@ -118,7 +118,7 @@ export default function ModelDropZone({
   if (file && previewUrl) {
     return (
       <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden">
-        <div className="h-72 sm:h-96 relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="h-64 sm:h-80 relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
           <STLViewer url={previewUrl} />
           <button
             onClick={clearFile}
@@ -195,7 +195,7 @@ export default function ModelDropZone({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onClick={() => inputRef.current?.click()}
-        className={`relative rounded-2xl border-2 border-dashed p-10 text-center cursor-pointer transition-colors ${
+        className={`relative rounded-2xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
           isDragOver
             ? "border-primary bg-primary/5"
             : "border-gray-300 dark:border-gray-600 hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50"
@@ -211,7 +211,7 @@ export default function ModelDropZone({
             if (f) handleFile(f);
           }}
         />
-        <div className="text-5xl mb-4">
+        <div className="text-4xl mb-4">
           {isDragOver ? "📥" : "📂"}
         </div>
         <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">

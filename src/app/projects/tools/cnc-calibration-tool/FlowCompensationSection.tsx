@@ -34,7 +34,7 @@ const FlowCompensationSection = () => {
       <div className="border-b border-green-100 bg-green-600 px-6 py-5 text-white dark:border-gray-700">
         <h2 className="text-xl font-bold">Flow Compensation</h2>
       </div>
-      <div className="space-y-5 p-6 lg:p-8">
+      <div className="space-y-5 p-5 lg:p-6">
         <p className="text-gray-700 dark:text-gray-300">
           Flow compensation is used to correct for filament expansion when it is pressed against the layer underneath. Print a 20mm x 20mm x 20mm cube in vase mode,
           measure the top 5 layers near the center, and enter the values below.
@@ -96,7 +96,7 @@ const FlowCompensationSection = () => {
 
         <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 text-center dark:border-gray-700 dark:bg-gray-900">
           <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">New Flow Percentage</h3>
-          <p className="text-4xl font-extrabold text-green-600">{newFlow ? `${newFlow}%` : "—"}</p>
+          <p className="text-3xl font-extrabold text-green-600">{newFlow ? `${newFlow}%` : "—"}</p>
           {newFlow && (
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
               Enter this value into one or more fields of Cura&apos;s flow compensation fields. Shell/Skin values are most important to modify for accurate parts.
