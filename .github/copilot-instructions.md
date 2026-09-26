@@ -33,6 +33,16 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - When converting or adding UI components, add a top-of-file comment describing the purpose, rationale (e.g., Tailwind-first and accessibility considerations), and the testing approach (Vitest unit tests + Playwright visual test). Also include short block comments above major implementation sections explaining _why_ the structure was chosen (accessibility, performance, or testability), not only _what_ the code does.
 - Alias imports use `@/` mapped to `src/` (resolved via `vitest.config.ts` for tests and `tsconfig.json` for the app).
 - CSS and theme overrides: We use **Tailwind CSS** and utility classes in `src/styles` (see `TAILWIND-MIGRATION-PLAN.md` for migration notes). Tailwind-first development is the standard for new components.
+- Design: brand gradients are accents, not fills. Use the `text-gradient`, `gradient-line`, `btn-gradient` and `glow-card` utilities in `globals.css` (see `.github/GRADIENT-GUIDE.md`), one gradient primary button per section, and the compact spacing scale (page titles `text-3xl sm:text-4xl`, sections `py-10`, cards `p-5`). Keep motion short and respect `prefers-reduced-motion`.
+
+## Next.js 16 rules (these have caused real bugs)
+
+- Route `params` and `searchParams` are **Promises**: `const { slug } = await params;`. Reading `params.slug` directly made every blog post 404.
+- Metadata is only read from `page.tsx` or `layout.tsx`. A file named `metadata.tsx` is ignored unless the page re-exports it (`export { metadata } from "./metadata";`). Client-component pages can't export metadata; put it in a pass-through `layout.tsx` beside them.
+- The root layout's title template adds "| Deej Potter". Page titles must not include it.
+- Rendering: pages are **static by default**, which is right for content that ships with the code. Use ISR (`export const revalidate = <seconds>`) only when a public page reads MongoDB, and call `revalidatePath()` from the admin API that changes that data. Current example: `/projects/services/3d-printing`. Details in `ARCHITECTURE.md` ("Rendering and caching").
+- Route handlers are dynamic by default. Add `export const dynamic = "force-static"` when the output only changes on deploy (see `blog/rss.xml`).
+- Unknown URLs render `src/app/not-found.tsx`; runtime errors render `src/app/error.tsx`.
 
 ## Developer Workflows (must-know commands)
 
@@ -43,6 +53,9 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - Docs: `yarn docs` (writes to `public/docs`).
 - CI: GitHub Actions runs lint, stylelint, Vitest and the build on pushes and PRs (`.github/workflows/ci.yml`).
 - Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
+- Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see readme "Local database").
+- Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var.
+- Render: use the `render` CLI (logged in) for services, deploys and logs. It can't set env vars; use the Render MCP `update_environment_variables` for that.
 
 - Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR.
 
@@ -51,18 +64,22 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `R2_SETUP.md`). R2 is only used once its variables are set; until then uploads fall back to the ephemeral local disk.
 - Contact form: `src/app/contact` posts to `src/app/api/contact/route.ts`, which saves leads to the `contact_leads` collection. Admins see them at `/admin/leads`.
 - Quotes: the 3D printing form posts to `/api/3d-printing-quote`. Laser work is engraving only (no laser cutting); laser and milling jobs are requested through the contact form.
+- 3D printing materials and prices come from the MongoDB `service_configs` collection (edited at `/admin/settings`). The quote page and quote API both read it through `getEnabledMaterials("3d_printing")` in `src/lib/db-config.ts`. `config/printing-materials.json` is only a fallback, plus the source of quality/infill presets and the hourly rate.
+- Box shipping calculator: needs `NEXT_PUBLIC_API_URL` (an external backend). It's unset, so the page shows "item database isn't connected".
 - Local env example: see `.env.example` for required environment variables to run local dev and deploy to new hosts.
 
 ## Project-Specific Conventions
 
-- Prefer `type` declarations and keep exported types in `src/types/*` (see `Project.ts`, `RepoObject.ts`).
+- Prefer `type` declarations and keep exported types in `src/types/*` (e.g. `box-shipping-calculator/ShippingItem.ts`, `cutCalculator.ts`).
 - Explain intent with comments — the repo contains many well-scoped explanatory comments; preserve or extend them.
 - Use `use client` only when necessary in server components (Next.js App Router rule).
 - When changing public-facing data shapes, update TypeDoc and add tests for API surface changes.
 
 ## Quick file pointers (examples)
 
-- `src/components/TopNavbar/TopNavbar.tsx` — Primary navigation with mega-menu dropdowns (hover + click), mobile drawer.
+- `src/components/TopNavbar/TopNavbar.tsx` — Sticky primary navigation: logo left, mega-menu dropdown anchored to the header (hover + click, animated), mobile drawer.
+- `src/app/metadata.ts` — Default metadata, title template, and `generatePageMetadata()` for page titles, canonical URLs and OpenGraph.
+- `src/lib/db-config.ts` — Settings and service configs (materials, prices), including the one-off material seeding.
 - `src/contexts/NavbarContext.tsx` — Navigation state (items, dropdown open/close) via React reducer + context.
 - `src/components/ui/auth/AuthProvider.tsx` & `AuthButton.tsx` — Clerk auth state and the navbar sign-in / Admin buttons.
 - `src/proxy.ts` — Clerk request handling and the www to apex redirect.

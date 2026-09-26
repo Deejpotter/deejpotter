@@ -4,8 +4,16 @@
 
 The Box Shipping Calculator is a sophisticated tool designed to optimize packaging for shipping by determining the most efficient box configuration for a set of items. It uses an Extreme Point-based 3D bin packing algorithm to calculate the optimal packing arrangement for items of various shapes and sizes.
 
-Last Updated: May 13, 2025  
+Last Updated: September 26, 2026  
 Author: Deej Potter
+
+## Data source and current status
+
+Items and boxes are not stored in this app. `page.tsx` and `ItemSelectAndCalculate.tsx` call an external backend at `NEXT_PUBLIC_API_URL` (`/api/shipping/items`, `/api/shipping/boxes`, `/api/shipping/process-invoice` and the packing endpoints), originally the `technical-ai` service from the `general-backend` repo.
+
+- **Status (2026-09-26):** `NEXT_PUBLIC_API_URL` is not set on staging or production, and the `technical-ai` backend didn't respond. The page shows "The item database isn't connected (NEXT_PUBLIC_API_URL is not set)" and makes no requests.
+- **Loading:** items load once when the page mounts. An earlier version re-fetched in a loop after a failed load (tens of thousands of requests per visit); see #121.
+- **Next step (open):** either set `NEXT_PUBLIC_API_URL` to a working backend on both Render services, or move items into this app's MongoDB like the other data. Tracked in `.github/TODOs.md`.
 
 ## Features
 
@@ -47,13 +55,13 @@ The main user interface for selecting items and initiating calculations, featuri
 - Item quantity management
 - Item selection for calculation
 
-### 4. `ItemAddForm.tsx` and `ItemEditModal.tsx`
+### 4. `ItemAddForm.tsx`
 
-Components for adding new items and editing existing ones in the database.
+Form for adding new items to the database. Editing and deleting happen inside `ItemSelectAndCalculate.tsx`.
 
-### 5. `InvoiceUploader.tsx`
+### 5. `PdfImport` (`src/components/PdfImport.tsx`)
 
-Component for uploading invoices to automatically extract item information.
+Shared upload component used to send an invoice PDF to the backend's `/api/shipping/process-invoice` endpoint, which extracts item information.
 
 ## Algorithm Details
 
@@ -91,16 +99,14 @@ The calculator uses the following key data structures:
 
 The Box Shipping Calculator uses three primary interfaces:
 
-1. **`ShippingItem`** (`interfaces/box-shipping-calculator/ShippingItem.ts`)
+1. **`ShippingItem`** (`src/types/box-shipping-calculator/ShippingItem.ts`)
    - Represents an item with dimensions, weight, and quantity
    - Properties include id, name, dimensions, weight, and quantity
 
-2. **`ShippingBox`** (`interfaces/box-shipping-calculator/ShippingBox.ts`)
+2. **`ShippingBox`** (`src/types/box-shipping-calculator/ShippingBox.ts`)
    - Represents a box with dimensions and maximum weight capacity
    - Properties include id, name, dimensions, and weightCapacity
 
-3. **`ShippingItemList`** (`interfaces/box-shipping-calculator/ShippingItemList.ts`)
-   - Provides type definitions for managing collections of shipping items
 
 ### Core Algorithm
 
@@ -116,8 +122,8 @@ The 3D bin packing algorithm is implemented in `BoxCalculations.ts` and consists
 - **`page.tsx`**: Main page component that integrates all calculator functionality
 - **`ItemSelectAndCalculate.tsx`**: Handles item selection and initiates calculations
 - **`BoxResultsDisplay.tsx`**: Visualizes packing results with metrics
-- **`ItemAddForm.tsx`** & **`ItemEditModal.tsx`**: Manage item database entries
-- **`InvoiceUploader.tsx`**: Processes invoice data to extract item information
+- **`ItemAddForm.tsx`**: Adds item database entries
+- **`PdfImport`** (`src/components/PdfImport.tsx`): Uploads invoices to extract item information
 
 ### Testing
 

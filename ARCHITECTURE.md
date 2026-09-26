@@ -21,6 +21,20 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 
 **2026-09-25:** Contact leads and grocery orders moved off local JSON files into MongoDB too (Render's disk is wiped on every deploy). Indexes are created by `ensureIndexes()` on the first `getCollection()` call in each process.
 
+**2026-09-26:** `service_configs` (3d_printing) is the source of truth for 3D printing materials and prices. See "Rendering and caching" below.
+
+### Databases: one cluster, one database per environment
+**Date:** 2026-09-26
+**Why:** Local development used to read and write the site's own database, because `.env` pointed at it. Each environment now has its own database on the same Atlas cluster (`cluster0.adstw`), chosen with `DB_NAME` (`src/lib/db.ts`, default `deejpotter`):
+
+| Environment | `DB_NAME` | Notes |
+|---|---|---|
+| Production (Render `deejpotter`) | `deejpotter` | The site's data |
+| Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see readme) |
+| Staging (Render `deejpotter-staging`) | not yet separated | Uses whatever its Render env sets; separating it (`deejpotter_staging`) is a TODO |
+
+All data is test data so far. The databases share one Atlas user, so a local script could still reach `deejpotter` by changing `DB_NAME`. A dev-only Atlas user limited to `deejpotter_dev` would close that off (TODO).
+
 ### Admins from an environment variable
 **Date:** 2026-09-25
 **Why:** Admin access is a server setting, not user data. `isAdminUser()` in `src/lib/admin-auth.ts` checks the signed-in Clerk user ID against `ADMIN_USER_IDS` (comma-separated). Nothing in the app or database can grant or remove admin access. This replaced a MongoDB role, which a bug in `upsertUser` reset to "customer" on every quote submission, and a Clerk `publicMetadata.role` fallback.
@@ -55,6 +69,13 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 - **Seeding (2026-09-26):** the JSON materials seed the MongoDB config once (`materialsSeeded` flag), so materials removed in admin don't come back. Quality/infill presets and the hourly rate still come from the JSON file.
 
 **Next.js 16 conventions:** route `params` and `searchParams` are Promises and must be awaited. Page metadata must be exported from `page.tsx` or `layout.tsx` (client-component pages use a pass-through `layout.tsx`); the root template appends "| Deej Potter", so page titles don't include it.
+
+### Design system: brand gradients as accents
+**Date:** 2026-09-26
+**Why:** Large gradient fills read as dated and hurt legibility (the old see-through dropdown showed the page behind its links). The brand green (`#1E9952`) and info blue (`#59B7CC`) are used as accents instead: glows behind the hero, thin accent lines, gradient text on a key phrase, and one gradient primary button per section. Utilities live in `src/styles/globals.css` and are documented in `.github/GRADIENT-GUIDE.md`. Motion is short (about 150 to 200ms) and turned off for `prefers-reduced-motion`.
+
+- **Navbar:** sticky 56px header, logo top-left, links beside it, theme and auth on the right. The dropdown panel is absolutely positioned inside the header (not `fixed`), so it moves with the header and can't float over the page after scrolling.
+- **Spacing:** one step tighter than the original design so full pages fit on medium screens: 16px body text, page titles `text-3xl`/`sm:text-4xl`, sections `py-10`, cards `p-5`. Prefer these sizes over larger ones for new sections.
 
 ---
 
@@ -155,6 +176,8 @@ src/
 | Variable | Required | Purpose |
 |---|---|---|
 | `MONGODB_URI` | Yes | MongoDB Atlas connection string |
+| `DB_NAME` | Optional | Database name (default `deejpotter`; local `.env` uses `deejpotter_dev`) |
+| `NODE_VERSION` | Yes (Render) | Node.js version Render installs (`24`); overrides `.nvmrc` |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk frontend auth |
 | `CLERK_SECRET_KEY` | Yes | Clerk backend auth |
 | `STRIPE_SECRET_KEY` | Yes | Stripe payments |
@@ -169,6 +192,7 @@ src/
 | `R2_ACCESS_KEY_ID` | Optional | R2 auth |
 | `R2_SECRET_ACCESS_KEY` | Optional | R2 auth |
 | `R2_BUCKET_NAME` | Optional | R2 bucket name (default: "deejpotter") |
+| `NEXT_PUBLIC_API_URL` | Optional | Backend for the box shipping calculator's items. Unset on both services, so the calculator shows "item database isn't connected" |
 
 ### Contact form endpoint
 The contact form always posts to its own `/api/contact`. It used to honour `NEXT_PUBLIC_CONTACT_ENDPOINT` / `NEXT_PUBLIC_BACKEND_URL`, and a leftover value sent submissions to another address, which Chrome blocked with a local network permission prompt. Those variables are no longer read and can be deleted from Render.

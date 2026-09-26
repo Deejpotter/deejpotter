@@ -4,24 +4,42 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ---
 
-## Design + Next.js pass (2026-09-26)
+## Documentation refresh (2026-09-26)
 
-- [x] 1. Brand gradients: verify dropdown, commit (one PR with the rest)
-- [x] 2. Blog post 404 fix
-  - [x] 2.1 Await `params` (Next 16) in `blog/[slug]` page + `generateMetadata`
-  - [x] 2.2 `dynamicParams = false` so unknown slugs 404 at build
-  - [x] 2.3 Confirm posts render locally
-- [x] 3. Per-page titles and descriptions
-  - [x] 3.1 Title template in `src/app/metadata.ts`
-  - [x] 3.2 `metadata` on server pages missing it
-  - [x] 3.3 `layout.tsx` metadata for client-only pages
-- [x] 4. Branded `not-found.tsx` and `error.tsx`
-- [x] 5. Quote form materials/prices from `config/printing-materials.json` via the server page (no hard-coded copy)
-- [x] 6. Rendering/caching approach in `ARCHITECTURE.md` (static default; ISR + `revalidatePath` when public pages read MongoDB)
-- [x] 7. Verify: tsc, vitest, eslint, `next build` route table, browser checks
-- [x] 8. PR into `dev` (#125), staging checked; production awaiting approval
-- [x] MongoDB service config is the source for 3D printing materials; quote page is ISR with revalidatePath on admin save
+- [x] 1. readme.md
+  - [x] 1.1 Local database section (`DB_NAME=deejpotter_dev`, refresh with mongosh)
+  - [x] 1.2 Point to rendering/caching notes
+- [x] 2. ARCHITECTURE.md
+  - [x] 2.1 Databases section (live/dev/staging, shared Atlas user)
+  - [x] 2.2 `DB_NAME` in the env var table
+  - [x] 2.3 Design system decision (gradient accents, sticky navbar, spacing)
+- [x] 3. .github/copilot-instructions.md
+  - [x] 3.1 Next.js 16 rules (await params, metadata in page/layout)
+  - [x] 3.2 Rendering: static default, ISR when public pages read MongoDB
+  - [x] 3.3 Materials source is MongoDB
+  - [x] 3.4 Dev database locally
+  - [x] 3.5 Design utilities; navbar description
+- [x] 4. .github/TODOs.md
+  - [x] 4.1 Node 22 references to 24
+  - [x] 4.2 Completed (last 10) list
+  - [x] 4.3 Follow-ups: staging DB, Atlas dev user, box calculator backend, tautological navbar test
+- [x] 5. .github/GRADIENT-GUIDE.md rewritten for current utilities
+- [x] 6. .github/ISSUES/006-metadata-og.md status
+- [x] 7. Box shipping calculator README: backend/env status
+- [x] 8. ops/README.md legacy banner (site runs on Render)
+- [x] 9. .github/instructions/nextjs.instructions.md: Jest to Vitest
+- [x] 10. Verify referenced paths/classes exist; commit, push, merge dev then main
+
 - [ ] Later: move quality/infill presets and hourly rate into the MongoDB config too
+
+## Follow-ups (2026-09-26)
+
+- [ ] Staging database: set `DB_NAME=deejpotter_staging` on `deejpotter-staging` (check what it uses now) and seed it
+- [ ] Dev-only Atlas user limited to `deejpotter_dev` so local scripts can't reach the site's database
+- [ ] Box shipping calculator: point `NEXT_PUBLIC_API_URL` at the backend, or move items into MongoDB (recommended)
+- [ ] `src/__tests__/navbar-integration.test.ts` asserts string literals equal themselves; replace with real checks or remove
+- [ ] Wire `src/test/setupTests.ts` canvas stub into Vitest setup (silences "getContext not implemented" noise)
+- [ ] OpenGraph image per page / blog JSON-LD (see `.github/ISSUES/006-metadata-og.md`)
 
 ## Dependency follow-ups
 
@@ -92,32 +110,33 @@ deejpotter no longer has a shop; service payments go through quotes.
 
 ## Phase 6: Build & CI
 
-### ✅ CI pipeline — PASSING (Node 22)
+### ✅ CI pipeline — PASSING (Node 24)
 - Lint, stylelint, vitest, build
 
 ### ✅ Workflow fixes — DONE
 - Removed broken Playwright workflow stub
-- Stylelint workflow uses Node 22
-- `.nvmrc` aligned to Node 22
+- CI and stylelint workflows use Node 24 (actions/checkout and setup-node v7)
+- `.nvmrc`, `engines` and Render `NODE_VERSION` on Node 24
 
 ---
 
 ## Completed (last 10)
 
+- Local dev database `deejpotter_dev` (mirrored with mongosh); `.env.example` defaults to it
+- 3D printing materials from MongoDB; quote page ISR + revalidatePath on admin save (#127)
+- Blog posts 404 fixed (Next 16 async params); per-page titles; branded 404/error pages (#125)
+- Quote estimate uses server materials/rates (5 of 9 materials were under-priced) (#125)
+- Brand gradients as accents: header line, dropdown wash, hero glows, gradient CTA (#125)
+- Sticky navbar, logo left, dropdown anchored to header and animated (#124)
+- Site-wide spacing and type scale tightened for medium screens (#123)
+- Box calculator no longer re-fetches items in a loop (#121)
+- Node 24 LTS and latest minor/patch dependencies; Babel/Jest leftovers removed (#119)
 - Contact form always posts to /api/contact (fixed failed submissions)
-- Admins set by ADMIN_USER_IDS; quote submissions no longer demote admins; footer gap fixed
-- Laser engraving only; broken laser/milling quote tabs removed; API rejects laser cutting
-- Contact leads and grocery orders moved to MongoDB; indexes created on first use
-- Security: Next.js 16.3.6, Clerk proxy restored, mongo-crud admin-only, quote payment ownership check
-- Content: redesign folded into web design; plain first-person copy without em dashes
-- Decap CMS removed; blog posts written by hand
-- Generic shop removed; quote-based service payments kept
-- Docs refreshed; leftover files removed (Netlify, Jest, old reports)
-- Quote status lookup migrated to MongoDB quote numbers
 
 ---
 
 ## Notes
 
-- Run tests: `yarn vitest run` (requires Node 22)
+- Run tests: `yarn test` (requires Node 24)
+- Local database: `DB_NAME=deejpotter_dev` (see readme "Local database")
 - Gelato merch site: see `../deejpotter-gelato/README.md`
