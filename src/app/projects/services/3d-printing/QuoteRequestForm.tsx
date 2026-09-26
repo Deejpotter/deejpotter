@@ -45,15 +45,15 @@ const INFILL_PRESETS = [
   { id: "25", label: "25% (Very Strong)", matMul: 1.4 },
 ] as const;
 
-// Material pricing lookup for client-side estimate
-const MATERIAL_RATES: Record<string, number> = {
-  PLA: 0.18,
-  PETG: 0.22,
-  ABS: 0.24,
-  TPU: 0.28,
-};
+/** Material option passed down from the server page (config/printing-materials.json) */
+export interface QuoteMaterialOption {
+  id: string;
+  label: string;
+  ratePerGram: number | null;
+}
 
 function computeClientEstimate(params: {
+  rates: Record<string, number | null>;
   material: string;
   quantity: number;
   quality: string;
@@ -62,7 +62,8 @@ function computeClientEstimate(params: {
 }): { price: number; hours: number; grams: number } | null {
   if (!params.material || params.material === "other" || params.material === "Unsure") return null;
 
-  const perGram = MATERIAL_RATES[params.material] ?? 0.2;
+  const perGram = params.rates[params.material];
+  if (perGram == null) return null; // Custom material: priced manually
   const qualityPreset = QUALITY_PRESETS.find((q) => q.id === params.quality);
   const infillPreset = INFILL_PRESETS.find((i) => Number(i.id) === params.infill);
   const scaleVal = params.scale / 100;
@@ -86,7 +87,16 @@ function formatPrice(aud: number): string {
   return new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD" }).format(aud);
 }
 
-export default function QuoteRequestForm(): ReactElement {
+export default function QuoteRequestForm({
+  materials,
+}: {
+  materials: QuoteMaterialOption[];
+}): ReactElement {
+  // Same rates the server validates and prices against
+  const rates = useMemo(
+    () => Object.fromEntries(materials.map((m) => [m.id, m.ratePerGram])),
+    [materials]
+  );
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -103,7 +113,7 @@ export default function QuoteRequestForm(): ReactElement {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const clientEstimate = useMemo(
-    () => computeClientEstimate({ material, quantity, quality, infill, scale }),
+    () => computeClientEstimate({ rates, material, quantity, quality, infill, scale }),
     [material, quantity, quality, infill, scale]
   );
 
@@ -209,16 +219,11 @@ export default function QuoteRequestForm(): ReactElement {
           <div className={fieldShell}>
             <label htmlFor="quote-material" className={labelClass}>Material</label>
             <select id="quote-material" name="material" className={selectClass} value={material} onChange={(e) => handleMaterialChange(e.target.value)}>
-              <option value="PLA">PLA (general purpose)</option>
-              <option value="PETG">PETG (strong, durable)</option>
-              <option value="ABS">ABS (tough, heat-resistant)</option>
-              <option value="TPU">TPU (flexible)</option>
-              <option value="carbon_fiber_pla">Carbon Fiber PLA (stiff)</option>
-              <option value="PC">Polycarbonate (very strong)</option>
-              <option value="ASA">ASA (UV-resistant)</option>
-              <option value="Nylon">Nylon (very strong)</option>
-              <option value="wood_pla">Wood-Filled PLA</option>
-              <option value="other">Other (I&apos;ll describe it)</option>
+              {materials.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
             </select>
           </div>
 

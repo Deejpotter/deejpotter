@@ -2,6 +2,12 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import QuoteRequestForm from './QuoteRequestForm';
 
+const testMaterials = [
+  { id: "PLA", label: "PLA", ratePerGram: 0.18 },
+  { id: "PETG", label: "PETG", ratePerGram: 0.22 },
+  { id: "other", label: "Other (I'll describe it)", ratePerGram: null },
+];
+
 describe('QuoteRequestForm', () => {
   beforeEach(() => {
     // @ts-ignore
@@ -21,7 +27,7 @@ describe('QuoteRequestForm', () => {
   });
 
   test('submits the quote request form with file upload', async () => {
-    render(<QuoteRequestForm />);
+    render(<QuoteRequestForm materials={testMaterials} />);
 
     fireEvent.change(screen.getByLabelText(/Name/i), {
       target: { value: 'Deej Potter' },

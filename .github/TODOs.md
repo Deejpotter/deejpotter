@@ -16,7 +16,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
   - [x] 3.2 `metadata` on server pages missing it
   - [x] 3.3 `layout.tsx` metadata for client-only pages
 - [x] 4. Branded `not-found.tsx` and `error.tsx`
-- [ ] 5. Quote form materials/prices from `config/printing-materials.json` via the server page (no hard-coded copy)
+- [x] 5. Quote form materials/prices from `config/printing-materials.json` via the server page (no hard-coded copy)
 - [ ] 6. Rendering/caching approach in `ARCHITECTURE.md` (static default; ISR + `revalidatePath` when public pages read MongoDB)
 - [ ] 7. Verify: tsc, vitest, eslint, `next build` route table, browser checks
 - [ ] 8. PR into `dev`, check staging, ask before production
