@@ -64,8 +64,5 @@
     "src/**/__tests__/**",
     "src/**/*.stories.*",
     "src/stories/**"
-  ],
-  "types": [
-    "jest"
   ]
 }

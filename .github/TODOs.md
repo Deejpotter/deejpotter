@@ -4,6 +4,21 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 ---
 
+## Dependency refresh (branch `chore/deps-refresh`)
+
+- [x] 1. Branch from up-to-date `dev`
+- [x] 2. GitHub Actions on checkout/setup-node v7 (already on `dev`; #98/#104 obsolete)
+- [x] 3. Node 24: `engines`, `.nvmrc`, workflow `node-version`, `@types/node` 24.x
+- [x] 4. Remove Babel/Jest leftovers if unused (vitest is the runner)
+- [x] 5. Patch/minor updates to latest within current majors, regenerate `yarn.lock`
+- [x] 6. Verify: tsc, vitest, eslint, stylelint, `next build`
+- [x] 7. Push and open PR into `dev`
+- [x] 8. Close superseded Dependabot PRs (#77, #87, #97, #98, #104, #107, #108)
+- [ ] 9. Set Node 24 on both Render services (manual)
+- [ ] Later (separate PRs): vitest 5 + jsdom 30 + jest-dom 7; svix 2; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
+
+---
+
 ## Phase 1: E-commerce (removed)
 
 The generic shop (product pages, cart, shop checkout, admin orders/products) was removed. Payments now only go through the quote system (Phase 3). Print-on-demand lives in the sibling repo `../deejpotter-gelato/`.
