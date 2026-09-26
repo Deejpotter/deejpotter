@@ -104,8 +104,13 @@ export default function ItemSelectAndCalculate({
    * Load available items when component mounts
    * This moved from the parent page component to avoid blocking the entire page
    */
+  // Runs once. onItemsChange is recreated on every parent render, so depending
+  // on it (or on the item count) re-fired this after every failed load and
+  // looped forever.
+  const hasRequestedItems = useRef(false);
   useEffect(() => {
-    if (!isMounted) return; // Don't load until component is mounted on client
+    if (!isMounted || hasRequestedItems.current) return; // Client only, once
+    hasRequestedItems.current = true;
 
     const loadItemsOnMount = async () => {
       if (availableItems.length === 0) {
@@ -120,7 +125,8 @@ export default function ItemSelectAndCalculate({
       }
     };
     loadItemsOnMount();
-  }, [isMounted, availableItems.length, onItemsChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   /**
    * Calculate total weight of selected items including quantities
