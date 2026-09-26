@@ -30,12 +30,12 @@ export default function Services(): ReactElement {
         })}
       </Script>
 
-      <div className="space-y-10 py-8 sm:py-12 lg:py-16">
+      <div className="space-y-6 py-8 sm:py-8 lg:py-10">
         <section className="mx-auto max-w-4xl text-center">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
             Services
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
             Practical digital work, built properly
           </h1>
           <p className="mx-auto max-w-3xl text-lg text-gray-600 dark:text-gray-300">
@@ -47,7 +47,7 @@ export default function Services(): ReactElement {
           {serviceOfferings.map((service) => (
             <article
               key={service.id}
-              className="flex h-full flex-col rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex h-full flex-col rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800"
             >
               <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">{service.name}</h2>
               <p className="text-gray-600 dark:text-gray-300">{service.description}</p>
@@ -71,8 +71,8 @@ export default function Services(): ReactElement {
           ))}
         </section>
 
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
-          <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <section className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
+          <div className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <h2 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">How I approach service work</h2>
             <div className="space-y-4 text-gray-600 dark:text-gray-300">
               <p>
@@ -84,7 +84,7 @@ export default function Services(): ReactElement {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-gray-100 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+          <div className="rounded-3xl border border-gray-100 bg-gray-50 p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
             <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Best fit projects</h2>
             <ul className="space-y-2 text-gray-700 dark:text-gray-300">
               <li>Small business websites</li>

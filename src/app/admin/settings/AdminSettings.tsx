@@ -133,7 +133,7 @@ export default function AdminSettings() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
           <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded" />
@@ -143,16 +143,16 @@ export default function AdminSettings() {
   }
 
   if (!settings) {
-    return <div className="p-10 text-red-500">Failed to load settings.</div>;
+    return <div className="p-6 text-red-500">Failed to load settings.</div>;
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
+    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           Admin
         </p>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1">
+        <h1 className="text-3xl font-extrabold tracking-tight mt-1">
           Settings
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -182,9 +182,9 @@ export default function AdminSettings() {
         )}
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Business Hours */}
-        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <h2 className="text-lg font-semibold mb-4">Business Hours</h2>
           <div className="grid gap-2">
             {settings.businessHours.map((day, i) => (
@@ -225,7 +225,7 @@ export default function AdminSettings() {
         </section>
 
         {/* Holidays */}
-        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Holidays</h2>
             <button
@@ -269,7 +269,7 @@ export default function AdminSettings() {
         </section>
 
         {/* Vacations */}
-        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Vacations / Time Off</h2>
             <button
@@ -324,7 +324,7 @@ export default function AdminSettings() {
         </section>
 
         {/* Shipping */}
-        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <h2 className="text-lg font-semibold mb-4">Shipping & Delivery</h2>
           <div className="space-y-4">
             <div>

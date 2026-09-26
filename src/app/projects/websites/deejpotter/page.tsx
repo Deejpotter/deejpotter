@@ -44,13 +44,13 @@ const roadmap = [
 
 export default function Deejpotter(): ReactElement {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <header className="mb-10">
+        <header className="mb-6">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Website project
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
             deejpotter.com
           </h1>
           <p className="max-w-4xl text-lg text-gray-600 dark:text-gray-400">
@@ -61,7 +61,7 @@ export default function Deejpotter(): ReactElement {
           </p>
         </header>
 
-        <section className="mb-10 space-y-4">
+        <section className="mb-6 space-y-4">
           <h2 className="text-3xl font-bold">What this site needs to do</h2>
           <p className="max-w-4xl text-gray-700 dark:text-gray-300">
             deejpotter.com is not just a portfolio archive. It needs to work as
@@ -76,10 +76,10 @@ export default function Deejpotter(): ReactElement {
           </p>
         </section>
 
-        <section className="mb-10">
+        <section className="mb-6">
           <h2 className="mb-4 text-3xl font-bold">Current stack</h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            <article className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+          <div className="grid gap-4 md:grid-cols-2">
+            <article className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h3 className="mb-4 text-xl font-bold">Core technologies</h3>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 {currentStack.map((item) => (
@@ -90,7 +90,7 @@ export default function Deejpotter(): ReactElement {
                 ))}
               </ul>
             </article>
-            <article className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <article className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h3 className="mb-4 text-xl font-bold">Working approach</h3>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex gap-3">
@@ -114,13 +114,13 @@ export default function Deejpotter(): ReactElement {
           </div>
         </section>
 
-        <section className="mb-10">
+        <section className="mb-6">
           <h2 className="mb-4 text-3xl font-bold">Product and marketing priorities</h2>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             {priorities.map((priority) => (
               <article
                 key={priority.title}
-                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900"
+                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900"
               >
                 <h3 className="mb-3 text-xl font-bold">{priority.title}</h3>
                 <p className="mb-0 text-gray-600 dark:text-gray-400">{priority.body}</p>
@@ -129,7 +129,7 @@ export default function Deejpotter(): ReactElement {
           </div>
         </section>
 
-        <section className="mb-10 space-y-4">
+        <section className="mb-6 space-y-4">
           <h2 className="text-3xl font-bold">Client-fit direction</h2>
           <p className="max-w-4xl text-gray-700 dark:text-gray-300">
             The strongest fit for this site is clients who want to discuss a
@@ -146,7 +146,7 @@ export default function Deejpotter(): ReactElement {
           </p>
         </section>
 
-        <section className="mb-10">
+        <section className="mb-6">
           <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
           <ul className="space-y-2 text-gray-700 dark:text-gray-300">
             {roadmap.map((item) => (
@@ -158,7 +158,7 @@ export default function Deejpotter(): ReactElement {
           </ul>
         </section>
 
-        <section className="mb-10">
+        <section className="mb-6">
           <h2 className="mb-4 text-3xl font-bold">Links</h2>
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
@@ -186,7 +186,7 @@ export default function Deejpotter(): ReactElement {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-sky-200 bg-sky-50 p-6 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30">
+        <section className="rounded-2xl border border-sky-200 bg-sky-50 p-5 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30">
           <h3 className="mb-2 text-2xl font-bold">Want the broader context?</h3>
           <p className="mb-0 text-gray-700 dark:text-gray-300">
             Explore more <Link href="/projects/websites">website projects</Link>,

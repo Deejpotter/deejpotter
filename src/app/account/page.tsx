@@ -38,12 +38,12 @@ export default async function AccountPage() {
   const isAdmin = await isAdminUser(user.id).catch(() => false);
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10 sm:py-12 lg:py-16">
+    <main className="max-w-5xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           My Account
         </p>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1">
+        <h1 className="text-3xl font-extrabold tracking-tight mt-1">
           Welcome, {user.firstName || "there"}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -71,8 +71,8 @@ export default async function AccountPage() {
         </div>
 
         {quotes.length === 0 ? (
-          <div className="px-6 py-12 text-center">
-            <div className="text-4xl mb-4">📦</div>
+          <div className="px-6 py-8 text-center">
+            <div className="text-3xl mb-4">📦</div>
             <p className="text-gray-500 dark:text-gray-400 mb-4">
               You haven&apos;t submitted any quote requests yet.
             </p>

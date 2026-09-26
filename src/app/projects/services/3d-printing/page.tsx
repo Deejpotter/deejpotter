@@ -67,13 +67,13 @@ export default function ThreeDPrintingService(): ReactElement {
         })}
       </Script>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-10">
+          <div className="mb-6">
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
               Service
             </p>
-            <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+            <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
               On-demand 3D printing
             </h1>
             <p className="max-w-3xl text-lg text-gray-600 dark:text-gray-400">
@@ -81,12 +81,12 @@ export default function ThreeDPrintingService(): ReactElement {
             </p>
           </div>
 
-          <section className="mb-10">
-            <div className="grid gap-6 md:grid-cols-2">
+          <section className="mb-6">
+            <div className="grid gap-4 md:grid-cols-2">
               {benefits.map((benefit) => (
                 <article
                   key={benefit.title}
-                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-shadow hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+                  className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md transition-shadow hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
                 >
                   <h2 className="mb-3 text-2xl font-bold">{benefit.title}</h2>
                   <p className="mb-0 text-gray-600 dark:text-gray-400">{benefit.body}</p>
@@ -95,7 +95,7 @@ export default function ThreeDPrintingService(): ReactElement {
             </div>
           </section>
 
-          <section className="mb-10 grid gap-6 lg:grid-cols-2 lg:items-start">
+          <section className="mb-6 grid gap-4 lg:grid-cols-2 lg:items-start">
             <div>
               <h2 className="mb-3 text-3xl font-bold">Good fit for</h2>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
@@ -107,7 +107,7 @@ export default function ThreeDPrintingService(): ReactElement {
                 ))}
               </ul>
             </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h2 className="mb-3 text-2xl font-bold">How quoting works</h2>
               <p className="text-gray-600 dark:text-gray-400">
                 The upload form gives you an estimate straight away. The final price also depends on a few things:
@@ -123,7 +123,7 @@ export default function ThreeDPrintingService(): ReactElement {
             </div>
           </section>
 
-          <section className="mb-10 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-sky-500/10 p-6 shadow-sm dark:from-primary/15 dark:via-primary/10 dark:to-sky-500/10">
+          <section className="mb-6 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-sky-500/10 p-5 shadow-sm dark:from-primary/15 dark:via-primary/10 dark:to-sky-500/10">
             <h2 className="mb-3 text-3xl font-bold">Next-day local turnaround</h2>
             <p className="mb-3 text-gray-700 dark:text-gray-300">
               If you&apos;re local and the print is a reasonable size, I can often have it ready the next day. Big prints or parts that need a lot of cleanup take longer.
@@ -133,7 +133,7 @@ export default function ThreeDPrintingService(): ReactElement {
             </p>
           </section>
 
-          <section className="mb-10">
+          <section className="mb-6">
             <h2 className="mb-4 text-3xl font-bold">How it works</h2>
             <div className="grid gap-4 md:grid-cols-2">
               {[
@@ -155,15 +155,15 @@ export default function ThreeDPrintingService(): ReactElement {
             </div>
           </section>
 
-          <section className="mb-10">
+          <section className="mb-6">
             <QuoteRequestForm />
           </section>
 
-          <section className="mb-10">
+          <section className="mb-6">
             <QuoteStatusLookup />
           </section>
 
-          <section className="mb-10 rounded-2xl border border-sky-200 bg-sky-50 p-6 text-sky-950 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-50">
+          <section className="mb-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sky-950 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-50">
             <h2 className="mb-2 text-2xl font-bold">Instant quotes: upload a file and see the price</h2>
             <p className="mb-0">
               Drop in your STL file to see a 3D preview and a price estimate straight away.

@@ -169,7 +169,7 @@ export default function ProjectsPage() {
     <h3>Component Migration</h3>
     <p>Angular components → React components was straightforward:</p>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <h4>Before (Angular)</h4>
         <pre className="bg-gray-50 p-3 rounded"><code>{`@Component({

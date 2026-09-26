@@ -32,10 +32,10 @@ export default function GradientHeroSection({
 
   return (
     <section
-      className={`bg-gradient-to-b ${fromClass} ${toClass} ${textColour} py-20`}
+      className={`bg-gradient-to-b ${fromClass} ${toClass} ${textColour} py-12`}
     >
       <div className="container mx-auto px-4 text-center">
-        <h1 className="text-6xl font-extrabold">{title}</h1>
+        <h1 className="text-5xl font-extrabold">{title}</h1>
         <p className="mt-4 text-xl">{subtitle}</p>
       </div>
     </section>

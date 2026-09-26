@@ -68,23 +68,23 @@ export default function CadCamFabricationService(): ReactElement {
         })}
       </Script>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Service
           </p>
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+          <h1 className="mb-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
             CAD, CAM, and fabrication
           </h1>
-          <p className="mb-10 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
+          <p className="mb-6 max-w-4xl text-lg text-gray-600 dark:text-gray-400">
             Laser engraving, CNC milling, and CAD file prep for people who need a physical result without learning the software. Send me a DXF or SVG and I&apos;ll get back to you with a price.
           </p>
 
-          <section className="mb-10 grid gap-6 md:grid-cols-3">
+          <section className="mb-6 grid gap-4 md:grid-cols-3">
             {whatIDo.map((item) => (
               <article
                 key={item.title}
-                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900"
+                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900"
               >
                 <h2 className="mb-2 text-xl font-bold">{item.title}</h2>
                 <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
@@ -92,8 +92,8 @@ export default function CadCamFabricationService(): ReactElement {
             ))}
           </section>
 
-          <section className="mb-10 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+          <section className="mb-6 grid gap-4 lg:grid-cols-2">
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h2 className="mb-3 text-2xl font-bold">Who this is for</h2>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex gap-3">
@@ -114,7 +114,7 @@ export default function CadCamFabricationService(): ReactElement {
                 </li>
               </ul>
             </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md dark:border-gray-800 dark:bg-gray-900">
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
               <h2 className="mb-3 text-2xl font-bold">How it starts</h2>
               <p className="mb-3 text-gray-700 dark:text-gray-300">
                 Send me a message with your file, or with what you are trying to make: a sketch, a description, or a rough idea. I will tell you whether it fits and
@@ -127,7 +127,7 @@ export default function CadCamFabricationService(): ReactElement {
             </div>
           </section>
 
-          <section className="mb-10">
+          <section className="mb-6">
             <h2 className="mb-4 text-3xl font-bold">Questions people ask</h2>
             <div className="space-y-3">
               {faqs.map((faq, index) => (

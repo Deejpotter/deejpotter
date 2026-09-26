@@ -177,7 +177,7 @@ export default function TopNavbar() {
                     style={{ zIndex: 50 }}
                   >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                      <div className="flex gap-8">
+                      <div className="flex gap-5">
                         {item.items.map((category) => (
                           <div key={category.label} className="min-w-[140px]">
                             <Link
