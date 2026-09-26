@@ -10,7 +10,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 2. GitHub Actions on checkout/setup-node v7 (already on `dev`; #98/#104 obsolete)
 - [x] 3. Node 24: `engines`, `.nvmrc`, workflow `node-version`, `@types/node` 24.x
 - [x] 4. Remove Babel/Jest leftovers if unused (vitest is the runner)
-- [ ] 5. Patch/minor updates to latest within current majors, regenerate `yarn.lock`
+- [x] 5. Patch/minor updates to latest within current majors, regenerate `yarn.lock`
 - [ ] 6. Verify: tsc, vitest, eslint, stylelint, `next build`
 - [ ] 7. Push and open PR into `dev`
 - [ ] 8. Close superseded Dependabot PRs (#77, #87, #97, #98, #104, #107, #108)
