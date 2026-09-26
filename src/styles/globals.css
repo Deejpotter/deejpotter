@@ -101,7 +101,6 @@
       var(--color-primary) 45%,
       var(--color-info) 100%
     );
-    -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
