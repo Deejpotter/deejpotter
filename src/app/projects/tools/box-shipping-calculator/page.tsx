@@ -119,6 +119,13 @@ const BoxShippingCalculatorPage: React.FC = () => {
    * Debug: Log the items loaded from the database to verify weights and data integrity.
    */
   const loadItems = async () => {
+    if (!API_URL) {
+      setImportError(
+        "The item database isn't connected (NEXT_PUBLIC_API_URL is not set)."
+      );
+      setItems([]);
+      return;
+    }
     try {
       const response = await fetchAvailableItems();
       if (response.success && response.data) {
