@@ -131,7 +131,7 @@ Always move client-only UI into a Client Component and import it directly in you
   - In Next.js 16, `serverRuntimeConfig` / `publicRuntimeConfig` are removed. Use environment variables instead.
   - `NEXT_PUBLIC_` variables are **inlined at build time** (changing them after build won’t affect a deployed build).
   - If you truly need runtime evaluation of env in a dynamic context, follow Next.js guidance (e.g., call `connection()` before reading `process.env`).
-- **Testing:** Use Jest, React Testing Library, or Playwright. Write tests for all critical logic and components.
+- **Testing:** Use Vitest with React Testing Library for unit and component tests, and Playwright for E2E. This project does not use Jest. Write tests for all critical logic and components. Async server components are tested by awaiting them first: `render(await Page())`.
 - **Accessibility:** Use semantic HTML and ARIA attributes. Test with screen readers.
 - **Performance:**
   - Use built-in Image and Font optimization.

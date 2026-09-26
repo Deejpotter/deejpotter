@@ -1,5 +1,7 @@
 # deejpotter deployment ops
 
+> **Legacy (not in use).** Since 2026 the site runs on **Render**: `dev` auto-deploys to `deejpotter-staging` (staging.deejpotter.com) and `main` to `deejpotter` (deejpotter.com), on Node 24 via the `NODE_VERSION` env var. See `readme.md`, `ARCHITECTURE.md` ("Environment Variables (Render)") and `.github/copilot-instructions.md`. This PM2 setup (and `ecosystem.config.cjs`) is kept only for reference if the site is ever self-hosted again.
+
 ## Purpose
 This app is deployed without Coolify using:
 - separate deploy clones for each branch/environment
