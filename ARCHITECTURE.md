@@ -59,20 +59,20 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 **Why:** DXF files are 2D linework. Rendering with Three.js is overkill and adds complexity. A canvas renderer with regex-based DXF entity extraction is simpler, lighter, and sufficient for showing the outline. SVGs render as native `<img>` elements. If high-fidelity DXF rendering is needed later, `dxf-render` library can replace the custom parser.
 
 ### Rendering and caching: static by default
-**Why:** Almost every public page's content ships with the code (page copy, `src/content`, markdown blog posts, `config/printing-materials.json`), so it only changes on deploy. Static generation at build time is the fastest option and needs no cache rules. ISR would only add regeneration work for content that can't change between deploys.
+**Why:** Almost every public page's content ships with the code (page copy, `src/content`, markdown blog posts, `config/printing-materials.json`), so it only changes on deploy. Static generation at build time is the fastest option and needs no cache rules. ISR exists to "update static content without rebuilding the entire site" ([Vercel, 2026c](#ref-vercel-2026c)), so it only adds regeneration work for content that can't change between deploys.
 
-- **Static (default):** marketing pages, tools, blog list, and blog posts (`generateStaticParams` + `dynamicParams = false`, so unknown slugs 404 at build).
+- **Static (default):** marketing pages, tools, blog list, and blog posts (`generateStaticParams` + `dynamicParams = false`: only the generated paths are served and anything else returns 404 ([Vercel, 2026b](#ref-vercel-2026b))).
 - **Dynamic:** pages that depend on the request — admin (auth), account (per user), sign-in/up, and Stripe return pages (`searchParams`).
 - **Client data:** tool pages and the quote status lookup fetch their own data in the browser.
-- **When to use ISR:** when a *public* page reads data that changes without a deploy (MongoDB). Render it on the server with `export const revalidate = <seconds>` as a safety net, and call `revalidatePath()` from the admin API that changes the data so edits appear immediately.
+- **When to use ISR:** when a *public* page reads data that changes without a deploy (MongoDB). Render it on the server with `export const revalidate = <seconds>` as a safety net, and call `revalidatePath()` from the admin API that changes the data. `revalidatePath` invalidates the cached page and the next request regenerates it, rather than regenerating eagerly ([Vercel, 2026c](#ref-vercel-2026c)).
 - **In use:** the 3D printing page is ISR (`revalidate = 3600`). It reads enabled materials and prices from the MongoDB service config, and the admin service-config API calls `revalidatePath()` on save. The quote API validates and prices against the same config. If the database is unreachable at build or regeneration, the page falls back to `config/printing-materials.json`.
 - **Seeding (2026-09-26):** the JSON materials seed the MongoDB config once (`materialsSeeded` flag), so materials removed in admin don't come back. Quality/infill presets and the hourly rate still come from the JSON file.
 
-**Next.js 16 conventions:** route `params` and `searchParams` are Promises and must be awaited. Page metadata must be exported from `page.tsx` or `layout.tsx` (client-component pages use a pass-through `layout.tsx`); the root template appends "| Deej Potter", so page titles don't include it.
+**Next.js 16 conventions:** synchronous access to `params` and `searchParams` was removed in Next.js 16, so they must be awaited ([Vercel, 2026d](#ref-vercel-2026d)). Metadata is exported from `layout.js` or `page.js` and is only supported in Server Components ([Vercel, 2026a](#ref-vercel-2026a)), so client-component pages use a pass-through `layout.tsx`. The root layout's `title.template` applies to child route segments ([Vercel, 2026a](#ref-vercel-2026a)) and appends "| Deej Potter", so page titles don't include it. `GET` route handlers have been dynamic by default since v15 ([Vercel, 2026e](#ref-vercel-2026e)), which is why `blog/rss.xml` sets `dynamic = "force-static"`.
 
 ### Design system: brand gradients as accents
 **Date:** 2026-09-26
-**Why:** Large gradient fills read as dated and hurt legibility (the old see-through dropdown showed the page behind its links). The brand green (`#1E9952`) and info blue (`#59B7CC`) are used as accents instead: glows behind the hero, thin accent lines, gradient text on a key phrase, and one gradient primary button per section. Utilities live in `src/styles/globals.css` and are documented in `.github/GRADIENT-GUIDE.md`. Motion is short (about 150 to 200ms) and turned off for `prefers-reduced-motion`.
+**Why:** Large gradient fills read as dated and hurt legibility (the old see-through dropdown showed the page behind its links). The brand green (`#1E9952`) and info blue (`#59B7CC`) are used as accents instead: glows behind the hero, thin accent lines, gradient text on a key phrase, and one gradient primary button per section. Utilities live in `src/styles/globals.css` and are documented in `.github/GRADIENT-GUIDE.md`. Motion is short (about 150 to 200ms) and turned off for `prefers-reduced-motion`, which detects that a user has asked their device to minimise non-essential motion ([MDN contributors, n.d.](#ref-mdn-reduced-motion)).
 
 - **Navbar:** sticky 56px header, logo top-left, links beside it, theme and auth on the right. The dropdown panel is absolutely positioned inside the header (not `fixed`), so it moves with the header and can't float over the page after scrolling.
 - **Spacing:** one step tighter than the original design so full pages fit on medium screens: 16px body text, page titles `text-3xl`/`sm:text-4xl`, sections `py-10`, cards `p-5`. Prefer these sizes over larger ones for new sections.
@@ -177,7 +177,7 @@ src/
 |---|---|---|
 | `MONGODB_URI` | Yes | MongoDB Atlas connection string |
 | `DB_NAME` | Optional | Database name (default `deejpotter`; local `.env` uses `deejpotter_dev`) |
-| `NODE_VERSION` | Yes (Render) | Node.js version Render installs (`24`); overrides `.nvmrc` |
+| `NODE_VERSION` | Yes (Render) | Node.js version Render installs (`24`). Takes precedence over `.node-version`, `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)). Node 24 is an LTS release, and Node.js advises only LTS releases in production ([OpenJS Foundation, n.d.](#ref-openjs-releases)) |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk frontend auth |
 | `CLERK_SECRET_KEY` | Yes | Clerk backend auth |
 | `STRIPE_SECRET_KEY` | Yes | Stripe payments |
@@ -196,3 +196,23 @@ src/
 
 ### Contact form endpoint
 The contact form always posts to its own `/api/contact`. It used to honour `NEXT_PUBLIC_CONTACT_ENDPOINT` / `NEXT_PUBLIC_BACKEND_URL`, and a leftover value sent submissions to another address, which Chrome blocked with a local network permission prompt. Those variables are no longer read and can be deleted from Render.
+
+---
+
+## References
+
+<a id="ref-mdn-reduced-motion"></a>MDN contributors. (n.d.). *prefers-reduced-motion*. MDN Web Docs. Retrieved September 26, 2026, from https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
+
+<a id="ref-openjs-releases"></a>OpenJS Foundation. (n.d.). *Node.js releases*. Node.js. Retrieved September 26, 2026, from https://nodejs.org/en/about/previous-releases
+
+<a id="ref-render-node"></a>Render. (n.d.). *Setting your Node.js version*. Render Docs. Retrieved September 26, 2026, from https://render.com/docs/node-version
+
+<a id="ref-vercel-2026a"></a>Vercel. (2026a, August 25). *generateMetadata*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-metadata
+
+<a id="ref-vercel-2026b"></a>Vercel. (2026b, August 25). *generateStaticParams*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-static-params
+
+<a id="ref-vercel-2026c"></a>Vercel. (2026c, June 23). *How to implement Incremental Static Regeneration (ISR)*. Next.js Docs. https://nextjs.org/docs/app/guides/incremental-static-regeneration
+
+<a id="ref-vercel-2026d"></a>Vercel. (2026d, August 25). *How to upgrade to version 16*. Next.js Docs. https://nextjs.org/docs/app/guides/upgrading/version-16
+
+<a id="ref-vercel-2026e"></a>Vercel. (2026e, April 30). *route.js*. Next.js Docs. https://nextjs.org/docs/app/api-reference/file-conventions/route
