@@ -19,7 +19,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 5. Quote form materials/prices from `config/printing-materials.json` via the server page (no hard-coded copy)
 - [x] 6. Rendering/caching approach in `ARCHITECTURE.md` (static default; ISR + `revalidatePath` when public pages read MongoDB)
 - [x] 7. Verify: tsc, vitest, eslint, `next build` route table, browser checks
-- [ ] 8. PR into `dev`, check staging, ask before production
+- [x] 8. PR into `dev` (#125), staging checked; production awaiting approval
 - [ ] Decision needed: make MongoDB service config the source for public 3D printing materials (then ISR the page)
 
 ## Dependency follow-ups
