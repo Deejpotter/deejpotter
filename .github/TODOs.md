@@ -14,7 +14,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 6. Verify: tsc, vitest, eslint, stylelint, `next build`
 - [x] 7. Push and open PR into `dev`
 - [x] 8. Close superseded Dependabot PRs (#77, #87, #97, #98, #104, #107, #108)
-- [ ] 9. Set Node 24 on both Render services (manual)
+- [ ] 9. Node 24 on Render: staging done 2026-09-26; production when dev is merged to main
 - [ ] Later (separate PRs): vitest 5 + jsdom 30 + jest-dom 7; svix 2; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
 
 ---
