@@ -2,19 +2,18 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createQuote } from "@/lib/db-quotes";
 import { analyzeQuoteFile } from "@/lib/quote-analysis";
-import { getMaterialIds } from "@/lib/printing-materials";
+import { getEnabledMaterials } from "@/lib/db-config";
 import { upsertUser } from "@/lib/db-users";
 import { notifyQuoteReceived } from "@/lib/email";
 import { escapeHtml } from "@/lib/utils";
 
-const materialIds = getMaterialIds();
-const materialEnum = z.enum(materialIds as [string, ...string[]]);
 
 const quoteSchema = z.object({
   name: z.string().trim().min(2).max(100),
   email: z.string().trim().email(),
   suburb: z.string().trim().min(2).max(120),
-  material: materialEnum,
+  // Checked against the enabled materials in MongoDB after parsing
+  material: z.string().trim().min(1).max(60),
   customMaterial: z.string().trim().max(200).optional().default(""),
   quantity: z.coerce.number().int().min(1).max(1000),
   localFulfilment: z.enum(["yes", "no", "unsure"]),
@@ -98,6 +97,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // Materials and prices are admin-editable (MongoDB service config)
+    const materials = await getEnabledMaterials("3d_printing");
+    const selectedMaterial = materials.find((m) => m.id === parsed.data.material);
+    if (!selectedMaterial) {
+      return NextResponse.json(
+        { error: "That material isn't available. Please pick another or choose Other." },
+        { status: 400 }
+      );
+    }
+
     const modelFile = formData.get("modelFile");
     if (!isFileLike(modelFile) || modelFile.size === 0) {
       return NextResponse.json(
@@ -128,6 +137,7 @@ export async function POST(request: Request) {
         quality: parsed.data.quality,
         infill: parsed.data.infill,
         scalePercent: parsed.data.scalePercent,
+        ratePerGram: selectedMaterial.ratePerGram,
       }
     );
 

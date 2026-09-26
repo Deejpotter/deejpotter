@@ -10,6 +10,7 @@
  */
 
 import { getCollection } from "./db";
+import { loadConfig as loadPrintingConfig } from "./printing-materials";
 import {
   SettingsDocSchema,
   ServiceConfigDocSchema,
@@ -79,34 +80,24 @@ export async function updateSettings(
 
 // ─── Service Configs ────────────────────────────────────────────────
 
-const DEFAULT_3D_MATERIALS: MaterialConfig[] = [
-  {
-    id: "PLA",
-    label: "PLA",
-    fullName: "PLA (Polylactic Acid)",
-    ratePerGram: 0.18,
-    density: 1.24,
-    defaultLayerHeight: 0.2,
-    defaultInfill: 15,
-    description: "General-purpose filament. Easy to print, low warp.",
-    colors: ["Black", "White", "Grey", "Blue", "Red", "Green", "Orange", "Yellow", "Purple", "Transparent"],
-    suggested: true,
+// Seeded from config/printing-materials.json so the database starts with the
+// same materials the site has always offered. After that, MongoDB is the
+// source of truth and the admin settings page edits it.
+const DEFAULT_3D_MATERIALS: MaterialConfig[] = loadPrintingConfig().materials.map(
+  (m) => ({
+    id: m.id,
+    label: m.label,
+    fullName: m.fullName,
+    ratePerGram: m.ratePerGram,
+    density: m.density_g_per_cm3,
+    defaultLayerHeight: m.defaultLayerHeight,
+    defaultInfill: m.defaultInfill,
+    description: m.description,
+    colors: m.colors,
+    suggested: m.suggested,
     enabled: true,
-  },
-  {
-    id: "PETG",
-    label: "PETG",
-    fullName: "PETG (Polyethylene Terephthalate Glycol)",
-    ratePerGram: 0.22,
-    density: 1.27,
-    defaultLayerHeight: 0.2,
-    defaultInfill: 15,
-    description: "Stronger and more durable than PLA. Good for functional parts.",
-    colors: ["Black", "White", "Grey", "Blue", "Red", "Clear"],
-    suggested: true,
-    enabled: true,
-  },
-];
+  }),
+);
 
 const DEFAULT_3D_SETTINGS: ServiceSettings = {
   hourlyRate: 5,
@@ -251,10 +242,34 @@ export async function getServiceConfig(serviceType: ServiceType) {
       displayName: defaults.displayName,
       materials: defaults.materials,
       settings: defaults.settings,
+      materialsSeeded: true,
       updatedAt: new Date().toISOString(),
     };
     await col.insertOne(newDoc);
     return ServiceConfigDocSchema.parse(newDoc);
+  }
+
+  // One-off: older 3D printing configs were created with only PLA and PETG.
+  // Add any default materials they're missing, once. The flag stops a
+  // material the admin later removes from coming back.
+  if (serviceType === "3d_printing" && !doc.materialsSeeded) {
+    const existingIds = new Set(
+      (doc.materials ?? []).map((m: { id: string }) => m.id),
+    );
+    const missing = DEFAULT_3D_MATERIALS.filter((m) => !existingIds.has(m.id));
+    const seeded = await col.findOneAndUpdate(
+      { serviceType, materialsSeeded: { $ne: true } },
+      {
+        // The collection is untyped, so the driver cannot type-check $push
+        $push: { materials: { $each: missing } } as never,
+        $set: { materialsSeeded: true, updatedAt: new Date().toISOString() },
+      },
+      { returnDocument: "after" },
+    );
+    // A concurrent request may have seeded it first; read the current doc
+    return ServiceConfigDocSchema.parse(
+      seeded ?? (await col.findOne({ serviceType })),
+    );
   }
 
   return ServiceConfigDocSchema.parse(doc);
