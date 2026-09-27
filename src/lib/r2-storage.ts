@@ -17,8 +17,12 @@
 
 const QUOTE_PREFIX = "quotes/";
 
-function quoteKey(quoteId: string, fileName: string): string {
-  return `${process.env.R2_KEY_PREFIX ?? ""}${QUOTE_PREFIX}${quoteId}/${fileName}`;
+function quoteKey(
+  quoteId: string,
+  fileName: string,
+  prefix = process.env.R2_KEY_PREFIX ?? "",
+): string {
+  return `${prefix}${QUOTE_PREFIX}${quoteId}/${fileName}`;
 }
 
 function getR2Config() {
@@ -167,8 +171,8 @@ export async function deleteFromR2(key: string): Promise<boolean> {
 }
 
 /**
- * Build the R2 key for a quote file.
+ * Build the R2 key for a quote file. `prefix` defaults to `R2_KEY_PREFIX`.
  */
-export function getR2Key(quoteId: string, fileName: string): string {
-  return quoteKey(quoteId, fileName);
+export function getR2Key(quoteId: string, fileName: string, prefix?: string): string {
+  return quoteKey(quoteId, fileName, prefix);
 }

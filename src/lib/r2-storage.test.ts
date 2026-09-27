@@ -13,4 +13,9 @@ describe("getR2Key", () => {
     vi.stubEnv("R2_KEY_PREFIX", "staging/");
     expect(getR2Key("Q-1", "part.stl")).toBe("staging/quotes/Q-1/part.stl");
   });
+
+  it("uses an explicit prefix over the env var", () => {
+    vi.stubEnv("R2_KEY_PREFIX", "staging/");
+    expect(getR2Key("Q-1", "part.stl", "")).toBe("quotes/Q-1/part.stl");
+  });
 });

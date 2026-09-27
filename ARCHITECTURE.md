@@ -47,7 +47,7 @@ Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is o
 
 **Staging isolation (2026-09-27):**
 - **MongoDB:** separate, via `DB_NAME=deejpotter_staging` (copied from production on 2026-09-27)
-- **R2:** same bucket, but staging sets `R2_KEY_PREFIX=staging/`, so its uploads go under `staging/quotes/...`. Files uploaded before this are stored with unprefixed keys, which still download because the full key is saved on the quote
+- **R2:** same bucket, but staging sets `R2_KEY_PREFIX=staging/`, so its uploads go under `staging/quotes/...`. Quotes copied from production keep their files at the unprefixed key; `readQuoteFileBuffer` in `db-quotes.ts` tries the prefixed key first and then the unprefixed one
 - **Stripe:** staging still has **live** keys, so a checkout there takes real money. Swapping them for test keys (and a test webhook secret) has to be done by Deej
 - **Clerk:** staging uses a test instance
 
