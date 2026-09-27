@@ -106,7 +106,7 @@
     "stylelint-scss": "^7.3.0",
     "tailwindcss": "^4.3.3",
     "typedoc": "^0.28.20",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.11"
   }
 }
