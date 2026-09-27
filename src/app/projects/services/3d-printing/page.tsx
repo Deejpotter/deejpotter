@@ -163,10 +163,10 @@ export default async function ThreeDPrintingService(): Promise<ReactElement> {
             <h2 className="mb-4 text-3xl font-bold">How it works</h2>
             <div className="grid gap-4 md:grid-cols-2">
               {[
-                "Upload your STL file (or tell me what you need and I&apos;ll model it)",
+                "Upload your STL file (or tell me what you need and I'll model it)",
                 "See a 3D preview and get an instant price",
                 "Choose your material, quality, and delivery",
-                "Pay online. Your part arrives. That&apos;s it.",
+                "I check the file and email you the price with a secure payment link. Your part arrives. That's it.",
               ].map((step, index) => (
                 <article
                   key={step}

@@ -14,6 +14,7 @@ import {
   QuoteInputSchema,
   type ServiceType,
   type QuoteStatus,
+  type QuoteStatusHistoryEntry,
 } from "./db-schemas";
 
 // ─── File Storage ───────────────────────────────────────────────────
@@ -192,10 +193,13 @@ export async function createQuote(input: {
       estimate: null,
     },
     payment: {
-      stripeCheckoutUrl: null,
+      paymentLinkId: null,
+      paymentLinkUrl: null,
       stripeSessionId: null,
+      amountPaid: null,
       paidAt: null,
     },
+    statusHistory: [{ status: "new" as QuoteStatus, at: now, by: "customer" as const }],
     queuePosition: null,
     turnaroundEstimate: null,
     estimatedCompletionDate: null,
@@ -258,14 +262,26 @@ export async function updateQuote(
     estimatedCompletionDate?: string | null;
     queuePosition?: number | null;
     adminNotes?: string | null;
-    stripeCheckoutUrl?: string | null;
+    paymentLinkId?: string | null;
+    paymentLinkUrl?: string | null;
     stripeSessionId?: string | null;
+    amountPaid?: number | null;
     paidAt?: string | null;
     delivery?: {
       method?: "pickup" | "local_delivery" | "shipped";
       cost?: number | null;
       estimate?: string | null;
+      service?: string | null;
+      carrier?: string | null;
+      trackingNumber?: string | null;
+      shippedAt?: string | null;
     };
+    /**
+     * Who caused a status change. Only recorded when the status actually
+     * changes, so editing a note doesn't add a timeline entry.
+     */
+    changedBy?: QuoteStatusHistoryEntry["by"];
+    historyNote?: string;
   },
 ) {
   const col = await getCollection("quotes");
@@ -279,19 +295,75 @@ export async function updateQuote(
   if (patch.estimatedCompletionDate !== undefined) update.estimatedCompletionDate = patch.estimatedCompletionDate;
   if (patch.queuePosition !== undefined) update.queuePosition = patch.queuePosition;
   if (patch.adminNotes !== undefined) update.adminNotes = patch.adminNotes;
-  if (patch.stripeCheckoutUrl !== undefined) update["payment.stripeCheckoutUrl"] = patch.stripeCheckoutUrl;
+  if (patch.paymentLinkId !== undefined) update["payment.paymentLinkId"] = patch.paymentLinkId;
+  if (patch.paymentLinkUrl !== undefined) update["payment.paymentLinkUrl"] = patch.paymentLinkUrl;
   if (patch.stripeSessionId !== undefined) update["payment.stripeSessionId"] = patch.stripeSessionId;
+  if (patch.amountPaid !== undefined) update["payment.amountPaid"] = patch.amountPaid;
   if (patch.paidAt !== undefined) update["payment.paidAt"] = patch.paidAt;
-  if (patch.delivery?.method !== undefined) update["delivery.method"] = patch.delivery.method;
-  if (patch.delivery?.cost !== undefined) update["delivery.cost"] = patch.delivery.cost;
-  if (patch.delivery?.estimate !== undefined) update["delivery.estimate"] = patch.delivery.estimate;
+  if (patch.delivery) {
+    for (const [key, value] of Object.entries(patch.delivery)) {
+      if (value !== undefined) update[`delivery.${key}`] = value;
+    }
+  }
 
-  const result = await col.findOneAndUpdate(
-    { quoteNumber },
-    { $set: update },
-    { returnDocument: "after" },
-  );
+  const ops: Record<string, unknown> = { $set: update };
+  if (patch.status !== undefined) {
+    const entry: QuoteStatusHistoryEntry = {
+      status: patch.status,
+      at: now,
+      by: patch.changedBy ?? "admin",
+      ...(patch.historyNote ? { note: patch.historyNote } : {}),
+    };
+    ops.$push = { statusHistory: entry };
+  }
+
+  const result = await col.findOneAndUpdate({ quoteNumber }, ops, {
+    returnDocument: "after",
+  });
   return result;
+}
+
+/**
+ * Move new quotes to "reviewing" the first time the admin list is loaded, so
+ * customers can see their request has been looked at without Deej having to
+ * click anything. Only "new" quotes change, so reloading does nothing more.
+ */
+export async function markQuotesReviewed(quoteNumbers: number[]): Promise<number> {
+  if (quoteNumbers.length === 0) return 0;
+  const col = await getCollection("quotes");
+  const now = new Date().toISOString();
+  const entry: QuoteStatusHistoryEntry = { status: "reviewing", at: now, by: "admin" };
+  const result = await col.updateMany(
+    { quoteNumber: { $in: quoteNumbers }, status: "new" },
+    { $set: { status: "reviewing", updatedAt: now }, $push: { statusHistory: entry } } as never,
+  );
+  return result.modifiedCount;
+}
+
+/**
+ * Records a Stripe event id and reports whether it was new. Stripe can send
+ * the same event more than once, and Render restarts wipe memory, so the ids
+ * live in MongoDB; the unique index makes the check safe if two deliveries
+ * arrive at the same moment.
+ */
+export async function claimStripeEvent(eventId: string, type: string): Promise<boolean> {
+  const col = await getCollection("stripe_events");
+  try {
+    await col.insertOne({ _id: eventId, type, receivedAt: new Date().toISOString() } as never);
+    return true;
+  } catch (err) {
+    if ((err as { code?: number }).code === 11000) return false;
+    throw err;
+  }
+}
+
+/**
+ * Forgets an event whose processing failed, so Stripe's retry is handled
+ * instead of being skipped as a duplicate.
+ */
+export async function releaseStripeEvent(eventId: string): Promise<void> {
+  const col = await getCollection("stripe_events");
+  await col.deleteOne({ _id: eventId } as never);
 }
 
 export async function getQuoteForCustomer(

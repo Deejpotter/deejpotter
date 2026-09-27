@@ -193,13 +193,38 @@ export const QuoteDeliverySchema = z.object({
   isLocal: z.boolean(),
   cost: z.number().nullable(),
   estimate: z.string().nullable(),
+  // Which postal service the customer picked (e.g. AUS_PARCEL_REGULAR), so the
+  // admin ships with the same service the customer was quoted for.
+  service: z.string().nullable().optional(),
+  // Filled in by the admin "Ship" action; the shipped email and the customer's
+  // status page build the tracking link from these.
+  carrier: z.string().nullable().optional(),
+  trackingNumber: z.string().nullable().optional(),
+  shippedAt: z.string().nullable().optional(),
 });
 
+// Customers pay through a Stripe Payment Link the admin sends from the quote,
+// so the link is stored here to show it again and to switch it off later.
+// The old Checkout Session fields stay optional so quotes created before
+// 2026-09-27 still validate.
 export const QuotePaymentSchema = z.object({
-  stripeCheckoutUrl: z.string().nullable(),
+  paymentLinkId: z.string().nullable().optional(),
+  paymentLinkUrl: z.string().nullable().optional(),
+  stripeCheckoutUrl: z.string().nullable().optional(),
   stripeSessionId: z.string().nullable(),
+  amountPaid: z.number().nullable().optional(),
   paidAt: z.string().nullable(),
 });
+
+// One entry per status change. Customers see it as a timeline and the admin
+// can see who moved a quote (the webhook, an admin action or a manual fix).
+export const QuoteStatusHistoryEntrySchema = z.object({
+  status: QuoteStatusEnum,
+  at: z.string(),
+  by: z.enum(["customer", "admin", "stripe", "system"]),
+  note: z.string().optional(),
+});
+export type QuoteStatusHistoryEntry = z.infer<typeof QuoteStatusHistoryEntrySchema>;
 
 export const QuoteDocSchema = z.object({
   quoteNumber: z.number().int().positive(),
@@ -223,6 +248,8 @@ export const QuoteDocSchema = z.object({
   delivery: QuoteDeliverySchema,
   // Payment
   payment: QuotePaymentSchema,
+  // Timeline (missing on quotes created before 2026-09-27)
+  statusHistory: z.array(QuoteStatusHistoryEntrySchema).optional(),
   // Queue
   queuePosition: z.number().nullable(),
   turnaroundEstimate: z.string().nullable(),

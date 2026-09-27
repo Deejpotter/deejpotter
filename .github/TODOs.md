@@ -36,34 +36,34 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Branch `feat/quote-order-flow`.
 
-- [ ] 1. Order data and status workflow
-  - [ ] 1.1 Schema: payment link, amount paid, service/carrier/tracking, statusHistory
-  - [ ] 1.2 `quote-workflow.ts` (labels, allowed actions, next status)
-  - [ ] 1.3 db-quotes: new fields, history, markQuotesReviewed
-  - [ ] 1.4 Transition tests
-- [ ] 2. Emails for each status
-  - [ ] 2.1 Customer templates per action
-  - [ ] 2.2 Admin payment notice
-  - [ ] 2.3 Safe subjects and escaping
-  - [ ] 2.4 Template tests
-- [ ] 3. Stripe Payment Links
-  - [ ] 3.1 Create link (print + shipping lines, quote metadata, thank-you redirect, single use)
-  - [ ] 3.2 Deactivate on cancel/decline/paid/re-send
-  - [ ] 3.3 Tests
-- [ ] 4. Webhook marks paid
-  - [ ] 4.1 Record payment, paid status, deactivate link, emails
-  - [ ] 4.2 stripe_events idempotency in MongoDB
-  - [ ] 4.3 Remove session-expired handling
-  - [ ] 4.4 Tests
-- [ ] 5. Admin actions
-  - [ ] 5.1 Action API
-  - [ ] 5.2 Auto "reviewing"
-  - [ ] 5.3 Buttons, Send quote and Ship forms, timeline
-  - [ ] 5.4 Manual override without emails
-- [ ] 6. Remove on-site payment
-  - [ ] 6.1 Delete checkout routes, PayNowButton, cancelled page
-  - [ ] 6.2 Status lookup + account: status text, timeline, emailed link
-  - [ ] 6.3 Page copy
+- [x] 1. Order data and status workflow
+  - [x] 1.1 Schema: payment link, amount paid, service/carrier/tracking, statusHistory
+  - [x] 1.2 `quote-workflow.ts` (labels, allowed actions, next status)
+  - [x] 1.3 db-quotes: new fields, history, markQuotesReviewed
+  - [x] 1.4 Transition tests
+- [x] 2. Emails for each status
+  - [x] 2.1 Customer templates per action
+  - [x] 2.2 Admin payment notice
+  - [x] 2.3 Safe subjects and escaping
+  - [x] 2.4 Template tests
+- [x] 3. Stripe Payment Links
+  - [x] 3.1 Create link (print + shipping lines, quote metadata, thank-you redirect, single use)
+  - [x] 3.2 Deactivate on cancel/decline/paid/re-send
+  - [x] 3.3 Tests
+- [x] 4. Webhook marks paid
+  - [x] 4.1 Record payment, paid status, deactivate link, emails
+  - [x] 4.2 stripe_events idempotency in MongoDB
+  - [x] 4.3 Remove session-expired handling
+  - [x] 4.4 Tests
+- [x] 5. Admin actions
+  - [x] 5.1 Action API
+  - [x] 5.2 Auto "reviewing"
+  - [x] 5.3 Buttons, Send quote and Ship forms, timeline
+  - [x] 5.4 Manual override without emails
+- [x] 6. Remove on-site payment
+  - [x] 6.1 Delete checkout routes, PayNowButton, cancelled page
+  - [x] 6.2 Status lookup + account: status text, timeline, emailed link
+  - [x] 6.3 Page copy
 - [ ] 7. Accurate weight
   - [ ] 7.1 Real volume and surface area
   - [ ] 7.2 Shared print-estimate module
