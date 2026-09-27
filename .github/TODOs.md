@@ -46,11 +46,11 @@ Checked on staging. See ARCHITECTURE.md "Design system" for the rules to keep (a
 
 ## Staging isolation (2026-09-27)
 
-Staging's Render env was checked on 2026-09-27. It shares production's database, R2 bucket and live Stripe keys.
+Staging's Render env was checked on 2026-09-27. It shared production's database, R2 bucket and live Stripe keys.
 
-- [ ] Set `DB_NAME=deejpotter_staging` on `deejpotter-staging` and seed it from `deejpotter` with mongosh
-- [ ] Stripe test keys (`sk_test_`/`pk_test_`) on staging, plus a test webhook secret
-- [ ] Separate R2 bucket for staging (or a prefix)
+- [x] `DB_NAME=deejpotter_staging` on `deejpotter-staging`, copied from `deejpotter` (2026-09-27)
+- [ ] (Deej) Stripe test keys (`sk_test_`/`pk_test_`) on staging, plus a test webhook secret
+- [x] R2: `R2_KEY_PREFIX=staging/` on staging (same bucket, separate prefix)
 
 ## Follow-ups (2026-09-26)
 

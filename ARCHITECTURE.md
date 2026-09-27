@@ -31,7 +31,7 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 |---|---|---|
 | Production (Render `deejpotter`) | `deejpotter` | The site's data |
 | Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see readme) |
-| Staging (Render `deejpotter-staging`) | `deejpotter` (unset, so the default) | **Shares production data.** Checked 2026-09-27: staging has no `DB_NAME`, so it reads and writes the site's database. Setting `DB_NAME=deejpotter_staging` and seeding it is a TODO |
+| Staging (Render `deejpotter-staging`) | `deejpotter_staging` | Set 2026-09-27 and copied from `deejpotter` (before that, staging shared production's data) |
 
 All data is test data so far. The databases share one Atlas user, so a local script could still reach `deejpotter` by changing `DB_NAME`. A dev-only Atlas user limited to `deejpotter_dev` would close that off (TODO).
 
@@ -45,12 +45,11 @@ All data is test data so far. The databases share one Atlas user, so a local scr
 
 Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is on the free plan, so it sleeps when idle and the first request after that is slow. Don't read a slow first load there as a performance problem. `/api/health` reports status and database connection.
 
-**Staging is not isolated from production (2026-09-27).** Staging shares these with production:
-- the MongoDB database (no `DB_NAME`, see above)
-- the R2 bucket (`deejpotter`)
-- **live** Stripe keys (`sk_live_`/`pk_live_`), so a checkout on staging takes real money
-
-Only Clerk is separate (staging uses a test instance). Fixes are listed in `.github/TODOs.md`: a staging database, Stripe test keys and a staging bucket or prefix.
+**Staging isolation (2026-09-27):**
+- **MongoDB:** separate, via `DB_NAME=deejpotter_staging` (copied from production on 2026-09-27)
+- **R2:** same bucket, but staging sets `R2_KEY_PREFIX=staging/`, so its uploads go under `staging/quotes/...`. Files uploaded before this are stored with unprefixed keys, which still download because the full key is saved on the quote
+- **Stripe:** staging still has **live** keys, so a checkout there takes real money. Swapping them for test keys (and a test webhook secret) has to be done by Deej
+- **Clerk:** staging uses a test instance
 
 ### Admins from an environment variable
 **Date:** 2026-09-25
@@ -209,6 +208,7 @@ src/
 | `R2_ACCESS_KEY_ID` | Optional | R2 auth |
 | `R2_SECRET_ACCESS_KEY` | Optional | R2 auth |
 | `R2_BUCKET_NAME` | Optional | R2 bucket name (default: "deejpotter") |
+| `R2_KEY_PREFIX` | Optional | Prepended to R2 keys; staging uses `staging/` so its uploads stay apart from production |
 | `NEXT_PUBLIC_API_URL` | Optional | Backend for the box shipping calculator's items. Unset on both services, so the calculator shows "item database isn't connected" |
 
 ### Contact form endpoint

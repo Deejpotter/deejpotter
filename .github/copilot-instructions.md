@@ -57,7 +57,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var, which overrides `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)).
 - Render: use the `render` CLI (logged in) for services, deploys and logs. It can't set env vars; use the Render MCP `update_environment_variables` for that.
 
-- Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com, free plan, sleeps when idle) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR. Check design and content changes on staging, not just in code. Staging currently shares production's database, R2 bucket and live Stripe keys (ARCHITECTURE.md "Hosting"), so don't submit test payments or quotes there.
+- Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com, free plan, sleeps when idle) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR. Check design and content changes on staging, not just in code. Staging has its own database (`deejpotter_staging`) and R2 prefix, but still has live Stripe keys (ARCHITECTURE.md "Hosting"), so don't make payments there.
 
 ## Integration Points & Environment
 
