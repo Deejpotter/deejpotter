@@ -66,6 +66,12 @@ export const ShippingConfigSchema = z.object({
   freeLocalDelivery: z.boolean(),
   freePickup: z.boolean(),
   auspostApiKey: z.string().optional(),
+  // Used by the quote form's delivery prices (src/lib/shipping.ts). Optional
+  // so settings saved before 2026-09-27 still load; defaults live there.
+  originPostcode: z.string().regex(/^\d{4}$/).optional(),
+  localPostcodes: z.array(z.string().regex(/^\d{4}$/)).optional(),
+  localDeliveryFee: z.number().min(0).max(500).optional(),
+  packagingGrams: z.number().min(0).max(5000).optional(),
 });
 
 export const SettingsDocSchema = z.object({

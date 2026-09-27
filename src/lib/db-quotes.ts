@@ -120,6 +120,10 @@ export async function createQuote(input: {
     suburb?: string;
     postcode?: string;
     address?: string;
+    /** Delivery price worked out at submission; null means Deej prices it. */
+    cost?: number | null;
+    service?: string | null;
+    label?: string | null;
   };
   notes?: string;
   file?: File;
@@ -140,10 +144,12 @@ export async function createQuote(input: {
     notes: input.notes || "",
   });
 
+  // Pickup and local delivery are the local options; the old suburb-name
+  // check stays for quotes submitted without a delivery choice.
   const isLocal =
-    input.delivery.suburb
-      ?.toLowerCase()
-      .includes("frankston") || false;
+    input.delivery.method !== "shipped" ||
+    input.delivery.suburb?.toLowerCase().includes("frankston") ||
+    false;
 
   // Generate sequential quote number
   const highest = await col
@@ -189,8 +195,11 @@ export async function createQuote(input: {
       postcode: validated.delivery.postcode || "",
       address: validated.delivery.address || "",
       isLocal,
-      cost: null,
-      estimate: null,
+      cost: input.delivery.cost ?? null,
+      // "estimate" holds the delivery label (e.g. "Parcel Post"); the quote
+      // email and payment link use it as the shipping line's name.
+      estimate: input.delivery.label ?? null,
+      service: input.delivery.service ?? null,
     },
     payment: {
       paymentLinkId: null,

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createQuote } from "@/lib/db-quotes";
 import { analyzeQuoteFile } from "@/lib/quote-analysis";
-import { getEnabledMaterials } from "@/lib/db-config";
+import { getEnabledMaterials, getSettings } from "@/lib/db-config";
+import { getDeliveryOptions, isValidPostcode, shippingSettingsFrom } from "@/lib/shipping";
 import { upsertUser } from "@/lib/db-users";
 import { notifyQuoteReceived } from "@/lib/email";
 import { escapeHtml } from "@/lib/utils";
@@ -16,7 +17,12 @@ const quoteSchema = z.object({
   material: z.string().trim().min(1).max(60),
   customMaterial: z.string().trim().max(200).optional().default(""),
   quantity: z.coerce.number().int().min(1).max(1000),
-  localFulfilment: z.enum(["yes", "no", "unsure"]),
+  // Delivery: the postcode prices postage, and the option is what the
+  // customer picked from the live list. Older form posts without them are
+  // treated as pickup, and Deej sorts delivery out when sending the quote.
+  postcode: z.string().trim().regex(/^\d{4}$/, "Enter a 4-digit postcode.").optional().or(z.literal("")),
+  deliveryOption: z.enum(["pickup", "local_delivery", "AUS_PARCEL_REGULAR", "AUS_PARCEL_EXPRESS"]).optional().default("pickup"),
+  localFulfilment: z.enum(["yes", "no", "unsure"]).optional(),
   needsNextDay: z.enum(["yes", "no"]),
   notes: z.string().max(3000).optional().default(""),
   // Interactive builder options
@@ -71,6 +77,42 @@ function sanitiseFilename(name: string): string {
   return name.replace(/[\\/:*?"<>|]/g, "-").slice(0, 200);
 }
 
+/**
+ * Works out the delivery price again on the server from the uploaded file,
+ * rather than trusting the number the browser showed, so a tampered form
+ * can't set its own shipping price. If the option isn't available any more
+ * (e.g. Australia Post was down) the choice is kept but the cost is left
+ * empty for Deej to fill in when sending the quote.
+ */
+async function priceDelivery(
+  option: "pickup" | "local_delivery" | "AUS_PARCEL_REGULAR" | "AUS_PARCEL_EXPRESS",
+  postcode: string,
+  quantity: number,
+  analysis: Awaited<ReturnType<typeof analyzeQuoteFile>>,
+): Promise<{ method: "pickup" | "local_delivery" | "shipped"; cost: number | null; service: string | null; label: string | null }> {
+  const method: "pickup" | "local_delivery" | "shipped" =
+    option === "pickup" ? "pickup" : option === "local_delivery" ? "local_delivery" : "shipped";
+  if (option === "pickup") return { method, cost: 0, service: null, label: "Pickup" };
+
+  const fallback: { method: typeof method; cost: number | null; service: string | null; label: string | null } = { method, cost: null, service: method === "shipped" ? option : null, label: method === "shipped" ? null : "Local delivery" };
+  if (!isValidPostcode(postcode) || !analysis.boundingBoxMm || !analysis.estimatedMaterialGrams) return fallback;
+
+  try {
+    const dbShipping = await getSettings().then((s) => s.shipping).catch(() => null);
+    const { options } = await getDeliveryOptions({
+      postcode,
+      sizeMm: analysis.boundingBoxMm,
+      gramsEach: analysis.estimatedMaterialGrams / quantity,
+      quantity,
+      settings: shippingSettingsFrom(dbShipping),
+    });
+    const match = options.find((o) => o.id === option);
+    return match ? { method, cost: match.price, service: method === "shipped" ? option : null, label: match.label } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -81,7 +123,9 @@ export async function POST(request: Request) {
       material: formData.get("material"),
       customMaterial: formData.get("customMaterial") ?? "",
       quantity: formData.get("quantity"),
-      localFulfilment: formData.get("localFulfilment"),
+      postcode: formData.get("postcode") ?? "",
+      deliveryOption: formData.get("deliveryOption") || undefined,
+      localFulfilment: formData.get("localFulfilment") || undefined,
       needsNextDay: formData.get("needsNextDay"),
       notes: formData.get("notes") ?? "",
       quality: formData.get("quality") ?? "standard",
@@ -138,8 +182,11 @@ export async function POST(request: Request) {
         infill: parsed.data.infill,
         scalePercent: parsed.data.scalePercent,
         ratePerGram: selectedMaterial.ratePerGram,
+        density: selectedMaterial.density,
       }
     );
+
+    const delivery = await priceDelivery(parsed.data.deliveryOption, parsed.data.postcode || "", parsed.data.quantity, analysis);
 
     // Get Clerk user if authenticated
     const { userId } = await getAuthAsync();
@@ -169,8 +216,12 @@ export async function POST(request: Request) {
         scalePercent: parsed.data.scalePercent,
       },
       delivery: {
-        method: parsed.data.localFulfilment === "yes" ? "local_delivery" : "shipped",
+        method: delivery.method,
         suburb: parsed.data.suburb,
+        postcode: parsed.data.postcode || "",
+        cost: delivery.cost,
+        service: delivery.service,
+        label: delivery.label,
       },
       notes: parsed.data.notes,
       file: modelFile,

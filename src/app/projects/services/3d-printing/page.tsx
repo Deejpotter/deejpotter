@@ -3,7 +3,7 @@ export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import QuoteRequestForm, { type QuoteMaterialOption } from "./QuoteRequestForm";
+import QuoteRequestForm, { type QuoteMaterialOption, type QuotePricingSettings } from "./QuoteRequestForm";
 import { loadConfig } from "@/lib/printing-materials";
 import { getEnabledMaterials } from "@/lib/db-config";
 import QuoteStatusLookup from "./QuoteStatusLookup";
@@ -21,12 +21,29 @@ async function getQuoteMaterials(): Promise<QuoteMaterialOption[]> {
   try {
     const materials = await getEnabledMaterials("3d_printing");
     if (materials.length > 0) {
-      return materials.map(({ id, label, ratePerGram }) => ({ id, label, ratePerGram }));
+      return materials.map(({ id, label, ratePerGram, density }) => ({ id, label, ratePerGram, density }));
     }
   } catch (error) {
     console.warn("[3d-printing] Using JSON materials, database unavailable:", error);
   }
-  return loadConfig().materials.map(({ id, label, ratePerGram }) => ({ id, label, ratePerGram }));
+  return loadConfig().materials.map(({ id, label, ratePerGram, density_g_per_cm3 }) => ({
+    id,
+    label,
+    ratePerGram,
+    density: density_g_per_cm3,
+  }));
+}
+
+/**
+ * The hourly rate and quality speeds the server prices with, handed to the
+ * form so its live estimate uses exactly the same numbers.
+ */
+function getPricingSettings(): QuotePricingSettings {
+  const { hourlyRate, qualityPresets } = loadConfig().settings;
+  return {
+    hourlyRate,
+    timeMultipliers: Object.fromEntries(Object.entries(qualityPresets).map(([key, preset]) => [key, preset.timeMultiplier])),
+  };
 }
 
 const benefits = [
@@ -182,7 +199,7 @@ export default async function ThreeDPrintingService(): Promise<ReactElement> {
           </section>
 
           <section className="mb-6">
-            <QuoteRequestForm materials={quoteMaterials} />
+            <QuoteRequestForm materials={quoteMaterials} pricing={getPricingSettings()} />
           </section>
 
           <section className="mb-6">

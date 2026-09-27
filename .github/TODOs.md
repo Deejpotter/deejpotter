@@ -64,25 +64,25 @@ Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Bran
   - [x] 6.1 Delete checkout routes, PayNowButton, cancelled page
   - [x] 6.2 Status lookup + account: status text, timeline, emailed link
   - [x] 6.3 Page copy
-- [ ] 7. Accurate weight
-  - [ ] 7.1 Real volume and surface area
-  - [ ] 7.2 Shared print-estimate module
-  - [ ] 7.3 Server uses it
-  - [ ] 7.4 Tests
-- [ ] 8. Live estimate in the browser
-  - [ ] 8.1 Browser STL parsing
-  - [ ] 8.2 Live numbers, placeholder removed
-  - [ ] 8.3 Rates and presets from the server page
-- [ ] 9. Shipping quotes
-  - [ ] 9.1 shipping.ts (packaging, PAC, local rules)
-  - [ ] 9.2 Settings fields with defaults
-  - [ ] 9.3 Shipping estimate API
-  - [ ] 9.4 Form delivery choice, stored on the quote
-  - [ ] 9.5 Admin settings fields
-  - [ ] 9.6 Tests
+- [x] 7. Accurate weight
+  - [x] 7.1 Real volume and surface area
+  - [x] 7.2 Shared print-estimate module
+  - [x] 7.3 Server uses it
+  - [x] 7.4 Tests
+- [x] 8. Live estimate in the browser
+  - [x] 8.1 Browser STL parsing
+  - [x] 8.2 Live numbers, placeholder removed
+  - [x] 8.3 Rates and presets from the server page
+- [x] 9. Shipping quotes
+  - [x] 9.1 shipping.ts (packaging, PAC, local rules)
+  - [x] 9.2 Settings fields with defaults
+  - [x] 9.3 Shipping estimate API
+  - [x] 9.4 Form delivery choice, stored on the quote
+  - [x] 9.5 Admin settings fields
+  - [x] 9.6 Tests
 - [ ] 10. Docs, checks, release
-  - [ ] 10.1 ARCHITECTURE, TODOs, .env.example
-  - [ ] 10.2 Lint, tests, build
+  - [x] 10.1 ARCHITECTURE, TODOs, .env.example
+  - [x] 10.2 Lint, tests, build
   - [ ] 10.3 PR + staging check
   - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook
 

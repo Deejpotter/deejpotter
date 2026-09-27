@@ -20,7 +20,7 @@ describe("3D printing service page", () => {
       screen.getByRole("heading", { name: /on-demand 3d printing/i })
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /good fit for/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /request a print quote/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /check your quote status/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /get a print quote/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /check your order/i })).toBeInTheDocument();
   });
 });
