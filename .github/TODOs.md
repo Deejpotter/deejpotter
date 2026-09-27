@@ -32,6 +32,26 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 - [ ] Later: move quality/infill presets and hourly rate into the MongoDB config too
 
+## Homepage and design refresh (2026-09-27)
+
+Checked on staging. See ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
+
+- [ ] 1. Replace the repeated `rounded-3xl border p-5` cards (about 20, some nested) with more varied layouts
+  - [ ] 1.1 Hero: one type-led block, and bullets as one line instead of boxed tiles
+  - [ ] 1.2 One bento section with tiles of different sizes, each with its own job
+- [ ] 2. Merge "How it works" and "How I work" (the same three steps twice) into one numbered timeline
+- [ ] 3. Real photos of prints, engravings and sites in "Explore the work" (needs photos from Deej)
+- [ ] 4. Copy: rewrite "No drama, no mystery, just deliberate progress" and "A simple process that keeps things moving"; use "Start with a message" once or twice, not three times; use real list bullets in "Who this is for"
+- [ ] 5. Check desktop and mobile on staging, then PR dev to main
+
+## Staging isolation (2026-09-27)
+
+Staging's Render env was checked on 2026-09-27. It shares production's database, R2 bucket and live Stripe keys.
+
+- [ ] Set `DB_NAME=deejpotter_staging` on `deejpotter-staging` and seed it from `deejpotter` with mongosh
+- [ ] Stripe test keys (`sk_test_`/`pk_test_`) on staging, plus a test webhook secret
+- [ ] Separate R2 bucket for staging (or a prefix)
+
 ## Follow-ups (2026-09-26)
 
 - [ ] Staging database: set `DB_NAME=deejpotter_staging` on `deejpotter-staging` (check what it uses now) and seed it

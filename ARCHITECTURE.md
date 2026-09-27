@@ -31,9 +31,26 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 |---|---|---|
 | Production (Render `deejpotter`) | `deejpotter` | The site's data |
 | Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see readme) |
-| Staging (Render `deejpotter-staging`) | not yet separated | Uses whatever its Render env sets; separating it (`deejpotter_staging`) is a TODO |
+| Staging (Render `deejpotter-staging`) | `deejpotter` (unset, so the default) | **Shares production data.** Checked 2026-09-27: staging has no `DB_NAME`, so it reads and writes the site's database. Setting `DB_NAME=deejpotter_staging` and seeding it is a TODO |
 
 All data is test data so far. The databases share one Atlas user, so a local script could still reach `deejpotter` by changing `DB_NAME`. A dev-only Atlas user limited to `deejpotter_dev` would close that off (TODO).
+
+### Hosting (Render)
+**Checked:** 2026-09-27 with the Render CLI and API
+
+| Service | ID | Branch | Plan | URL |
+|---|---|---|---|---|
+| `deejpotter` (production) | `srv-d89ak9dckfvc738du5d0` | `main` | Starter | deejpotter.com |
+| `deejpotter-staging` | `srv-d89ak9ul51nc738837g0` | `dev` | Free | staging.deejpotter.com |
+
+Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is on the free plan, so it sleeps when idle and the first request after that is slow. Don't read a slow first load there as a performance problem. `/api/health` reports status and database connection.
+
+**Staging is not isolated from production (2026-09-27).** Staging shares these with production:
+- the MongoDB database (no `DB_NAME`, see above)
+- the R2 bucket (`deejpotter`)
+- **live** Stripe keys (`sk_live_`/`pk_live_`), so a checkout on staging takes real money
+
+Only Clerk is separate (staging uses a test instance). Fixes are listed in `.github/TODOs.md`: a staging database, Stripe test keys and a staging bucket or prefix.
 
 ### Admins from an environment variable
 **Date:** 2026-09-25
