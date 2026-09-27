@@ -32,6 +32,10 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 - [ ] Later: move quality/infill presets and hourly rate into the MongoDB config too
 
+## Quote to order flow (planned 2026-09-27)
+
+Plan: `.github/ISSUES/007-quote-order-flow.md` (automatic statuses, Stripe Payment Links sent from admin, shipping). Waiting on decisions listed there. Removing the on-site "Pay now" code is part of step 2 (work in progress: `git stash` "stripe-removal-wip").
+
 ## Homepage and design refresh (2026-09-27)
 
 Checked on staging. See ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
