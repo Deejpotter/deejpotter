@@ -32,9 +32,59 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 
 - [ ] Later: move quality/infill presets and hourly rate into the MongoDB config too
 
-## Quote to order flow (planned 2026-09-27)
+## Quote to order flow (2026-09-27)
 
-Plan: `.github/ISSUES/007-quote-order-flow.md` (automatic statuses, Stripe Payment Links sent from admin, shipping). Waiting on decisions listed there. Removing the on-site "Pay now" code is part of step 2 (work in progress: `git stash` "stripe-removal-wip").
+Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Branch `feat/quote-order-flow`.
+
+- [ ] 1. Order data and status workflow
+  - [ ] 1.1 Schema: payment link, amount paid, service/carrier/tracking, statusHistory
+  - [ ] 1.2 `quote-workflow.ts` (labels, allowed actions, next status)
+  - [ ] 1.3 db-quotes: new fields, history, markQuotesReviewed
+  - [ ] 1.4 Transition tests
+- [ ] 2. Emails for each status
+  - [ ] 2.1 Customer templates per action
+  - [ ] 2.2 Admin payment notice
+  - [ ] 2.3 Safe subjects and escaping
+  - [ ] 2.4 Template tests
+- [ ] 3. Stripe Payment Links
+  - [ ] 3.1 Create link (print + shipping lines, quote metadata, thank-you redirect, single use)
+  - [ ] 3.2 Deactivate on cancel/decline/paid/re-send
+  - [ ] 3.3 Tests
+- [ ] 4. Webhook marks paid
+  - [ ] 4.1 Record payment, paid status, deactivate link, emails
+  - [ ] 4.2 stripe_events idempotency in MongoDB
+  - [ ] 4.3 Remove session-expired handling
+  - [ ] 4.4 Tests
+- [ ] 5. Admin actions
+  - [ ] 5.1 Action API
+  - [ ] 5.2 Auto "reviewing"
+  - [ ] 5.3 Buttons, Send quote and Ship forms, timeline
+  - [ ] 5.4 Manual override without emails
+- [ ] 6. Remove on-site payment
+  - [ ] 6.1 Delete checkout routes, PayNowButton, cancelled page
+  - [ ] 6.2 Status lookup + account: status text, timeline, emailed link
+  - [ ] 6.3 Page copy
+- [ ] 7. Accurate weight
+  - [ ] 7.1 Real volume and surface area
+  - [ ] 7.2 Shared print-estimate module
+  - [ ] 7.3 Server uses it
+  - [ ] 7.4 Tests
+- [ ] 8. Live estimate in the browser
+  - [ ] 8.1 Browser STL parsing
+  - [ ] 8.2 Live numbers, placeholder removed
+  - [ ] 8.3 Rates and presets from the server page
+- [ ] 9. Shipping quotes
+  - [ ] 9.1 shipping.ts (packaging, PAC, local rules)
+  - [ ] 9.2 Settings fields with defaults
+  - [ ] 9.3 Shipping estimate API
+  - [ ] 9.4 Form delivery choice, stored on the quote
+  - [ ] 9.5 Admin settings fields
+  - [ ] 9.6 Tests
+- [ ] 10. Docs, checks, release
+  - [ ] 10.1 ARCHITECTURE, TODOs, .env.example
+  - [ ] 10.2 Lint, tests, build
+  - [ ] 10.3 PR + staging check
+  - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook
 
 ## Homepage and design refresh (2026-09-27)
 
