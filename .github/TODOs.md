@@ -84,7 +84,7 @@ Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Bran
   - [x] 10.1 ARCHITECTURE, TODOs, .env.example
   - [x] 10.2 Lint, tests, build
   - [ ] 10.3 PR + staging check
-  - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook
+  - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `PAYMENTS_SETUP.md`)
 
 ## Homepage and design refresh (2026-09-27)
 
