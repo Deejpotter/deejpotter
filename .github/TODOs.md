@@ -109,6 +109,23 @@ Staging's Render env was checked on 2026-09-27. It shared production's database,
 - [x] (Deej) Stripe test key and test webhook on staging (2026-09-29)
 - [x] R2: `R2_KEY_PREFIX=staging/` on staging (same bucket, separate prefix)
 
+## Better Auth migration (planned 2026-09-30)
+
+Plan and reasoning: docs/AUTH_MIGRATION_PLAN.md. Starts after the Day Planner cut-over. The Clerk webhook setup is skipped, because this replaces it.
+
+- [x] Plan written from the Day Planner's plan and code, with the MongoDB adapter checked against Better Auth's docs
+- [ ] 0. Prepare
+  - [ ] 0.1 mongodump production and staging; test a restore
+  - [ ] 0.2 Wait for the Day Planner cut-over; note what its phase 8 changed
+  - [ ] 0.3 Spike: mongodbAdapter on Next 16, reuse of `users`, id format, linking scenarios A–D with a mock OIDC provider
+  - [ ] 0.4 Decide on Google sign-in for customers (default no)
+- [ ] 1. One auth helper (`getSessionUser()`), still on Clerk; move the 11 direct Clerk callers onto it
+- [ ] 2. Server core behind `BETTER_AUTH_SECRET`: auth.ts, /api/auth route, Resend emails, origins, rate limits, `ADMIN_EMAILS` with verified email, tests
+- [ ] 3. Pages and proxy: sign-in, sign-up, forgot and reset password, sign-out, navbar, "Sign in with Clerk" when configured
+- [ ] 4. Staging (Deej: secret, URL, ADMIN_EMAILS, Clerk production-instance OAuth app for the staging callback), then the full check list
+- [ ] 5. Production cut-over, rollback by removing the secret, Clerk removal after 14 days
+- [ ] 6. Docs updated with each phase
+
 ## Follow-ups (2026-09-26)
 
 - [x] Staging database: `DB_NAME=deejpotter_staging` on `deejpotter-staging`
