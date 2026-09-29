@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Next.js portfolio site (see `readme.md` and `DEVELOPMENT.md`). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
+This is a Next.js portfolio site (see `docs/README.md` and `DEVELOPMENT.md`; the root `readme.md` is the GitHub profile page). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
 
 - App code and routes: `src/app` (Next.js App Router).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).

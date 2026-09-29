@@ -1,6 +1,6 @@
 # Development — deejpotter.com
 
-> The repo README doubles as the GitHub profile page (the repo shares the username), so it stays short. Developer details live here.
+> The root `readme.md` is the GitHub profile page (the repo shares the username), so it holds dev profile info only. The repo overview is `docs/README.md`; developer details live here.
 
 How to run, test and change the code. Decisions and the reasons behind them are in `ARCHITECTURE.md`.
 
