@@ -8,14 +8,14 @@ describe("Home component", () => {
     render(<Home />);
 
     expect(
-      screen.getByRole("heading", { name: /what i can build for you/i })
+      screen.getByRole("heading", { name: /what i can make for you/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /a simple process that keeps things moving/i })
+      screen.getByRole("heading", { name: /how a job goes/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: /a few things i.ve made/i,
+        name: /things i.ve made/i,
       })
     ).toBeInTheDocument();
 
@@ -25,10 +25,9 @@ describe("Home component", () => {
     expect(
       screen.getByRole("heading", { name: /custom tools and automation/i })
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/tell me what you need/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/i build it/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/browse websites/i)).toBeInTheDocument();
-    expect(screen.getByText(/explore tools/i)).toBeInTheDocument();
-    expect(screen.getByText(/view services/i)).toBeInTheDocument();
+    // The process steps appear once, not in two separate sections.
+    expect(screen.getAllByText(/tell me what you need/i)).toHaveLength(1);
+    expect(screen.getByRole("link", { name: /get a 3d print quote/i })).toHaveAttribute("href", "/projects/services/3d-printing");
+    expect(screen.getByRole("link", { name: /website projects/i })).toHaveAttribute("href", "/projects/websites");
   });
 });

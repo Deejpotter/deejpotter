@@ -7,37 +7,6 @@ import {
   showcaseItems,
 } from "@/content/site-data";
 
-const quickLinks = [
-  {
-    href: "/contact",
-    label: "Start with a message",
-    tone: "btn-gradient",
-    primary: true,
-  },
-  {
-    href: "/projects/websites",
-    label: "Website projects",
-    tone: "border border-white/15 text-white/90 hover:bg-white/5",
-  },
-  {
-    href: "/projects/services",
-    label: "Services",
-    tone: "border border-white/15 text-white/90 hover:bg-white/5",
-  },
-  {
-    href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
-    label: "LinkedIn",
-    tone: "border border-white/15 text-white/90 hover:bg-white/5",
-    external: true,
-  },
-];
-
-const heroBullets = [
-  "Small business websites and portfolio refreshes",
-  "Custom tools, calculators, and automation helpers",
-  "CAD/CAM, 3D printing, laser engraving, and basic milling",
-];
-
 export default function Home(): ReactElement {
   return (
     <>
@@ -70,8 +39,9 @@ export default function Home(): ReactElement {
         })}
       </Script>
 
-      <section className="relative isolate overflow-hidden bg-gray-950 px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8">
-        {/* Soft brand glows behind the hero */}
+      {/* Hero: one type-led block. The services line replaces the old boxed
+          tiles so the headline carries the page instead of competing with them. */}
+      <section className="relative isolate overflow-hidden bg-gray-950 px-4 pb-14 pt-10 text-white sm:px-6 lg:px-8">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-32 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl"
@@ -81,277 +51,147 @@ export default function Home(): ReactElement {
           className="pointer-events-none absolute -right-24 top-24 -z-10 h-[22rem] w-[22rem] rounded-full bg-info/20 blur-3xl"
         />
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
-            <p className="text-xs uppercase tracking-[0.35em] text-white/55">
-              Deej Potter
-            </p>
-            <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/80">
-              Practical digital tools and fabrication
-            </p>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-            <div>
-              <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
-                Website designer - maker - developer
-              </p>
-              <h1 className="mt-5 max-w-4xl text-3xl font-black leading-[0.92] sm:text-4xl lg:text-6xl">
-                I build websites, custom tools, and{" "}
-                <span className="text-gradient">physical parts.</span>
-              </h1>
-              <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-                I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print, engrave, or mill parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                {quickLinks.map((link) =>
-                  link.external ? (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                )}
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroBullets.map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm leading-6 text-white/80"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <aside className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/30 backdrop-blur-sm">
-              <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">
-                What I help with
-              </p>
-              <h2 className="mt-3 text-2xl font-bold text-white">
-                Small jobs with a clear goal.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-white/70">
-                I work best on projects where the goal is clear and the result just needs to work.
-              </p>
-              <div className="mt-6 grid gap-3">
-                {[
-                  "Website design and development projects",
-                  "Small business and hobbyist projects in Australia",
-                  "CAD/CAM, 3D printing, laser engraving, and basic milling",
-                  "Custom tools and automation helpers",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/82"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8 dark:bg-gray-950">
-        <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-3xl bg-white p-5 shadow-bs-lg dark:bg-gray-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              How it works
-            </p>
-            <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-3xl">
-              Tell me what you need and I&apos;ll build it.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300">
-              No long proposals or jargon, and you deal with me the whole way. Send me a brief and I&apos;ll tell you honestly whether it&apos;s a good fit.
-            </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {[
-                ["1", "You send a brief", "The problem, the deadline, and what done looks like."],
-                ["2", "I build it", "You see progress along the way, and we adjust as needed."],
-                ["3", "You get the result", "A working site, a part that fits, or a tool that does the job."],
-              ].map(([num, title, text]) => (
-                <div key={title} className="rounded-2xl border border-gray-200 p-4 dark:border-gray-800">
-                  <p className="text-sm font-bold text-primary">{num}</p>
-                  <h3 className="mt-2 font-semibold text-gray-900 dark:text-white">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-bs-lg dark:border-gray-800 dark:bg-gray-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Who this is for
-            </p>
-            <ul className="mt-5 space-y-3 text-gray-700 dark:text-gray-300">
-              <li>- Small businesses that need a website without the hassle</li>
-              <li>- Hobbyists and makers who need parts but don&apos;t do CAD</li>
-              <li>- Anyone who&apos;d rather get a result than learn another skill</li>
-              <li>- People who value clear communication and honest pricing</li>
-            </ul>
-            <p className="mt-6 text-sm font-medium text-primary">
-              Working style
-            </p>
-            <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
-                I start with a clear brief, get something working, then refine it. You&apos;ll always know where things are at.
-              </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-3 border-b border-gray-200 pb-6 dark:border-gray-800 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-                Services
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-gray-900 dark:text-white sm:text-3xl">
-                What I can build for you
-              </h2>
-            </div>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
+            Deej Potter · Frankston, VIC
+          </p>
+          <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[0.95] sm:text-5xl lg:text-7xl">
+            I build websites, custom tools, and{" "}
+            <span className="text-gradient">physical parts.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
+            Websites for small businesses, tools that save manual work, and 3D printed, engraved or milled parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
+          </p>
+          <p className="mt-5 text-sm text-white/60">
+            Websites <span aria-hidden="true">·</span> Custom tools <span aria-hidden="true">·</span> 3D printing <span aria-hidden="true">·</span> Laser engraving <span aria-hidden="true">·</span> CNC milling
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/projects/services"
-              className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
+              href="/projects/services/3d-printing"
+              className="btn-gradient inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02]"
             >
-              See the full services page
+              Get a 3D print quote
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white/90 transition-transform hover:scale-[1.02] hover:bg-white/5"
+            >
+              Start with a message
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Services as one bento grid. 3D printing gets the big tile because it's
+          the one people can price and order online right now. */}
+      <section className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8 dark:bg-gray-950">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <h2 className="text-3xl font-black text-gray-900 dark:text-white">
+              What I can make for you
+            </h2>
+            <Link href="/projects/services" className="text-sm font-semibold text-primary hover:underline">
+              All services
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {serviceOfferings.map((service) => (
-              <article
-                key={service.id}
-                className="glow-card group flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-bs dark:border-gray-800 dark:bg-gray-900"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
-                  Service
-                </p>
-                <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white">
-                  {service.name}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  {service.description}
-                </p>
-                <ul className="mt-5 space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                  {service.features.slice(0, 3).map((feature) => (
-                    <li key={feature} className="flex gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {serviceOfferings.map((service) => {
+              const featured = service.id === "3d-printing";
+              return (
                 <Link
+                  key={service.id}
                   href={service.link}
-                  className="mt-6 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
+                  className={
+                    featured
+                      ? "flex flex-col justify-between rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-6 text-white md:order-first md:col-span-2 md:row-span-3"
+                      : "flex flex-col justify-between rounded-3xl bg-white p-5 transition-colors hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800"
+                  }
                 >
-                  {service.cta}
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-950 px-4 py-10 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-3 border-b border-white/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
-                How I work
-              </p>
-              <h2 className="mt-2 text-3xl font-black sm:text-3xl">
-                A simple process that keeps things moving
-              </h2>
-            </div>
-            <p className="max-w-xl text-sm leading-7 text-white/70 sm:text-right">
-              Clear brief, sensible structure, working build, then refinement. No drama, no mystery, just deliberate progress.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {processSteps.map((step, index) => (
-              <article
-                key={step.id}
-                className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
-              >
-                <p className="text-sm font-semibold text-emerald-300">
-                  Step {index + 1}
-                </p>
-                <h3 className="mt-3 text-xl font-bold text-white">{step.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-white/72">
-                  {step.description}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8 dark:bg-gray-950/60">
-        <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-2">
-          <div className="rounded-3xl bg-white p-5 shadow-bs-lg dark:bg-gray-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Explore the work
-            </p>
-            <h2 className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
-              A few things I&apos;ve made.
-            </h2>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">
-              Websites, tools, maker projects, and blog posts about how I built them.
-            </p>
-            <div className="mt-6 space-y-4">
-              {showcaseItems.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.link}
-                  className="block rounded-2xl border border-gray-200 p-5 transition-colors hover:border-primary/40 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/60"
-                >
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">
-                    {item.title}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-gray-600 dark:text-gray-400">
-                    {item.description}
-                  </p>
-                  <span className="mt-3 inline-flex text-sm font-semibold text-primary">
-                    {item.label}
+                  <div>
+                    <h3 className={featured ? "text-3xl font-black" : "text-lg font-bold text-gray-900 dark:text-white"}>
+                      {service.name}
+                    </h3>
+                    <p className={featured ? "mt-3 max-w-lg text-base leading-7 text-white/85" : "mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400"}>
+                      {service.description}
+                    </p>
+                    {featured && (
+                      <ul className="mt-5 list-disc space-y-1 pl-5 text-sm text-white/85">
+                        {service.features.slice(0, 3).map((feature) => (
+                          <li key={feature}>{feature}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <span className={featured ? "mt-8 inline-flex w-fit rounded-full bg-white px-5 py-2.5 text-sm font-bold text-gray-950" : "mt-4 text-sm font-semibold text-primary"}>
+                    {service.cta} <span aria-hidden="true">→</span>
                   </span>
                 </Link>
-              ))}
-            </div>
+              );
+            })}
           </div>
+        </div>
+      </section>
 
-          <div className="rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-5 text-white shadow-bs-lg">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
-              Want to work together?
-            </p>
-            <h2 className="mt-3 text-3xl font-black sm:text-3xl">
-              Start with a message.
+      {/* The one process section; the page used to show the same three steps twice. */}
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <h2 className="text-3xl font-black text-gray-900 dark:text-white">
+              How a job goes
             </h2>
-            <p className="mt-4 max-w-lg text-base leading-8 text-white/86">
-              The easiest way to begin is with a brief. Send me the problem, the deadline, and the result you want. I can usually tell you quickly whether it is a fit.
+            <p className="mt-4 text-base leading-8 text-gray-700 dark:text-gray-300">
+              You deal with me the whole way, with no long proposals or jargon.
+            </p>
+            <h3 className="mt-8 font-semibold text-gray-900 dark:text-white">Who this is for</h3>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-gray-700 dark:text-gray-300">
+              <li>Small businesses that need a website without the hassle</li>
+              <li>Hobbyists and makers who need parts but don&apos;t do CAD</li>
+              <li>Anyone who&apos;d rather get a result than learn another skill</li>
+            </ul>
+          </div>
+          <ol className="ml-4 space-y-8 border-l-2 border-primary/30 pl-8">
+            {processSteps.map((step, index) => (
+              <li key={step.id} className="relative">
+                <span className="absolute -left-[3.2rem] flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                  {index + 1}
+                </span>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">{step.title}</h3>
+                <p className="mt-2 leading-7 text-gray-600 dark:text-gray-400">{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Work and contact share one dark band so the page ends on a single clear
+          action. Photos of real prints and sites go in these rows once they exist. */}
+      <section className="bg-gray-950 px-4 py-12 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-black">Things I&apos;ve made</h2>
+            <ul className="mt-6 divide-y divide-white/10 border-y border-white/10">
+              {showcaseItems.map((item) => (
+                <li key={item.id}>
+                  <Link href={item.link} className="group flex items-baseline justify-between gap-4 py-4">
+                    <span>
+                      <span className="block text-lg font-bold group-hover:text-emerald-300">{item.title}</span>
+                      <span className="mt-1 block text-sm text-white/65">{item.description}</span>
+                    </span>
+                    <span aria-hidden="true" className="text-emerald-300">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="lg:pl-10">
+            <h2 className="text-3xl font-black">Got a job in mind?</h2>
+            <p className="mt-4 max-w-lg text-base leading-8 text-white/78">
+              Send me the problem, the deadline and what done looks like. I&apos;ll tell you quickly whether I can help and roughly what it&apos;ll cost.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/contact"
-                className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-bold text-gray-950 transition-transform hover:scale-[1.01]"
+                className="btn-gradient inline-flex items-center rounded-full px-6 py-3 text-sm font-bold transition-transform hover:scale-[1.01]"
               >
                 Start with a message
               </Link>
@@ -359,7 +199,7 @@ export default function Home(): ReactElement {
                 href="/about"
                 className="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
               >
-                Learn more about me
+                About me
               </Link>
             </div>
           </div>
