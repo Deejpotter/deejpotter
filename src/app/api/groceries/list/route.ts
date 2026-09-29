@@ -4,12 +4,12 @@
  */
 
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { adminApiGuard } from "@/lib/admin-auth";
 import { listOrders, deleteOrder, getSpendingSummary } from "@/lib/groceries-storage";
 
 export async function GET() {
-  const user = await currentUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   try {
     const [orders, summary] = await Promise.all([
@@ -24,8 +24,8 @@ export async function GET() {
 }
 
 export async function DELETE(request: Request) {
-  const user = await currentUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   try {
     const { order_number } = await request.json();

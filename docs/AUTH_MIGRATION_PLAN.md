@@ -1,6 +1,6 @@
 # Better Auth migration plan — deejpotter.com
 
-**Status:** Phase 0 done, 2026-09-30 (see [Phase 0 results](#phase-0-results-2026-09-30)). Next is phase 1, which only moves code behind one helper and changes no behaviour. The switch to Better Auth (phases 4 and 5) still waits for the Day Planner's cut-over. No production code has changed.
+**Status:** Phases 0 and 1 done, 2026-09-30 (see [Phase 0 results](#phase-0-results-2026-09-30) and [Phase 1 results](#phase-1-results-2026-09-30)). Next is phase 2. The switch to Better Auth (phases 4 and 5) still waits for the Day Planner's cut-over. No production code has changed.
 **Goal:** deejpotter.com owns its users and sessions in its own MongoDB through Better Auth, and stops depending on Clerk's SDK. People sign in with email and password or with Google. Clerk stays only as the shared sign-in hub for Deej's apps, connected as an optional "Sign in with Clerk" (OpenID Connect) provider, the same way the Day Planner does it.
 
 This follows the Day Planner's plan (`Deejpotter/day-planner`, `docs/AUTH-SELF-HOSTING-PLAN.md`) and reuses its decisions and findings. Only the differences are argued here.
@@ -68,6 +68,22 @@ Each phase ends with type-check, lint, tests and build passing, lands on `dev`, 
 - 1.2 Move `admin-auth.ts`, `/account`, the quote routes, contact, groceries, `mongo-crud`, `quotes` and the CNC Technical AI components onto it.
 - 1.3 Tests for the helper with Clerk mocked; existing route tests keep passing.
 - 1.4 Staging check, then it can go to production with the next release.
+
+#### Phase 1 results (2026-09-30)
+
+| Step | Result |
+|---|---|
+| 1.1 Helper | `src/lib/session.ts`: `getSessionUserId()` (reads the session, no network call) and `getSessionUser()` (`{ id, email, emailVerified, name }`, one call to Clerk). Both return null rather than throw when auth isn't set up, since signed-out is the safe answer. `email` is the **primary** address and `emailVerified` is that address's own status. `requireSignedIn()` wasn't needed: every signed-in-only route turned out to be admin-only (next row). |
+| 1.1a Admin | `src/lib/admin-auth.ts` now decides everything through `getAdminAccess()` (signed out / forbidden / admin), with `adminApiGuard()` (a ready 401 or 403 for API routes), `isCurrentUserAdmin()`, and the existing `requireAdmin()` and `requireAdminPage()` built on it. Phase 2 changes who counts as admin in one place. |
+| 1.2 Callers | Moved: contact leads, the model-file download, `/api/admin/me`, both quote routes, `/account`, and the three groceries routes. Server code now reaches Clerk only through `session.ts`; `proxy.ts` and the client components (layout, `AuthProvider`, sign-in and sign-up pages, the CNC Technical AI components) are phase 3. |
+| 1.3 Tests | New `session.test.ts` (primary address used, unverified reported, auth failure is signed out) and `adminApiGuard` cases; `/api/admin/me` now runs the real helpers with only Clerk faked; new groceries test. 213 tests, lint, type-check and build pass. |
+
+**Fixed along the way (behaviour changes, all tightening access):**
+
+1. **Groceries were readable by any signed-in account.** `/groceries` and its three API routes only checked that someone was signed in, and anyone can create an account, so a customer could read Deej's grocery orders and spending. Their own comments said "admin only". They now require admin (page and API), with a regression test.
+2. **`/account` trusted an unverified email.** It listed quotes for the *first* email on the Clerk account, verified or not. Quotes are matched by email, so it now uses the primary address and only when it's verified; otherwise the list is empty.
+3. **Removed `/api/mongo-crud`.** It imported `auth` from `@clerk/nextjs`, which Clerk 7 no longer exports, so every request was treated as signed out and refused: it hasn't worked since the Clerk upgrade, and nothing calls it. Moving it onto the working helper would have switched on raw admin read and write access to any allowed collection, `users` by default. Its tests and the unused `ALLOWED_COLLECTIONS` setting (not set on Render) went with it.
+4. **Model-file downloads check admin first.** Non-admins used to get "not found" for a missing quote before being refused; now they're refused first and can't probe which quote numbers exist.
 
 ### Phase 2: Server core behind the switch (about 2 hours)
 **Why:** the same code runs both systems until cut-over, as in the Day Planner.

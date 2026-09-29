@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { auth } from "@clerk/nextjs/server";
-import { isAdminUser } from "@/lib/admin-auth";
+import { adminApiGuard } from "@/lib/admin-auth";
 import {
   listContactLeads,
   saveContactLead,
@@ -38,13 +37,8 @@ const patchSchema = z.object({
 });
 
 export async function GET() {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdminUser(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   try {
     const leads = await listContactLeads();
@@ -99,13 +93,8 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  if (!(await isAdminUser(session.userId))) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   try {
     const body = await request.json();

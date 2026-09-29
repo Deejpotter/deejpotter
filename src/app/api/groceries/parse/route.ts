@@ -2,19 +2,19 @@
  * /api/groceries/parse — Upload and parse a Woolworths order PDF
  *
  * Extracts text from PDF, parses Woolworths receipt format,
- * stores as local JSON. Clerk-protected (admin only).
+ * stores as local JSON. Admin only.
  */
 
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { adminApiGuard } from "@/lib/admin-auth";
 import { saveOrder, orderExists, type GroceryOrder, type GroceryItem } from "@/lib/groceries-storage";
 import { extractPdfText, parseWoolworthsText } from "@/lib/groceries-parser";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request: Request) {
-  const user = await currentUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   try {
     const formData = await request.formData();

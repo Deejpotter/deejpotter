@@ -6,16 +6,11 @@
  */
 
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
-import { isAdminUser } from "@/lib/admin-auth";
+import { isCurrentUserAdmin } from "@/lib/admin-auth";
 
 export async function GET() {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ isAdmin: false });
-    }
-    return NextResponse.json({ isAdmin: await isAdminUser(userId) });
+    return NextResponse.json({ isAdmin: await isCurrentUserAdmin() });
   } catch {
     // If auth or the admin check fails (e.g. database down), just hide the link.
     return NextResponse.json({ isAdmin: false });

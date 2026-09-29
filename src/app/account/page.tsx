@@ -1,9 +1,9 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { listQuotes } from "@/lib/db-quotes";
 import { customerStatusLabel, trackingUrl, type DeliveryMethod } from "@/lib/quote-workflow";
-import { isAdminUser } from "@/lib/admin-auth";
+import { isCurrentUserAdmin } from "@/lib/admin-auth";
+import { getSessionUser } from "@/lib/session";
 
 export const metadata = {
   title: "My Account",
@@ -26,18 +26,15 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
 };
 
 export default async function AccountPage() {
-  const user = await currentUser();
+  const user = await getSessionUser();
   if (!user) redirect("/sign-in");
 
-  const email =
-    user.emailAddresses?.[0]?.emailAddress ||
-    user.primaryEmailAddress?.emailAddress ||
-    "";
+  const email = user.emailVerified ? user.email : "";
 
-  const quotes = await listQuotes({ userEmail: email, limit: 50 }).catch(
-    () => [],
-  );
-  const isAdmin = await isAdminUser(user.id).catch(() => false);
+  const quotes = email
+    ? await listQuotes({ userEmail: email, limit: 50 }).catch(() => [])
+    : [];
+  const isAdmin = await isCurrentUserAdmin().catch(() => false);
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
@@ -46,7 +43,7 @@ export default async function AccountPage() {
           My Account
         </p>
         <h1 className="text-3xl font-extrabold tracking-tight mt-1">
-          Welcome, {user.firstName || "there"}
+          Welcome, {user.name.split(" ")[0] || "there"}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Your quote requests and order history.

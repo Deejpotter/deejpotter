@@ -53,7 +53,7 @@ Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is o
 
 ### Admins from an environment variable
 **Date:** 2026-09-25
-**Why:** Admin access is a server setting, not user data. `isAdminUser()` in `src/lib/admin-auth.ts` checks the signed-in Clerk user ID against `ADMIN_USER_IDS` (comma-separated). Nothing in the app or database can grant or remove admin access. This replaced a MongoDB role, which a bug in `upsertUser` reset to "customer" on every quote submission, and a Clerk `publicMetadata.role` fallback.
+**Why:** Admin access is a server setting, not user data. `getAdminAccess()` in `src/lib/admin-auth.ts` checks the signed-in user ID (from `src/lib/session.ts`, the only server code that talks to the auth provider) against `ADMIN_USER_IDS` (comma-separated). Pages use `requireAdminPage()`, API routes `adminApiGuard()` or `requireAdmin()`. `/admin/*` and `/groceries` are admin only. Nothing in the app or database can grant or remove admin access. This replaced a MongoDB role, which a bug in `upsertUser` reset to "customer" on every quote submission, and a Clerk `publicMetadata.role` fallback.
 
 ### Clerk for auth (not custom)
 **Planned change:** moving to Better Auth, with users and sessions in MongoDB and Clerk kept only as an optional "Sign in with Clerk" provider, matching the Day Planner. See [AUTH_MIGRATION_PLAN.md](AUTH_MIGRATION_PLAN.md).

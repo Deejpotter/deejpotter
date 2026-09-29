@@ -119,7 +119,7 @@ Plan and reasoning: docs/AUTH_MIGRATION_PLAN.md. Phases 1–3 can go ahead now (
   - [x] 0.2 Day Planner checked: phases 1–6 on its dev, not cut over yet; phases 4–5 here wait for it
   - [x] 0.3 Spike (branch spike/better-auth): reuses `users` with ObjectId ids; linking A–D pass; builds on Next 16. Found: the clerkId unique index breaks the second sign-up; fix is a partial index (phase 2.1a)
   - [x] 0.4 Google sign-in: yes
-- [ ] 1. One auth helper (`getSessionUser()`), still on Clerk; move the 11 direct Clerk callers onto it
+- [x] 1. One auth helper (`src/lib/session.ts`), still on Clerk; server callers moved. Also: groceries now admin only (were open to any signed-in account), /account uses only a verified email, dead /api/mongo-crud removed
 - [ ] 2. Server core behind `BETTER_AUTH_SECRET`: auth.ts (email, Google, optional Clerk), partial clerkId index, /api/auth route, Resend emails, origins, rate limits, `ADMIN_EMAILS` with verified email, tests
 - [ ] 3. Pages and proxy: sign-in, sign-up, forgot and reset password, sign-out, navbar, "Sign in with Clerk" when configured
 - [ ] 4. Staging (Deej: secret, URL, ADMIN_EMAILS, Google OAuth client, Clerk production-instance OAuth app for the staging callback), then the full check list

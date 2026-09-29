@@ -9,6 +9,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createQuote } from "@/lib/db-quotes";
 import { upsertUser } from "@/lib/db-users";
+import { getSessionUserId } from "@/lib/session";
 import { notifyQuoteReceived } from "@/lib/email";
 import { ServiceTypeEnum } from "@/lib/db-schemas";
 import { calculateTurnaround } from "@/lib/turnaround";
@@ -106,21 +107,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Get user if authenticated
-    let userId: string | null = null;
-    try {
-      const { auth } = await import("@clerk/nextjs/server");
-      const session = await auth();
-      userId = session.userId || null;
-      if (userId) {
-        await upsertUser({
-          clerkId: userId,
-          email: parsed.data.email,
-          name: parsed.data.name,
-        }).catch(() => {});
-      }
-    } catch {
-      // Non-critical
+    // Link the quote to the signed-in account, if any. Syncing the user is
+    // best effort: a failure mustn't lose the customer's quote.
+    const userId = await getSessionUserId();
+    if (userId) {
+      await upsertUser({
+        clerkId: userId,
+        email: parsed.data.email,
+        name: parsed.data.name,
+      }).catch(() => {});
     }
 
     // Calculate turnaround estimate

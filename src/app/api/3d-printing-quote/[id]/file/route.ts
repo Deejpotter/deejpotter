@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
-import { isAdminUser } from "@/lib/admin-auth";
+import { adminApiGuard } from "@/lib/admin-auth";
 import { getQuote, readQuoteFileBuffer } from "@/lib/db-quotes";
 
 export async function GET(
   _request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session.userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   const { id } = await context.params;
   const quoteNumber = Number(id);
@@ -21,11 +18,6 @@ export async function GET(
   const record = await getQuote(quoteNumber);
   if (!record) {
     return NextResponse.json({ error: "Quote request not found." }, { status: 404 });
-  }
-
-  const admin = await isAdminUser(session.userId);
-  if (!admin) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const buffer = await readQuoteFileBuffer(quoteNumber, record.fileStoredAs);

@@ -1,45 +1,39 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-const { authMock, isAdminUserMock } = vi.hoisted(() => ({
-  authMock: vi.fn(),
-  isAdminUserMock: vi.fn(),
-}));
+const { authMock } = vi.hoisted(() => ({ authMock: vi.fn() }));
 
-vi.mock("@clerk/nextjs/server", () => ({ auth: authMock }));
-vi.mock("@/lib/admin-auth", () => ({ isAdminUser: isAdminUserMock }));
+// Only the auth provider is faked; the real session and admin helpers run.
+vi.mock("@clerk/nextjs/server", () => ({ auth: authMock, currentUser: vi.fn() }));
 
 import { GET } from "./route";
 
 describe("GET /api/admin/me", () => {
+  const original = process.env.ADMIN_USER_IDS;
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.ADMIN_USER_IDS = "user_admin";
+  });
+  afterEach(() => {
+    process.env.ADMIN_USER_IDS = original;
   });
 
   test("signed-out users are not admins", async () => {
     authMock.mockResolvedValue({ userId: null });
-    const res = await GET();
-    expect(await res.json()).toEqual({ isAdmin: false });
-    expect(isAdminUserMock).not.toHaveBeenCalled();
+    expect(await (await GET()).json()).toEqual({ isAdmin: false });
   });
 
-  test("uses the shared admin check for signed-in users", async () => {
-    authMock.mockResolvedValue({ userId: "user_1" });
-    isAdminUserMock.mockResolvedValue(true);
-    const res = await GET();
-    expect(await res.json()).toEqual({ isAdmin: true });
-    expect(isAdminUserMock).toHaveBeenCalledWith("user_1");
+  test("a listed user is an admin", async () => {
+    authMock.mockResolvedValue({ userId: "user_admin" });
+    expect(await (await GET()).json()).toEqual({ isAdmin: true });
+  });
+
+  test("a signed-in customer is not", async () => {
+    authMock.mockResolvedValue({ userId: "user_customer" });
+    expect(await (await GET()).json()).toEqual({ isAdmin: false });
   });
 
   test("hides the link if auth fails", async () => {
     authMock.mockRejectedValue(new Error("clerk down"));
-    const res = await GET();
-    expect(await res.json()).toEqual({ isAdmin: false });
-  });
-
-  test("hides the link if the admin check fails", async () => {
-    authMock.mockResolvedValue({ userId: "user_1" });
-    isAdminUserMock.mockRejectedValue(new Error("db down"));
-    const res = await GET();
-    expect(await res.json()).toEqual({ isAdmin: false });
+    expect(await (await GET()).json()).toEqual({ isAdmin: false });
   });
 });

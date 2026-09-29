@@ -6,7 +6,7 @@
  */
 
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { adminApiGuard } from "@/lib/admin-auth";
 import fs from "node:fs/promises";
 import path from "node:path";
 import os from "os";
@@ -16,8 +16,8 @@ import { extractPdfText, parseWoolworthsText } from "@/lib/groceries-parser";
 const DOWNLOADS_DIR = path.join(os.homedir(), "Downloads", "Woolworths orders");
 
 export async function POST() {
-  const user = await currentUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await adminApiGuard();
+  if (denied) return denied;
 
   try {
     let files: string[];

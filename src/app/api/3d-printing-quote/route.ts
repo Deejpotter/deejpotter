@@ -14,6 +14,7 @@ import { analyzeQuoteFile } from "@/lib/quote-analysis";
 import { getEnabledMaterials, getSettings } from "@/lib/db-config";
 import { getDeliveryOptions, isValidPostcode, shippingSettingsFrom } from "@/lib/shipping";
 import { upsertUser } from "@/lib/db-users";
+import { getSessionUserId } from "@/lib/session";
 import { notifyQuoteReceived } from "@/lib/email";
 import { escapeHtml } from "@/lib/utils";
 
@@ -55,15 +56,6 @@ const allowedMimeTypes = [
   "",
 ];
 const maxFileBytes = 25 * 1024 * 1024;
-
-async function getAuthAsync() {
-  try {
-    const { auth } = await import("@clerk/nextjs/server");
-    return await auth();
-  } catch {
-    return { userId: null };
-  }
-}
 
 function hasAllowedExtension(filename: string): boolean {
   const lower = filename.toLowerCase();
@@ -206,8 +198,8 @@ export async function POST(request: Request) {
 
     const delivery = await priceDelivery(parsed.data.deliveryOption, parsed.data.postcode || "", parsed.data.quantity, analysis);
 
-    // Get Clerk user if authenticated
-    const { userId } = await getAuthAsync();
+    // Link the quote to the signed-in account, if any.
+    const userId = await getSessionUserId();
     if (userId) {
       // Sync user on quote submission
       try {
