@@ -1,8 +1,10 @@
 /**
  * printing-materials.ts — Shared config loader for 3D printing materials
  *
- * Reads from config/printing-materials.json so materials can be edited
- * without touching code. Provides typesafe lookups and fallbacks.
+ * config/printing-materials.json is still the source of the quality and infill
+ * presets and the hourly rate, which aren't admin-editable yet. Its materials
+ * only seed the MongoDB config (db-config.ts) and act as the fallback when the
+ * database is unreachable, so live material prices should be read from there.
  */
 
 import fs from "node:fs";

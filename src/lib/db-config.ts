@@ -1,8 +1,10 @@
 /**
  * db-config.ts — Database-backed configuration store
  *
- * Replaces the old flat-file printing-materials.json with live,
- * admin-editable config stored in MongoDB.
+ * Materials, prices and shipping rules change more often than the code, so
+ * they're stored in MongoDB and edited at /admin/settings without a deploy.
+ * config/printing-materials.json seeds the materials once and remains the
+ * fallback when the database can't be reached.
  *
  * Collections used:
  * - settings  — global business hours, holidays, vacations, shipping

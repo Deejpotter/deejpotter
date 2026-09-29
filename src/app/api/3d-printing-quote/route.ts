@@ -1,3 +1,12 @@
+/**
+ * POST /api/3d-printing-quote — Submits a 3D printing quote request
+ *
+ * The browser has already shown the customer a live price, but nothing it
+ * sends is trusted: this route re-measures the uploaded STL, prices it with
+ * the materials and rates from MongoDB, and re-prices delivery before saving.
+ * That stored estimate is what Deej sees and what "Send quote" prefills.
+ */
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createQuote } from "@/lib/db-quotes";

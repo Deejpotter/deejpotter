@@ -1,8 +1,10 @@
 /**
  * email.ts — Email notification utility
  *
- * Uses Resend to send transactional emails for quote workflow events.
- * Requires RESEND_API_KEY in .env.
+ * Customers follow their order by email, so every order step has its own
+ * message (quote with payment link, paid, started, ready/shipped, done), and
+ * Deej is emailed for new quotes and payments. Sent through Resend; without
+ * RESEND_API_KEY emails are skipped with a log line so nothing else fails.
  */
 
 import { Resend } from "resend";

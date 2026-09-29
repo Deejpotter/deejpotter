@@ -30,7 +30,7 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 | Environment | `DB_NAME` | Notes |
 |---|---|---|
 | Production (Render `deejpotter`) | `deejpotter` | The site's data |
-| Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see readme) |
+| Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see `DEVELOPMENT.md`) |
 | Staging (Render `deejpotter-staging`) | `deejpotter_staging` | Set 2026-09-27 and copied from `deejpotter` (before that, staging shared production's data) |
 
 All data is test data so far. The databases share one Atlas user, so a local script could still reach `deejpotter` by changing `DB_NAME`. A dev-only Atlas user limited to `deejpotter_dev` would close that off (TODO).

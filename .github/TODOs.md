@@ -9,7 +9,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 1. readme.md
   - [x] 1.1 Local database section (`DB_NAME=deejpotter_dev`, refresh with mongosh)
   - [x] 1.2 Point to rendering/caching notes
-- [x] 2. ARCHITECTURE.md
+- [x] 2. docs/ARCHITECTURE.md
   - [x] 2.1 Databases section (live/dev/staging, shared Atlas user)
   - [x] 2.2 `DB_NAME` in the env var table
   - [x] 2.3 Design system decision (gradient accents, sticky navbar, spacing)
@@ -84,11 +84,11 @@ Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Bran
   - [x] 10.1 ARCHITECTURE, TODOs, .env.example
   - [x] 10.2 Lint, tests, build
   - [ ] 10.3 PR + staging check
-  - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `PAYMENTS_SETUP.md`)
+  - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `docs/PAYMENTS_SETUP.md`)
 
 ## Homepage and design refresh (2026-09-27)
 
-Checked on staging. See ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
+Checked on staging. See docs/ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
 
 - [ ] 1. Replace the repeated `rounded-3xl border p-5` cards (about 20, some nested) with more varied layouts
   - [ ] 1.1 Hero: one type-led block, and bullets as one line instead of boxed tiles
@@ -169,7 +169,7 @@ deejpotter no longer has a shop; service payments go through quotes.
 - Indexes created automatically on first database use
 
 ### ✅ R2 on production — DONE
-- All four R2 variables set on the production Render service (see `R2_SETUP.md`)
+- All four R2 variables set on the production Render service (see `docs/R2_SETUP.md`)
 
 ### ✅ Environment variables — DONE
 - `ADMIN_USER_IDS` and `RESEND_API_KEY` set on both Render services
@@ -212,5 +212,5 @@ deejpotter no longer has a shop; service payments go through quotes.
 ## Notes
 
 - Run tests: `yarn test` (requires Node 24)
-- Local database: `DB_NAME=deejpotter_dev` (see readme "Local database")
+- Local database: `DB_NAME=deejpotter_dev` (see `docs/DEVELOPMENT.md` "Local database")
 - Gelato merch site: see `../deejpotter-gelato/README.md`

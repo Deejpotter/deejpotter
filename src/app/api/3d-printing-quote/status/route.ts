@@ -1,3 +1,11 @@
+/**
+ * GET /api/3d-printing-quote/status — Order status for a customer
+ *
+ * Customers usually have no account, so the quote number plus the email on
+ * the quote is the proof that it's theirs. Only what they need to follow or
+ * pay for the order is returned; admin notes and Stripe ids stay private.
+ */
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getQuoteForCustomer } from "@/lib/db-quotes";
