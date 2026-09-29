@@ -121,7 +121,8 @@ Staging's Render env was checked on 2026-09-27. It shared production's database,
 ## Dependency follow-ups
 
 - Node 24 + minor/patch refresh done (#119, #120); both Render services on `NODE_VERSION=24`
-- [ ] Later (separate PRs): vitest 5 + jsdom 30 + jest-dom 7; svix 2; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
+- [x] 2026-09-29: svix 2 (Clerk webhook updated), TypeScript 6, mongodb-memory-server 11, jsdom 30 (#135); `@types/node` majors held to the Node 24 runtime in dependabot.yml
+- [ ] Later (separate PRs): vitest 5 + jest-dom 7; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
 
 ---
 
