@@ -194,4 +194,100 @@
       opacity: 1;
     }
   }
+
+  /* Homepage motion. Kept slow and in the background so it adds life without
+     pulling attention from the headline; all of it stops for reduced motion. */
+
+  /* Hero glows wander slightly so the dark band doesn't feel static. */
+  .glow-drift {
+    animation: glow-drift 14s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow-drift {
+    to {
+      transform: translate(3rem, 2rem) scale(1.15);
+    }
+  }
+
+  /* The hero part "prints": a fill rises through the wireframe, pauses, and
+     starts again, echoing layer-by-layer printing. */
+  .print-fill {
+    animation: print-fill 6s ease-in-out infinite;
+    transform-origin: bottom;
+  }
+
+  @keyframes print-fill {
+    0% {
+      transform: scaleY(0);
+    }
+
+    70%,
+    100% {
+      transform: scaleY(1);
+    }
+  }
+
+  /* Tiles in a spotlight grid light up under the cursor. The position comes
+     from --spot-x/--spot-y, set by SpotlightGrid on pointer move. */
+  .spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    background: radial-gradient(
+      18rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in oklab, var(--color-primary) 22%, transparent),
+      transparent 70%
+    );
+  }
+
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* Sections that slide in once scrolled into view (Reveal sets data-shown). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 600ms ease,
+      transform 600ms ease;
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The timeline line draws down as it comes into view. */
+  .reveal .timeline-line {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1.2s ease 200ms;
+  }
+
+  .reveal[data-shown="true"] .timeline-line {
+    transform: scaleY(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glow-drift,
+    .print-fill {
+      animation: none;
+    }
+
+    .reveal,
+    .reveal .timeline-line {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }
