@@ -33,7 +33,7 @@ This follows the Day Planner's plan (`Deejpotter/day-planner`, `docs/AUTH-SELF-H
 
 Each phase ends with type-check, lint, tests and build passing, lands on `dev`, and is checked on staging before any `dev` → `main` PR.
 
-### Phase 0: Prepare (½ day)
+### Phase 0: Prepare (about 2 hours)
 **Why:** test the one real unknown, MongoDB, before any code depends on it.
 - 0.1 Back up the production and staging databases (`mongodump`) and test a restore into a scratch database. A backup that's never been restored doesn't count.
 - 0.2 Wait for the Day Planner cut-over and note anything its phase 8 changed.
@@ -44,14 +44,14 @@ Each phase ends with type-check, lint, tests and build passing, lands on `dev`, 
   - account linking against a mock OIDC provider, repeating Day Planner scenarios A–D
 - 0.4 Decide whether customers get Google sign-in as well as email and password (default: no, to match the Day Planner).
 
-### Phase 1: One auth helper, still on Clerk (½ day)
+### Phase 1: One auth helper, still on Clerk (about 1 hour)
 **Why:** today 11 files call Clerk directly. Moving them behind one helper first means the switch in phase 3 changes one file, and this step can ship to production on its own with no behaviour change.
 - 1.1 Add `src/lib/session.ts` with `getSessionUser()` returning `{ id, email, emailVerified, name } | null`, and `requireSignedIn()`.
 - 1.2 Move `admin-auth.ts`, `/account`, the quote routes, contact, groceries, `mongo-crud`, `quotes` and the CNC Technical AI components onto it.
 - 1.3 Tests for the helper with Clerk mocked; existing route tests keep passing.
 - 1.4 Staging check, then it can go to production with the next release.
 
-### Phase 2: Server core behind the switch (1 day)
+### Phase 2: Server core behind the switch (about 2 hours)
 **Why:** the same code runs both systems until cut-over, as in the Day Planner.
 - 2.1 `src/lib/auth.ts`: `betterAuth({ database: mongodbAdapter(db, { client }), emailAndPassword, plugins: [admin(), genericOAuth(clerk, optional), nextCookies()] })`, created on first use only when `BETTER_AUTH_SECRET` is set.
 - 2.2 `src/app/api/auth/[...all]/route.ts`; returns 404 while Better Auth is off.
@@ -61,14 +61,14 @@ Each phase ends with type-check, lint, tests and build passing, lands on `dev`, 
 - 2.6 Sign-up hook: stamp new users `customer`. Admin comes only from `ADMIN_EMAILS` and a verified email (`isAdminUser`).
 - 2.7 Tests: session, admin from `ADMIN_EMAILS`, unverified email not admin, origin parser, unlisted origin rejected.
 
-### Phase 3: Pages and proxy (1 day)
+### Phase 3: Pages and proxy (about 2–3 hours)
 **Why:** Clerk's hosted components go away in Better Auth mode.
 - 3.1 `/sign-in`, `/sign-up`, `/forgot-password`, `/reset-password` and sign-out, built with `createAuthClient()` in the site's design. The "Sign in with Clerk" button shows only when `OIDC_*` is set.
 - 3.2 `proxy.ts`: Better Auth session check for `/admin` and `/groceries` when on; `clerkMiddleware` when off. Keep the `www` redirect.
 - 3.3 Navbar account menu and `AuthProvider` without `ClerkProvider` in Better Auth mode.
 - 3.4 `next` redirects accept only same-site paths.
 
-### Phase 4: Staging (½ day, needs Deej)
+### Phase 4: Staging (about 1 hour, plus about 15 minutes from Deej)
 - 4.1 **Deej:** add `BETTER_AUTH_SECRET` (`openssl rand -base64 32`, staging's own), `BETTER_AUTH_URL=https://staging.deejpotter.com` and `ADMIN_EMAILS` on `deejpotter-staging`.
 - 4.2 **Deej, with approval:** create an OAuth application on the Clerk **production** instance, with scopes `openid email profile` and the redirect URI `https://staging.deejpotter.com/api/auth/callback/clerk`, then add `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET` and `OIDC_DISCOVERY_URL` to staging.
 - 4.3 Check on staging:
@@ -80,7 +80,7 @@ Each phase ends with type-check, lint, tests and build passing, lands on `dev`, 
   - quote submission while signed in
   - sign-out
 
-### Phase 5: Production cut-over (½ day plus a watch period)
+### Phase 5: Production cut-over (about 30 minutes, plus a watch period)
 - 5.1 Fresh `mongodump`, then the same env vars on `deejpotter` with production's own secret, and a production-instance OAuth app for `https://deejpotter.com/api/auth/callback/clerk`.
 - 5.2 Before switching, check in Clerk that each existing user's primary email is verified; unverified users get `account_not_linked` until they verify.
 - 5.3 Everyone signs in once more; Clerk sessions don't carry over.
@@ -90,7 +90,7 @@ Each phase ends with type-check, lint, tests and build passing, lands on `dev`, 
 ### Phase 6: Docs (alongside each phase)
 - `docs/ARCHITECTURE.md` auth section, `docs/DEVELOPMENT.md` env vars, `.env.example`, `.github/TODOs.md`, and this file's results tables.
 
-**Total:** about 4½ working days, plus the Day Planner wait and the 14-day watch.
+**Total:** about one working day of hands-on work (8–9 hours), based on actual pace: the quote-to-order flow on this site, which was larger, took about a day, and the Day Planner did its schema, auth core, pages, setup wizard and Settings (phases 1–5) in about two. The spike (0.3) is the only real unknown; if Better Auth can't reuse the `users` collection, add about 2 hours. Elapsed time depends on the waits, not the work: the Day Planner cut-over, Deej's Clerk and Render steps, and the 14-day watch before removing Clerk.
 
 ## 4. Risks
 
