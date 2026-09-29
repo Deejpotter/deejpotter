@@ -40,18 +40,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const payload = await req.json();
-  const body = JSON.stringify(payload);
+  // The signature covers the exact bytes Clerk sent, so verify the raw text;
+  // re-serialising parsed JSON can reorder or reformat it and fail valid events.
+  const body = await req.text();
 
   const wh = new Webhook(WEBHOOK_SECRET);
   let evt: { type: string; data: Record<string, unknown> };
 
   try {
-    evt = wh.verify(body, {
+    // svix 2's verify() only throws on a bad signature and returns nothing,
+    // so the event is parsed here once the body is known to be genuine.
+    wh.verify(body, {
       "svix-id": svix_id,
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
-    }) as { type: string; data: Record<string, unknown> };
+    });
+    evt = JSON.parse(body);
   } catch {
     return NextResponse.json(
       { error: "Invalid signature" },
