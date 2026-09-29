@@ -116,7 +116,7 @@ Staging's Render env was checked on 2026-09-27. It shared production's database,
 - [ ] Box shipping calculator: point `NEXT_PUBLIC_API_URL` at the backend, or move items into MongoDB (recommended)
 - [x] Removed `src/__tests__/navbar-integration.test.ts` (it only compared string literals to themselves; `TopNavbar.test.tsx` covers the real navbar)
 - [x] Canvas stub in `src/test/setupTests.ts` now replaces jsdom's `getContext` (it was already loaded but never applied)
-- [ ] OpenGraph image per page / blog JSON-LD (see `.github/ISSUES/006-metadata-og.md`)
+- [x] Blog posts: own OpenGraph image and JSON-LD (other pages still share `og-image.png`); was: OpenGraph image per page / blog JSON-LD (see `.github/ISSUES/006-metadata-og.md`)
 
 ## Dependency follow-ups
 

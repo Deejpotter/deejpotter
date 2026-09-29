@@ -37,6 +37,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.excerpt,
       type: "article",
+      url: `/blog/${slug}`,
       publishedTime: post.date,
       tags: post.tags,
     },
@@ -82,6 +83,24 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-4xl py-8 sm:py-8 lg:py-10">
+      {/* Article structured data so search engines can show the post's date,
+          author and title as a rich result. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.excerpt,
+            datePublished: post.date,
+            keywords: post.tags.join(", "),
+            url: `https://deejpotter.com/blog/${post.slug}`,
+            image: `https://deejpotter.com/blog/${post.slug}/opengraph-image`,
+            author: { "@id": "https://deejpotter.com/#person", "@type": "Person", name: "Deej Potter" },
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
       <nav aria-label="breadcrumb" className="mb-6 text-sm text-gray-500 dark:text-gray-400">
         <ol className="flex flex-wrap items-center gap-2">
           <li>

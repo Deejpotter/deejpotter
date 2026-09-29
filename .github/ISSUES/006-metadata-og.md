@@ -25,6 +25,8 @@ Done:
 - Blog posts set `openGraph` in `generateMetadata` (`src/app/blog/[slug]/page.tsx`).
 - `sitemap.ts` and `robots.ts` exist; the quote board and 404 page are `noindex`.
 
+Done (2026-09-29): blog posts have `BlogPosting` JSON-LD and their own generated preview image (`src/app/blog/[slug]/opengraph-image.tsx`).
+
 Left:
 - Blog posts have no JSON-LD `BlogPosting`/`Article` structured data yet.
 - Every page shares `public/og-image.png`; per-page OG images (e.g. `opengraph-image.tsx`) would improve social previews.
