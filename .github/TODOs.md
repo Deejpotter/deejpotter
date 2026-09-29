@@ -92,13 +92,14 @@ Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Bran
 
 Checked on staging. See docs/ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
 
-- [ ] 1. Replace the repeated `rounded-3xl border p-5` cards (about 20, some nested) with more varied layouts
-  - [ ] 1.1 Hero: one type-led block, and bullets as one line instead of boxed tiles
-  - [ ] 1.2 One bento section with tiles of different sizes, each with its own job
-- [ ] 2. Merge "How it works" and "How I work" (the same three steps twice) into one numbered timeline
+- [x] 1. Replace the repeated `rounded-3xl border p-5` cards (about 20, some nested) with more varied layouts
+  - [x] 1.1 Hero: one type-led block, and bullets as one line instead of boxed tiles
+  - [x] 1.2 One bento section with tiles of different sizes, each with its own job
+- [x] 2. Merge "How it works" and "How I work" (the same three steps twice) into one numbered timeline
 - [ ] 3. Real photos of prints, engravings and sites in "Explore the work" (needs photos from Deej)
-- [ ] 4. Copy: rewrite "No drama, no mystery, just deliberate progress" and "A simple process that keeps things moving"; use "Start with a message" once or twice, not three times; use real list bullets in "Who this is for"
-- [ ] 5. Check desktop and mobile on staging, then PR dev to main
+- [x] 4. Copy: rewrite "No drama, no mystery, just deliberate progress" and "A simple process that keeps things moving"; use "Start with a message" once or twice, not three times; use real list bullets in "Who this is for"
+- [x] 5. Motion and contrast (Deej: "more interactivity or animations or conflict"): printing wireframe part in the hero, cursor spotlight on service tiles, dark 3D printing tile with an "Instant price" sticker, timeline that draws in on scroll
+- [ ] 6. Check desktop and mobile on staging, then PR dev to main
 
 ## Staging isolation (2026-09-27)
 
@@ -113,8 +114,8 @@ Staging's Render env was checked on 2026-09-27. It shared production's database,
 - [x] Staging database: `DB_NAME=deejpotter_staging` on `deejpotter-staging`
 - [ ] Dev-only Atlas user limited to `deejpotter_dev` so local scripts can't reach the site's database
 - [ ] Box shipping calculator: point `NEXT_PUBLIC_API_URL` at the backend, or move items into MongoDB (recommended)
-- [ ] `src/__tests__/navbar-integration.test.ts` asserts string literals equal themselves; replace with real checks or remove
-- [ ] Wire `src/test/setupTests.ts` canvas stub into Vitest setup (silences "getContext not implemented" noise)
+- [x] Removed `src/__tests__/navbar-integration.test.ts` (it only compared string literals to themselves; `TopNavbar.test.tsx` covers the real navbar)
+- [x] Canvas stub in `src/test/setupTests.ts` now replaces jsdom's `getContext` (it was already loaded but never applied)
 - [ ] OpenGraph image per page / blog JSON-LD (see `.github/ISSUES/006-metadata-og.md`)
 
 ## Dependency follow-ups
