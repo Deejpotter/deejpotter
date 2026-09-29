@@ -28,6 +28,5 @@ Done:
 Done (2026-09-29): blog posts have `BlogPosting` JSON-LD and their own generated preview image (`src/app/blog/[slug]/opengraph-image.tsx`).
 
 Left:
-- Blog posts have no JSON-LD `BlogPosting`/`Article` structured data yet.
-- Every page shares `public/og-image.png`; per-page OG images (e.g. `opengraph-image.tsx`) would improve social previews.
+- Pages other than blog posts share `public/og-image.png`.
 - The sitemap's static route list is maintained by hand.
