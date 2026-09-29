@@ -1,16 +1,17 @@
 /**
- * GET  /api/admin/quotes        — list all quotes
- * PATCH /api/admin/quotes       — update quote (status, price, turnaround, notes)
+ * GET  /api/admin/quotes        — list quotes (and mark new ones as being reviewed)
+ * PATCH /api/admin/quotes       — quiet edits: notes, turnaround, manual status fixes
  * POST /api/admin/quotes        — recalculate queue positions
  *
- * Admin-only.
+ * Admin-only. Customer-facing steps (sending a quote, shipping, etc.) go
+ * through /api/admin/quotes/action, which sends the emails; PATCH never
+ * emails, so fixing a mistake doesn't spam the customer.
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { listQuotes, updateQuote, getQuote } from "@/lib/db-quotes";
+import { listQuotes, markQuotesReviewed, updateQuote } from "@/lib/db-quotes";
 import { recalculateAllTurnarounds } from "@/lib/turnaround";
 import { requireAdmin } from "@/lib/admin-auth";
-import { notifyQuoteUpdated } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
   try {
@@ -34,6 +35,14 @@ export async function GET(req: NextRequest) {
       serviceType: (typeParam as any) || undefined,
       limit,
     });
+
+    // Deej opening the board is what "being reviewed" means to the customer,
+    // so new quotes move on here instead of needing a click each.
+    const newOnes = quotes.filter((q) => q.status === "new").map((q) => q.quoteNumber as number);
+    if (newOnes.length > 0) {
+      await markQuotesReviewed(newOnes);
+      for (const q of quotes) if (q.status === "new") q.status = "reviewing";
+    }
 
     const safe = quotes.map((q) => ({
       ...q,
@@ -68,7 +77,18 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const updated = await updateQuote(Number(quoteNumber), patch);
+    // Only fields that are safe to change by hand; payment and shipping
+    // details come from the actions so they always match Stripe and the emails.
+    const allowed: Parameters<typeof updateQuote>[1] = {};
+    if (patch.status !== undefined) {
+      allowed.status = patch.status;
+      allowed.historyNote = "Changed by hand";
+    }
+    if (patch.turnaroundEstimate !== undefined) allowed.turnaroundEstimate = patch.turnaroundEstimate;
+    if (patch.adminNotes !== undefined) allowed.adminNotes = patch.adminNotes;
+    if (patch.quotedPrice !== undefined) allowed.quotedPrice = patch.quotedPrice;
+
+    const updated = await updateQuote(Number(quoteNumber), allowed);
     if (!updated) {
       return NextResponse.json(
         { error: "Quote not found" },
@@ -76,21 +96,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    // Send email notification if status or price changed
-    if (patch.status || patch.quotedPrice !== undefined) {
-      const quote = await getQuote(Number(quoteNumber));
-      if (quote) {
-        notifyQuoteUpdated(
-          quote.userName || quote.userEmail,
-          quote.userEmail,
-          quote.quoteNumber,
-          patch.status || quote.status,
-          patch.quotedPrice !== undefined ? patch.quotedPrice : quote.quotedPrice,
-        ).catch((err) => console.error("[email] Failed to send update:", err));
-      }
-    }
-
-    return NextResponse.json(updated);
+    return NextResponse.json({ ...updated, _id: updated._id?.toString?.() });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to update" },

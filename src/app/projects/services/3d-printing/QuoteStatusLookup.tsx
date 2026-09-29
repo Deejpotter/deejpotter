@@ -1,10 +1,22 @@
 "use client";
 
-import { ReactElement, useState } from "react";
+/**
+ * QuoteStatusLookup — Lets a customer follow their order without an account
+ *
+ * Every order email links here with ?quote=<number>, so the quote number is
+ * filled in and the customer only types their email (which proves it's their
+ * quote). The status wording and timeline come from quote-workflow so they
+ * match the emails exactly. Payment only ever happens through the link Deej
+ * sent; this page just shows that same link again.
+ */
+
+import { ReactElement, useEffect, useState } from "react";
+import { customerStatusLabel, trackingUrl, type DeliveryMethod } from "@/lib/quote-workflow";
+import type { QuoteStatus } from "@/lib/db-schemas";
 
 type QuoteStatusResponse = {
   requestId: string;
-  status: string;
+  status: QuoteStatus;
   quotedPrice: number | null;
   turnaroundEstimate: string | null;
   createdAt: string;
@@ -12,7 +24,14 @@ type QuoteStatusResponse = {
   fileName: string;
   material: string;
   quantity: number;
-  stripeCheckoutUrl: string | null;
+  deliveryMethod: DeliveryMethod;
+  shippingCost: number | null;
+  shippingLabel: string | null;
+  carrier: string | null;
+  trackingNumber: string | null;
+  paymentLinkUrl: string | null;
+  paidAt: string | null;
+  history: { status: QuoteStatus; at: string }[];
   estimate?: {
     analysisAvailable: boolean;
     estimatedPriceAud?: number;
@@ -25,50 +44,41 @@ type QuoteStatusResponse = {
 const inputClass =
   "w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white";
 
+/** What happens next, in plain words, for each status. */
+function nextStepText(result: QuoteStatusResponse): string | null {
+  switch (result.status) {
+    case "new":
+    case "reviewing":
+      return "I'm checking your file. You'll get an email with the price and a payment link.";
+    case "quoted":
+    case "awaiting_payment":
+      return "Your quote is ready. I'll start as soon as it's paid.";
+    case "approved":
+      return "Paid, thanks. Your job is in the queue.";
+    case "in_progress":
+      return "Your job is being made now.";
+    case "ready":
+      if (result.trackingNumber) return "Your parcel is on its way.";
+      return result.deliveryMethod === "local_delivery"
+        ? "Your order is on its way to you."
+        : "Ready to collect in Frankston. Reply to your email to arrange a time.";
+    default:
+      return null;
+  }
+}
+
 export default function QuoteStatusLookup(): ReactElement {
   const [requestId, setRequestId] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<QuoteStatusResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [paying, setPaying] = useState(false);
 
-  const statusLabels: Record<string, string> = {
-    new: "New: waiting for review",
-    reviewing: "Under review",
-    quoted: "Quoted: ready to pay",
-    awaiting_payment: "Awaiting payment confirmation",
-    approved: "Approved: in the print queue",
-    printing: "Printing",
-    ready: "Ready for pickup/shipping",
-    completed: "Completed",
-    declined: "Declined",
-  };
-
-  const handlePayNow = async (quoteNumber: string) => {
-    setPaying(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/quotes/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quoteNumber: Number(quoteNumber), email }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Could not create payment session.");
-        setPaying(false);
-        return;
-      }
-      // Redirect to Stripe Checkout
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch {
-      setError("Could not connect to payment service.");
-      setPaying(false);
-    }
-  };
+  // Prefill from the link in the customer's email.
+  useEffect(() => {
+    const quote = new URLSearchParams(window.location.search).get("quote");
+    if (quote && /^\d+$/.test(quote)) setRequestId(quote);
+  }, []);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -78,16 +88,12 @@ export default function QuoteStatusLookup(): ReactElement {
 
     try {
       const params = new URLSearchParams({ requestId, email });
-      const response = await fetch(`/api/3d-printing-quote/status?${params.toString()}`, {
-        cache: "no-store",
-      });
+      const response = await fetch(`/api/3d-printing-quote/status?${params.toString()}`, { cache: "no-store" });
       const payload = await response.json().catch(() => ({}));
-
       if (!response.ok) {
         setError(payload.error || "Could not load quote status.");
         return;
       }
-
       setResult(payload);
     } catch {
       setError("Could not load quote status.");
@@ -96,20 +102,17 @@ export default function QuoteStatusLookup(): ReactElement {
     }
   };
 
+  const shipped = Boolean(result?.trackingNumber);
+  const track = result ? trackingUrl(result.carrier, result.trackingNumber) : null;
+  const total = result?.quotedPrice != null ? result.quotedPrice + (result.shippingCost ?? 0) : null;
+
   return (
-    <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900">
+    <section id="quote-status" className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900">
       <div className="border-b border-gray-100 bg-gray-50/80 px-6 py-5 dark:border-gray-800 dark:bg-gray-950/40 sm:px-8">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="mb-2 text-3xl font-bold">Check your quote status</h2>
-            <p className="max-w-2xl text-gray-600 dark:text-gray-400">
-              Enter your quote number and the same email address used on the quote request.
-            </p>
-          </div>
-          <span className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
-            Self-serve status
-          </span>
-        </div>
+        <h2 className="mb-2 text-3xl font-bold">Check your order</h2>
+        <p className="max-w-2xl text-gray-600 dark:text-gray-400">
+          Enter your quote number and the email you used on the quote request.
+        </p>
       </div>
 
       <div className="px-6 py-6 sm:px-8">
@@ -133,90 +136,78 @@ export default function QuoteStatusLookup(): ReactElement {
             <label htmlFor="status-email" className="mb-2 block text-sm font-semibold text-gray-900 dark:text-gray-100">
               Email
             </label>
-            <input
-              id="status-email"
-              type="email"
-              className={inputClass}
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
+            <input id="status-email" type="email" className={inputClass} value={email} onChange={(event) => setEmail(event.target.value)} required />
           </div>
           <button
             className="inline-flex items-center justify-center rounded-full border border-primary px-5 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70 dark:text-white"
             type="submit"
             disabled={loading}
           >
-            {loading ? "Checking..." : "Check quote status"}
+            {loading ? "Checking..." : "Check order"}
           </button>
         </form>
 
         {error && (
-          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950 shadow-sm dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-50" role="alert">
+          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-50" role="alert">
             {error}
           </div>
         )}
 
         {result && (
-          <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sky-950 shadow-sm dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-50" role="status">
-            <div className="mb-2 text-xl font-bold">Quote status: {statusLabels[result.status] || result.status}</div>
-            <div className="mb-2 text-sm">
-              Quote {result.requestId} - {result.fileName} - {result.material} x {result.quantity}
+          <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sky-950 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-50" role="status">
+            <div className="mb-1 text-xl font-bold">
+              {customerStatusLabel(result.status, { deliveryMethod: result.deliveryMethod, shipped })}
             </div>
-            <div className="mb-1">
-              {result.quotedPrice != null
-                ? `Quoted price: $${result.quotedPrice.toFixed(2)}`
-                : "Quoted price: pending review"}
+            <div className="mb-3 text-sm">
+              Quote {result.requestId} · {result.fileName} · {result.material} × {result.quantity}
             </div>
-            <div className="mb-1">
-              {result.turnaroundEstimate
-                ? `Turnaround: ${result.turnaroundEstimate}`
-                : "Turnaround: pending review"}
-            </div>
+            {nextStepText(result) && <p className="mb-3">{nextStepText(result)}</p>}
 
-            {/* Pay Now button — shown when quote is ready */}
-            {result.status === "quoted" && result.quotedPrice != null && result.quotedPrice > 0 && (
-              <div className="mt-4">
-                <button
-                  type="button"
-                  onClick={() => handlePayNow(result.requestId)}
-                  disabled={paying}
-                  className="inline-flex items-center rounded-full bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition-colors disabled:opacity-70"
-                >
-                  {paying ? "Redirecting to payment..." : `Pay $${result.quotedPrice.toFixed(2)} now`}
-                </button>
-                <p className="text-xs text-gray-500 mt-2">Secure payment via Stripe. Your card is never stored here.</p>
-              </div>
+            {total != null && (
+              <p className="mb-1">
+                Price: ${result.quotedPrice!.toFixed(2)}
+                {result.shippingCost ? ` + ${result.shippingLabel || "delivery"} $${result.shippingCost.toFixed(2)} = $${total.toFixed(2)}` : ""}
+              </p>
+            )}
+            {result.quotedPrice == null && result.estimate?.analysisAvailable && result.estimate.estimatedPriceAud != null && (
+              <p className="mb-1">Automatic estimate: about ${result.estimate.estimatedPriceAud.toFixed(2)} (I&apos;ll confirm it)</p>
+            )}
+            {result.turnaroundEstimate && <p className="mb-1">Turnaround: {result.turnaroundEstimate}</p>}
+
+            {result.paymentLinkUrl && total != null && (
+              <a
+                href={result.paymentLinkUrl}
+                className="mt-3 inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
+              >
+                Pay ${total.toFixed(2)} securely with Stripe
+              </a>
             )}
 
-            {result.status === "awaiting_payment" && (
-              <div className="mt-3 text-amber-700 dark:text-amber-300 font-medium">
-                ⏳ Payment is being processed...
-              </div>
+            {result.trackingNumber && (
+              <p className="mt-3">
+                Tracking:{" "}
+                {track ? (
+                  <a href={track} target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+                    {result.trackingNumber}
+                  </a>
+                ) : (
+                  result.trackingNumber
+                )}
+              </p>
             )}
 
-            {result.status === "approved" && (
-              <div className="mt-3 text-emerald-700 dark:text-emerald-300 font-medium">
-                ✅ Payment confirmed! Your print is in the queue.
-              </div>
+            {result.history.length > 0 && (
+              <ol className="mt-4 space-y-1 border-t border-sky-200 pt-3 text-sm dark:border-sky-900/60">
+                {result.history.map((h, i) => (
+                  <li key={i}>
+                    <span className="text-sky-900/70 dark:text-sky-100/70">
+                      {new Date(h.at).toLocaleDateString("en-AU", { day: "numeric", month: "short" })}
+                    </span>{" "}
+                    {customerStatusLabel(h.status, { deliveryMethod: result.deliveryMethod, shipped })}
+                  </li>
+                ))}
+              </ol>
             )}
-
-            {result.quotedPrice == null && result.estimate?.analysisAvailable && (
-              <>
-                <div className="mb-1">
-                  Preliminary estimate: from ${result.estimate.estimatedPriceAud?.toFixed(2)}
-                </div>
-                <div className="mb-1 text-sm text-sky-900/80 dark:text-sky-100/80">
-                  Approx {result.estimate.estimatedPrintHours} hours and {result.estimate.estimatedMaterialGrams} g material
-                </div>
-              </>
-            )}
-            {result.estimate?.previewNote && (
-              <div className="mb-1 text-sm text-sky-900/80 dark:text-sky-100/80">{result.estimate.previewNote}</div>
-            )}
-            <div className="text-sm text-sky-900/70 dark:text-sky-100/70">
-              Last updated {new Date(result.updatedAt).toLocaleString()}
-            </div>
           </div>
         )}
       </div>

@@ -1,135 +1,97 @@
 /**
- * /api/webhooks/stripe — Stripe webhook handler
+ * /api/webhooks/stripe — Marks quotes paid when Stripe confirms a payment
  *
- * Listens for checkout.session.completed events to update quote status.
- * Verifies webhook signature using STRIPE_WEBHOOK_SECRET.
+ * This is the one step of the order flow that must happen without Deej: a
+ * customer pays the emailed Payment Link, Stripe calls this endpoint, and the
+ * quote moves to "paid" with emails to both sides. The quote number comes from
+ * the Payment Link's metadata, which Stripe copies onto the checkout session.
  *
- * Idempotency: checks the Stripe event ID before processing to prevent
- * duplicate webhook deliveries from double-processing an event.
+ * Every request is signature-checked, because anyone could otherwise post a
+ * fake "paid" event. Event ids are recorded in MongoDB so a repeated delivery
+ * (Stripe retries until it gets a 2xx) can't pay a quote twice, even across
+ * Render restarts.
  */
 
 import { NextResponse } from "next/server";
-import { updateQuote, getQuote } from "@/lib/db-quotes";
-
-const STRIPE_KEY = process.env.STRIPE_SECRET_KEY || "";
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-// Simple in-memory deduplication — prevents double-processing in the same
-// process lifetime. Cleared on server restart, which is acceptable since
-// Stripe retries with backoff give plenty of time.
-const processedEvents = new Set<string>();
+import type Stripe from "stripe";
+import { claimStripeEvent, getQuote, releaseStripeEvent } from "@/lib/db-quotes";
+import { notifyAdminPaymentProblem } from "@/lib/email";
+import { performQuoteAction } from "@/lib/quote-actions";
+import { getStripe } from "@/lib/stripe-payments";
 
 export async function POST(request: Request) {
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!process.env.STRIPE_SECRET_KEY || !secret) {
+    console.error("[stripe webhook] STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET is missing");
+    return NextResponse.json({ error: "Stripe webhooks aren't configured." }, { status: 500 });
+  }
+
+  // The signature covers the raw body, so it must be read as text, not JSON.
   const body = await request.text();
   const signature = request.headers.get("stripe-signature") || "";
 
-  if (!STRIPE_KEY) {
-    console.error("STRIPE_SECRET_KEY not configured — webhooks disabled");
-    return NextResponse.json({ error: "Stripe not configured." }, { status: 500 });
-  }
-
-  // Verify webhook signature (strongly recommended in production)
-  if (!WEBHOOK_SECRET) {
-    // In dev, warn but allow — in prod we'd reject
-    if (BASE_URL !== "http://localhost:3000") {
-      console.error("STRIPE_WEBHOOK_SECRET is required in production");
-      return NextResponse.json({ error: "Webhook secret not configured." }, { status: 500 });
-    }
-    console.warn("STRIPE_WEBHOOK_SECRET not set — dev mode, skipping signature verification");
-  }
-
-  let event: { id: string; type: string; data: { object: Record<string, unknown> } };
+  let event: Stripe.Event;
   try {
-    if (WEBHOOK_SECRET) {
-      const stripe = await import("stripe");
-      const client = new stripe.default(STRIPE_KEY);
-      event = client.webhooks.constructEvent(body, signature, WEBHOOK_SECRET) as unknown as typeof event;
-    } else {
-      event = JSON.parse(body);
-      // Basic sanity: must have id and type
-      if (!event.id || !event.type) {
-        return NextResponse.json({ error: "Invalid webhook payload." }, { status: 400 });
-      }
-    }
+    const stripe = await getStripe();
+    event = stripe.webhooks.constructEvent(body, signature, secret);
   } catch (err) {
-    console.error("Stripe webhook verification failed:", err);
+    console.error("[stripe webhook] Signature check failed:", err);
     return NextResponse.json({ error: "Invalid signature." }, { status: 400 });
   }
 
-  // ── Idempotency check ───────────────────────────────────────────
-  // Stripe may deliver the same event multiple times.
-  if (processedEvents.has(event.id)) {
-    console.info(`Webhook ${event.id} (${event.type}) already processed — skipping`);
-    return NextResponse.json({ received: true, deduplicated: true });
-  }
-  processedEvents.add(event.id);
-
-  // Limit set size to prevent memory leak on long-running dev servers
-  if (processedEvents.size > 1000) {
-    const entries = Array.from(processedEvents);
-    const toRemove = entries.slice(0, 500);
-    for (const e of toRemove) {
-      processedEvents.delete(e);
-    }
+  if (event.type !== "checkout.session.completed") {
+    return NextResponse.json({ received: true });
   }
 
-  // ── Handle checkout.session.completed ────────────────────────────
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    const metadata = (session.metadata || {}) as Record<string, string>;
+  const session = event.data.object as Stripe.Checkout.Session;
+  const quoteNumber = Number(session.metadata?.quoteNumber);
+  // Payments that aren't for a quote (e.g. a link made by hand in the Stripe
+  // dashboard) are left alone.
+  if (!quoteNumber) return NextResponse.json({ received: true });
 
-    // Handle quotes paid via the new quote checkout
-    if (metadata.quoteNumber) {
-      const quoteNumber = Number(metadata.quoteNumber);
-      console.info(`Webhook: payment completed for quote #${quoteNumber}`);
+  // Some payment methods complete the session before the money arrives; those
+  // are paid later and aren't treated as paid here.
+  if (session.payment_status !== "paid") {
+    console.info(`[stripe webhook] Quote #${quoteNumber} session completed but payment is ${session.payment_status}`);
+    return NextResponse.json({ received: true });
+  }
 
-      try {
-        const quote = await getQuote(quoteNumber);
-        if (!quote) {
-          console.error(`Webhook: quote #${quoteNumber} not found`);
-          return NextResponse.json({ received: true });
-        }
+  if (!(await claimStripeEvent(event.id, event.type))) {
+    return NextResponse.json({ received: true, duplicate: true });
+  }
 
-        if (quote.status !== "awaiting_payment") {
-          console.info(`Webhook: quote #${quoteNumber} status is "${quote.status}" — nothing to do`);
-          return NextResponse.json({ received: true });
-        }
-
-        await updateQuote(quoteNumber, {
-          status: "approved",
-          paidAt: new Date().toISOString(),
-        });
-        console.info(`Webhook: quote #${quoteNumber} → approved (paid)`);
-      } catch (err) {
-        console.error(`Webhook: failed to update quote #${quoteNumber}:`, err);
-      }
+  try {
+    const quote = await getQuote(quoteNumber);
+    if (!quote) {
+      console.error(`[stripe webhook] Paid quote #${quoteNumber} not found`);
       return NextResponse.json({ received: true });
     }
-  }
-
-  // ── Handle checkout.session.expired ──────────────────────────────
-  if (event.type === "checkout.session.expired") {
-    const session = event.data.object;
-    const metadata = (session.metadata || {}) as Record<string, string>;
-
-    if (metadata.quoteNumber) {
-      const quoteNumber = Number(metadata.quoteNumber);
-      try {
-        const quote = await getQuote(quoteNumber);
-        if (quote && quote.status === "awaiting_payment") {
-          await updateQuote(quoteNumber, {
-            status: "quoted",
-            stripeCheckoutUrl: null,
-            stripeSessionId: null,
-          });
-          console.info(`Webhook: quote #${quoteNumber} → "quoted" (session expired)`);
-        }
-      } catch (err) {
-        console.error(`Webhook: failed to expire quote #${quoteNumber}:`, err);
-      }
+    if (quote.status !== "awaiting_payment" && quote.status !== "quoted") {
+      // Paid after being cancelled, or marked paid by hand already: Deej needs
+      // to know (possible refund), but the status shouldn't jump backwards.
+      console.warn(`[stripe webhook] Quote #${quoteNumber} was paid while "${quote.status}"; left unchanged`);
+      await notifyAdminPaymentProblem(
+        quoteNumber,
+        `Quote #${quoteNumber} was paid through Stripe while its status was "${quote.status}". Nothing was changed; check whether the customer needs a refund.`,
+      ).catch((err) => console.error("[stripe webhook] Admin email failed:", err));
       return NextResponse.json({ received: true });
     }
+
+    await performQuoteAction(
+      quoteNumber,
+      "mark_paid",
+      {
+        amountPaid: session.amount_total != null ? session.amount_total / 100 : null,
+        stripeSessionId: session.id,
+      },
+      "stripe",
+    );
+    console.info(`[stripe webhook] Quote #${quoteNumber} paid`);
+  } catch (err) {
+    // A 500 makes Stripe retry, which is what we want if the database blipped.
+    console.error(`[stripe webhook] Failed to mark quote #${quoteNumber} paid:`, err);
+    await releaseStripeEvent(event.id).catch(() => undefined);
+    return NextResponse.json({ error: "Could not record payment." }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });
