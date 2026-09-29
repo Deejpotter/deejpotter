@@ -116,9 +116,9 @@ export default function Home(): ReactElement {
                   key={service.id}
                   href={service.link}
                   className={
-                    "group " + featured
-                      ? "spotlight glow-card flex min-h-80 flex-col justify-between rounded-3xl bg-gray-950 p-6 text-white md:order-first md:col-span-2 md:row-span-3"
-                      : "spotlight glow-card flex flex-col justify-between rounded-3xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900"
+                    featured
+                      ? "group spotlight glow-card flex min-h-80 flex-col justify-between rounded-3xl bg-gray-950 p-6 text-white md:order-first md:col-span-2 md:row-span-3"
+                      : "group spotlight glow-card flex flex-col justify-between rounded-3xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900"
                   }
                 >
                   {featured && (
