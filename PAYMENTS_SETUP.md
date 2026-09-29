@@ -55,6 +55,10 @@ Keys and secrets are pasted in by Deej. Claude doesn't enter secrets into dashbo
 4. The quote should move to **Paid** by itself, and both the receipt and the admin "Paid" email should arrive.
 5. If it stays on "Quote sent", check the webhook's delivery log in the Stripe dashboard and the Render logs for `[stripe webhook]`.
 
+## Reference
+
+- Australia Post PAC tutorial (request format, units, service codes, calculate step): https://developers.auspost.com.au/apis/pac/tutorial/domestic-parcel
+
 ## Env var summary
 
 | Variable | Staging | Production |
