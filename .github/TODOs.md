@@ -111,18 +111,18 @@ Staging's Render env was checked on 2026-09-27. It shared production's database,
 
 ## Better Auth migration (planned 2026-09-30)
 
-Plan and reasoning: docs/AUTH_MIGRATION_PLAN.md. Starts after the Day Planner cut-over. The Clerk webhook setup is skipped, because this replaces it.
+Plan and reasoning: docs/AUTH_MIGRATION_PLAN.md. Phases 1–3 can go ahead now (no behaviour change on production); phases 4–5 wait for the Day Planner cut-over. The Clerk webhook setup is skipped, because this replaces it.
 
 - [x] Plan written from the Day Planner's plan and code, with the MongoDB adapter checked against Better Auth's docs
-- [ ] 0. Prepare
-  - [ ] 0.1 mongodump production and staging; test a restore
-  - [ ] 0.2 Wait for the Day Planner cut-over; note what its phase 8 changed
-  - [ ] 0.3 Spike: mongodbAdapter on Next 16, reuse of `users`, id format, linking scenarios A–D with a mock OIDC provider
-  - [ ] 0.4 Decide on Google sign-in for customers (default no)
+- [x] 0. Prepare (results in the plan)
+  - [x] 0.1 Backed up production and staging (Extended JSON + indexes, ~/backups/deejpotter); restore tested, all collections match
+  - [x] 0.2 Day Planner checked: phases 1–6 on its dev, not cut over yet; phases 4–5 here wait for it
+  - [x] 0.3 Spike (branch spike/better-auth): reuses `users` with ObjectId ids; linking A–D pass; builds on Next 16. Found: the clerkId unique index breaks the second sign-up; fix is a partial index (phase 2.1a)
+  - [x] 0.4 Google sign-in: yes
 - [ ] 1. One auth helper (`getSessionUser()`), still on Clerk; move the 11 direct Clerk callers onto it
-- [ ] 2. Server core behind `BETTER_AUTH_SECRET`: auth.ts, /api/auth route, Resend emails, origins, rate limits, `ADMIN_EMAILS` with verified email, tests
+- [ ] 2. Server core behind `BETTER_AUTH_SECRET`: auth.ts (email, Google, optional Clerk), partial clerkId index, /api/auth route, Resend emails, origins, rate limits, `ADMIN_EMAILS` with verified email, tests
 - [ ] 3. Pages and proxy: sign-in, sign-up, forgot and reset password, sign-out, navbar, "Sign in with Clerk" when configured
-- [ ] 4. Staging (Deej: secret, URL, ADMIN_EMAILS, Clerk production-instance OAuth app for the staging callback), then the full check list
+- [ ] 4. Staging (Deej: secret, URL, ADMIN_EMAILS, Google OAuth client, Clerk production-instance OAuth app for the staging callback), then the full check list
 - [ ] 5. Production cut-over, rollback by removing the secret, Clerk removal after 14 days
 - [ ] 6. Docs updated with each phase
 
