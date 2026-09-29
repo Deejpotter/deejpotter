@@ -1,4 +1,5 @@
 # Development — deejpotter.com
+n> The repo README doubles as the GitHub profile page (the repo shares the username), so it stays short. Developer details live here.
 
 How to run, test and change the code. Decisions and the reasons behind them are in `ARCHITECTURE.md`.
 
