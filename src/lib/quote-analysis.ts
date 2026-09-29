@@ -1,16 +1,25 @@
-import { getMaterialRate, getInfillPreset, getQualityPreset, getSettings } from "@/lib/printing-materials";
+/**
+ * quote-analysis.ts — The estimate stored with a submitted 3D printing quote
+ *
+ * This is the server's copy of the live estimate the customer saw in the
+ * browser: the same STL measurements (stl-geometry) and the same maths
+ * (print-estimate), but run on the uploaded file with the rates from the
+ * database. It's what Deej sees on the quote board and what "Send quote"
+ * prefills, so it has to be the trustworthy version, not the browser's.
+ */
 
-export interface BoundingBoxMm {
-  x: number;
-  y: number;
-  z: number;
-}
+import { getQualityPreset, getSettings, getMaterial, getMaterialRate } from "@/lib/printing-materials";
+import { estimatePrint } from "@/lib/print-estimate";
+import { measureStl, type BoundingBoxMm } from "@/lib/stl-geometry";
+
+export type { BoundingBoxMm };
 
 export interface QuoteAnalysis {
   fileKind: "stl" | "other";
   analysisAvailable: boolean;
   triangleCount?: number;
   boundingBoxMm?: BoundingBoxMm;
+  /** Plastic for the whole order (all copies). */
   estimatedMaterialGrams?: number;
   estimatedPrintHours?: number;
   estimatedPriceAud?: number;
@@ -20,102 +29,6 @@ export interface QuoteAnalysis {
    * If material is "other", no automatic price estimate is possible.
    */
   needsManualQuote?: boolean;
-}
-
-interface Vector3 {
-  x: number;
-  y: number;
-  z: number;
-}
-
-function round(value: number, places = 1): number {
-  const factor = 10 ** places;
-  return Math.round(value * factor) / factor;
-}
-
-function mm3ToCm3(value: number): number {
-  return value / 1000;
-}
-
-function updateBounds(bounds: { min: Vector3; max: Vector3 } | null, vertex: Vector3) {
-  if (!bounds) {
-    return {
-      min: { ...vertex },
-      max: { ...vertex },
-    };
-  }
-
-  bounds.min.x = Math.min(bounds.min.x, vertex.x);
-  bounds.min.y = Math.min(bounds.min.y, vertex.y);
-  bounds.min.z = Math.min(bounds.min.z, vertex.z);
-  bounds.max.x = Math.max(bounds.max.x, vertex.x);
-  bounds.max.y = Math.max(bounds.max.y, vertex.y);
-  bounds.max.z = Math.max(bounds.max.z, vertex.z);
-  return bounds;
-}
-
-function getBoundingBoxMm(bounds: { min: Vector3; max: Vector3 } | null): BoundingBoxMm | undefined {
-  if (!bounds) return undefined;
-  return {
-    x: round(Math.max(0, bounds.max.x - bounds.min.x), 1),
-    y: round(Math.max(0, bounds.max.y - bounds.min.y), 1),
-    z: round(Math.max(0, bounds.max.z - bounds.min.z), 1),
-  };
-}
-
-function isLikelyBinaryStl(buffer: Buffer): boolean {
-  if (buffer.length < 84) return false;
-  const triangleCount = buffer.readUInt32LE(80);
-  return 84 + triangleCount * 50 === buffer.length;
-}
-
-function parseBinaryStl(buffer: Buffer): { triangleCount: number; boundingBoxMm?: BoundingBoxMm } | null {
-  if (!isLikelyBinaryStl(buffer)) return null;
-
-  const triangleCount = buffer.readUInt32LE(80);
-  let bounds: { min: Vector3; max: Vector3 } | null = null;
-
-  for (let i = 0; i < triangleCount; i += 1) {
-    const offset = 84 + i * 50 + 12;
-    for (let v = 0; v < 3; v += 1) {
-      const vertexOffset = offset + v * 12;
-      const vertex = {
-        x: buffer.readFloatLE(vertexOffset),
-        y: buffer.readFloatLE(vertexOffset + 4),
-        z: buffer.readFloatLE(vertexOffset + 8),
-      };
-      bounds = updateBounds(bounds, vertex);
-    }
-  }
-
-  return { triangleCount, boundingBoxMm: getBoundingBoxMm(bounds) };
-}
-
-function parseAsciiStl(buffer: Buffer): { triangleCount: number; boundingBoxMm?: BoundingBoxMm } | null {
-  const text = buffer.toString("utf8");
-  if (!text.trimStart().toLowerCase().startsWith("solid")) return null;
-
-  const vertexMatches = Array.from(
-    text.matchAll(
-      /vertex\s+(-?\d*\.?\d+(?:[eE][+-]?\d+)?)\s+(-?\d*\.?\d+(?:[eE][+-]?\d+)?)\s+(-?\d*\.?\d+(?:[eE][+-]?\d+)?)/g
-    )
-  );
-  if (vertexMatches.length < 3) return null;
-
-  let bounds: { min: Vector3; max: Vector3 } | null = null;
-  for (const match of vertexMatches) {
-    const vertex = {
-      x: Number(match[1]),
-      y: Number(match[2]),
-      z: Number(match[3]),
-    };
-    bounds = updateBounds(bounds, vertex);
-  }
-
-  return {
-    triangleCount: Math.floor(vertexMatches.length / 3),
-    boundingBoxMm: getBoundingBoxMm(bounds),
-  };
 }
 
 export async function analyzeQuoteFile(
@@ -128,6 +41,8 @@ export async function analyzeQuoteFile(
     scalePercent?: number;
     /** Rate from the MongoDB service config; falls back to the JSON config */
     ratePerGram?: number | null;
+    /** Density from the MongoDB service config; falls back to the JSON config */
+    density?: number | null;
   }
 ): Promise<QuoteAnalysis> {
   const lowerName = (file.name || "").toLowerCase();
@@ -135,82 +50,55 @@ export async function analyzeQuoteFile(
     return {
       fileKind: "other",
       analysisAvailable: false,
-      previewNote: "Automatic preflight is available for STL files first. Other formats still go through the full quote workflow.",
+      previewNote: "Automatic pricing works with STL files. I'll price this file by hand.",
       confidence: "low",
     };
   }
 
-  // "Other" material means no automatic pricing — needs manual quote
-  if (material === "other") {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const parsed = parseBinaryStl(buffer) ?? parseAsciiStl(buffer);
+  const geometry = measureStl(new Uint8Array(await file.arrayBuffer()));
+  if (!geometry) {
     return {
       fileKind: "stl",
       analysisAvailable: false,
-      triangleCount: parsed?.triangleCount,
-      boundingBoxMm: parsed?.boundingBoxMm,
+      previewNote: "The STL uploaded, but I couldn't read its shape automatically. I'll price it by hand.",
+      confidence: "low",
+    };
+  }
+
+  // "Other" material means no automatic pricing, but the size still helps Deej.
+  if (material === "other") {
+    return {
+      fileKind: "stl",
+      analysisAvailable: false,
+      triangleCount: geometry.triangleCount,
+      boundingBoxMm: geometry.boundingBoxMm,
       needsManualQuote: true,
       previewNote: "This material needs a custom quote. I'll review the file and get back to you with pricing.",
       confidence: "low",
     };
   }
 
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-  const parsed = parseBinaryStl(buffer) ?? parseAsciiStl(buffer);
-
-  if (!parsed?.boundingBoxMm) {
-    return {
-      fileKind: "stl",
-      analysisAvailable: false,
-      previewNote: "The STL uploaded successfully, but the automatic preview could not read reliable geometry from it.",
-      confidence: "low",
-    };
-  }
-
-  const bboxVolumeMm3 = parsed.boundingBoxMm.x * parsed.boundingBoxMm.y * parsed.boundingBoxMm.z;
-  const bboxVolumeCm3 = mm3ToCm3(bboxVolumeMm3);
-  const estimatedMaterialGrams = Math.max(2, bboxVolumeCm3 * 0.16 * quantity);
-  const complexityHours = parsed.triangleCount / 9000;
-  const sizeHours = bboxVolumeCm3 / 45;
-  const estimatedPrintHours = Math.max(0.5, (0.45 + sizeHours + complexityHours) * quantity);
-
-  // Config-driven pricing
-  const perGram = params?.ratePerGram ?? getMaterialRate(material) ?? 0.2;
   const { hourlyRate } = getSettings();
-
-  // Apply interactive builder multipliers
-  const qualityKey = params?.quality || "standard";
-  const infillVal = params?.infill || 15;
-  const scaleVal = (params?.scalePercent || 100) / 100;
-
-  const qualityPreset = getQualityPreset(qualityKey);
-  const infillPreset = getInfillPreset(String(infillVal));
-
-  const timeMultiplier = qualityPreset?.timeMultiplier ?? 1.0;
-  const materialMultiplier = infillPreset?.materialMultiplier ?? 1.0;
-
-  // Scale affects volume cubically
-  const scaleVolumeMultiplier = scaleVal ** 3;
-
-  // Adjust material by infill + scale
-  const adjustedMaterialGrams = estimatedMaterialGrams * materialMultiplier * scaleVolumeMultiplier;
-  // Adjust time by quality + scale
-  const adjustedPrintHours = estimatedPrintHours * timeMultiplier * (scaleVal ** 0.8);
-
-  const estimatedPriceAud = Math.max(5, 8 + adjustedMaterialGrams * perGram + adjustedPrintHours * hourlyRate);
+  const estimate = estimatePrint(geometry, {
+    quantity,
+    infill: params?.infill ?? 15,
+    scalePercent: params?.scalePercent ?? 100,
+    timeMultiplier: getQualityPreset(params?.quality || "standard")?.timeMultiplier ?? 1,
+    ratePerGram: params?.ratePerGram ?? getMaterialRate(material) ?? 0.2,
+    hourlyRate,
+    densityGPerCm3: params?.density ?? getMaterial(material)?.density_g_per_cm3,
+  });
 
   return {
     fileKind: "stl",
     analysisAvailable: true,
-    triangleCount: parsed.triangleCount,
-    boundingBoxMm: parsed.boundingBoxMm,
-    estimatedMaterialGrams: round(adjustedMaterialGrams, 1),
-    estimatedPrintHours: round(adjustedPrintHours, 1),
-    estimatedPriceAud: round(estimatedPriceAud, 2),
+    triangleCount: geometry.triangleCount,
+    boundingBoxMm: estimate.boundingBoxMm,
+    estimatedMaterialGrams: estimate.totalGrams,
+    estimatedPrintHours: estimate.printHours,
+    estimatedPriceAud: estimate.priceAud,
     previewNote:
-      "This is an automatic starting estimate based on STL geometry and requested quantity. Final quoting can still change for strength, finish, orientation, supports, and delivery.",
+      "Worked out from your model's real volume and surface. I'll confirm the final price after checking orientation, supports and finish.",
     confidence: "medium",
   };
 }

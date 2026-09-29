@@ -1,8 +1,13 @@
 /**
- * db-quotes.ts — MongoDB-backed quote storage
+ * db-quotes.ts — Quote records and their uploaded files
  *
- * Replaces the flat-file quote-storage.ts with a proper database backend.
- * Files are still stored on disk, but metadata lives in MongoDB.
+ * Quotes live in MongoDB because Render wipes the disk on every deploy and
+ * the admin board needs to filter and count them. Uploaded models go to
+ * Cloudflare R2 when it's configured (under R2_KEY_PREFIX, so staging and
+ * production don't mix), with local disk only as a development fallback.
+ * Status changes append to statusHistory so customers and Deej can see who
+ * moved an order and when; the rules for which change is allowed live in
+ * quote-workflow.ts, not here.
  */
 
 import fs from "node:fs/promises";
@@ -14,6 +19,7 @@ import {
   QuoteInputSchema,
   type ServiceType,
   type QuoteStatus,
+  type QuoteStatusHistoryEntry,
 } from "./db-schemas";
 
 // ─── File Storage ───────────────────────────────────────────────────
@@ -94,8 +100,16 @@ export async function readQuoteFileBuffer(
 
   // Files uploaded while R2 was configured live there; older ones may be on disk.
   if (isR2Configured()) {
-    const fromR2 = await downloadFromR2(getR2Key(String(quoteNumber), fileStoredAs));
+    const key = getR2Key(String(quoteNumber), fileStoredAs);
+    const fromR2 = await downloadFromR2(key);
     if (fromR2) return fromR2;
+    // Quotes copied from production into staging keep their files at the
+    // unprefixed key, so try that before giving up on R2.
+    const unprefixed = getR2Key(String(quoteNumber), fileStoredAs, "");
+    if (unprefixed !== key) {
+      const fromOriginal = await downloadFromR2(unprefixed);
+      if (fromOriginal) return fromOriginal;
+    }
   }
 
   try {
@@ -119,6 +133,10 @@ export async function createQuote(input: {
     suburb?: string;
     postcode?: string;
     address?: string;
+    /** Delivery price worked out at submission; null means Deej prices it. */
+    cost?: number | null;
+    service?: string | null;
+    label?: string | null;
   };
   notes?: string;
   file?: File;
@@ -139,10 +157,12 @@ export async function createQuote(input: {
     notes: input.notes || "",
   });
 
+  // Pickup and local delivery are the local options; the old suburb-name
+  // check stays for quotes submitted without a delivery choice.
   const isLocal =
-    input.delivery.suburb
-      ?.toLowerCase()
-      .includes("frankston") || false;
+    input.delivery.method !== "shipped" ||
+    input.delivery.suburb?.toLowerCase().includes("frankston") ||
+    false;
 
   // Generate sequential quote number
   const highest = await col
@@ -188,14 +208,20 @@ export async function createQuote(input: {
       postcode: validated.delivery.postcode || "",
       address: validated.delivery.address || "",
       isLocal,
-      cost: null,
-      estimate: null,
+      cost: input.delivery.cost ?? null,
+      // "estimate" holds the delivery label (e.g. "Parcel Post"); the quote
+      // email and payment link use it as the shipping line's name.
+      estimate: input.delivery.label ?? null,
+      service: input.delivery.service ?? null,
     },
     payment: {
-      stripeCheckoutUrl: null,
+      paymentLinkId: null,
+      paymentLinkUrl: null,
       stripeSessionId: null,
+      amountPaid: null,
       paidAt: null,
     },
+    statusHistory: [{ status: "new" as QuoteStatus, at: now, by: "customer" as const }],
     queuePosition: null,
     turnaroundEstimate: null,
     estimatedCompletionDate: null,
@@ -258,14 +284,32 @@ export async function updateQuote(
     estimatedCompletionDate?: string | null;
     queuePosition?: number | null;
     adminNotes?: string | null;
-    stripeCheckoutUrl?: string | null;
+    paymentLinkId?: string | null;
+    paymentLinkUrl?: string | null;
     stripeSessionId?: string | null;
+    amountPaid?: number | null;
     paidAt?: string | null;
     delivery?: {
       method?: "pickup" | "local_delivery" | "shipped";
       cost?: number | null;
       estimate?: string | null;
+      service?: string | null;
+      carrier?: string | null;
+      trackingNumber?: string | null;
+      shippedAt?: string | null;
     };
+    /**
+     * Who caused a status change. Only recorded when the status actually
+     * changes, so editing a note doesn't add a timeline entry.
+     */
+    changedBy?: QuoteStatusHistoryEntry["by"];
+    historyNote?: string;
+    /**
+     * Only apply the change if the quote is still in this status. Two admin
+     * clicks (or a click and the webhook) can race; the loser gets null back
+     * instead of silently overwriting the winner.
+     */
+    expectStatus?: QuoteStatus;
   },
 ) {
   const col = await getCollection("quotes");
@@ -279,19 +323,98 @@ export async function updateQuote(
   if (patch.estimatedCompletionDate !== undefined) update.estimatedCompletionDate = patch.estimatedCompletionDate;
   if (patch.queuePosition !== undefined) update.queuePosition = patch.queuePosition;
   if (patch.adminNotes !== undefined) update.adminNotes = patch.adminNotes;
-  if (patch.stripeCheckoutUrl !== undefined) update["payment.stripeCheckoutUrl"] = patch.stripeCheckoutUrl;
+  if (patch.paymentLinkId !== undefined) update["payment.paymentLinkId"] = patch.paymentLinkId;
+  if (patch.paymentLinkUrl !== undefined) update["payment.paymentLinkUrl"] = patch.paymentLinkUrl;
   if (patch.stripeSessionId !== undefined) update["payment.stripeSessionId"] = patch.stripeSessionId;
+  if (patch.amountPaid !== undefined) update["payment.amountPaid"] = patch.amountPaid;
   if (patch.paidAt !== undefined) update["payment.paidAt"] = patch.paidAt;
-  if (patch.delivery?.method !== undefined) update["delivery.method"] = patch.delivery.method;
-  if (patch.delivery?.cost !== undefined) update["delivery.cost"] = patch.delivery.cost;
-  if (patch.delivery?.estimate !== undefined) update["delivery.estimate"] = patch.delivery.estimate;
+  if (patch.delivery) {
+    for (const [key, value] of Object.entries(patch.delivery)) {
+      if (value !== undefined) update[`delivery.${key}`] = value;
+    }
+  }
 
-  const result = await col.findOneAndUpdate(
-    { quoteNumber },
-    { $set: update },
-    { returnDocument: "after" },
-  );
+  const ops: Record<string, unknown> = { $set: update };
+  if (patch.status !== undefined) {
+    const entry: QuoteStatusHistoryEntry = {
+      status: patch.status,
+      at: now,
+      by: patch.changedBy ?? "admin",
+      ...(patch.historyNote ? { note: patch.historyNote } : {}),
+    };
+    ops.$push = { statusHistory: entry };
+  }
+
+  const filter = patch.expectStatus ? { quoteNumber, status: patch.expectStatus } : { quoteNumber };
+  const result = await col.findOneAndUpdate(filter, ops, {
+    returnDocument: "after",
+  });
   return result;
+}
+
+/**
+ * Move new quotes to "reviewing" the first time the admin list is loaded, so
+ * customers can see their request has been looked at without Deej having to
+ * click anything. Only "new" quotes change, so reloading does nothing more.
+ */
+export async function markQuotesReviewed(quoteNumbers: number[]): Promise<number> {
+  if (quoteNumbers.length === 0) return 0;
+  const col = await getCollection("quotes");
+  const now = new Date().toISOString();
+  const entry: QuoteStatusHistoryEntry = { status: "reviewing", at: now, by: "admin" };
+  const result = await col.updateMany(
+    { quoteNumber: { $in: quoteNumbers }, status: "new" },
+    { $set: { status: "reviewing", updatedAt: now }, $push: { statusHistory: entry } } as never,
+  );
+  return result.modifiedCount;
+}
+
+/**
+ * How long a claimed-but-unfinished event is held before a retry may take it
+ * over. Long enough that a slow first attempt isn't doubled, short enough that
+ * a crash mid-processing is recovered on Stripe's next retry.
+ */
+const STRIPE_EVENT_LEASE_MS = 5 * 60 * 1000;
+
+/**
+ * Claims a Stripe event for processing and reports whether this request should
+ * handle it. Stripe can send an event more than once, and Render restarts wipe
+ * memory, so claims live in MongoDB (the _id unique index settles two
+ * deliveries arriving at once). A claim starts as "processing" with a lease;
+ * only markStripeEventDone makes it final, so if the process dies before
+ * finishing, a retry after the lease expires takes it over instead of being
+ * waved through as a duplicate.
+ */
+export async function claimStripeEvent(eventId: string, type: string): Promise<boolean> {
+  const col = await getCollection("stripe_events");
+  const now = Date.now();
+  try {
+    await col.insertOne({ _id: eventId, type, status: "processing", claimedAt: now } as never);
+    return true;
+  } catch (err) {
+    if ((err as { code?: number }).code !== 11000) throw err;
+  }
+  const takeover = await col.updateOne(
+    { _id: eventId, status: "processing", claimedAt: { $lt: now - STRIPE_EVENT_LEASE_MS } } as never,
+    { $set: { claimedAt: now } },
+  );
+  return takeover.modifiedCount === 1;
+}
+
+/** Marks an event as fully handled, so later deliveries are true duplicates. */
+export async function markStripeEventDone(eventId: string): Promise<void> {
+  const col = await getCollection("stripe_events");
+  await col.updateOne({ _id: eventId } as never, { $set: { status: "done", doneAt: Date.now() } });
+}
+
+/**
+ * Forgets an event whose processing failed, so Stripe's retry is handled
+ * straight away rather than after the lease. If this also fails, the lease
+ * still lets a later retry through.
+ */
+export async function releaseStripeEvent(eventId: string): Promise<void> {
+  const col = await getCollection("stripe_events");
+  await col.deleteOne({ _id: eventId, status: "processing" } as never);
 }
 
 export async function getQuoteForCustomer(

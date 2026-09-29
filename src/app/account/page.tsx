@@ -2,7 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { listQuotes } from "@/lib/db-quotes";
-import PayNowButton from "@/components/PayNowButton";
+import { customerStatusLabel, trackingUrl, type DeliveryMethod } from "@/lib/quote-workflow";
 import { isAdminUser } from "@/lib/admin-auth";
 
 export const metadata = {
@@ -10,6 +10,8 @@ export const metadata = {
   robots: { index: false },
 };
 
+// Colours per status. The wording shown comes from customerStatusLabel so it
+// matches the emails and the status lookup.
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   new: { label: "New", color: "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200" },
   reviewing: { label: "Reviewing", color: "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200" },
@@ -87,6 +89,12 @@ export default async function AccountPage() {
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
             {quotes.map((quote) => {
               const status = STATUS_LABELS[quote.status] || STATUS_LABELS.new;
+              const method = (quote.delivery?.method ?? "pickup") as DeliveryMethod;
+              const label = customerStatusLabel(quote.status, {
+                deliveryMethod: method,
+                shipped: Boolean(quote.delivery?.trackingNumber),
+              });
+              const track = trackingUrl(quote.delivery?.carrier, quote.delivery?.trackingNumber);
               return (
                 <div
                   key={quote.quoteNumber || quote._id}
@@ -101,7 +109,7 @@ export default async function AccountPage() {
                         <span
                           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${status.color}`}
                         >
-                          {status.label}
+                          {label}
                         </span>
                       </div>
                       <p className="text-sm text-gray-700 dark:text-gray-300 truncate">
@@ -128,10 +136,20 @@ export default async function AccountPage() {
                           {quote.turnaroundEstimate}
                         </div>
                       )}
-                      {(quote.status === "quoted" || quote.status === "awaiting_payment") &&
-                        quote.quotedPrice && (
-                          <PayNowButton quoteNumber={quote.quoteNumber} />
-                        )}
+                      {/* The same link that was emailed, shown again so it can't get lost in an inbox. */}
+                      {quote.status === "awaiting_payment" && quote.payment?.paymentLinkUrl && (
+                        <a
+                          href={quote.payment.paymentLinkUrl}
+                          className="mt-2 inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white"
+                        >
+                          Pay ${((quote.quotedPrice ?? 0) + (quote.delivery?.cost ?? 0)).toFixed(2)}
+                        </a>
+                      )}
+                      {track && (
+                        <a href={track} target="_blank" rel="noopener noreferrer" className="mt-2 block text-xs text-primary underline">
+                          Track parcel
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -31,6 +31,11 @@ interface Shipping {
   localDeliveryRadiusKm: number;
   freeLocalDelivery: boolean;
   freePickup: boolean;
+  // Quote form delivery prices (see src/lib/shipping.ts for the defaults).
+  originPostcode?: string;
+  localPostcodes?: string[];
+  localDeliveryFee?: number;
+  packagingGrams?: number;
 }
 
 interface Settings {
@@ -327,25 +332,62 @@ export default function AdminSettings() {
         <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
           <h2 className="text-lg font-semibold mb-4">Shipping & Delivery</h2>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Local delivery radius (km)
+            {/* These drive the delivery options customers see on the quote
+                form: posted prices are from Australia Post, measured from
+                the origin postcode, and "local" means the postcodes listed. */}
+            <div className="grid gap-4 sm:grid-cols-3">
+              <label className="block text-sm">
+                <span className="block font-medium mb-1">Post from (postcode)</span>
+                <input
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={settings.shipping.originPostcode ?? "3199"}
+                  onChange={(e) =>
+                    setSettings({ ...settings, shipping: { ...settings.shipping, originPostcode: e.target.value.replace(/\D/g, "") } })
+                  }
+                  className="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm w-24"
+                />
               </label>
+              <label className="block text-sm">
+                <span className="block font-medium mb-1">Local delivery fee ($)</span>
+                <input
+                  type="number"
+                  min={0}
+                  step="0.5"
+                  disabled={settings.shipping.freeLocalDelivery}
+                  value={settings.shipping.localDeliveryFee ?? 0}
+                  onChange={(e) =>
+                    setSettings({ ...settings, shipping: { ...settings.shipping, localDeliveryFee: Number(e.target.value) } })
+                  }
+                  className="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm w-24 disabled:opacity-50"
+                />
+              </label>
+              <label className="block text-sm">
+                <span className="block font-medium mb-1">Packaging weight (g)</span>
+                <input
+                  type="number"
+                  min={0}
+                  value={settings.shipping.packagingGrams ?? 150}
+                  onChange={(e) =>
+                    setSettings({ ...settings, shipping: { ...settings.shipping, packagingGrams: Number(e.target.value) } })
+                  }
+                  className="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm w-24"
+                />
+              </label>
+            </div>
+            <label className="block text-sm">
+              <span className="block font-medium mb-1">Local delivery postcodes (comma separated)</span>
               <input
-                type="number"
-                value={settings.shipping.localDeliveryRadiusKm}
-                onChange={(e) =>
+                defaultValue={(settings.shipping.localPostcodes ?? ["3197", "3198", "3199", "3200", "3201", "3910", "3911", "3912", "3930", "3931", "3934"]).join(", ")}
+                onBlur={(e) =>
                   setSettings({
                     ...settings,
-                    shipping: {
-                      ...settings.shipping,
-                      localDeliveryRadiusKm: Number(e.target.value),
-                    },
+                    shipping: { ...settings.shipping, localPostcodes: e.target.value.split(/[\s,]+/).filter((p) => /^\d{4}$/.test(p)) },
                   })
                 }
-                className="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm w-24"
+                className="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm w-full"
               />
-            </div>
+            </label>
             <label className="flex items-center gap-2 text-sm">
               <input
                 type="checkbox"
@@ -361,7 +403,7 @@ export default function AdminSettings() {
                 }
                 className="accent-primary"
               />
-              Free local delivery (within radius)
+              Free local delivery (listed postcodes)
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input

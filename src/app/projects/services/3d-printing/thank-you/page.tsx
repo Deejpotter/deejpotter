@@ -29,17 +29,17 @@ export default async function ThankYouPage({
       <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-5 mb-8 text-left">
         <h2 className="font-semibold mb-2">What happens next?</h2>
         <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <li>1. I&apos;ll review your model and prepare it for printing</li>
-          <li>2. If there are any issues, I&apos;ll reach out to your email</li>
-          <li>3. Your print will be completed and shipped or ready for pickup</li>
+          <li>1. You&apos;ll get a receipt email once Stripe confirms the payment</li>
+          <li>2. I&apos;ll email you when I start, and again when it&apos;s ready or shipped</li>
+          <li>3. You can check progress any time with your quote number</li>
         </ol>
       </div>
 
       <Link
-        href="/projects/services/3d-printing"
+        href={quoteId ? `/projects/services/3d-printing?quote=${encodeURIComponent(quoteId)}#quote-status` : "/projects/services/3d-printing"}
         className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white hover:bg-primary/90 transition-colors"
       >
-        Back to 3D Printing
+        Check your order
       </Link>
     </main>
   );

@@ -30,10 +30,26 @@ Multi-service quoting platform: 3D printing, laser engraving (engraving only, no
 | Environment | `DB_NAME` | Notes |
 |---|---|---|
 | Production (Render `deejpotter`) | `deejpotter` | The site's data |
-| Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see readme) |
-| Staging (Render `deejpotter-staging`) | not yet separated | Uses whatever its Render env sets; separating it (`deejpotter_staging`) is a TODO |
+| Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see `DEVELOPMENT.md`) |
+| Staging (Render `deejpotter-staging`) | `deejpotter_staging` | Set 2026-09-27 and copied from `deejpotter` (before that, staging shared production's data) |
 
 All data is test data so far. The databases share one Atlas user, so a local script could still reach `deejpotter` by changing `DB_NAME`. A dev-only Atlas user limited to `deejpotter_dev` would close that off (TODO).
+
+### Hosting (Render)
+**Checked:** 2026-09-27 with the Render CLI and API
+
+| Service | ID | Branch | Plan | URL |
+|---|---|---|---|---|
+| `deejpotter` (production) | `srv-d89ak9dckfvc738du5d0` | `main` | Starter | deejpotter.com |
+| `deejpotter-staging` | `srv-d89ak9ul51nc738837g0` | `dev` | Free | staging.deejpotter.com |
+
+Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is on the free plan, so it sleeps when idle and the first request after that is slow. Don't read a slow first load there as a performance problem. `/api/health` reports status and database connection.
+
+**Staging isolation (2026-09-27):**
+- **MongoDB:** separate, via `DB_NAME=deejpotter_staging` (copied from production on 2026-09-27)
+- **R2:** same bucket, but staging sets `R2_KEY_PREFIX=staging/`, so its uploads go under `staging/quotes/...`. Quotes copied from production keep their files at the unprefixed key; `readQuoteFileBuffer` in `db-quotes.ts` tries the prefixed key first and then the unprefixed one
+- **Stripe:** staging uses a Stripe sandbox (test keys and its own test webhook), so payments there use test cards and take no real money. Verified 2026-09-29 with a full test order
+- **Clerk:** staging uses a test instance
 
 ### Admins from an environment variable
 **Date:** 2026-09-25
@@ -96,24 +112,32 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 
 ## Data Architecture
 
-### Quote lifecycle
+### Quote to order flow (2026-09-27)
+**Why:** A quote should move along by itself wherever it can, every admin step should be one button, and every change should email the customer. The rules live in `src/lib/quote-workflow.ts` (which step is allowed from which status, and the customer's wording). `src/lib/quote-actions.ts` carries out a step (status, Stripe, email), so the admin buttons and the Stripe webhook have identical side effects. Plan and reasoning: `.github/ISSUES/007-quote-order-flow.md`.
+
 ```
-[Customer submits form] → status: "new"
-  ↓
-[Admin reviews file] → status: "reviewing"
-  ↓
-[Admin sets price + turnaround] → status: "quoted" (email sent)
-  ↓
-[Customer clicks "Pay now"] → status: "awaiting_payment" (Stripe session created)
-  ↓
-[Stripe webhook: payment confirmed] → status: "approved"
-  ↓
-[Admin starts printing] → status: "in_progress"
-  ↓
-[Print complete] → status: "ready"
-  ↓
-[Delivered/picked up] → status: "completed"
+[Customer submits form]  → new               automatic; live price + delivery shown before submitting
+[Admin opens the board]  → reviewing         automatic (GET /api/admin/quotes)
+[Send quote]             → awaiting_payment  Stripe Payment Link created and emailed (job + delivery lines)
+[Stripe webhook]         → approved (paid)   automatic; link deactivated; receipt + admin email
+[Start job]              → in_progress       email
+[Mark ready / Ship]      → ready             pickup/local email, or shipped email with tracking link
+[Complete]               → completed         email
+[Decline / Cancel]       → declined/cancelled  email; payment link deactivated
 ```
+
+- **Payment Links, not an on-site checkout.** Customers only pay through the link Deej sends; the site shows that same link again on the status page and account page. Payment Links don't expire, are single-use (`restrictions.completed_sessions.limit = 1`), and carry `metadata.quoteNumber`, which Stripe copies to the checkout session ([Stripe, n.d.](#ref-stripe-paymentlink-create)).
+- **Webhook** (`/api/webhooks/stripe`): handles `checkout.session.completed` and, for payment methods that settle later, `checkout.session.async_payment_succeeded`. The signature is always checked. Each event is claimed in the `stripe_events` collection with a 5-minute lease and marked done only after the quote is updated, so repeats can't pay twice and a crash mid-way is retried. A payment is only accepted if it came from the quote's current Payment Link, in AUD, for the quote's total; anything else (an old link after a re-send, a cancelled quote) is left unpaid and Deej is emailed.
+- **Races:** order steps update the quote only if its status hasn't changed since it was read, so two clicks (or a click and the webhook) can't both win. A payment link made by the losing attempt is deactivated.
+- **Email failures** don't undo a step, but the admin board is told so Deej can reach the customer another way.
+- **Manual fixes:** PATCH `/api/admin/quotes` changes status, notes or turnaround without emailing, and records "Changed by hand" in the timeline.
+- **Timeline:** every status change appends to `statusHistory` (who: customer, admin, stripe, system).
+
+### Live price and weight
+**Why:** The old estimate used the part's outer box, which overpriced hollow and thin parts and gave shipping a wrong weight. `src/lib/stl-geometry.ts` reads every triangle for the real volume and surface area; `src/lib/print-estimate.ts` treats the outer skin (1.2 mm) as solid and the inside at the chosen infill. Both are free of Node APIs, so the browser prices a file the moment it's picked and the server stores the same numbers on submit. Constants (skin thickness, 15 g/hour, 0.25 h setup, $8 base fee) are at the top of `print-estimate.ts`.
+
+### Shipping
+**Why:** Customers see print + delivery as one total before submitting. `src/lib/shipping.ts` packs the part (2 cm padding, copies stacked on the thinnest side, packaging weight added) and asks Australia Post's Postage Assessment Calculator for Parcel Post and Express Post prices (`/postage/parcel/domestic/service.json`, dimensions in cm, weight in kg, key in the `AUTH-KEY` header; each service's price can be used as the final price when no extras like extra cover are added; [Australia Post, n.d.](#ref-auspost-pac)). Pickup is always offered; local delivery only for the postcodes in admin settings. The quote API re-prices delivery from the uploaded file, so a tampered form can't set its own shipping price. If Australia Post is unavailable or the parcel is over 105 cm / 22 kg, the customer can still submit and Deej adds delivery when sending the quote. Shipping account: MyPost Business (labels are bought outside the site; the tracking number goes in with the "Ship" button).
 
 ### File storage strategy
 1. **Primary:** Cloudflare R2 (`deejpotter/cad/{quoteNumber}/{filename}`)
@@ -152,21 +176,26 @@ src/
 │   ├── r2-storage.ts      # Cloudflare R2 upload/download/delete
 │   ├── contact-leads.ts   # Contact form messages (MongoDB)
 │   ├── admin-auth.ts      # ADMIN_USER_IDS check
-│   └── quote-analysis.ts  # Server-side STL parsing
+│   ├── quote-workflow.ts  # Order steps, allowed transitions, customer wording
+│   ├── quote-actions.ts   # Runs a step: status, Stripe link, emails
+│   ├── stripe-payments.ts # Payment Links (create / deactivate)
+│   ├── stl-geometry.ts    # STL size, volume, surface area (browser + server)
+│   ├── print-estimate.ts  # Weight, time and price maths (browser + server)
+│   ├── shipping.ts        # Parcel packing, Australia Post prices, local rules
+│   └── quote-analysis.ts  # Estimate stored with a submitted quote
 ├── app/
 │   ├── account/           # Customer dashboard
 │   ├── admin/             # Admin dashboard + settings + service config
 │   ├── api/
 │   │   ├── 3d-printing-quote/  # Legacy quote endpoint (3D only, uses db-quotes)
 │   │   ├── quotes/             # Unified quote endpoint (all service types)
-│   │   ├── admin/              # Admin settings/quotes/service-config APIs
-│   │   ├── stripe/             # Quote checkout (Stripe session creation)
-│   │   ├── webhooks/           # Stripe + Clerk webhook handlers
+│   │   ├── admin/              # Admin settings/quotes/service-config APIs (quotes/action = order steps)
+│   │   ├── shipping/estimate/  # Delivery options for the quote form
+│   │   ├── webhooks/           # Stripe (marks paid) + Clerk webhook handlers
 │   │   └── health/             # Render health check
 │   └── projects/services/3d-printing/  # Customer-facing quote form
 └── components/
-    ├── ModelDropZone/     # 3D STL viewer + 2D DXF/SVG preview
-    └── PayNowButton.tsx   # Stripe checkout button (client component)
+    └── ModelDropZone/     # 3D STL viewer + 2D DXF/SVG preview
 ```
 
 ---
@@ -180,9 +209,10 @@ src/
 | `NODE_VERSION` | Yes (Render) | Node.js version Render installs (`24`). Takes precedence over `.node-version`, `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)). Node 24 is an LTS release, and Node.js advises only LTS releases in production ([OpenJS Foundation, n.d.](#ref-openjs-releases)) |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk frontend auth |
 | `CLERK_SECRET_KEY` | Yes | Clerk backend auth |
-| `STRIPE_SECRET_KEY` | Yes | Stripe payments |
-| `STRIPE_WEBHOOK_SECRET` | Yes | Stripe webhook verification |
-| `NEXT_PUBLIC_BASE_URL` | Yes | Site URL (for Stripe redirects) |
+| `STRIPE_SECRET_KEY` | Yes | Creates quote Payment Links (Send quote fails with a clear message without it) |
+| `STRIPE_WEBHOOK_SECRET` | Yes | Webhook signature check; the webhook refuses all events without it. Endpoint: `/api/webhooks/stripe`, events `checkout.session.completed` and `checkout.session.async_payment_succeeded` |
+| `NEXT_PUBLIC_BASE_URL` | Yes | Site URL, used for the Payment Link redirect and links in emails (staging must point at staging) |
+| `AUSPOST_PAC_API_KEY` | Recommended | Australia Post Postage Assessment Calculator key for delivery prices (from the Australia Post developer centre) |
 | `ADMIN_USER_IDS` | Yes | Clerk user IDs allowed into `/admin` (comma-separated) |
 | `RESEND_API_KEY` | Optional | Quote emails (skipped with a log line if absent) |
 | `EMAIL_FROM` | Optional | Sender address (default `Deej Potter <noreply@deejpotter.com>`) |
@@ -192,6 +222,7 @@ src/
 | `R2_ACCESS_KEY_ID` | Optional | R2 auth |
 | `R2_SECRET_ACCESS_KEY` | Optional | R2 auth |
 | `R2_BUCKET_NAME` | Optional | R2 bucket name (default: "deejpotter") |
+| `R2_KEY_PREFIX` | Optional | Prepended to R2 keys; staging uses `staging/` so its uploads stay apart from production |
 | `NEXT_PUBLIC_API_URL` | Optional | Backend for the box shipping calculator's items. Unset on both services, so the calculator shows "item database isn't connected" |
 
 ### Contact form endpoint
@@ -201,11 +232,15 @@ The contact form always posts to its own `/api/contact`. It used to honour `NEXT
 
 ## References
 
+<a id="ref-auspost-pac"></a>Australia Post. (n.d.). *Calculate domestic parcel postage cost*. Postage Assessment Calculator, Australia Post Developers. Retrieved September 29, 2026, from https://developers.auspost.com.au/apis/pac/tutorial/domestic-parcel
+
 <a id="ref-mdn-reduced-motion"></a>MDN contributors. (n.d.). *prefers-reduced-motion*. MDN Web Docs. Retrieved September 26, 2026, from https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
 
 <a id="ref-openjs-releases"></a>OpenJS Foundation. (n.d.). *Node.js releases*. Node.js. Retrieved September 26, 2026, from https://nodejs.org/en/about/previous-releases
 
 <a id="ref-render-node"></a>Render. (n.d.). *Setting your Node.js version*. Render Docs. Retrieved September 26, 2026, from https://render.com/docs/node-version
+
+<a id="ref-stripe-paymentlink-create"></a>Stripe. (n.d.). *Create a payment link*. Stripe API Reference. Retrieved September 27, 2026, from https://docs.stripe.com/api/payment-link/create
 
 <a id="ref-vercel-2026a"></a>Vercel. (2026a, August 25). *generateMetadata*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-metadata
 

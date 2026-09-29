@@ -1,3 +1,11 @@
+/**
+ * GET /api/3d-printing-quote/status — Order status for a customer
+ *
+ * Customers usually have no account, so the quote number plus the email on
+ * the quote is the proof that it's theirs. Only what they need to follow or
+ * pay for the order is returned; admin notes and Stripe ids stay private.
+ */
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getQuoteForCustomer } from "@/lib/db-quotes";
@@ -46,6 +54,15 @@ export async function GET(request: Request) {
     material: String(params.material || ""),
     quantity: Number(params.quantity || 1),
     estimate: record.analysis ?? null,
-    stripeCheckoutUrl: record.payment?.stripeCheckoutUrl ?? null,
+    // What the customer needs to act on or follow the order. Internal fields
+    // (admin notes, Stripe ids) stay out of this public response.
+    deliveryMethod: record.delivery?.method ?? "pickup",
+    shippingCost: record.delivery?.cost ?? null,
+    shippingLabel: record.delivery?.estimate ?? null,
+    carrier: record.delivery?.carrier ?? null,
+    trackingNumber: record.delivery?.trackingNumber ?? null,
+    paymentLinkUrl: record.status === "awaiting_payment" ? record.payment?.paymentLinkUrl ?? null : null,
+    paidAt: record.payment?.paidAt ?? null,
+    history: (record.statusHistory ?? []).map((h: { status: string; at: string }) => ({ status: h.status, at: h.at })),
   });
 }

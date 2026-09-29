@@ -1,16 +1,19 @@
 /**
- * GET  /api/admin/quotes        — list all quotes
- * PATCH /api/admin/quotes       — update quote (status, price, turnaround, notes)
+ * GET  /api/admin/quotes        — list quotes (and mark new ones as being reviewed)
+ * PATCH /api/admin/quotes       — quiet edits: notes, turnaround, manual status fixes
  * POST /api/admin/quotes        — recalculate queue positions
  *
- * Admin-only.
+ * Admin-only. Customer-facing steps (sending a quote, shipping, etc.) go
+ * through /api/admin/quotes/action, which sends the emails; PATCH never
+ * emails, so fixing a mistake doesn't spam the customer.
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { listQuotes, updateQuote, getQuote } from "@/lib/db-quotes";
+import { listQuotes, markQuotesReviewed, updateQuote } from "@/lib/db-quotes";
 import { recalculateAllTurnarounds } from "@/lib/turnaround";
 import { requireAdmin } from "@/lib/admin-auth";
-import { notifyQuoteUpdated } from "@/lib/email";
+import { z } from "zod";
+import { QuoteStatusEnum } from "@/lib/db-schemas";
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,13 +30,20 @@ export async function GET(req: NextRequest) {
     const typeParam = req.nextUrl.searchParams.get("type");
     const limit = Number(req.nextUrl.searchParams.get("limit")) || 100;
 
-    const quotes = await listQuotes({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      status: (statusParam as any) || undefined,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      serviceType: (typeParam as any) || undefined,
+    const filters = {
+      status: (statusParam as never) || undefined,
+      serviceType: (typeParam as never) || undefined,
       limit,
-    });
+    };
+    let quotes = await listQuotes(filters);
+
+    // Deej opening the board is what "being reviewed" means to the customer,
+    // so new quotes move on here instead of needing a click each. The list is
+    // read again afterwards so the board shows the new timeline entries too.
+    const newOnes = quotes.filter((q) => q.status === "new").map((q) => q.quoteNumber as number);
+    if (newOnes.length > 0 && (await markQuotesReviewed(newOnes)) > 0) {
+      quotes = await listQuotes(filters);
+    }
 
     const safe = quotes.map((q) => ({
       ...q,
@@ -48,6 +58,16 @@ export async function GET(req: NextRequest) {
   }
 }
 
+const patchSchema = z
+  .object({
+    quoteNumber: z.coerce.number().int().positive(),
+    status: QuoteStatusEnum.optional(),
+    turnaroundEstimate: z.string().max(200).nullable().optional(),
+    adminNotes: z.string().max(5000).nullable().optional(),
+    quotedPrice: z.number().min(0).max(100000).nullable().optional(),
+  })
+  .strict();
+
 export async function PATCH(req: NextRequest) {
   try {
     await requireAdmin();
@@ -59,16 +79,25 @@ export async function PATCH(req: NextRequest) {
   }
 
   try {
-    const body = await req.json();
-    const { quoteNumber, ...patch } = body;
-    if (!quoteNumber) {
-      return NextResponse.json(
-        { error: "quoteNumber is required" },
-        { status: 400 },
-      );
+    // Only fields that are safe to change by hand, each validated, because a
+    // bad status would drop the quote out of the workflow entirely. Payment
+    // and shipping details come from the actions so they always match Stripe
+    // and the emails.
+    const parsed = patchSchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues.map((i) => i.message).join("; ") }, { status: 400 });
     }
+    const { quoteNumber, ...patch } = parsed.data;
+    const allowed: Parameters<typeof updateQuote>[1] = {};
+    if (patch.status !== undefined) {
+      allowed.status = patch.status;
+      allowed.historyNote = "Changed by hand";
+    }
+    if (patch.turnaroundEstimate !== undefined) allowed.turnaroundEstimate = patch.turnaroundEstimate;
+    if (patch.adminNotes !== undefined) allowed.adminNotes = patch.adminNotes;
+    if (patch.quotedPrice !== undefined) allowed.quotedPrice = patch.quotedPrice;
 
-    const updated = await updateQuote(Number(quoteNumber), patch);
+    const updated = await updateQuote(Number(quoteNumber), allowed);
     if (!updated) {
       return NextResponse.json(
         { error: "Quote not found" },
@@ -76,21 +105,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    // Send email notification if status or price changed
-    if (patch.status || patch.quotedPrice !== undefined) {
-      const quote = await getQuote(Number(quoteNumber));
-      if (quote) {
-        notifyQuoteUpdated(
-          quote.userName || quote.userEmail,
-          quote.userEmail,
-          quote.quoteNumber,
-          patch.status || quote.status,
-          patch.quotedPrice !== undefined ? patch.quotedPrice : quote.quotedPrice,
-        ).catch((err) => console.error("[email] Failed to send update:", err));
-      }
-    }
-
-    return NextResponse.json(updated);
+    return NextResponse.json({ ...updated, _id: updated._id?.toString?.() });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to update" },

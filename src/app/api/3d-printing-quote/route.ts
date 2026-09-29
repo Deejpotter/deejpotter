@@ -1,8 +1,18 @@
+/**
+ * POST /api/3d-printing-quote — Submits a 3D printing quote request
+ *
+ * The browser has already shown the customer a live price, but nothing it
+ * sends is trusted: this route re-measures the uploaded STL, prices it with
+ * the materials and rates from MongoDB, and re-prices delivery before saving.
+ * That stored estimate is what Deej sees and what "Send quote" prefills.
+ */
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createQuote } from "@/lib/db-quotes";
 import { analyzeQuoteFile } from "@/lib/quote-analysis";
-import { getEnabledMaterials } from "@/lib/db-config";
+import { getEnabledMaterials, getSettings } from "@/lib/db-config";
+import { getDeliveryOptions, isValidPostcode, shippingSettingsFrom } from "@/lib/shipping";
 import { upsertUser } from "@/lib/db-users";
 import { notifyQuoteReceived } from "@/lib/email";
 import { escapeHtml } from "@/lib/utils";
@@ -16,7 +26,12 @@ const quoteSchema = z.object({
   material: z.string().trim().min(1).max(60),
   customMaterial: z.string().trim().max(200).optional().default(""),
   quantity: z.coerce.number().int().min(1).max(1000),
-  localFulfilment: z.enum(["yes", "no", "unsure"]),
+  // Delivery: the postcode prices postage, and the option is what the
+  // customer picked from the live list. Older form posts without them are
+  // treated as pickup, and Deej sorts delivery out when sending the quote.
+  postcode: z.string().trim().regex(/^\d{4}$/, "Enter a 4-digit postcode.").optional().or(z.literal("")),
+  deliveryOption: z.enum(["pickup", "local_delivery", "AUS_PARCEL_REGULAR", "AUS_PARCEL_EXPRESS"]).optional().default("pickup"),
+  localFulfilment: z.enum(["yes", "no", "unsure"]).optional(),
   needsNextDay: z.enum(["yes", "no"]),
   notes: z.string().max(3000).optional().default(""),
   // Interactive builder options
@@ -71,6 +86,51 @@ function sanitiseFilename(name: string): string {
   return name.replace(/[\\/:*?"<>|]/g, "-").slice(0, 200);
 }
 
+/**
+ * Works out the delivery price again on the server from the uploaded file,
+ * rather than trusting the number the browser showed, so a tampered form
+ * can't set its own shipping price. If the option isn't available any more
+ * (e.g. Australia Post was down) the choice is kept but the cost is left
+ * empty for Deej to fill in when sending the quote.
+ */
+async function priceDelivery(
+  option: "pickup" | "local_delivery" | "AUS_PARCEL_REGULAR" | "AUS_PARCEL_EXPRESS",
+  postcode: string,
+  quantity: number,
+  analysis: Awaited<ReturnType<typeof analyzeQuoteFile>>,
+): Promise<{ method: "pickup" | "local_delivery" | "shipped"; cost: number | null; service: string | null; label: string | null }> {
+  type Delivery = { method: "pickup" | "local_delivery" | "shipped"; cost: number | null; service: string | null; label: string | null };
+  if (option === "pickup") return { method: "pickup", cost: 0, service: null, label: "Pickup" };
+
+  const settings = shippingSettingsFrom(await getSettings().then((s) => s.shipping).catch(() => null));
+
+  // Local delivery depends only on the postcode, so it's decided here from the
+  // admin list rather than trusted from the form. A non-local postcode asking
+  // for it becomes a posted order with no price yet, which Deej prices by hand.
+  if (option === "local_delivery") {
+    return settings.localPostcodes.includes(postcode.trim())
+      ? { method: "local_delivery", cost: settings.localDeliveryFee, service: null, label: "Local delivery" }
+      : { method: "shipped", cost: null, service: null, label: null };
+  }
+
+  // Posted: price it from the server's own measurements of the file.
+  const unpriced: Delivery = { method: "shipped", cost: null, service: option, label: null };
+  if (!isValidPostcode(postcode) || !analysis.boundingBoxMm || !analysis.estimatedMaterialGrams) return unpriced;
+  try {
+    const { options } = await getDeliveryOptions({
+      postcode,
+      sizeMm: analysis.boundingBoxMm,
+      gramsEach: analysis.estimatedMaterialGrams / quantity,
+      quantity,
+      settings,
+    });
+    const match = options.find((o) => o.id === option);
+    return match ? { method: "shipped", cost: match.price, service: option, label: match.label } : unpriced;
+  } catch {
+    return unpriced;
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -81,7 +141,9 @@ export async function POST(request: Request) {
       material: formData.get("material"),
       customMaterial: formData.get("customMaterial") ?? "",
       quantity: formData.get("quantity"),
-      localFulfilment: formData.get("localFulfilment"),
+      postcode: formData.get("postcode") ?? "",
+      deliveryOption: formData.get("deliveryOption") || undefined,
+      localFulfilment: formData.get("localFulfilment") || undefined,
       needsNextDay: formData.get("needsNextDay"),
       notes: formData.get("notes") ?? "",
       quality: formData.get("quality") ?? "standard",
@@ -138,8 +200,11 @@ export async function POST(request: Request) {
         infill: parsed.data.infill,
         scalePercent: parsed.data.scalePercent,
         ratePerGram: selectedMaterial.ratePerGram,
+        density: selectedMaterial.density,
       }
     );
+
+    const delivery = await priceDelivery(parsed.data.deliveryOption, parsed.data.postcode || "", parsed.data.quantity, analysis);
 
     // Get Clerk user if authenticated
     const { userId } = await getAuthAsync();
@@ -169,8 +234,12 @@ export async function POST(request: Request) {
         scalePercent: parsed.data.scalePercent,
       },
       delivery: {
-        method: parsed.data.localFulfilment === "yes" ? "local_delivery" : "shipped",
+        method: delivery.method,
         suburb: parsed.data.suburb,
+        postcode: parsed.data.postcode || "",
+        cost: delivery.cost,
+        service: delivery.service,
+        label: delivery.label,
       },
       notes: parsed.data.notes,
       file: modelFile,

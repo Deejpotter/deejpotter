@@ -9,7 +9,7 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 1. readme.md
   - [x] 1.1 Local database section (`DB_NAME=deejpotter_dev`, refresh with mongosh)
   - [x] 1.2 Point to rendering/caching notes
-- [x] 2. ARCHITECTURE.md
+- [x] 2. docs/ARCHITECTURE.md
   - [x] 2.1 Databases section (live/dev/staging, shared Atlas user)
   - [x] 2.2 `DB_NAME` in the env var table
   - [x] 2.3 Design system decision (gradient accents, sticky navbar, spacing)
@@ -31,6 +31,81 @@ Purpose: Track workflow for updates and additions. Use status buckets and keep o
 - [x] 10. Verify referenced paths/classes exist; commit, push, merge dev then main
 
 - [ ] Later: move quality/infill presets and hourly rate into the MongoDB config too
+
+## Quote to order flow (2026-09-27)
+
+Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Branch `feat/quote-order-flow`.
+
+- [x] 1. Order data and status workflow
+  - [x] 1.1 Schema: payment link, amount paid, service/carrier/tracking, statusHistory
+  - [x] 1.2 `quote-workflow.ts` (labels, allowed actions, next status)
+  - [x] 1.3 db-quotes: new fields, history, markQuotesReviewed
+  - [x] 1.4 Transition tests
+- [x] 2. Emails for each status
+  - [x] 2.1 Customer templates per action
+  - [x] 2.2 Admin payment notice
+  - [x] 2.3 Safe subjects and escaping
+  - [x] 2.4 Template tests
+- [x] 3. Stripe Payment Links
+  - [x] 3.1 Create link (print + shipping lines, quote metadata, thank-you redirect, single use)
+  - [x] 3.2 Deactivate on cancel/decline/paid/re-send
+  - [x] 3.3 Tests
+- [x] 4. Webhook marks paid
+  - [x] 4.1 Record payment, paid status, deactivate link, emails
+  - [x] 4.2 stripe_events idempotency in MongoDB
+  - [x] 4.3 Remove session-expired handling
+  - [x] 4.4 Tests
+- [x] 5. Admin actions
+  - [x] 5.1 Action API
+  - [x] 5.2 Auto "reviewing"
+  - [x] 5.3 Buttons, Send quote and Ship forms, timeline
+  - [x] 5.4 Manual override without emails
+- [x] 6. Remove on-site payment
+  - [x] 6.1 Delete checkout routes, PayNowButton, cancelled page
+  - [x] 6.2 Status lookup + account: status text, timeline, emailed link
+  - [x] 6.3 Page copy
+- [x] 7. Accurate weight
+  - [x] 7.1 Real volume and surface area
+  - [x] 7.2 Shared print-estimate module
+  - [x] 7.3 Server uses it
+  - [x] 7.4 Tests
+- [x] 8. Live estimate in the browser
+  - [x] 8.1 Browser STL parsing
+  - [x] 8.2 Live numbers, placeholder removed
+  - [x] 8.3 Rates and presets from the server page
+- [x] 9. Shipping quotes
+  - [x] 9.1 shipping.ts (packaging, PAC, local rules)
+  - [x] 9.2 Settings fields with defaults
+  - [x] 9.3 Shipping estimate API
+  - [x] 9.4 Form delivery choice, stored on the quote
+  - [x] 9.5 Admin settings fields
+  - [x] 9.6 Tests
+- [ ] 10. Docs, checks, release
+  - [x] 10.1 ARCHITECTURE, TODOs, .env.example
+  - [x] 10.2 Lint, tests, build
+  - [x] 10.3 PR + staging check (quote #1003 paid end to end, 2026-09-29)
+  - [x] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `docs/PAYMENTS_SETUP.md`)
+  - [ ] 10.5 (Deej) Add `checkout.session.async_payment_succeeded` to both Stripe webhooks; delete unused `NEXT_PUBLIC_STRIPE_KEY` from Render
+
+## Homepage and design refresh (2026-09-27)
+
+Checked on staging. See docs/ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
+
+- [ ] 1. Replace the repeated `rounded-3xl border p-5` cards (about 20, some nested) with more varied layouts
+  - [ ] 1.1 Hero: one type-led block, and bullets as one line instead of boxed tiles
+  - [ ] 1.2 One bento section with tiles of different sizes, each with its own job
+- [ ] 2. Merge "How it works" and "How I work" (the same three steps twice) into one numbered timeline
+- [ ] 3. Real photos of prints, engravings and sites in "Explore the work" (needs photos from Deej)
+- [ ] 4. Copy: rewrite "No drama, no mystery, just deliberate progress" and "A simple process that keeps things moving"; use "Start with a message" once or twice, not three times; use real list bullets in "Who this is for"
+- [ ] 5. Check desktop and mobile on staging, then PR dev to main
+
+## Staging isolation (2026-09-27)
+
+Staging's Render env was checked on 2026-09-27. It shared production's database, R2 bucket and live Stripe keys.
+
+- [x] `DB_NAME=deejpotter_staging` on `deejpotter-staging`, copied from `deejpotter` (2026-09-27)
+- [x] (Deej) Stripe test key and test webhook on staging (2026-09-29)
+- [x] R2: `R2_KEY_PREFIX=staging/` on staging (same bucket, separate prefix)
 
 ## Follow-ups (2026-09-26)
 
@@ -95,7 +170,7 @@ deejpotter no longer has a shop; service payments go through quotes.
 - Indexes created automatically on first database use
 
 ### ✅ R2 on production — DONE
-- All four R2 variables set on the production Render service (see `R2_SETUP.md`)
+- All four R2 variables set on the production Render service (see `docs/R2_SETUP.md`)
 
 ### ✅ Environment variables — DONE
 - `ADMIN_USER_IDS` and `RESEND_API_KEY` set on both Render services
@@ -138,5 +213,5 @@ deejpotter no longer has a shop; service payments go through quotes.
 ## Notes
 
 - Run tests: `yarn test` (requires Node 24)
-- Local database: `DB_NAME=deejpotter_dev` (see readme "Local database")
+- Local database: `DB_NAME=deejpotter_dev` (see `docs/DEVELOPMENT.md` "Local database")
 - Gelato merch site: see `../deejpotter-gelato/README.md`
