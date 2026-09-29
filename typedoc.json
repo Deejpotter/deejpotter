@@ -4,7 +4,8 @@
     "**/*.test.ts",
     "**/*.test.tsx"
   ],
-  "name": "Deej Potter's Portfolio",
+  "name": "deejpotter.com",
   "theme": "default",
-  "version": true
+  "version": true,
+  "readme": "docs/README.md"
 }
