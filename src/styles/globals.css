@@ -252,29 +252,28 @@
     opacity: 1;
   }
 
-  /* Sections that slide in once scrolled into view (Reveal sets data-shown). */
+  /* Sections that slide in once scrolled into view. They are only hidden after
+     Reveal mounts and sets data-shown="false", so the content stays visible if
+     the script never runs. */
   .reveal {
-    opacity: 0;
-    transform: translateY(1.5rem);
     transition:
       opacity 600ms ease,
       transform 600ms ease;
   }
 
-  .reveal[data-shown="true"] {
-    opacity: 1;
-    transform: none;
+  .reveal[data-shown="false"] {
+    opacity: 0;
+    transform: translateY(1.5rem);
   }
 
   /* The timeline line draws down as it comes into view. */
   .reveal .timeline-line {
-    transform: scaleY(0);
     transform-origin: top;
     transition: transform 1.2s ease 200ms;
   }
 
-  .reveal[data-shown="true"] .timeline-line {
-    transform: scaleY(1);
+  .reveal[data-shown="false"] .timeline-line {
+    transform: scaleY(0);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -140,7 +140,7 @@ export default function Home(): ReactElement {
                     <h3
                       className={
                         featured
-                          ? "text-3xl font-black"
+                          ? "mt-8 text-3xl font-black sm:mt-0"
                           : "text-lg font-bold text-gray-900 dark:text-white"
                       }
                     >

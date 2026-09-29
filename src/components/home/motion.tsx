@@ -11,7 +11,9 @@ import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 /** Slides its content in the first time it scrolls into view. */
 export function Reveal({ children, className = "" }: { children: ReactNode; className?: string }): ReactElement {
   const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
+  // null until mounted: the server HTML has no data-shown, so nothing is hidden
+  // for visitors whose JavaScript is slow or blocked.
+  const [shown, setShown] = useState<boolean | null>(null);
 
   useEffect(() => {
     const node = ref.current;
@@ -21,6 +23,7 @@ export function Reveal({ children, className = "" }: { children: ReactNode; clas
       setShown(true);
       return;
     }
+    setShown(false);
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,7 +38,7 @@ export function Reveal({ children, className = "" }: { children: ReactNode; clas
   }, []);
 
   return (
-    <div ref={ref} data-shown={shown} className={`reveal ${className}`}>
+    <div ref={ref} data-shown={shown ?? undefined} className={`reveal ${className}`}>
       {children}
     </div>
   );
