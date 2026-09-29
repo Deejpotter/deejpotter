@@ -22,4 +22,4 @@ Developer and maker in Frankston, Australia. Former chef, now building web apps,
 
 ---
 
-<sub>This file is my GitHub profile. For this repo (the deejpotter.com source): [repo overview](docs/README.md) · [development](DEVELOPMENT.md) · [architecture](ARCHITECTURE.md) · [payments setup](PAYMENTS_SETUP.md)</sub>
+<sub>This file is my GitHub profile. For this repo (the deejpotter.com source): [repo overview](docs/README.md) · [development](docs/DEVELOPMENT.md) · [architecture](docs/ARCHITECTURE.md) · [payments setup](docs/PAYMENTS_SETUP.md)</sub>

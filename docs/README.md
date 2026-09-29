@@ -31,10 +31,10 @@ yarn dev
 
 | Doc | For |
 |---|---|
-| [DEVELOPMENT.md](../DEVELOPMENT.md) | Setup, local database, scripts, deploys, conventions |
-| [ARCHITECTURE.md](../ARCHITECTURE.md) | Decisions and why: hosting, databases, rendering, order flow, pricing, shipping, env vars |
-| [PAYMENTS_SETUP.md](../PAYMENTS_SETUP.md) | Stripe keys and webhooks, Australia Post key |
-| [R2_SETUP.md](../R2_SETUP.md) | File storage for uploaded models |
+| [DEVELOPMENT.md](DEVELOPMENT.md) | Setup, local database, scripts, deploys, conventions |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Decisions and why: hosting, databases, rendering, order flow, pricing, shipping, env vars |
+| [PAYMENTS_SETUP.md](PAYMENTS_SETUP.md) | Stripe keys and webhooks, Australia Post key |
+| [R2_SETUP.md](R2_SETUP.md) | File storage for uploaded models |
 | [.github/TODOs.md](../.github/TODOs.md) | Current work and follow-ups |
 | [.github/ISSUES/](../.github/ISSUES/) | Larger plans |
 

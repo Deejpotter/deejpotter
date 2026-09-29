@@ -113,7 +113,7 @@ Branch `feat/quote-order-flow`. Each step gives the reasoning, then the sub-step
 - 9.6 Tests with PAC mocked
 
 ### Step 10: Docs, checks, release
-- 10.1 ARCHITECTURE.md (order flow, Stripe, shipping), TODOs.md, `.env.example` (`AUSPOST_PAC_API_KEY`)
+- 10.1 docs/ARCHITECTURE.md (order flow, Stripe, shipping), TODOs.md, `.env.example` (`AUSPOST_PAC_API_KEY`)
 - 10.2 Lint, tests, build
 - 10.3 PR to `dev`, check on staging
 - 10.4 Deej: Stripe test keys and a test webhook on staging, a PAC API key, the Stripe webhook endpoint on production

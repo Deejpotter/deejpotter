@@ -1,8 +1,13 @@
 /**
- * db-quotes.ts — MongoDB-backed quote storage
+ * db-quotes.ts — Quote records and their uploaded files
  *
- * Replaces the flat-file quote-storage.ts with a proper database backend.
- * Files are still stored on disk, but metadata lives in MongoDB.
+ * Quotes live in MongoDB because Render wipes the disk on every deploy and
+ * the admin board needs to filter and count them. Uploaded models go to
+ * Cloudflare R2 when it's configured (under R2_KEY_PREFIX, so staging and
+ * production don't mix), with local disk only as a development fallback.
+ * Status changes append to statusHistory so customers and Deej can see who
+ * moved an order and when; the rules for which change is allowed live in
+ * quote-workflow.ts, not here.
  */
 
 import fs from "node:fs/promises";

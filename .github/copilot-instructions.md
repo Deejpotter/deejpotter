@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Next.js portfolio site (see `docs/README.md` and `DEVELOPMENT.md`; the root `readme.md` is the GitHub profile page). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
+This is a Next.js portfolio site (see `docs/README.md` and `docs/DEVELOPMENT.md`; the root `readme.md` is the GitHub profile page). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
 
 - App code and routes: `src/app` (Next.js App Router).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
@@ -13,7 +13,7 @@ This is a Next.js portfolio site (see `docs/README.md` and `DEVELOPMENT.md`; the
 
 ## AI Agent Tips
 
-1. Read `DEVELOPMENT.md` first to understand the correct workflow.
+1. Read `docs/DEVELOPMENT.md` first to understand the correct workflow.
 2. Use context7 to find exact documentation before making changes.
 3. Also, use my-mcp-server's google and duckduckgo search tools to find officical documentation references or search online for information for things that don't have documentation.
 4. Keep my current code and comments where possible or add your own detailed comments from my point of view to explain the purpose of the code.
@@ -40,7 +40,7 @@ This is a Next.js portfolio site (see `docs/README.md` and `DEVELOPMENT.md`; the
 - Route `params` and `searchParams` are **Promises**: `const { slug } = await params;`. Synchronous access was removed in Next.js 16 ([Vercel, 2026c](#ref-vercel-2026c)). Reading `params.slug` directly made every blog post 404.
 - Metadata is only read from `page.tsx` or `layout.tsx`, and only in Server Components ([Vercel, 2026a](#ref-vercel-2026a)). A file named `metadata.tsx` is ignored unless the page re-exports it (`export { metadata } from "./metadata";`). Client-component pages can't export metadata; put it in a pass-through `layout.tsx` beside them.
 - The root layout's title template adds "| Deej Potter" to child segments ([Vercel, 2026a](#ref-vercel-2026a)). Page titles must not include it.
-- Rendering: pages are **static by default**, which is right for content that ships with the code. Use ISR (`export const revalidate = <seconds>`) only when a public page reads MongoDB, and call `revalidatePath()` from the admin API that changes that data ([Vercel, 2026b](#ref-vercel-2026b)). Current example: `/projects/services/3d-printing`. Details in `ARCHITECTURE.md` ("Rendering and caching").
+- Rendering: pages are **static by default**, which is right for content that ships with the code. Use ISR (`export const revalidate = <seconds>`) only when a public page reads MongoDB, and call `revalidatePath()` from the admin API that changes that data ([Vercel, 2026b](#ref-vercel-2026b)). Current example: `/projects/services/3d-printing`. Details in `docs/ARCHITECTURE.md` ("Rendering and caching").
 - `GET` route handlers are dynamic by default ([Vercel, 2026d](#ref-vercel-2026d)). Add `export const dynamic = "force-static"` when the output only changes on deploy (see `blog/rss.xml`).
 - Unknown URLs render `src/app/not-found.tsx`; runtime errors render `src/app/error.tsx`.
 
@@ -53,15 +53,15 @@ This is a Next.js portfolio site (see `docs/README.md` and `DEVELOPMENT.md`; the
 - Docs: `yarn docs` (writes to `public/docs`).
 - CI: GitHub Actions runs lint, stylelint, Vitest and the build on pushes and PRs (`.github/workflows/ci.yml`).
 - Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
-- Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see `DEVELOPMENT.md` "Local database").
+- Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see `docs/DEVELOPMENT.md` "Local database").
 - Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var, which overrides `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)).
 - Render: use the `render` CLI (logged in) for services, deploys and logs. It can't set env vars; use the Render MCP `update_environment_variables` for that.
 
-- Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com, free plan, sleeps when idle) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR. Check design and content changes on staging, not just in code. Staging has its own database (`deejpotter_staging`) and R2 prefix, but still has live Stripe keys (ARCHITECTURE.md "Hosting"), so don't make payments there.
+- Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com, free plan, sleeps when idle) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR. Check design and content changes on staging, not just in code. Staging has its own database (`deejpotter_staging`) and R2 prefix, but still has live Stripe keys (docs/ARCHITECTURE.md "Hosting"), so don't make payments there.
 
 ## Integration Points & Environment
 
-- Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `R2_SETUP.md`). R2 is only used once its variables are set; until then uploads fall back to the ephemeral local disk.
+- Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `docs/R2_SETUP.md`). R2 is only used once its variables are set; until then uploads fall back to the ephemeral local disk.
 - Contact form: `src/app/contact` posts to `src/app/api/contact/route.ts`, which saves leads to the `contact_leads` collection. Admins see them at `/admin/leads`.
 - Quotes: the 3D printing form posts to `/api/3d-printing-quote`. Laser work is engraving only (no laser cutting); laser and milling jobs are requested through the contact form.
 - 3D printing materials and prices come from the MongoDB `service_configs` collection (edited at `/admin/settings`). The quote page and quote API both read it through `getEnabledMaterials("3d_printing")` in `src/lib/db-config.ts`. `config/printing-materials.json` is only a fallback, plus the source of quality/infill presets and the hourly rate.
