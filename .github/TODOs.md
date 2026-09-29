@@ -80,12 +80,13 @@ Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Bran
   - [x] 9.4 Form delivery choice, stored on the quote
   - [x] 9.5 Admin settings fields
   - [x] 9.6 Tests
-- [ ] 10. Docs, checks, release
+- [x] 10. Docs, checks, release
   - [x] 10.1 ARCHITECTURE, TODOs, .env.example
   - [x] 10.2 Lint, tests, build
   - [x] 10.3 PR + staging check (quote #1003 paid end to end, 2026-09-29)
   - [x] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `docs/PAYMENTS_SETUP.md`)
-  - [ ] 10.5 (Deej) Add `checkout.session.async_payment_succeeded` to both Stripe webhooks; delete unused `NEXT_PUBLIC_STRIPE_KEY` from Render
+  - [x] 10.5 Async payment event on both Stripe webhooks; unused `NEXT_PUBLIC_STRIPE_KEY` deleted from both Render services (2026-09-29)
+  - [ ] 10.6 (Deej) One small real order on production, then refund it in Stripe
 
 ## Homepage and design refresh (2026-09-27)
 
@@ -109,7 +110,7 @@ Staging's Render env was checked on 2026-09-27. It shared production's database,
 
 ## Follow-ups (2026-09-26)
 
-- [ ] Staging database: set `DB_NAME=deejpotter_staging` on `deejpotter-staging` (check what it uses now) and seed it
+- [x] Staging database: `DB_NAME=deejpotter_staging` on `deejpotter-staging`
 - [ ] Dev-only Atlas user limited to `deejpotter_dev` so local scripts can't reach the site's database
 - [ ] Box shipping calculator: point `NEXT_PUBLIC_API_URL` at the backend, or move items into MongoDB (recommended)
 - [ ] `src/__tests__/navbar-integration.test.ts` asserts string literals equal themselves; replace with real checks or remove

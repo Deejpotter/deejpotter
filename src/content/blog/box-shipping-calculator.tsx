@@ -177,6 +177,4 @@ export const boxShippingPost: BlogPost = {
   tags: ["algorithms", "typescript", "optimization", "cnc-tools"],
   content,
   readTime: 8,
-  bookstackUrl:
-    "http://bookstack.deejpotter.com/books/technical-blog-project-write-ups/page/box-shipping-calculator-3d-bin-packing-algorithm",
 };

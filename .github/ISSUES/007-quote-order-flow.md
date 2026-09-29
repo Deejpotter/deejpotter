@@ -1,6 +1,6 @@
 Title: Quote to order flow: automatic statuses, Stripe payment links, shipping
 
-Status: In progress (2026-09-27). Decisions: Stripe only, MyPost Business, "Being reviewed" automatic
+Status: Done (released 2026-09-29; staging tested end to end). Decisions: Stripe only, MyPost Business, "Being reviewed" automatic
 Owner: @dev
 Priority: High (needed before selling)
 

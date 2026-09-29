@@ -12,7 +12,7 @@ Staging uses Stripe **test** mode (a sandbox) so nothing there can take real mon
 
 Keys and secrets are pasted in by Deej. Claude doesn't enter secrets into dashboards or forms.
 
-**Status (2026-09-29):** all steps below are done on both services, and staging passed a full test order (quote #1003, paid with the test card and marked Paid by the webhook). Steps 2 and 3 now also need the `checkout.session.async_payment_succeeded` event added to both webhooks (see below).
+**Status (2026-09-29):** all steps below are done on both services, both webhooks send both events, and staging passed a full test order (quote #1003, paid with the test card and marked Paid by the webhook). The production webhook answers and checks signatures; a small real order will confirm the live payment path end to end.
 
 ## 1. Stripe test key → staging
 
@@ -64,7 +64,7 @@ Keys and secrets are pasted in by Deej. Claude doesn't enter secrets into dashbo
 | `STRIPE_WEBHOOK_SECRET` | test endpoint's `whsec_…` | live endpoint's `whsec_…` |
 | `AUSPOST_PAC_API_KEY` | same key | same key |
 
-`NEXT_PUBLIC_STRIPE_KEY` is no longer used (the on-site checkout was removed) and can be deleted from both services.
+`NEXT_PUBLIC_STRIPE_KEY` was used by the removed on-site checkout and has been deleted from both services.
 
 ## References
 

@@ -122,15 +122,6 @@ export default async function BlogPostPage({ params }: PageProps) {
         {post.sourceType === "markdown" && post.markdown ? renderMarkdown(post.markdown) : post.content}
       </article>
 
-      {post.bookstackUrl && (
-        <div className="mt-6 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-200">
-          <strong>Full Documentation:</strong> This post is also available with additional details in{" "}
-          <a href={post.bookstackUrl} target="_blank" rel="noopener noreferrer" className="underline decoration-blue-400 underline-offset-4">
-            BookStack
-          </a>
-          .
-        </div>
-      )}
 
       <footer className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
         <Link

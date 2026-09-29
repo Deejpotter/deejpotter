@@ -9,7 +9,6 @@ export type BlogPost = {
   excerpt: string;
   tags: string[];
   readTime: number;
-  bookstackUrl?: string;
   draft?: boolean;
   sourceType?: "tsx" | "markdown";
   content?: React.ReactNode;
@@ -25,7 +24,6 @@ type MarkdownFrontmatter = {
   excerpt?: string;
   tags?: string[];
   draft?: boolean;
-  bookstackUrl?: string;
 };
 
 export function calculateReadTime(text: string): number {
@@ -84,7 +82,6 @@ function loadMarkdownPosts(): BlogPost[] {
         excerpt,
         tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
         readTime: calculateReadTime(content),
-        bookstackUrl: frontmatter.bookstackUrl,
         draft: frontmatter.draft ?? false,
         sourceType: "markdown",
         markdown: content,
