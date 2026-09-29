@@ -135,7 +135,7 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 **Why:** The old estimate used the part's outer box, which overpriced hollow and thin parts and gave shipping a wrong weight. `src/lib/stl-geometry.ts` reads every triangle for the real volume and surface area; `src/lib/print-estimate.ts` treats the outer skin (1.2 mm) as solid and the inside at the chosen infill. Both are free of Node APIs, so the browser prices a file the moment it's picked and the server stores the same numbers on submit. Constants (skin thickness, 15 g/hour, 0.25 h setup, $8 base fee) are at the top of `print-estimate.ts`.
 
 ### Shipping
-**Why:** Customers see print + delivery as one total before submitting. `src/lib/shipping.ts` packs the part (2 cm padding, copies stacked on the thinnest side, packaging weight added) and asks Australia Post's Postage Assessment Calculator for Parcel Post and Express Post prices (`/postage/parcel/domestic/service.json`, dimensions in cm, weight in kg, key in the `AUTH-KEY` header; [Australia Post, n.d.](#ref-auspost-pac)). Pickup is always offered; local delivery only for the postcodes in admin settings. The quote API re-prices delivery from the uploaded file, so a tampered form can't set its own shipping price. If Australia Post is unavailable or the parcel is over 105 cm / 22 kg, the customer can still submit and Deej adds delivery when sending the quote. Shipping account: MyPost Business (labels are bought outside the site; the tracking number goes in with the "Ship" button).
+**Why:** Customers see print + delivery as one total before submitting. `src/lib/shipping.ts` packs the part (2 cm padding, copies stacked on the thinnest side, packaging weight added) and asks Australia Post's Postage Assessment Calculator for Parcel Post and Express Post prices (`/postage/parcel/domestic/service.json`, dimensions in cm, weight in kg, key in the `AUTH-KEY` header; each service's price can be used as the final price when no extras like extra cover are added; [Australia Post, n.d.](#ref-auspost-pac)). Pickup is always offered; local delivery only for the postcodes in admin settings. The quote API re-prices delivery from the uploaded file, so a tampered form can't set its own shipping price. If Australia Post is unavailable or the parcel is over 105 cm / 22 kg, the customer can still submit and Deej adds delivery when sending the quote. Shipping account: MyPost Business (labels are bought outside the site; the tracking number goes in with the "Ship" button).
 
 ### File storage strategy
 1. **Primary:** Cloudflare R2 (`deejpotter/cad/{quoteNumber}/{filename}`)
@@ -230,7 +230,7 @@ The contact form always posts to its own `/api/contact`. It used to honour `NEXT
 
 ## References
 
-<a id="ref-auspost-pac"></a>Australia Post. (n.d.). *Calculate domestic parcel postage* (Postage Assessment Calculator tutorial). Australia Post Developers. Retrieved September 27, 2026, from https://developers.auspost.com.au/content/apis/pac/tutorial-domestic-parcel.html
+<a id="ref-auspost-pac"></a>Australia Post. (n.d.). *Calculate domestic parcel postage cost*. Postage Assessment Calculator, Australia Post Developers. Retrieved September 29, 2026, from https://developers.auspost.com.au/apis/pac/tutorial/domestic-parcel
 
 <a id="ref-mdn-reduced-motion"></a>MDN contributors. (n.d.). *prefers-reduced-motion*. MDN Web Docs. Retrieved September 26, 2026, from https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
 

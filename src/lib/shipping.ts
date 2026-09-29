@@ -5,8 +5,9 @@
  * submit, and Deej should have the shipping amount ready when sending the
  * payment link. Posted prices come from Australia Post's Postage Assessment
  * Calculator (PAC) API, which prices a parcel from its size, weight and the two
- * postcodes and doesn't need a shipping contract. Pickup and local delivery
- * are Deej's own rules, set in admin settings.
+ * postcodes and doesn't need a shipping contract. Request format, units and
+ * service codes: https://developers.auspost.com.au/apis/pac/tutorial/domestic-parcel
+ * Pickup and local delivery are Deej's own rules, set in admin settings.
  *
  * Every function here fails soft: if the API is down or the part is too big to
  * post, the customer can still submit and Deej prices delivery by hand.
