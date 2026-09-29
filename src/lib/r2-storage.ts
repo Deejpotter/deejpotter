@@ -11,9 +11,19 @@
  *   R2_SECRET_ACCESS_KEY — R2 secret access key
  *   R2_BUCKET_NAME       — bucket name (e.g. "deejpotter")
  *   R2_ENDPOINT          — optional, defaults to <account_id>.r2.cloudflarestorage.com
+ *   R2_KEY_PREFIX        — optional, prepended to every key (staging uses "staging/"
+ *                          so its uploads stay apart from production's)
  */
 
 const QUOTE_PREFIX = "quotes/";
+
+function quoteKey(
+  quoteId: string,
+  fileName: string,
+  prefix = process.env.R2_KEY_PREFIX ?? "",
+): string {
+  return `${prefix}${QUOTE_PREFIX}${quoteId}/${fileName}`;
+}
 
 function getR2Config() {
   const accountId = process.env.R2_ACCOUNT_ID;
@@ -66,7 +76,7 @@ export async function uploadToR2(
       forcePathStyle: true,
     });
 
-    const key = `${QUOTE_PREFIX}${quoteId}/${fileName}`;
+    const key = quoteKey(quoteId, fileName);
 
     await client.send(
       new PutObjectCommand({
@@ -161,8 +171,8 @@ export async function deleteFromR2(key: string): Promise<boolean> {
 }
 
 /**
- * Build the R2 key for a quote file.
+ * Build the R2 key for a quote file. `prefix` defaults to `R2_KEY_PREFIX`.
  */
-export function getR2Key(quoteId: string, fileName: string): string {
-  return `${QUOTE_PREFIX}${quoteId}/${fileName}`;
+export function getR2Key(quoteId: string, fileName: string, prefix?: string): string {
+  return quoteKey(quoteId, fileName, prefix);
 }
