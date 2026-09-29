@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
+This is a Next.js portfolio site (see `readme.md` and `DEVELOPMENT.md`). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
 
 - App code and routes: `src/app` (Next.js App Router).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
@@ -13,7 +13,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 
 ## AI Agent Tips
 
-1. Read the README first to understand the correct workflow.
+1. Read `DEVELOPMENT.md` first to understand the correct workflow.
 2. Use context7 to find exact documentation before making changes.
 3. Also, use my-mcp-server's google and duckduckgo search tools to find officical documentation references or search online for information for things that don't have documentation.
 4. Keep my current code and comments where possible or add your own detailed comments from my point of view to explain the purpose of the code.
@@ -53,7 +53,7 @@ This is a Next.js portfolio site (see `readme.md`). It runs on Render as a Node 
 - Docs: `yarn docs` (writes to `public/docs`).
 - CI: GitHub Actions runs lint, stylelint, Vitest and the build on pushes and PRs (`.github/workflows/ci.yml`).
 - Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
-- Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see readme "Local database").
+- Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see `DEVELOPMENT.md` "Local database").
 - Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var, which overrides `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)).
 - Render: use the `render` CLI (logged in) for services, deploys and logs. It can't set env vars; use the Render MCP `update_environment_variables` for that.
 

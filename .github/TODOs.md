@@ -212,5 +212,5 @@ deejpotter no longer has a shop; service payments go through quotes.
 ## Notes
 
 - Run tests: `yarn test` (requires Node 24)
-- Local database: `DB_NAME=deejpotter_dev` (see readme "Local database")
+- Local database: `DB_NAME=deejpotter_dev` (see `DEVELOPMENT.md` "Local database")
 - Gelato merch site: see `../deejpotter-gelato/README.md`
