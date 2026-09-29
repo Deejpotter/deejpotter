@@ -23,11 +23,16 @@ function getResend(): Resend | null {
   return new Resend(key);
 }
 
-export async function sendEmail(to: string, subject: string, html: string) {
+/**
+ * Sends one email and reports whether Resend accepted it. It never throws, so
+ * a mail problem can't undo the step that triggered it, but callers that need
+ * to tell Deej (e.g. a payment link that didn't go out) can check the result.
+ */
+export async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
   const resend = getResend();
   if (!resend) {
     console.warn("[email] RESEND_API_KEY not set — skipping email to", to);
-    return;
+    return false;
   }
 
   try {
@@ -39,11 +44,13 @@ export async function sendEmail(to: string, subject: string, html: string) {
     });
     if (error) {
       console.error("[email] Failed:", error);
-    } else {
-      console.log("[email] Sent:", subject, "→", to);
+      return false;
     }
+    console.log("[email] Sent:", subject, "→", to);
+    return true;
   } catch (err) {
     console.error("[email] Error:", err);
+    return false;
   }
 }
 
@@ -253,9 +260,9 @@ export async function notifyAdminPaymentProblem(quoteNumber: number, problem: st
   await sendEmail(ADMIN_EMAIL, subject, emailShell(subject, body));
 }
 
-export async function notifyQuoteAction(email: string, action: QuoteAction, ctx: QuoteEmailContext) {
+export async function notifyQuoteAction(email: string, action: QuoteAction, ctx: QuoteEmailContext): Promise<boolean> {
   const template = quoteActionEmail(action, ctx);
-  await sendEmail(email, template.subject, template.html);
+  return sendEmail(email, template.subject, template.html);
 }
 
 export async function notifyAdminPaymentReceived(ctx: { quoteNumber: number; name: string; amountPaid: number | null }) {

@@ -99,26 +99,35 @@ async function priceDelivery(
   quantity: number,
   analysis: Awaited<ReturnType<typeof analyzeQuoteFile>>,
 ): Promise<{ method: "pickup" | "local_delivery" | "shipped"; cost: number | null; service: string | null; label: string | null }> {
-  const method: "pickup" | "local_delivery" | "shipped" =
-    option === "pickup" ? "pickup" : option === "local_delivery" ? "local_delivery" : "shipped";
-  if (option === "pickup") return { method, cost: 0, service: null, label: "Pickup" };
+  type Delivery = { method: "pickup" | "local_delivery" | "shipped"; cost: number | null; service: string | null; label: string | null };
+  if (option === "pickup") return { method: "pickup", cost: 0, service: null, label: "Pickup" };
 
-  const fallback: { method: typeof method; cost: number | null; service: string | null; label: string | null } = { method, cost: null, service: method === "shipped" ? option : null, label: method === "shipped" ? null : "Local delivery" };
-  if (!isValidPostcode(postcode) || !analysis.boundingBoxMm || !analysis.estimatedMaterialGrams) return fallback;
+  const settings = shippingSettingsFrom(await getSettings().then((s) => s.shipping).catch(() => null));
 
+  // Local delivery depends only on the postcode, so it's decided here from the
+  // admin list rather than trusted from the form. A non-local postcode asking
+  // for it becomes a posted order with no price yet, which Deej prices by hand.
+  if (option === "local_delivery") {
+    return settings.localPostcodes.includes(postcode.trim())
+      ? { method: "local_delivery", cost: settings.localDeliveryFee, service: null, label: "Local delivery" }
+      : { method: "shipped", cost: null, service: null, label: null };
+  }
+
+  // Posted: price it from the server's own measurements of the file.
+  const unpriced: Delivery = { method: "shipped", cost: null, service: option, label: null };
+  if (!isValidPostcode(postcode) || !analysis.boundingBoxMm || !analysis.estimatedMaterialGrams) return unpriced;
   try {
-    const dbShipping = await getSettings().then((s) => s.shipping).catch(() => null);
     const { options } = await getDeliveryOptions({
       postcode,
       sizeMm: analysis.boundingBoxMm,
       gramsEach: analysis.estimatedMaterialGrams / quantity,
       quantity,
-      settings: shippingSettingsFrom(dbShipping),
+      settings,
     });
     const match = options.find((o) => o.id === option);
-    return match ? { method, cost: match.price, service: method === "shipped" ? option : null, label: match.label } : fallback;
+    return match ? { method: "shipped", cost: match.price, service: option, label: match.label } : unpriced;
   } catch {
-    return fallback;
+    return unpriced;
   }
 }
 

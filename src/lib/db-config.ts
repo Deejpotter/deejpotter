@@ -70,10 +70,26 @@ export async function updateSettings(
 ) {
   const col = await getCollection("settings");
   const now = new Date().toISOString();
+  // The admin page sends back the whole document it loaded, including _id
+  // (which MongoDB refuses to $set) and fields it doesn't own. Only these
+  // sections are writable, and each is validated before it's saved.
+  const writable = SettingsDocSchema.pick({
+    businessHours: true,
+    holidays: true,
+    vacations: true,
+    shipping: true,
+  }).partial();
+  const clean = writable.parse({
+    businessHours: patch.businessHours,
+    holidays: patch.holidays,
+    vacations: patch.vacations,
+    shipping: patch.shipping,
+  });
+  const set = Object.fromEntries(Object.entries(clean).filter(([, v]) => v !== undefined));
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result = await col.findOneAndUpdate(
     { _id: "global" } as any,
-    { $set: { ...patch, updatedAt: now } },
+    { $set: { ...set, updatedAt: now } },
     { upsert: true, returnDocument: "after" },
   );
   if (!result) throw new Error("Failed to update settings");

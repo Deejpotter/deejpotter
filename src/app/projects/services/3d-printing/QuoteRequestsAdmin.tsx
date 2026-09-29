@@ -126,6 +126,11 @@ export default function QuoteRequestsAdmin() {
       if (!res.ok) throw new Error(data.error || "Failed");
       replace(data);
       setOpenForm(null);
+      // The step is saved either way; this tells Deej the customer may not know.
+      if (data.emailSent === false) {
+        const link = data.payment?.paymentLinkUrl && action === "send_quote" ? `\n\nPayment link to send by hand:\n${data.payment.paymentLinkUrl}` : "";
+        alert(`Saved, but the email to ${data.userEmail} didn't send. Let the customer know another way.${link}`);
+      }
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed");
     } finally {

@@ -100,8 +100,16 @@ export async function readQuoteFileBuffer(
 
   // Files uploaded while R2 was configured live there; older ones may be on disk.
   if (isR2Configured()) {
-    const fromR2 = await downloadFromR2(getR2Key(String(quoteNumber), fileStoredAs));
+    const key = getR2Key(String(quoteNumber), fileStoredAs);
+    const fromR2 = await downloadFromR2(key);
     if (fromR2) return fromR2;
+    // Quotes copied from production into staging keep their files at the
+    // unprefixed key, so try that before giving up on R2.
+    const unprefixed = getR2Key(String(quoteNumber), fileStoredAs, "");
+    if (unprefixed !== key) {
+      const fromOriginal = await downloadFromR2(unprefixed);
+      if (fromOriginal) return fromOriginal;
+    }
   }
 
   try {
@@ -296,6 +304,12 @@ export async function updateQuote(
      */
     changedBy?: QuoteStatusHistoryEntry["by"];
     historyNote?: string;
+    /**
+     * Only apply the change if the quote is still in this status. Two admin
+     * clicks (or a click and the webhook) can race; the loser gets null back
+     * instead of silently overwriting the winner.
+     */
+    expectStatus?: QuoteStatus;
   },
 ) {
   const col = await getCollection("quotes");
@@ -331,7 +345,8 @@ export async function updateQuote(
     ops.$push = { statusHistory: entry };
   }
 
-  const result = await col.findOneAndUpdate({ quoteNumber }, ops, {
+  const filter = patch.expectStatus ? { quoteNumber, status: patch.expectStatus } : { quoteNumber };
+  const result = await col.findOneAndUpdate(filter, ops, {
     returnDocument: "after",
   });
   return result;
@@ -355,29 +370,51 @@ export async function markQuotesReviewed(quoteNumbers: number[]): Promise<number
 }
 
 /**
- * Records a Stripe event id and reports whether it was new. Stripe can send
- * the same event more than once, and Render restarts wipe memory, so the ids
- * live in MongoDB; the unique index makes the check safe if two deliveries
- * arrive at the same moment.
+ * How long a claimed-but-unfinished event is held before a retry may take it
+ * over. Long enough that a slow first attempt isn't doubled, short enough that
+ * a crash mid-processing is recovered on Stripe's next retry.
+ */
+const STRIPE_EVENT_LEASE_MS = 5 * 60 * 1000;
+
+/**
+ * Claims a Stripe event for processing and reports whether this request should
+ * handle it. Stripe can send an event more than once, and Render restarts wipe
+ * memory, so claims live in MongoDB (the _id unique index settles two
+ * deliveries arriving at once). A claim starts as "processing" with a lease;
+ * only markStripeEventDone makes it final, so if the process dies before
+ * finishing, a retry after the lease expires takes it over instead of being
+ * waved through as a duplicate.
  */
 export async function claimStripeEvent(eventId: string, type: string): Promise<boolean> {
   const col = await getCollection("stripe_events");
+  const now = Date.now();
   try {
-    await col.insertOne({ _id: eventId, type, receivedAt: new Date().toISOString() } as never);
+    await col.insertOne({ _id: eventId, type, status: "processing", claimedAt: now } as never);
     return true;
   } catch (err) {
-    if ((err as { code?: number }).code === 11000) return false;
-    throw err;
+    if ((err as { code?: number }).code !== 11000) throw err;
   }
+  const takeover = await col.updateOne(
+    { _id: eventId, status: "processing", claimedAt: { $lt: now - STRIPE_EVENT_LEASE_MS } } as never,
+    { $set: { claimedAt: now } },
+  );
+  return takeover.modifiedCount === 1;
+}
+
+/** Marks an event as fully handled, so later deliveries are true duplicates. */
+export async function markStripeEventDone(eventId: string): Promise<void> {
+  const col = await getCollection("stripe_events");
+  await col.updateOne({ _id: eventId } as never, { $set: { status: "done", doneAt: Date.now() } });
 }
 
 /**
  * Forgets an event whose processing failed, so Stripe's retry is handled
- * instead of being skipped as a duplicate.
+ * straight away rather than after the lease. If this also fails, the lease
+ * still lets a later retry through.
  */
 export async function releaseStripeEvent(eventId: string): Promise<void> {
   const col = await getCollection("stripe_events");
-  await col.deleteOne({ _id: eventId } as never);
+  await col.deleteOne({ _id: eventId, status: "processing" } as never);
 }
 
 export async function getQuoteForCustomer(

@@ -12,6 +12,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { listQuotes, markQuotesReviewed, updateQuote } from "@/lib/db-quotes";
 import { recalculateAllTurnarounds } from "@/lib/turnaround";
 import { requireAdmin } from "@/lib/admin-auth";
+import { z } from "zod";
+import { QuoteStatusEnum } from "@/lib/db-schemas";
 
 export async function GET(req: NextRequest) {
   try {
@@ -28,20 +30,19 @@ export async function GET(req: NextRequest) {
     const typeParam = req.nextUrl.searchParams.get("type");
     const limit = Number(req.nextUrl.searchParams.get("limit")) || 100;
 
-    const quotes = await listQuotes({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      status: (statusParam as any) || undefined,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      serviceType: (typeParam as any) || undefined,
+    const filters = {
+      status: (statusParam as never) || undefined,
+      serviceType: (typeParam as never) || undefined,
       limit,
-    });
+    };
+    let quotes = await listQuotes(filters);
 
     // Deej opening the board is what "being reviewed" means to the customer,
-    // so new quotes move on here instead of needing a click each.
+    // so new quotes move on here instead of needing a click each. The list is
+    // read again afterwards so the board shows the new timeline entries too.
     const newOnes = quotes.filter((q) => q.status === "new").map((q) => q.quoteNumber as number);
-    if (newOnes.length > 0) {
-      await markQuotesReviewed(newOnes);
-      for (const q of quotes) if (q.status === "new") q.status = "reviewing";
+    if (newOnes.length > 0 && (await markQuotesReviewed(newOnes)) > 0) {
+      quotes = await listQuotes(filters);
     }
 
     const safe = quotes.map((q) => ({
@@ -57,6 +58,16 @@ export async function GET(req: NextRequest) {
   }
 }
 
+const patchSchema = z
+  .object({
+    quoteNumber: z.coerce.number().int().positive(),
+    status: QuoteStatusEnum.optional(),
+    turnaroundEstimate: z.string().max(200).nullable().optional(),
+    adminNotes: z.string().max(5000).nullable().optional(),
+    quotedPrice: z.number().min(0).max(100000).nullable().optional(),
+  })
+  .strict();
+
 export async function PATCH(req: NextRequest) {
   try {
     await requireAdmin();
@@ -68,17 +79,15 @@ export async function PATCH(req: NextRequest) {
   }
 
   try {
-    const body = await req.json();
-    const { quoteNumber, ...patch } = body;
-    if (!quoteNumber) {
-      return NextResponse.json(
-        { error: "quoteNumber is required" },
-        { status: 400 },
-      );
+    // Only fields that are safe to change by hand, each validated, because a
+    // bad status would drop the quote out of the workflow entirely. Payment
+    // and shipping details come from the actions so they always match Stripe
+    // and the emails.
+    const parsed = patchSchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues.map((i) => i.message).join("; ") }, { status: 400 });
     }
-
-    // Only fields that are safe to change by hand; payment and shipping
-    // details come from the actions so they always match Stripe and the emails.
+    const { quoteNumber, ...patch } = parsed.data;
     const allowed: Parameters<typeof updateQuote>[1] = {};
     if (patch.status !== undefined) {
       allowed.status = patch.status;

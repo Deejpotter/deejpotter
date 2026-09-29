@@ -83,8 +83,9 @@ Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Bran
 - [ ] 10. Docs, checks, release
   - [x] 10.1 ARCHITECTURE, TODOs, .env.example
   - [x] 10.2 Lint, tests, build
-  - [ ] 10.3 PR + staging check
-  - [ ] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `docs/PAYMENTS_SETUP.md`)
+  - [x] 10.3 PR + staging check (quote #1003 paid end to end, 2026-09-29)
+  - [x] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `docs/PAYMENTS_SETUP.md`)
+  - [ ] 10.5 (Deej) Add `checkout.session.async_payment_succeeded` to both Stripe webhooks; delete unused `NEXT_PUBLIC_STRIPE_KEY` from Render
 
 ## Homepage and design refresh (2026-09-27)
 
@@ -103,7 +104,7 @@ Checked on staging. See docs/ARCHITECTURE.md "Design system" for the rules to ke
 Staging's Render env was checked on 2026-09-27. It shared production's database, R2 bucket and live Stripe keys.
 
 - [x] `DB_NAME=deejpotter_staging` on `deejpotter-staging`, copied from `deejpotter` (2026-09-27)
-- [ ] (Deej) Stripe test keys (`sk_test_`/`pk_test_`) on staging, plus a test webhook secret
+- [x] (Deej) Stripe test key and test webhook on staging (2026-09-29)
 - [x] R2: `R2_KEY_PREFIX=staging/` on staging (same bucket, separate prefix)
 
 ## Follow-ups (2026-09-26)

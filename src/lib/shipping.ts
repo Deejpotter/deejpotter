@@ -57,7 +57,9 @@ export function shippingSettingsFrom(db: {
 } | null | undefined): ShippingSettings {
   return {
     originPostcode: db?.originPostcode || DEFAULT_SHIPPING_SETTINGS.originPostcode,
-    localPostcodes: db?.localPostcodes?.length ? db.localPostcodes : DEFAULT_SHIPPING_SETTINGS.localPostcodes,
+    // An empty saved list is a choice (no local delivery), so only a missing
+    // field falls back to the defaults.
+    localPostcodes: db?.localPostcodes ?? DEFAULT_SHIPPING_SETTINGS.localPostcodes,
     localDeliveryFee: db?.freeLocalDelivery === false ? db.localDeliveryFee ?? 0 : 0,
     packagingGrams: db?.packagingGrams ?? DEFAULT_SHIPPING_SETTINGS.packagingGrams,
   };

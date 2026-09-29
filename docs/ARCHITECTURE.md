@@ -48,7 +48,7 @@ Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is o
 **Staging isolation (2026-09-27):**
 - **MongoDB:** separate, via `DB_NAME=deejpotter_staging` (copied from production on 2026-09-27)
 - **R2:** same bucket, but staging sets `R2_KEY_PREFIX=staging/`, so its uploads go under `staging/quotes/...`. Quotes copied from production keep their files at the unprefixed key; `readQuoteFileBuffer` in `db-quotes.ts` tries the prefixed key first and then the unprefixed one
-- **Stripe:** staging still has **live** keys, so a checkout there takes real money. Swapping them for test keys (and a test webhook secret) has to be done by Deej
+- **Stripe:** staging uses a Stripe sandbox (test keys and its own test webhook), so payments there use test cards and take no real money. Verified 2026-09-29 with a full test order
 - **Clerk:** staging uses a test instance
 
 ### Admins from an environment variable
@@ -127,7 +127,9 @@ Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `A
 ```
 
 - **Payment Links, not an on-site checkout.** Customers only pay through the link Deej sends; the site shows that same link again on the status page and account page. Payment Links don't expire, are single-use (`restrictions.completed_sessions.limit = 1`), and carry `metadata.quoteNumber`, which Stripe copies to the checkout session ([Stripe, n.d.](#ref-stripe-paymentlink-create)).
-- **Webhook** (`/api/webhooks/stripe`): signature always checked; processed event ids are stored in the `stripe_events` collection so repeats and restarts can't pay twice. A payment on a cancelled quote is left alone and Deej is emailed.
+- **Webhook** (`/api/webhooks/stripe`): handles `checkout.session.completed` and, for payment methods that settle later, `checkout.session.async_payment_succeeded`. The signature is always checked. Each event is claimed in the `stripe_events` collection with a 5-minute lease and marked done only after the quote is updated, so repeats can't pay twice and a crash mid-way is retried. A payment is only accepted if it came from the quote's current Payment Link, in AUD, for the quote's total; anything else (an old link after a re-send, a cancelled quote) is left unpaid and Deej is emailed.
+- **Races:** order steps update the quote only if its status hasn't changed since it was read, so two clicks (or a click and the webhook) can't both win. A payment link made by the losing attempt is deactivated.
+- **Email failures** don't undo a step, but the admin board is told so Deej can reach the customer another way.
 - **Manual fixes:** PATCH `/api/admin/quotes` changes status, notes or turnaround without emailing, and records "Changed by hand" in the timeline.
 - **Timeline:** every status change appends to `statusHistory` (who: customer, admin, stripe, system).
 
@@ -208,7 +210,7 @@ src/
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk frontend auth |
 | `CLERK_SECRET_KEY` | Yes | Clerk backend auth |
 | `STRIPE_SECRET_KEY` | Yes | Creates quote Payment Links (Send quote fails with a clear message without it) |
-| `STRIPE_WEBHOOK_SECRET` | Yes | Webhook signature check; the webhook refuses all events without it. Endpoint: `/api/webhooks/stripe`, event `checkout.session.completed` |
+| `STRIPE_WEBHOOK_SECRET` | Yes | Webhook signature check; the webhook refuses all events without it. Endpoint: `/api/webhooks/stripe`, events `checkout.session.completed` and `checkout.session.async_payment_succeeded` |
 | `NEXT_PUBLIC_BASE_URL` | Yes | Site URL, used for the Payment Link redirect and links in emails (staging must point at staging) |
 | `AUSPOST_PAC_API_KEY` | Recommended | Australia Post Postage Assessment Calculator key for delivery prices (from the Australia Post developer centre) |
 | `ADMIN_USER_IDS` | Yes | Clerk user IDs allowed into `/admin` (comma-separated) |

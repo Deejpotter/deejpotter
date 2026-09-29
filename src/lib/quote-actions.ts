@@ -47,7 +47,7 @@ export async function performQuoteAction(
   action: QuoteAction,
   input: QuoteActionInput = {},
   by: QuoteStatusHistoryEntry["by"] = "admin",
-): Promise<QuoteDoc> {
+): Promise<QuoteDoc & { emailSent: boolean }> {
   const quote = await getQuote(quoteNumber);
   if (!quote) throw new QuoteActionError("Quote not found", 404);
   if (!canApplyAction(quote.status, action)) {
@@ -60,7 +60,11 @@ export async function performQuoteAction(
     status: nextStatus(action),
     changedBy: by,
     historyNote: input.reason ?? undefined,
+    // The check above read this status; the update only lands if it's still
+    // true, so two clicks (or a click and the webhook) can't both succeed.
+    expectStatus: quote.status,
   };
+  let newLinkId: string | null = null;
 
   switch (action) {
     case "send_quote": {
@@ -74,6 +78,7 @@ export async function performQuoteAction(
       const shippingLabel = input.shippingLabel || (deliveryMethod === "local_delivery" ? "Local delivery" : "Shipping");
       // Made first: if Stripe fails, nothing has changed and Deej can retry.
       const link = await createQuotePaymentLink({ quoteNumber, price, shippingCost, shippingLabel });
+      newLinkId = link.id;
       Object.assign(patch, {
         quotedPrice: price,
         turnaroundEstimate: input.turnaround ?? quote.turnaroundEstimate ?? null,
@@ -101,7 +106,12 @@ export async function performQuoteAction(
   }
 
   const updated = await updateQuote(quoteNumber, patch);
-  if (!updated) throw new QuoteActionError("Quote not found", 404);
+  if (!updated) {
+    // Someone else moved the quote first. A link made for this losing attempt
+    // must not stay payable alongside the winner's.
+    await deactivatePaymentLink(newLinkId);
+    throw new QuoteActionError("This quote changed while you were working on it. Reload the board and try again.", 409);
+  }
 
   // A link that can no longer be paid should stop working straight away:
   // replaced by a new price, paid, or the order is off.
@@ -127,8 +137,11 @@ export async function performQuoteAction(
     amountPaid: updated.payment?.amountPaid ?? null,
     reason: input.reason ?? null,
   };
+  // The step stands even if the email fails, but the result goes back to the
+  // admin board so Deej knows to send the link or update by hand.
+  let emailSent = false;
   try {
-    await notifyQuoteAction(updated.userEmail, action, ctx);
+    emailSent = await notifyQuoteAction(updated.userEmail, action, ctx);
     if (action === "mark_paid") {
       await notifyAdminPaymentReceived({ quoteNumber, name, amountPaid: ctx.amountPaid });
     }
@@ -136,7 +149,7 @@ export async function performQuoteAction(
     console.error(`[quote-actions] Email for ${action} on #${quoteNumber} failed:`, err);
   }
 
-  return updated as QuoteDoc;
+  return Object.assign(updated as QuoteDoc, { emailSent });
 }
 
 /** What the customer was asked to pay, for payments marked by hand. */

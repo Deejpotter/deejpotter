@@ -108,6 +108,36 @@ describe("POST /api/webhooks/stripe", () => {
     expect((await getQuote(quoteNumber))?.status).toBe("awaiting_payment");
   });
 
+  test("pays delayed methods on async_payment_succeeded", async () => {
+    const quoteNumber = await quoteWithStatus("awaiting_payment");
+    await postEvent({ ...paidEvent("evt_async", quoteNumber), type: "checkout.session.async_payment_succeeded" });
+    expect((await getQuote(quoteNumber))?.status).toBe("approved");
+  });
+
+  test("leaves the quote unpaid when an old payment link is paid", async () => {
+    const quoteNumber = await quoteWithStatus("awaiting_payment");
+    await updateQuote(quoteNumber, { paymentLinkId: "plink_current" });
+    await postEvent(paidEvent("evt_stale", quoteNumber, { payment_link: "plink_old" }));
+    expect((await getQuote(quoteNumber))?.status).toBe("awaiting_payment");
+  });
+
+  test("leaves the quote unpaid when the amount doesn't match the total", async () => {
+    const quoteNumber = await quoteWithStatus("awaiting_payment");
+    await postEvent(paidEvent("evt_amount", quoteNumber, { amount_total: 100 }));
+    expect((await getQuote(quoteNumber))?.status).toBe("awaiting_payment");
+  });
+
+  test("takes over an event whose earlier attempt died mid-way", async () => {
+    const quoteNumber = await quoteWithStatus("awaiting_payment");
+    const { getCollection } = await import("@/lib/db");
+    const events = await getCollection("stripe_events");
+    // A claim from a crashed attempt, older than the lease.
+    await events.insertOne({ _id: "evt_crashed", status: "processing", claimedAt: Date.now() - 10 * 60 * 1000 } as never);
+    await postEvent(paidEvent("evt_crashed", quoteNumber));
+    expect((await getQuote(quoteNumber))?.status).toBe("approved");
+    expect(await events.findOne({ _id: "evt_crashed" } as never)).toMatchObject({ status: "done" });
+  });
+
   test("ignores payments that aren't for a quote", async () => {
     const res = await postEvent({ ...paidEvent("evt_other", 0), data: { object: { id: "cs_x", metadata: {} } } });
     expect(res.status).toBe(200);
