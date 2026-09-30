@@ -99,7 +99,7 @@ This site must not lose the quote flow before Lumendot has it.
 
 | Decision | Default until decided |
 |---|---|
-| Keep a blog here? | No — write-ups per project only |
+| Keep a blog here? | **For now (1 Oct 2026):** no blog, a write-up per project, and no effort to drive traffic here. Later, maybe a blog for personal posts. Old business posts redirect to Lumendot |
 | Link the Day Planner instance? | No, until it has a public demo |
 | Keep the maker calculators here or give them to Lumendot? | Here, until the Maker Store terms are checked |
 | Keep branches like `feature/ecommerce-shop`, `deploy-ecommerce`, `feat/quote-order-flow`? | Delete once the app is gone; that history is preserved in the `lumendot` repo |
