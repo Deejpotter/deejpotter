@@ -2,6 +2,7 @@
 export { metadata } from "./metadata";
 import { ReactElement } from "react";
 import Link from "next/link";
+import { links } from "@/content/links";
 
 export default function About(): ReactElement {
   return (
@@ -11,12 +12,11 @@ export default function About(): ReactElement {
           About
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
-          I build things that work.
+          From the kitchen to the terminal.
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
-          I build websites, custom tools, 3D-printed parts, and laser-engraved
-          pieces. I&apos;m based in Frankston, VIC, and work with small
-          businesses and hobbyists around Australia.
+          I&apos;m Deej, a developer and maker in Frankston, VIC. This site is
+          where my personal projects live; the code is on GitHub.
         </p>
       </section>
 
@@ -25,85 +25,69 @@ export default function About(): ReactElement {
           <h2 className="mb-4 text-2xl font-bold">Where I started</h2>
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <p>
-              I spent years working as a chef in my family&apos;s restaurant
-              before moving into tech. Running a kitchen teaches you something
-              you can&apos;t learn from a tutorial: get it right under pressure,
-              communicate clearly, and don&apos;t make excuses when things go
-              wrong.
+              I spent years as a chef in my family&apos;s restaurant before
+              moving into tech. A kitchen teaches you to get it right under
+              pressure, say clearly what&apos;s going on, and not make excuses
+              when something breaks.
             </p>
             <p>
-              After completing a Certificate in IT, I moved into software
-              through self-directed learning, client projects, and junior
-              full-stack development. That mix of kitchen discipline and
-              technical skills is why I&apos;m comfortable working across
-              design, code, and fabrication in the same project.
-            </p>
-            <p>
-              I love learning new things and sharing what I figure out. If you
-              want to understand how something works, I&apos;m happy to
-              explain it. Knowing how your tools work makes everything easier.
+              After a Certificate in IT I moved into software through
+              self-directed learning, client projects and junior full-stack
+              work, and I still like working across code, electronics and
+              fabrication in the same project.
             </p>
           </div>
         </div>
 
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <h2 className="mb-4 text-2xl font-bold">What I do now</h2>
-          <div className="space-y-3 text-gray-700 dark:text-gray-300">
-            <p>
-              <strong>Websites.</strong> Small business sites, portfolio pages,
-              landing pages, and redesigns. Built clean, fast, and easy to
-              maintain.
-            </p>
-            <p>
-              <strong>Custom tools.</strong> Calculators, internal dashboards,
-              and workflow helpers that save hours of manual work.
-            </p>
-            <p>
-              <strong>Fabrication.</strong> 3D printing, laser engraving, and CNC
-              milling for prototypes, replacement parts, and one-off pieces. No
-              CAD experience required.
-            </p>
-            <p>
-              <strong>Learning and sharing.</strong> I enjoy figuring things out
-              and helping others do the same. If you have a question, ask.
-            </p>
-          </div>
+          <h2 className="mb-4 text-2xl font-bold">What I work with</h2>
+          <ul className="list-disc space-y-2 pl-5 text-gray-700 dark:text-gray-300">
+            <li>TypeScript, Next.js, React and Node for web apps</li>
+            <li>C and C++ on ESP32 boards, with PlatformIO and LVGL</li>
+            <li>Python for AI agents and small services</li>
+            <li>Docker and Coolify for self-hosting</li>
+            <li>CAD, 3D printing, laser engraving and CNC for the physical side</li>
+          </ul>
         </div>
       </section>
 
-      <section className="mb-8 grid gap-5 md:grid-cols-2">
+      <section className="grid gap-5 md:grid-cols-2">
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <h2 className="mb-4 text-2xl font-bold">How I work</h2>
-          <div className="space-y-3 text-gray-700 dark:text-gray-300">
-            <p>
-              I prefer projects where there&apos;s a real need to solve. Send me
-              a short written brief: what the problem is, when you need it,
-              and what done looks like. I&apos;ll tell you honestly whether
-              it&apos;s a fit.
-            </p>
-            <p>
-              I work from a clear brief, get something working, refine it,
-              then hand it over. You deal with me the whole way through.
-            </p>
+          <h2 className="mb-4 text-2xl font-bold">See the work</h2>
+          <p className="mb-4 text-gray-700 dark:text-gray-300">
+            Most of it is open source. The home page lists the projects worth a
+            look.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
+            >
+              GitHub
+            </a>
+            <Link
+              href="/#projects"
+              className="inline-flex items-center rounded-full border border-primary px-6 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] dark:text-white"
+            >
+              Projects
+            </Link>
           </div>
         </div>
 
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-          <h2 className="mb-4 text-2xl font-bold">Let&apos;s work together</h2>
-          <div className="space-y-3 text-gray-700 dark:text-gray-300">
-            <p>
-              If you need a website, a custom tool, or help with a fabrication
-              project, send me a message. Include the basics of what you&apos;re
-              trying to do and I can usually tell you quickly whether it&apos;s a
-              good fit and give you a rough idea of cost and timing.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
-            >
-              Send a message
-            </Link>
-          </div>
+          <h2 className="mb-4 text-2xl font-bold">Paid work</h2>
+          <p className="mb-4 text-gray-700 dark:text-gray-300">
+            Websites, custom tools, CAD and 3D printing for clients go through
+            my business, Lumendot.
+          </p>
+          <a
+            href={links.lumendot}
+            className="inline-flex items-center rounded-full border border-primary px-6 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] dark:text-white"
+          >
+            Go to Lumendot
+          </a>
         </div>
       </section>
     </div>

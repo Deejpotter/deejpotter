@@ -2,236 +2,70 @@
 
 Purpose: Track workflow for updates and additions. Use status buckets and keep only the last 10 completed tasks.
 
+The business app (quote to order flow, staging isolation, Better Auth plan, Stripe, admin, contact leads) moved to the private `lumendot` repo on 30 Sept 2026, with its full history and its TODO list. This file covers the personal site only.
+
 ---
 
-## Documentation refresh (2026-09-26)
+## Personal static site (2026-10-01)
 
-- [x] 1. readme.md
-  - [x] 1.1 Local database section (`DB_NAME=deejpotter_dev`, refresh with mongosh)
-  - [x] 1.2 Point to rendering/caching notes
-- [x] 2. docs/ARCHITECTURE.md
-  - [x] 2.1 Databases section (live/dev/staging, shared Atlas user)
-  - [x] 2.2 `DB_NAME` in the env var table
-  - [x] 2.3 Design system decision (gradient accents, sticky navbar, spacing)
-- [x] 3. .github/copilot-instructions.md
-  - [x] 3.1 Next.js 16 rules (await params, metadata in page/layout)
-  - [x] 3.2 Rendering: static default, ISR when public pages read MongoDB
-  - [x] 3.3 Materials source is MongoDB
-  - [x] 3.4 Dev database locally
-  - [x] 3.5 Design utilities; navbar description
-- [x] 4. .github/TODOs.md
-  - [x] 4.1 Node 22 references to 24
-  - [x] 4.2 Completed (last 10) list
-  - [x] 4.3 Follow-ups: staging DB, Atlas dev user, box calculator backend, tautological navbar test
-- [x] 5. .github/GRADIENT-GUIDE.md rewritten for current utilities
-- [x] 6. .github/ISSUES/006-metadata-og.md status
-- [x] 7. Box shipping calculator README: backend/env status
-- [x] 8. ops/README.md legacy banner (site runs on Render)
-- [x] 9. .github/instructions/nextjs.instructions.md: Jest to Vitest
-- [x] 10. Verify referenced paths/classes exist; commit, push, merge dev then main
+Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. Don't merge into `dev` or `main` until lumendot.com.au has the quote flow (Render still deploys the old app from those branches).
 
-- [ ] Later: move quality/infill presets and hourly rate into the MongoDB config too
+- [x] 1. Remove what moved out
+  - [x] 1.1 API routes, admin, account, sign-in/up, contact form, terms, services pages
+  - [x] 1.2 Clerk (layout, proxy, navbar button, CNC AI tool tokens)
+  - [x] 1.3 MongoDB, Stripe, R2, Resend, shipping, quote and groceries libraries and their tests
+  - [x] 1.4 Unused dependencies (22 packages) and the dead legacy `Navbar` and `FileUpload` components
+- [x] 2. Static export
+  - [x] 2.1 `output: "export"`, `trailingSlash`, unoptimised images
+  - [x] 2.2 `force-static` on robots and sitemap
+  - [x] 2.3 Old URLs in `public/_redirects` (business pages to Lumendot, `/groceries` to the Grocery Visualiser repo)
+- [x] 3. Content
+  - [x] 3.1 Home page: hero, project grid from `src/content/projects.ts`, "Also on this site", Lumendot and GitHub endings
+  - [x] 3.2 Navbar (Write-ups, GitHub button), footer, About, Privacy, 404 and error pages
+  - [x] 3.3 Blog relabelled as write-ups at the same URLs
+  - [x] 3.4 Default metadata, robots, sitemap
+- [x] 4. Tests, lint, build, and a look at the built site in Chrome
+- [x] 5. Docs: README, DEVELOPMENT, ARCHITECTURE, copilot instructions, this file, `.env.example`
+- [ ] 6. (Deej) Review the copy and the project list on the draft PR
+- [ ] 7. Check the mobile layout (couldn't be checked in the browser session on 1 Oct)
+- [ ] 8. Cloudflare Pages project on this branch (build `yarn build`, output `out`) for a preview URL
+- [ ] 9. Switch-over, after lumendot.com.au is live: plan section 6 steps 5 to 7
 
-## Quote to order flow (2026-09-27)
+## Show-off ideas (Deej wants JavaScript on this site)
 
-Plan and reasoning for each step: `.github/ISSUES/007-quote-order-flow.md`. Branch `feat/quote-order-flow`.
+- [ ] Interactive demos on project cards (for example a live cut optimiser run, or a CYD screen mock)
+- [ ] Real photos or short clips of the hardware builds
+- [ ] Per-project write-up pages for Game Agent and the CYD boards
 
-- [x] 1. Order data and status workflow
-  - [x] 1.1 Schema: payment link, amount paid, service/carrier/tracking, statusHistory
-  - [x] 1.2 `quote-workflow.ts` (labels, allowed actions, next status)
-  - [x] 1.3 db-quotes: new fields, history, markQuotesReviewed
-  - [x] 1.4 Transition tests
-- [x] 2. Emails for each status
-  - [x] 2.1 Customer templates per action
-  - [x] 2.2 Admin payment notice
-  - [x] 2.3 Safe subjects and escaping
-  - [x] 2.4 Template tests
-- [x] 3. Stripe Payment Links
-  - [x] 3.1 Create link (print + shipping lines, quote metadata, thank-you redirect, single use)
-  - [x] 3.2 Deactivate on cancel/decline/paid/re-send
-  - [x] 3.3 Tests
-- [x] 4. Webhook marks paid
-  - [x] 4.1 Record payment, paid status, deactivate link, emails
-  - [x] 4.2 stripe_events idempotency in MongoDB
-  - [x] 4.3 Remove session-expired handling
-  - [x] 4.4 Tests
-- [x] 5. Admin actions
-  - [x] 5.1 Action API
-  - [x] 5.2 Auto "reviewing"
-  - [x] 5.3 Buttons, Send quote and Ship forms, timeline
-  - [x] 5.4 Manual override without emails
-- [x] 6. Remove on-site payment
-  - [x] 6.1 Delete checkout routes, PayNowButton, cancelled page
-  - [x] 6.2 Status lookup + account: status text, timeline, emailed link
-  - [x] 6.3 Page copy
-- [x] 7. Accurate weight
-  - [x] 7.1 Real volume and surface area
-  - [x] 7.2 Shared print-estimate module
-  - [x] 7.3 Server uses it
-  - [x] 7.4 Tests
-- [x] 8. Live estimate in the browser
-  - [x] 8.1 Browser STL parsing
-  - [x] 8.2 Live numbers, placeholder removed
-  - [x] 8.3 Rates and presets from the server page
-- [x] 9. Shipping quotes
-  - [x] 9.1 shipping.ts (packaging, PAC, local rules)
-  - [x] 9.2 Settings fields with defaults
-  - [x] 9.3 Shipping estimate API
-  - [x] 9.4 Form delivery choice, stored on the quote
-  - [x] 9.5 Admin settings fields
-  - [x] 9.6 Tests
-- [x] 10. Docs, checks, release
-  - [x] 10.1 ARCHITECTURE, TODOs, .env.example
-  - [x] 10.2 Lint, tests, build
-  - [x] 10.3 PR + staging check (quote #1003 paid end to end, 2026-09-29)
-  - [x] 10.4 (Deej) Stripe test keys/webhook on staging, PAC key, production webhook (steps: `docs/PAYMENTS_SETUP.md`)
-  - [x] 10.5 Async payment event on both Stripe webhooks; unused `NEXT_PUBLIC_STRIPE_KEY` deleted from both Render services (2026-09-29)
-  - [ ] 10.6 (Deej) One small real order on production, then refund it in Stripe
+## Follow-ups
 
-## Homepage and design refresh (2026-09-27)
-
-Checked on staging. See docs/ARCHITECTURE.md "Design system" for the rules to keep (accent gradients, tight spacing, short motion).
-
-- [x] 1. Replace the repeated `rounded-3xl border p-5` cards (about 20, some nested) with more varied layouts
-  - [x] 1.1 Hero: one type-led block, and bullets as one line instead of boxed tiles
-  - [x] 1.2 One bento section with tiles of different sizes, each with its own job
-- [x] 2. Merge "How it works" and "How I work" (the same three steps twice) into one numbered timeline
-- [ ] 3. Real photos of prints, engravings and sites in "Explore the work" (needs photos from Deej)
-- [x] 4. Copy: rewrite "No drama, no mystery, just deliberate progress" and "A simple process that keeps things moving"; use "Start with a message" once or twice, not three times; use real list bullets in "Who this is for"
-- [x] 5. Motion and contrast (Deej: "more interactivity or animations or conflict"): printing wireframe part in the hero, cursor spotlight on service tiles, dark 3D printing tile with an "Instant price" sticker, timeline that draws in on scroll
-- [ ] 6. Check desktop and mobile on staging, then PR dev to main
-
-## Staging isolation (2026-09-27)
-
-Staging's Render env was checked on 2026-09-27. It shared production's database, R2 bucket and live Stripe keys.
-
-- [x] `DB_NAME=deejpotter_staging` on `deejpotter-staging`, copied from `deejpotter` (2026-09-27)
-- [x] (Deej) Stripe test key and test webhook on staging (2026-09-29)
-- [x] R2: `R2_KEY_PREFIX=staging/` on staging (same bucket, separate prefix)
-
-## Better Auth migration (planned 2026-09-30)
-
-Plan and reasoning: docs/AUTH_MIGRATION_PLAN.md. Phases 1–3 can go ahead now (no behaviour change on production); phases 4–5 wait for the Day Planner cut-over. The Clerk webhook setup is skipped, because this replaces it.
-
-- [x] Plan written from the Day Planner's plan and code, with the MongoDB adapter checked against Better Auth's docs
-- [x] 0. Prepare (results in the plan)
-  - [x] 0.1 Backed up production and staging (Extended JSON + indexes, ~/backups/deejpotter); restore tested, all collections match
-  - [x] 0.2 Day Planner checked: phases 1–6 on its dev, not cut over yet; phases 4–5 here wait for it
-  - [x] 0.3 Spike (branch spike/better-auth): reuses `users` with ObjectId ids; linking A–D pass; builds on Next 16. Found: the clerkId unique index breaks the second sign-up; fix is a partial index (phase 2.1a)
-  - [x] 0.4 Google sign-in: yes
-- [x] 1. One auth helper (`src/lib/session.ts`), still on Clerk; server callers moved. Also: groceries now admin only (were open to any signed-in account), /account uses only a verified email, dead /api/mongo-crud removed
-- [ ] 2. Server core behind `BETTER_AUTH_SECRET`: auth.ts (email, Google, optional Clerk), partial clerkId index, /api/auth route, Resend emails, origins, rate limits, `ADMIN_EMAILS` with verified email, tests
-- [ ] 3. Pages and proxy: sign-in, sign-up, forgot and reset password, sign-out, navbar, "Sign in with Clerk" when configured
-- [ ] 4. Staging (Deej: secret, URL, ADMIN_EMAILS, Google OAuth client, Clerk production-instance OAuth app for the staging callback), then the full check list
-- [ ] 5. Production cut-over, rollback by removing the secret, Clerk removal after 14 days
-- [ ] 6. Docs updated with each phase
-
-## Follow-ups (2026-09-26)
-
-- [x] Staging database: `DB_NAME=deejpotter_staging` on `deejpotter-staging`
-- [ ] Dev-only Atlas user limited to `deejpotter_dev` so local scripts can't reach the site's database
-- [ ] Box shipping calculator: point `NEXT_PUBLIC_API_URL` at the backend, or move items into MongoDB (recommended)
-- [x] Removed `src/__tests__/navbar-integration.test.ts` (it only compared string literals to themselves; `TopNavbar.test.tsx` covers the real navbar)
-- [x] Canvas stub in `src/test/setupTests.ts` now replaces jsdom's `getContext` (it was already loaded but never applied)
-- [x] Blog posts: own OpenGraph image and JSON-LD (other pages still share `og-image.png`); was: OpenGraph image per page / blog JSON-LD (see `.github/ISSUES/006-metadata-og.md`)
+- [ ] Box shipping calculator and CNC Technical AI: connect a backend with `NEXT_PUBLIC_API_URL`, or mark them as demos
+- [ ] Update the GitHub repo description (still describes the quote system) once this is merged
+- [ ] Delete old branches (`feature/ecommerce-shop`, `deploy-ecommerce`, `feat/quote-order-flow`, `spike/better-auth`, `feat/astro-site`); that history is kept in the `lumendot` repo
+- [ ] `.github/agents` and `.github/prompts` still hold business prompts (customer replies, CNC triage); move them to `lumendot` or delete them
 
 ## Dependency follow-ups
 
-- Node 24 + minor/patch refresh done (#119, #120); both Render services on `NODE_VERSION=24`
-- [x] 2026-09-29: svix 2 (Clerk webhook updated), TypeScript 6, mongodb-memory-server 11, jsdom 30 (#135); `@types/node` majors held to the Node 24 runtime in dependabot.yml
 - [ ] Later (separate PRs): vitest 5 + jest-dom 7; ESLint 10 once next/typescript-eslint support it; TypeScript 7 held
-
----
-
-## Phase 1: E-commerce (removed)
-
-The generic shop (product pages, cart, shop checkout, admin orders/products) was removed. Payments now only go through the quote system (Phase 3). Print-on-demand lives in the sibling repo `../deejpotter-gelato/`.
-
----
-
-## Phase 2: Admin & Auth
-
-### ✅ Admin dashboard, 3D printing quotes, leads, settings — DONE
-
-### ✅ Unified admin auth — DONE
-- `requireAdminPage()` / `isAdminUser()` check the `ADMIN_USER_IDS` environment variable
-- Leads page now admin-guarded
-
----
-
-## Phase 3: Quote System
-
-### ✅ MongoDB quote migration — DONE
-- Status lookup and file download use `db-quotes` (quote numbers)
-- Legacy `quote-storage.ts` removed
-
-### ⬜ STL client estimate — placeholder math remains in QuoteRequestForm (server analysis is real)
-
-### ⬜ Laser engraving and milling quote flow
-The quote form is 3D printing only. Laser (engraving only) and milling jobs come in through the contact form. A real flow needs a 2D (DXF/SVG) uploader and the form posting to `/api/quotes` with the service type.
-
----
-
-## Phase 4: Gelato / POD (moved out)
-
-Print-on-demand and Gelato integration moved to sibling repo: `../deejpotter-gelato/`
-
-deejpotter no longer has a shop; service payments go through quotes.
-
----
-
-## Phase 5: Hosting & storage
-
-### ✅ Render hosting — DONE
-- `dev` deploys to staging, `main` to production. Netlify and Vercel removed.
-
-### ✅ Persistent data — DONE
-- Contact leads and grocery orders stored in MongoDB (Render's disk is ephemeral)
-- Indexes created automatically on first database use
-
-### ✅ R2 on production — DONE
-- All four R2 variables set on the production Render service (see `docs/R2_SETUP.md`)
-
-### ✅ Environment variables — DONE
-- `ADMIN_USER_IDS` and `RESEND_API_KEY` set on both Render services
-
-### ⬜ Confirm Resend sending
-- Check deejpotter.com is verified in Resend, then submit a test quote and look for `[email] Sent:` in the Render logs
-
-### ⬜ Contact form email
-- Contact messages are saved to `/admin/leads` but send no email; decide whether to add a notification
-
----
-
-## Phase 6: Build & CI
-
-### ✅ CI pipeline — PASSING (Node 24)
-- Lint, stylelint, vitest, build
-
-### ✅ Workflow fixes — DONE
-- Removed broken Playwright workflow stub
-- CI and stylelint workflows use Node 24 (actions/checkout and setup-node v7)
-- `.nvmrc`, `engines` and Render `NODE_VERSION` on Node 24
 
 ---
 
 ## Completed (last 10)
 
+- Personal static site on `feat/personal-site` (2026-10-01)
+- Business app moved to the `lumendot` repo with its history (2026-09-30)
 - Local dev database `deejpotter_dev` (mirrored with mongosh); `.env.example` defaults to it
 - 3D printing materials from MongoDB; quote page ISR + revalidatePath on admin save (#127)
 - Blog posts 404 fixed (Next 16 async params); per-page titles; branded 404/error pages (#125)
-- Quote estimate uses server materials/rates (5 of 9 materials were under-priced) (#125)
 - Brand gradients as accents: header line, dropdown wash, hero glows, gradient CTA (#125)
 - Sticky navbar, logo left, dropdown anchored to header and animated (#124)
 - Site-wide spacing and type scale tightened for medium screens (#123)
 - Box calculator no longer re-fetches items in a loop (#121)
 - Node 24 LTS and latest minor/patch dependencies; Babel/Jest leftovers removed (#119)
-- Contact form always posts to /api/contact (fixed failed submissions)
 
 ---
 
 ## Notes
 
 - Run tests: `yarn test` (requires Node 24)
-- Local database: `DB_NAME=deejpotter_dev` (see `docs/DEVELOPMENT.md` "Local database")
-- Gelato merch site: see `../deejpotter-gelato/README.md`
+- Look at the built site: `yarn build`, then serve `out/` with any static server

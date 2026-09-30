@@ -95,9 +95,8 @@ const initialState: NavbarState = {
         },
       ],
     },
-    { href: "/blog", label: "Blog" },
+    { href: "/blog", label: "Write-ups" },
     { href: "/about", label: "About Me" },
-    { href: "/contact", label: "Contact Me" },
     // Add more top level links here.
   ],
 };

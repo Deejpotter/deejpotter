@@ -1,0 +1,24 @@
+# Redirects for the static host (Cloudflare Pages and Netlify both read this
+# file). Next.js can't run redirects in a static export.
+#
+# The business pages moved to Lumendot on 1 Oct 2026. They go to its home page
+# until its own URLs are settled; point them at matching pages after that.
+
+/projects/services                 https://lumendot.com.au 301
+/projects/services/*               https://lumendot.com.au 301
+/contact                           https://lumendot.com.au 301
+/contact/*                         https://lumendot.com.au 301
+/terms                             https://lumendot.com.au 301
+/terms/*                           https://lumendot.com.au 301
+/account                           https://lumendot.com.au 301
+/account/*                         https://lumendot.com.au 301
+/admin                             https://lumendot.com.au 301
+/admin/*                           https://lumendot.com.au 301
+/sign-in                           https://lumendot.com.au 301
+/sign-in/*                         https://lumendot.com.au 301
+/sign-up                           https://lumendot.com.au 301
+/sign-up/*                         https://lumendot.com.au 301
+
+# Groceries became its own app.
+/groceries                         https://github.com/Deejpotter/groceries-spend-visualiser 301
+/groceries/*                       https://github.com/Deejpotter/groceries-spend-visualiser 301

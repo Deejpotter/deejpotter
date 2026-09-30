@@ -193,27 +193,23 @@ export default function Engineering(): ReactElement {
 
         <section className="mt-6 grid gap-4 lg:grid-cols-[1fr_0.9fr] lg:items-start">
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
-            <h2 className="mb-3 text-3xl font-bold">3D Printing Services</h2>
+            <h2 className="mb-3 text-3xl font-bold">Need parts made?</h2>
             <p className="text-gray-700 dark:text-gray-300">
-              Looking for custom 3D printed parts for your project? I offer 3D
-              printing services for prototypes, enclosures, and custom
-              mechanical components.
+              3D printing, CAD and fabrication for other people&apos;s projects
+              are handled through my business, Lumendot.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/projects/services/3d-printing" className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
-                Learn about 3D printing services
-              </Link>
-              <Link href="/contact" className="inline-flex items-center rounded-full border border-primary px-6 py-3 font-semibold text-primary transition-transform hover:scale-[1.02] dark:text-white">
-                Contact me
-              </Link>
+              <a href="https://lumendot.com.au" className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
+                Go to Lumendot
+              </a>
             </div>
           </div>
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-md dark:border-gray-800 dark:bg-gray-900">
             <h2 className="mb-3 text-3xl font-bold">Open to collaboration</h2>
             <p className="text-gray-700 dark:text-gray-300">
               Interested in collaborating on an engineering or embedded systems
-              project? I&apos;m happy to start with a brief written summary of the
-              problem, the constraints, and what success should look like.
+              project? Open an issue on one of the repos, or find me on{" "}
+              <a href="https://github.com/Deejpotter" className="font-semibold text-primary hover:underline">GitHub</a>.
             </p>
           </div>
         </section>

@@ -33,12 +33,15 @@ export default function Error({
           >
             Try again
           </button>
-          <Link
-            href="/contact"
+          {/* Bugs are reported as GitHub issues; the site has no contact form. */}
+          <a
+            href="https://github.com/Deejpotter/deejpotter/issues/new"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full border border-gray-300 px-5 py-2.5 text-sm font-semibold hover:border-primary dark:border-white/15"
           >
             Report it
-          </Link>
+          </a>
         </div>
         {error.digest && (
           <p className="mt-4 text-xs text-gray-500">Reference: {error.digest}</p>

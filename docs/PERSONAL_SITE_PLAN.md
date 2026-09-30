@@ -64,8 +64,8 @@ The app's database, auth, Stripe, R2, Resend and admin all go with Lumendot. Wha
 
 | | Choice |
 |---|---|
-| Framework | **Astro**, fully static (decided 1 Oct 2026: as light as possible). Pages ship plain HTML with no JavaScript; only the calculators and CNC calibration tool load code, as the existing React components used as islands. Fallback if the port drags: Next.js static export (`output: "export"`), which reuses more but sends React to every page |
-| Content | Project list in one typed data file; write-ups as Markdown |
+| Framework | **Next.js static export** (`output: "export"`). Decided 1 Oct 2026: this is a dev site to show off, so JavaScript is wanted, and the existing motion, wireframe hero and tools carry over as they are. Astro was considered for being lighter and dropped for that reason |
+| Content | Project list in `src/content/projects.ts`; outbound links in `src/content/links.ts`; write-ups stay at `/blog/<slug>` |
 | Hosting | A free static host (Cloudflare Pages or Netlify), replacing the Render services |
 | Data, auth, payments | None. Nothing on the site needs a login: admin, account and leads go to Lumendot, groceries to the Grocery Visualiser |
 | Analytics | Optional, privacy-friendly, or none |
@@ -78,8 +78,9 @@ Old URLs have links, QR codes, Google results and possibly Stripe emails pointin
 |---|---|
 | `/projects/services/*` (website design, custom tools, 3D printing, requests, thank-you, CAD/CAM) | 301 to the matching lumendot.com.au page |
 | `/contact`, `/account`, `/terms` | 301 to lumendot.com.au |
-| `/projects/games/*`, `/projects/engineering/*`, `/projects/apps/*`, `/projects/tools/*` | Stay on deejpotter.com |
+| `/projects`, `/projects/games/*`, `/projects/engineering/*`, `/projects/apps/*`, `/projects/tools/*`, `/projects/websites/*` | Stay on deejpotter.com. lumendot.com.au redirects these paths here (since 1 Oct 2026), so keep them working or redirect onward |
 | `/blog/<slug>` | Business guides → 301 to lumendot.com.au; personal posts → a project write-up here |
+| `/blog/box-shipping-calculator`, `/blog/cnc-technical-ai`, `/blog/esp32-wireless-car`, `/blog/portfolio-migration`, `/blog/openclaw-android-pairing-request-churn` | lumendot.com.au redirects these five here (since 1 Oct 2026). Keep each URL, or 301 it to its project write-up |
 | `/groceries` | 301 to the Grocery Visualiser repo. That app already covers it: it imports the Woolworths order-history CSV, and its refactor plan dropped PDF import on purpose, so this site's PDF parser is not ported. Export the `grocery_orders` collection first if the old orders are wanted |
 | `/admin/*` (including `/admin/leads`), `/sign-in`, `/sign-up` | 301 to lumendot.com.au. The site has no login at all |
 
@@ -88,9 +89,9 @@ Old URLs have links, QR codes, Google results and possibly Stripe emails pointin
 This site must not lose the quote flow before Lumendot has it.
 
 1. **Wait** until lumendot.com.au is live and tested (Lumendot site plan, launch order steps 1–3).
-2. Build the new static site in this repo on a branch: home, projects, write-ups, the Basic Bases privacy page, privacy, 404.
-3. Add the redirects in section 5.
-4. Remove the app code this repo no longer needs: API routes, admin, account, auth, Stripe, R2, MongoDB, email, services pages, the contact form, `/groceries` (`src/app/groceries`, `src/app/api/groceries`, `src/lib/groceries-*`), and their dependencies and environment variables.
+2. **Done 1 Oct 2026** on `feat/personal-site`, built without waiting because it deploys nowhere: home, projects, write-ups, the Basic Bases privacy page, privacy, 404.
+3. **Done:** redirects in `public/_redirects` (business pages go to the Lumendot home page until its URLs are settled).
+4. **Done on the branch:** removed the app code this repo no longer needs: API routes, admin, account, auth, Stripe, R2, MongoDB, email, services pages, the contact form, `/groceries` (`src/app/groceries`, `src/app/api/groceries`, `src/lib/groceries-*`), and their dependencies and environment variables.
 5. Point deejpotter.com at the static host; retire the Render services once any quote still in progress on the old domain is finished.
 6. Check: every old URL in section 5 resolves, no private subdomain is mentioned anywhere, Lighthouse scores, mobile layout.
 7. Decide what happens to the open `dev → main` pull request (homepage redesign, dependency updates), since that work now lives in the `lumendot` repo.
