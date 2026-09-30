@@ -64,7 +64,7 @@ The app's database, auth, Stripe, R2, Resend and admin all go with Lumendot. Wha
 
 | | Choice |
 |---|---|
-| Framework | Next.js static export (`output: "export"`) so existing page components and styles can be reused |
+| Framework | **Astro**, fully static (decided 1 Oct 2026: as light as possible). Pages ship plain HTML with no JavaScript; only the calculators and CNC calibration tool load code, as the existing React components used as islands. Fallback if the port drags: Next.js static export (`output: "export"`), which reuses more but sends React to every page |
 | Content | Project list in one typed data file; write-ups as Markdown |
 | Hosting | A free static host (Cloudflare Pages or Netlify), replacing the Render services |
 | Data, auth, payments | None. Nothing on the site needs a login: admin, account and leads go to Lumendot, groceries to the Grocery Visualiser |
