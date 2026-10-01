@@ -1,0 +1,82 @@
+# Render Blueprint for deejpotter.com as a free static site.
+# In the Render dashboard: New → Blueprint, pick this repo and branch.
+# Render static sites don't read public/_redirects (that's the Netlify and
+# Cloudflare format), so the same redirects are listed here as routes.
+# Don't point deejpotter.com at this until lumendot.com.au is live with the
+# quote flow (see docs/PERSONAL_SITE_PLAN.md, section 6).
+services:
+  - type: web
+    name: deejpotter-static
+    runtime: static
+    branch: main
+    autoDeployTrigger: commit
+    buildCommand: yarn install --frozen-lockfile && yarn build
+    staticPublishPath: ./out
+    routes:
+      # Business pages moved to Lumendot on 1 Oct 2026.
+      - type: redirect
+        source: "/projects/services/3d-printing"
+        destination: "https://lumendot.com.au/projects/services/3d-printing"
+      - type: redirect
+        source: "/projects/services/3d-printing/*"
+        destination: "https://lumendot.com.au/projects/services/3d-printing/*"
+      - type: redirect
+        source: "/projects/services/website-design*"
+        destination: "https://lumendot.com.au/websites"
+      - type: redirect
+        source: "/projects/services/website-redesign*"
+        destination: "https://lumendot.com.au/websites"
+      - type: redirect
+        source: "/projects/services/custom-tools*"
+        destination: "https://lumendot.com.au/fixes"
+      - type: redirect
+        source: "/projects/services/cad-cam-fabrication*"
+        destination: "https://lumendot.com.au/made-to-order"
+      - type: redirect
+        source: "/projects/services"
+        destination: "https://lumendot.com.au/pricing"
+      - type: redirect
+        source: "/projects/services/*"
+        destination: "https://lumendot.com.au/pricing"
+      - type: redirect
+        source: "/contact"
+        destination: "https://lumendot.com.au/contact"
+      - type: redirect
+        source: "/contact/*"
+        destination: "https://lumendot.com.au/contact"
+      - type: redirect
+        source: "/terms"
+        destination: "https://lumendot.com.au/terms"
+      - type: redirect
+        source: "/terms/*"
+        destination: "https://lumendot.com.au/terms"
+      - type: redirect
+        source: "/account"
+        destination: "https://lumendot.com.au/account"
+      - type: redirect
+        source: "/account/*"
+        destination: "https://lumendot.com.au/account"
+      - type: redirect
+        source: "/admin"
+        destination: "https://lumendot.com.au/admin"
+      - type: redirect
+        source: "/admin/*"
+        destination: "https://lumendot.com.au/admin/*"
+      - type: redirect
+        source: "/sign-in"
+        destination: "https://lumendot.com.au/sign-in"
+      - type: redirect
+        source: "/sign-in/*"
+        destination: "https://lumendot.com.au/sign-in"
+      - type: redirect
+        source: "/sign-up"
+        destination: "https://lumendot.com.au/sign-up"
+      - type: redirect
+        source: "/sign-up/*"
+        destination: "https://lumendot.com.au/sign-up"
+      - type: redirect
+        source: "/groceries"
+        destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+      - type: redirect
+        source: "/groceries/*"
+        destination: "https://github.com/Deejpotter/groceries-spend-visualiser"

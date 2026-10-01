@@ -1,24 +1,32 @@
-# Redirects for the static host (Cloudflare Pages and Netlify both read this
-# file). Next.js can't run redirects in a static export.
+# Redirects for Netlify or Cloudflare Pages. Render uses the routes in
+# render.yaml instead; keep the two lists the same.
 #
-# The business pages moved to Lumendot on 1 Oct 2026. They go to its home page
-# until its own URLs are settled; point them at matching pages after that.
+# The business pages moved to Lumendot on 1 Oct 2026 and go to the matching
+# Lumendot page.
 
-/projects/services                 https://lumendot.com.au 301
-/projects/services/*               https://lumendot.com.au 301
-/contact                           https://lumendot.com.au 301
-/contact/*                         https://lumendot.com.au 301
-/terms                             https://lumendot.com.au 301
-/terms/*                           https://lumendot.com.au 301
-/account                           https://lumendot.com.au 301
-/account/*                         https://lumendot.com.au 301
-/admin                             https://lumendot.com.au 301
-/admin/*                           https://lumendot.com.au 301
-/sign-in                           https://lumendot.com.au 301
-/sign-in/*                         https://lumendot.com.au 301
-/sign-up                           https://lumendot.com.au 301
-/sign-up/*                         https://lumendot.com.au 301
-
-# Groceries became its own app.
-/groceries                         https://github.com/Deejpotter/groceries-spend-visualiser 301
-/groceries/*                       https://github.com/Deejpotter/groceries-spend-visualiser 301
+/projects/services/3d-printing               https://lumendot.com.au/projects/services/3d-printing 301
+/projects/services/3d-printing/*             https://lumendot.com.au/projects/services/3d-printing/:splat 301
+/projects/services/website-design            https://lumendot.com.au/websites 301
+/projects/services/website-design/*          https://lumendot.com.au/websites 301
+/projects/services/website-redesign          https://lumendot.com.au/websites 301
+/projects/services/website-redesign/*        https://lumendot.com.au/websites 301
+/projects/services/custom-tools              https://lumendot.com.au/fixes 301
+/projects/services/custom-tools/*            https://lumendot.com.au/fixes 301
+/projects/services/cad-cam-fabrication       https://lumendot.com.au/made-to-order 301
+/projects/services/cad-cam-fabrication/*     https://lumendot.com.au/made-to-order 301
+/projects/services                           https://lumendot.com.au/pricing 301
+/projects/services/*                         https://lumendot.com.au/pricing 301
+/contact                                     https://lumendot.com.au/contact 301
+/contact/*                                   https://lumendot.com.au/contact 301
+/terms                                       https://lumendot.com.au/terms 301
+/terms/*                                     https://lumendot.com.au/terms 301
+/account                                     https://lumendot.com.au/account 301
+/account/*                                   https://lumendot.com.au/account 301
+/admin                                       https://lumendot.com.au/admin 301
+/admin/*                                     https://lumendot.com.au/admin/:splat 301
+/sign-in                                     https://lumendot.com.au/sign-in 301
+/sign-in/*                                   https://lumendot.com.au/sign-in 301
+/sign-up                                     https://lumendot.com.au/sign-up 301
+/sign-up/*                                   https://lumendot.com.au/sign-up 301
+/groceries                                   https://github.com/Deejpotter/groceries-spend-visualiser 301
+/groceries/*                                 https://github.com/Deejpotter/groceries-spend-visualiser 301
