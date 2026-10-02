@@ -28,8 +28,10 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 - [x] 5. Docs: README, DEVELOPMENT, ARCHITECTURE, copilot instructions, this file, `.env.example`
 - [ ] 6. (Deej) Review the copy and the project list on the draft PR
 - [ ] 7. Check the mobile layout (couldn't be checked in the browser session on 1 Oct)
-- [ ] 8. Cloudflare Pages project on this branch (build `yarn build`, output `out`) for a preview URL
-- [ ] 9. Switch-over, after lumendot.com.au is live: plan section 6 steps 5 to 7
+- [ ] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
+- [ ] 9. Phase B gate: lumendot.com.au live and its quote flow tested (needs the ABN and domain first)
+- [ ] 10. Phase C: cut-over (merge #144, close #143, move the domains, drop staging.deejpotter.com)
+- [ ] 11. Phase D, about two weeks later: delete the old Render services, Stripe and Clerk leftovers, old branches
 
 ## Show-off ideas (Deej wants JavaScript on this site)
 
