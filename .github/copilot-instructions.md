@@ -55,11 +55,11 @@ This is Deej's personal site: a static Next.js export (see `docs/README.md` and 
 - Env: none required. `NEXT_PUBLIC_API_URL` (optional, build time) connects the CNC Technical AI chat and box calculator items to a backend.
 - Node: 24 LTS (`.nvmrc`, `engines`, CI).
 
-- Deploys: until the switch in `docs/PERSONAL_SITE_PLAN.md`, Render still deploys the old business app from `dev` (staging) and `main` (production). The static site is on `feat/personal-site`; don't merge it into `dev` or `main` before lumendot.com.au has the quote flow. Planned host: Cloudflare Pages (build `yarn build`, output `out`).
+- Deploys: until the switch in `docs/PERSONAL_SITE_PLAN.md`, Render still deploys the old business app from `dev` (staging) and `main` (production). The static site is on `feat/personal-site`; don't merge it into `dev` or `main` before lumendot.com has the quote flow. Planned host: Cloudflare Pages (build `yarn build`, output `out`).
 
 ## Integration Points & Environment
 
-- No contact form: work enquiries link to lumendot.com.au, everything else to GitHub (`src/content/links.ts`).
+- No contact form: work enquiries link to lumendot.com, everything else to GitHub (`src/content/links.ts`).
 - Project cards link only to public repos. Never name private personal subdomains on the site, in the sitemap or in `robots.txt`.
 - Box shipping calculator and CNC Technical AI: need `NEXT_PUBLIC_API_URL` (an external backend). It's unset, so they show that they aren't connected.
 
@@ -77,7 +77,7 @@ This is Deej's personal site: a static Next.js export (see `docs/README.md` and 
 - `src/app/metadata.ts` — Default metadata, title template, and `generatePageMetadata()` for page titles, canonical URLs and OpenGraph.
 - `src/content/projects.ts` — The home page project grid; only public repos get code links.
 - `src/contexts/NavbarContext.tsx` — Navigation state (items, dropdown open/close) via React reducer + context.
-- `public/_redirects` — Old business URLs to lumendot.com.au, `/groceries` to the Grocery Visualiser repo.
+- `public/_redirects` — Old business URLs to lumendot.com, `/groceries` to the Grocery Visualiser repo.
 - `typedoc.json` + `yarn docs` — docs generation.
 - `public/basicBases/Build/` — Unity WebGL assets; treat as static assets.
 - `vitest.config.ts` — Test runner config with `@/` alias resolution and jsdom environment.

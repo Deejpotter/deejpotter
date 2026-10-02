@@ -199,7 +199,7 @@ export default function Engineering(): ReactElement {
               are handled through my business, Lumendot.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <a href="https://lumendot.com.au" className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
+              <a href="https://lumendot.com" className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
                 Go to Lumendot
               </a>
             </div>

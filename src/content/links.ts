@@ -7,6 +7,6 @@ export const links = {
   github: "https://github.com/Deejpotter",
   linkedin: "https://www.linkedin.com/in/daniel-potter-5224a4119",
   // Paid work (websites, CAD, printing) is handled by the business, not here.
-  lumendot: "https://lumendot.com.au",
+  lumendot: "https://lumendot.com",
   siteRepo: "https://github.com/Deejpotter/deejpotter",
 } as const;

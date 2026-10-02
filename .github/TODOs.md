@@ -8,7 +8,7 @@ The business app (quote to order flow, staging isolation, Better Auth plan, Stri
 
 ## Personal static site (2026-10-01)
 
-Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. Don't merge into `dev` or `main` until lumendot.com.au has the quote flow (Render still deploys the old app from those branches).
+Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. Don't merge into `dev` or `main` until lumendot.com has the quote flow (Render still deploys the old app from those branches).
 
 - [x] 1. Remove what moved out
   - [x] 1.1 API routes, admin, account, sign-in/up, contact form, terms, services pages
@@ -29,7 +29,7 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 - [ ] 6. (Deej) Review the copy and the project list on the draft PR
 - [ ] 7. Check the mobile layout (couldn't be checked in the browser session on 1 Oct)
 - [ ] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
-- [ ] 9. Phase B gate: lumendot.com.au live and its quote flow tested (needs the ABN and domain first)
+- [ ] 9. Phase B gate: lumendot.com live and its quote flow tested (needs the ABN and domain first)
 - [ ] 10. Phase C: cut-over (merge #144, close #143, move the domains, drop staging.deejpotter.com)
 - [ ] 11. Phase D, about two weeks later: delete the old Render services, Stripe and Clerk leftovers, old branches
 

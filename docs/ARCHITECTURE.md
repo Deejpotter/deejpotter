@@ -28,13 +28,13 @@ What a static export rules out, and how the site handles it ([Vercel, 2026b](#re
 
 ### No login, no contact form
 **Date:** 2026-10-01
-**Why:** Everything that needed sign-in moved out (admin, accounts and contact leads to Lumendot; groceries to the Grocery Visualiser). Work enquiries go to lumendot.com.au and everything else to GitHub, so there is no email address or form to maintain or protect from spam. All outbound links are in `src/content/links.ts`.
+**Why:** Everything that needed sign-in moved out (admin, accounts and contact leads to Lumendot; groceries to the Grocery Visualiser). Work enquiries go to lumendot.com and everything else to GitHub, so there is no email address or form to maintain or protect from spam. All outbound links are in `src/content/links.ts`.
 
 ### Old URLs
 **Date:** 2026-10-01
 **Why:** Business URLs have links, QR codes and search results pointing at them. `public/_redirects` sends them to Lumendot (and `/groceries` to the Grocery Visualiser repo). Cloudflare Pages reads this file from the build output, accepts absolute external destinations and `*` wildcards, and always follows a redirect even when a file exists at that path ([Cloudflare, 2026](#ref-cloudflare-redirects)). Netlify reads the same file.
 
-The write-ups keep their `/blog/<slug>` URLs, and `/projects/*` keeps its paths, because lumendot.com.au redirects those paths here.
+The write-ups keep their `/blog/<slug>` URLs, and `/projects/*` keeps its paths, because lumendot.com redirects those paths here.
 
 ### Project list as data
 **Why:** The home page grid comes from `src/content/projects.ts`, so adding a project is a data change. Only public repos get a code link. Private projects are listed without links, and personal app subdomains are never named on the site (see the plan's "Subdomains" section).
@@ -53,7 +53,7 @@ Synchronous access to `params` and `searchParams` was removed in Next.js 16, so 
 
 ## Hosting
 
-**Now (1 Oct 2026):** deejpotter.com still runs the old business app on Render (`main` to production, `dev` to staging), and will until lumendot.com.au takes the quote flow. This static site is on the `feat/personal-site` branch and deploys nowhere yet.
+**Now (1 Oct 2026):** deejpotter.com still runs the old business app on Render (`main` to production, `dev` to staging), and will until lumendot.com takes the quote flow. This static site is on the `feat/personal-site` branch and deploys nowhere yet.
 
 **Planned:** a free static host (Cloudflare Pages), build command `yarn build`, output folder `out`. Then the Render services are retired. Order of work: [PERSONAL_SITE_PLAN.md](PERSONAL_SITE_PLAN.md) section 6.
 

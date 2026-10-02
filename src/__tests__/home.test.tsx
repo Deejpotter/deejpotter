@@ -29,7 +29,7 @@ describe("Home component", () => {
     render(<Home />);
     expect(screen.getByRole("link", { name: /go to lumendot/i })).toHaveAttribute(
       "href",
-      "https://lumendot.com.au",
+      "https://lumendot.com",
     );
     const hrefs = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
     expect(hrefs).not.toContain("/contact");

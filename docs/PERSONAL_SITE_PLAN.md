@@ -2,7 +2,7 @@
 
 Last updated: 2 Oct 2026
 
-deejpotter.com becomes a short personal landing page for your dev work and the home domain for your personal apps. All paid work — websites, fixes, CAD, 3D printing, engraving — moves to your business, **Lumendot** (lumendot.com.au). The quote, payment and order app now lives in the private `lumendot` repo; its site plan is `docs/LUMENDOT_SITE_PLAN.md` there.
+deejpotter.com becomes a short personal landing page for your dev work and the home domain for your personal apps. All paid work — websites, fixes, CAD, 3D printing, engraving — moves to your business, **Lumendot** (lumendot.com). The quote, payment and order app now lives in the private `lumendot` repo; its site plan is `docs/LUMENDOT_SITE_PLAN.md` there.
 
 ## 1. Purpose
 
@@ -11,7 +11,7 @@ deejpotter.com becomes a short personal landing page for your dev work and the h
 | **Is** | A calm, fast page that says who you are, shows what you've built, and links out |
 | **For** | Developers, employers and recruiters, friends, people who found one of your repos or apps |
 | **Is not** | A shop, a quote form, a services page, a contact form or a blog you have to keep feeding |
-| **Contact** | No form and no email address. Work enquiries go to lumendot.com.au (its contact form and `/admin/leads` live there); everything else goes to GitHub |
+| **Contact** | No form and no email address. Work enquiries go to lumendot.com (its contact form and `/admin/leads` live there); everything else goes to GitHub |
 
 ## 2. Pages
 
@@ -76,13 +76,13 @@ Old URLs have links, QR codes, Google results and possibly Stripe emails pointin
 
 | Old URL | New home |
 |---|---|
-| `/projects/services/*` (website design, custom tools, 3D printing, requests, thank-you, CAD/CAM) | 301 to the matching lumendot.com.au page |
-| `/contact`, `/account`, `/terms` | 301 to lumendot.com.au |
-| `/projects`, `/projects/games/*`, `/projects/engineering/*`, `/projects/apps/*`, `/projects/tools/*`, `/projects/websites/*` | Stay on deejpotter.com. lumendot.com.au redirects these paths here (since 1 Oct 2026), so keep them working or redirect onward |
-| `/blog/<slug>` | Business guides → 301 to lumendot.com.au; personal posts → a project write-up here |
-| `/blog/box-shipping-calculator`, `/blog/cnc-technical-ai`, `/blog/esp32-wireless-car`, `/blog/portfolio-migration`, `/blog/openclaw-android-pairing-request-churn` | lumendot.com.au redirects these five here (since 1 Oct 2026). Keep each URL, or 301 it to its project write-up |
+| `/projects/services/*` (website design, custom tools, 3D printing, requests, thank-you, CAD/CAM) | 301 to the matching lumendot.com page |
+| `/contact`, `/account`, `/terms` | 301 to lumendot.com |
+| `/projects`, `/projects/games/*`, `/projects/engineering/*`, `/projects/apps/*`, `/projects/tools/*`, `/projects/websites/*` | Stay on deejpotter.com. lumendot.com redirects these paths here (since 1 Oct 2026), so keep them working or redirect onward |
+| `/blog/<slug>` | Business guides → 301 to lumendot.com; personal posts → a project write-up here |
+| `/blog/box-shipping-calculator`, `/blog/cnc-technical-ai`, `/blog/esp32-wireless-car`, `/blog/portfolio-migration`, `/blog/openclaw-android-pairing-request-churn` | lumendot.com redirects these five here (since 1 Oct 2026). Keep each URL, or 301 it to its project write-up |
 | `/groceries` | 301 to the Grocery Visualiser repo. That app already covers it: it imports the Woolworths order-history CSV, and its refactor plan dropped PDF import on purpose, so this site's PDF parser is not ported. Export the `grocery_orders` collection first if the old orders are wanted |
-| `/admin/*` (including `/admin/leads`), `/sign-in`, `/sign-up` | 301 to lumendot.com.au. The site has no login at all |
+| `/admin/*` (including `/admin/leads`), `/sign-in`, `/sign-up` | 301 to lumendot.com. The site has no login at all |
 
 ## 6. Switch-over plan (2 Oct 2026)
 
@@ -95,7 +95,7 @@ This site must not lose the quote flow before Lumendot has it.
 | New static site | Built on `feat/personal-site`, draft PR #144 into `dev`. Lint, tests and build pass. Includes `render.yaml` (Render static site) and `public/_redirects` with the same redirects to matching Lumendot pages |
 | deejpotter.com | Still the old business app: Render web service `deejpotter` (Starter) from `main`, and `deejpotter-staging` (free) from `dev`. DNS is on Cloudflare |
 | Lumendot | Site built and running on Render (`lumendot`, `lumendot-staging`), reachable at lumendot.onrender.com |
-| lumendot.com.au | **Not registered.** It needs the ABN reactivated first (Lumendot `TODO.md`). Stripe webhooks, Payment Links, Resend and the end-to-end test on the new domain are also still open there |
+| lumendot.com | **Not registered.** It needs the ABN reactivated first (Lumendot `TODO.md`). Stripe webhooks, Payment Links, Resend and the end-to-end test on the new domain are also still open there |
 | Open PR #143 (`dev` into `main`) | Homepage redesign and dependency updates. Its commits are already in `dev`, in #144 and in the `lumendot` repo |
 
 ### Phase A: get the new site ready (no effect on the live site)
@@ -112,7 +112,7 @@ This site must not lose the quote flow before Lumendot has it.
 
 Cut over only when all of these are true:
 
-- lumendot.com.au resolves with a valid certificate, and every redirect target in section 5 answers there
+- lumendot.com resolves with a valid certificate, and every redirect target in section 5 answers there
 - the quote flow has been tested end to end on it (quote, Payment Link, webhook, emails, status page)
 - the production Stripe webhook and new Payment Links point at Lumendot, not deejpotter.com
 - no quote still depends on a deejpotter.com page that won't redirect (Payment Links already sent redirect to `/projects/services/3d-printing/...`, which is covered)

@@ -1,10 +1,100 @@
-# Render Blueprint for deejpotter.com as a free static site.
-# In the Render dashboard: New → Blueprint, pick this repo and branch.
-# Render static sites don't read public/_redirects (that's the Netlify and
-# Cloudflare format), so the same redirects are listed here as routes.
-# Don't point deejpotter.com at this until lumendot.com.au is live with the
-# quote flow (see docs/PERSONAL_SITE_PLAN.md, section 6).
+# Render Blueprint for deejpotter.com as free static sites.
+# GENERATED from public/_redirects by scripts/render-routes.mjs; edit that
+# file and re-run the script instead of editing the routes here.
+#
+# Staging builds dev and production builds main. Custom domains are added in
+# the dashboard during the cut-over (docs/PERSONAL_SITE_PLAN.md, section 6),
+# not here, so creating the services doesn't take deejpotter.com off the old
+# web service.
 services:
+  # staging.deejpotter.com
+  - type: web
+    name: deejpotter-static-staging
+    runtime: static
+    branch: dev
+    autoDeployTrigger: commit
+    buildCommand: yarn install --frozen-lockfile && yarn build
+    staticPublishPath: ./out
+    routes:
+      - type: redirect
+        source: "/projects/services/3d-printing"
+        destination: "https://lumendot.com/projects/services/3d-printing"
+      - type: redirect
+        source: "/projects/services/3d-printing/*"
+        destination: "https://lumendot.com/projects/services/3d-printing/*"
+      - type: redirect
+        source: "/projects/services/website-design"
+        destination: "https://lumendot.com/websites"
+      - type: redirect
+        source: "/projects/services/website-design/*"
+        destination: "https://lumendot.com/websites"
+      - type: redirect
+        source: "/projects/services/website-redesign"
+        destination: "https://lumendot.com/websites"
+      - type: redirect
+        source: "/projects/services/website-redesign/*"
+        destination: "https://lumendot.com/websites"
+      - type: redirect
+        source: "/projects/services/custom-tools"
+        destination: "https://lumendot.com/fixes"
+      - type: redirect
+        source: "/projects/services/custom-tools/*"
+        destination: "https://lumendot.com/fixes"
+      - type: redirect
+        source: "/projects/services/cad-cam-fabrication"
+        destination: "https://lumendot.com/made-to-order"
+      - type: redirect
+        source: "/projects/services/cad-cam-fabrication/*"
+        destination: "https://lumendot.com/made-to-order"
+      - type: redirect
+        source: "/projects/services"
+        destination: "https://lumendot.com/pricing"
+      - type: redirect
+        source: "/projects/services/*"
+        destination: "https://lumendot.com/pricing"
+      - type: redirect
+        source: "/contact"
+        destination: "https://lumendot.com/contact"
+      - type: redirect
+        source: "/contact/*"
+        destination: "https://lumendot.com/contact"
+      - type: redirect
+        source: "/terms"
+        destination: "https://lumendot.com/terms"
+      - type: redirect
+        source: "/terms/*"
+        destination: "https://lumendot.com/terms"
+      - type: redirect
+        source: "/account"
+        destination: "https://lumendot.com/account"
+      - type: redirect
+        source: "/account/*"
+        destination: "https://lumendot.com/account"
+      - type: redirect
+        source: "/admin"
+        destination: "https://lumendot.com/admin"
+      - type: redirect
+        source: "/admin/*"
+        destination: "https://lumendot.com/admin/*"
+      - type: redirect
+        source: "/sign-in"
+        destination: "https://lumendot.com/sign-in"
+      - type: redirect
+        source: "/sign-in/*"
+        destination: "https://lumendot.com/sign-in"
+      - type: redirect
+        source: "/sign-up"
+        destination: "https://lumendot.com/sign-up"
+      - type: redirect
+        source: "/sign-up/*"
+        destination: "https://lumendot.com/sign-up"
+      - type: redirect
+        source: "/groceries"
+        destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+      - type: redirect
+        source: "/groceries/*"
+        destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+  # deejpotter.com
   - type: web
     name: deejpotter-static
     runtime: static
@@ -13,67 +103,78 @@ services:
     buildCommand: yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./out
     routes:
-      # Business pages moved to Lumendot on 1 Oct 2026.
       - type: redirect
         source: "/projects/services/3d-printing"
-        destination: "https://lumendot.com.au/projects/services/3d-printing"
+        destination: "https://lumendot.com/projects/services/3d-printing"
       - type: redirect
         source: "/projects/services/3d-printing/*"
-        destination: "https://lumendot.com.au/projects/services/3d-printing/*"
+        destination: "https://lumendot.com/projects/services/3d-printing/*"
       - type: redirect
-        source: "/projects/services/website-design*"
-        destination: "https://lumendot.com.au/websites"
+        source: "/projects/services/website-design"
+        destination: "https://lumendot.com/websites"
       - type: redirect
-        source: "/projects/services/website-redesign*"
-        destination: "https://lumendot.com.au/websites"
+        source: "/projects/services/website-design/*"
+        destination: "https://lumendot.com/websites"
       - type: redirect
-        source: "/projects/services/custom-tools*"
-        destination: "https://lumendot.com.au/fixes"
+        source: "/projects/services/website-redesign"
+        destination: "https://lumendot.com/websites"
       - type: redirect
-        source: "/projects/services/cad-cam-fabrication*"
-        destination: "https://lumendot.com.au/made-to-order"
+        source: "/projects/services/website-redesign/*"
+        destination: "https://lumendot.com/websites"
+      - type: redirect
+        source: "/projects/services/custom-tools"
+        destination: "https://lumendot.com/fixes"
+      - type: redirect
+        source: "/projects/services/custom-tools/*"
+        destination: "https://lumendot.com/fixes"
+      - type: redirect
+        source: "/projects/services/cad-cam-fabrication"
+        destination: "https://lumendot.com/made-to-order"
+      - type: redirect
+        source: "/projects/services/cad-cam-fabrication/*"
+        destination: "https://lumendot.com/made-to-order"
       - type: redirect
         source: "/projects/services"
-        destination: "https://lumendot.com.au/pricing"
+        destination: "https://lumendot.com/pricing"
       - type: redirect
         source: "/projects/services/*"
-        destination: "https://lumendot.com.au/pricing"
+        destination: "https://lumendot.com/pricing"
       - type: redirect
         source: "/contact"
-        destination: "https://lumendot.com.au/contact"
+        destination: "https://lumendot.com/contact"
       - type: redirect
         source: "/contact/*"
-        destination: "https://lumendot.com.au/contact"
+        destination: "https://lumendot.com/contact"
       - type: redirect
         source: "/terms"
-        destination: "https://lumendot.com.au/terms"
+        destination: "https://lumendot.com/terms"
       - type: redirect
         source: "/terms/*"
-        destination: "https://lumendot.com.au/terms"
+        destination: "https://lumendot.com/terms"
       - type: redirect
         source: "/account"
-        destination: "https://lumendot.com.au/account"
+        destination: "https://lumendot.com/account"
       - type: redirect
         source: "/account/*"
-        destination: "https://lumendot.com.au/account"
+        destination: "https://lumendot.com/account"
       - type: redirect
         source: "/admin"
-        destination: "https://lumendot.com.au/admin"
+        destination: "https://lumendot.com/admin"
       - type: redirect
         source: "/admin/*"
-        destination: "https://lumendot.com.au/admin/*"
+        destination: "https://lumendot.com/admin/*"
       - type: redirect
         source: "/sign-in"
-        destination: "https://lumendot.com.au/sign-in"
+        destination: "https://lumendot.com/sign-in"
       - type: redirect
         source: "/sign-in/*"
-        destination: "https://lumendot.com.au/sign-in"
+        destination: "https://lumendot.com/sign-in"
       - type: redirect
         source: "/sign-up"
-        destination: "https://lumendot.com.au/sign-up"
+        destination: "https://lumendot.com/sign-up"
       - type: redirect
         source: "/sign-up/*"
-        destination: "https://lumendot.com.au/sign-up"
+        destination: "https://lumendot.com/sign-up"
       - type: redirect
         source: "/groceries"
         destination: "https://github.com/Deejpotter/groceries-spend-visualiser"

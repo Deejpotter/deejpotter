@@ -157,7 +157,7 @@ export default function Websites(): ReactElement {
               Client websites are built through my business, Lumendot.
             </p>
             <a
-              href="https://lumendot.com.au"
+              href="https://lumendot.com"
               className="inline-flex items-center rounded-full bg-gray-900 px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02] dark:bg-gray-100 dark:text-gray-900"
             >
               Go to Lumendot
