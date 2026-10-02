@@ -399,6 +399,4 @@ export const portfolioMigrationPost: BlogPost = {
   tags: ["migration", "nextjs", "architecture", "portfolio"],
   content,
   readTime: 12,
-  bookstackUrl:
-    "http://bookstack.deejpotter.com/books/technical-blog-project-write-ups/page/portfolio-migration-php-to-angular-to-nextjs",
 };

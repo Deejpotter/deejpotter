@@ -28,8 +28,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavbar } from "@/contexts/NavbarContext";
-import AuthButton from "@/components/ui/auth/AuthButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { links } from "@/content/links";
 
 export default function TopNavbar() {
   const { navItems } = useNavbar();
@@ -236,12 +236,18 @@ export default function TopNavbar() {
             ))}
           </nav>
 
-          {/* ── Right: Auth button & mobile toggle ───────────────────── */}
+          {/* ── Right: theme, GitHub & mobile toggle ─────────────────── */}
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <div className="hidden lg:block">
-              <AuthButton buttonSize="sm" />
-            </div>
+            {/* No sign-in on this site; GitHub is where the rest of the work lives. */}
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden rounded-full border border-white/20 px-3 py-1.5 text-sm font-semibold text-white/90 transition-colors hover:bg-white/10 lg:inline-flex"
+            >
+              GitHub
+            </a>
 
             <button
               className="lg:hidden p-2 rounded-md bg-gray-800 text-white"
@@ -348,10 +354,14 @@ export default function TopNavbar() {
                 ))}
               </ul>
 
-              {/* Mobile auth button */}
-              <div className="mt-4">
-                <AuthButton />
-              </div>
+              <a
+                href={links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white"
+              >
+                GitHub
+              </a>
             </div>
           </div>
         )}

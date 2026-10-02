@@ -309,6 +309,4 @@ export const cncAiPost: BlogPost = {
   tags: ["ai", "gpt-4", "api-integration", "cnc-tools"],
   content,
   readTime: 10,
-  bookstackUrl:
-    "http://bookstack.deejpotter.com/books/technical-blog-project-write-ups/page/cnc-technical-ai-gpt-4-integration",
 };

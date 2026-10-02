@@ -4,7 +4,6 @@
  * Implements 1D cutting stock problem optimization using
  * Best Fit Decreasing (BFD) algorithm with kerf consideration.
  *
- * @see http://bookstack.deejpotter.com/books/deejpottercom/page/20-series-cut-calculator-implementation-guide
  */
 
 /**

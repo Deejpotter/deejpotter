@@ -1,42 +1,75 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import Script from "next/script";
-import {
-  processSteps,
-  serviceOfferings,
-  showcaseItems,
-} from "@/content/site-data";
+import { links } from "@/content/links";
+import { projects, type Project } from "@/content/projects";
+import { PrintCube, Reveal, SpotlightGrid } from "./motion";
 
-const quickLinks = [
+// Status chips share one colour scale so "live" reads as done at a glance.
+const statusStyle: Record<Project["status"], string> = {
+  live: "bg-emerald-300 text-gray-950",
+  "in progress": "bg-amber-200 text-gray-950",
+  archived: "bg-white/10 text-white/70",
+};
+
+// Smaller corners of the site that aren't repos of their own.
+const onThisSite = [
   {
-    href: "/contact",
-    label: "Start with a message",
-    tone: "btn-gradient",
-    primary: true,
+    title: "Tools",
+    description: "Cut optimisers, a box packing calculator and a CNC calibration helper that run in the browser.",
+    href: "/projects/tools",
   },
   {
-    href: "/projects/websites",
-    label: "Website projects",
-    tone: "border border-white/15 text-white/90 hover:bg-white/5",
+    title: "Games",
+    description: "Unity and pixel-art games you can play right here.",
+    href: "/projects/games",
   },
   {
-    href: "/projects/services",
-    label: "Services",
-    tone: "border border-white/15 text-white/90 hover:bg-white/5",
+    title: "Engineering",
+    description: "Hardware builds: ESP32 cars, CYD touchscreens and 3D printer firmware.",
+    href: "/projects/engineering",
   },
   {
-    href: "https://www.linkedin.com/in/daniel-potter-5224a4119",
-    label: "LinkedIn",
-    tone: "border border-white/15 text-white/90 hover:bg-white/5",
-    external: true,
+    title: "Write-ups",
+    description: "Longer notes on how some of these were built and what went wrong.",
+    href: "/blog",
   },
 ];
 
-const heroBullets = [
-  "Small business websites and portfolio refreshes",
-  "Custom tools, calculators, and automation helpers",
-  "CAD/CAM, 3D printing, laser engraving, and basic milling",
-];
+function ProjectLinks({ project }: { project: Project }): ReactElement | null {
+  const items = [
+    project.live && { href: project.live, label: "Live", external: true },
+    project.repo && { href: project.repo, label: "Code", external: true },
+    project.page && { href: project.page, label: "Read more", external: false },
+  ].filter(Boolean) as { href: string; label: string; external: boolean }[];
+
+  // Private projects have nothing to link to; say so rather than show an empty row.
+  if (items.length === 0) {
+    return <span className="text-sm text-white/50">Private repo for now</span>;
+  }
+
+  return (
+    <span className="flex flex-wrap gap-4 text-sm font-semibold">
+      {items.map((item) =>
+        item.external ? (
+          <a
+            key={item.label}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-300 hover:underline"
+          >
+            {item.label} <span aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <Link key={item.label} href={item.href} className="text-emerald-300 hover:underline">
+            {item.label} <span aria-hidden="true">→</span>
+          </Link>
+        ),
+      )}
+    </span>
+  );
+}
 
 export default function Home(): ReactElement {
   return (
@@ -47,323 +80,181 @@ export default function Home(): ReactElement {
           "@type": "Person",
           "@id": "https://deejpotter.com/#person",
           name: "Deej Potter",
-          jobTitle: "Website Designer, Maker, and Developer",
+          jobTitle: "Developer and maker",
           url: "https://deejpotter.com",
-          sameAs: [
-            "https://www.facebook.com/deej.potter.7/",
-            "https://www.linkedin.com/in/daniel-potter-5224a4119",
-          ],
+          sameAs: [links.github, links.linkedin],
         })}
       </Script>
 
-      <Script id="schema-portfolio" type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ProfilePage",
-          "@id": "https://deejpotter.com/#portfolio",
-          about: {
-            "@id": "https://deejpotter.com/#person",
-          },
-          mainEntity: {
-            "@id": "https://deejpotter.com/#person",
-          },
-        })}
-      </Script>
-
-      <section className="relative isolate overflow-hidden bg-gray-950 px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8">
-        {/* Soft brand glows behind the hero */}
+      {/* Hero: who this is and where to go next. GitHub is the main destination,
+          so it gets the primary button; this page is its companion. */}
+      <section className="relative isolate overflow-hidden bg-gray-950 px-4 pb-14 pt-10 text-white sm:px-6 lg:px-8">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-32 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl"
+          className="glow-drift pointer-events-none absolute -left-32 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-24 top-24 -z-10 h-[22rem] w-[22rem] rounded-full bg-info/20 blur-3xl"
+          className="glow-drift pointer-events-none absolute -right-24 top-24 -z-10 [animation-delay:-7s] h-[22rem] w-[22rem] rounded-full bg-info/20 blur-3xl"
         />
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
-            <p className="text-xs uppercase tracking-[0.35em] text-white/55">
-              Deej Potter
+        <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-[1.4fr_0.6fr]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
+              Deej Potter · Frankston, VIC
             </p>
-            <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/80">
-              Practical digital tools and fabrication
-            </p>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-            <div>
-              <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
-                Website designer - maker - developer
-              </p>
-              <h1 className="mt-5 max-w-4xl text-3xl font-black leading-[0.92] sm:text-4xl lg:text-6xl">
-                I build websites, custom tools, and{" "}
-                <span className="text-gradient">physical parts.</span>
-              </h1>
-              <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-                I&apos;m Deej, a developer and maker in Frankston, VIC. I build websites for small businesses, make custom tools, and 3D print, engrave, or mill parts for people who don&apos;t want to learn CAD. Pickup and delivery around the Mornington Peninsula.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                {quickLinks.map((link) =>
-                  link.external ? (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${link.tone}`}
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                )}
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroBullets.map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm leading-6 text-white/80"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <aside className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/30 backdrop-blur-sm">
-              <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">
-                What I help with
-              </p>
-              <h2 className="mt-3 text-2xl font-bold text-white">
-                Small jobs with a clear goal.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-white/70">
-                I work best on projects where the goal is clear and the result just needs to work.
-              </p>
-              <div className="mt-6 grid gap-3">
-                {[
-                  "Website design and development projects",
-                  "Small business and hobbyist projects in Australia",
-                  "CAD/CAM, 3D printing, laser engraving, and basic milling",
-                  "Custom tools and automation helpers",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/82"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8 dark:bg-gray-950">
-        <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-3xl bg-white p-5 shadow-bs-lg dark:bg-gray-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              How it works
-            </p>
-            <h2 className="mt-3 text-3xl font-black text-gray-900 dark:text-white sm:text-3xl">
-              Tell me what you need and I&apos;ll build it.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300">
-              No long proposals or jargon, and you deal with me the whole way. Send me a brief and I&apos;ll tell you honestly whether it&apos;s a good fit.
-            </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {[
-                ["1", "You send a brief", "The problem, the deadline, and what done looks like."],
-                ["2", "I build it", "You see progress along the way, and we adjust as needed."],
-                ["3", "You get the result", "A working site, a part that fits, or a tool that does the job."],
-              ].map(([num, title, text]) => (
-                <div key={title} className="rounded-2xl border border-gray-200 p-4 dark:border-gray-800">
-                  <p className="text-sm font-bold text-primary">{num}</p>
-                  <h3 className="mt-2 font-semibold text-gray-900 dark:text-white">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-bs-lg dark:border-gray-800 dark:bg-gray-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Who this is for
-            </p>
-            <ul className="mt-5 space-y-3 text-gray-700 dark:text-gray-300">
-              <li>- Small businesses that need a website without the hassle</li>
-              <li>- Hobbyists and makers who need parts but don&apos;t do CAD</li>
-              <li>- Anyone who&apos;d rather get a result than learn another skill</li>
-              <li>- People who value clear communication and honest pricing</li>
-            </ul>
-            <p className="mt-6 text-sm font-medium text-primary">
-              Working style
-            </p>
-            <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
-                I start with a clear brief, get something working, then refine it. You&apos;ll always know where things are at.
-              </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-3 border-b border-gray-200 pb-6 dark:border-gray-800 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-                Services
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-gray-900 dark:text-white sm:text-3xl">
-                What I can build for you
-              </h2>
-            </div>
-            <Link
-              href="/projects/services"
-              className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
-            >
-              See the full services page
-            </Link>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {serviceOfferings.map((service) => (
-              <article
-                key={service.id}
-                className="glow-card group flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-bs dark:border-gray-800 dark:bg-gray-900"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
-                  Service
-                </p>
-                <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white">
-                  {service.name}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                  {service.description}
-                </p>
-                <ul className="mt-5 space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                  {service.features.slice(0, 3).map((feature) => (
-                    <li key={feature} className="flex gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href={service.link}
-                  className="mt-6 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
-                >
-                  {service.cta}
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-950 px-4 py-10 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-3 border-b border-white/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">
-                How I work
-              </p>
-              <h2 className="mt-2 text-3xl font-black sm:text-3xl">
-                A simple process that keeps things moving
-              </h2>
-            </div>
-            <p className="max-w-xl text-sm leading-7 text-white/70 sm:text-right">
-              Clear brief, sensible structure, working build, then refinement. No drama, no mystery, just deliberate progress.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {processSteps.map((step, index) => (
-              <article
-                key={step.id}
-                className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
-              >
-                <p className="text-sm font-semibold text-emerald-300">
-                  Step {index + 1}
-                </p>
-                <h3 className="mt-3 text-xl font-bold text-white">{step.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-white/72">
-                  {step.description}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 px-4 py-10 sm:px-6 lg:px-8 dark:bg-gray-950/60">
-        <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-2">
-          <div className="rounded-3xl bg-white p-5 shadow-bs-lg dark:bg-gray-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-              Explore the work
-            </p>
-            <h2 className="mt-3 text-2xl font-bold text-gray-900 dark:text-white">
-              A few things I&apos;ve made.
-            </h2>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">
-              Websites, tools, maker projects, and blog posts about how I built them.
-            </p>
-            <div className="mt-6 space-y-4">
-              {showcaseItems.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.link}
-                  className="block rounded-2xl border border-gray-200 p-5 transition-colors hover:border-primary/40 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/60"
-                >
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">
-                    {item.title}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-gray-600 dark:text-gray-400">
-                    {item.description}
-                  </p>
-                  <span className="mt-3 inline-flex text-sm font-semibold text-primary">
-                    {item.label}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-5 text-white shadow-bs-lg">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
-              Want to work together?
-            </p>
-            <h2 className="mt-3 text-3xl font-black sm:text-3xl">
-              Start with a message.
-            </h2>
-            <p className="mt-4 max-w-lg text-base leading-8 text-white/86">
-              The easiest way to begin is with a brief. Send me the problem, the deadline, and the result you want. I can usually tell you quickly whether it is a fit.
+            <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[0.95] sm:text-5xl lg:text-7xl">
+              I build web apps, firmware, and{" "}
+              <span className="text-gradient">things that move.</span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
+              Former chef, now a developer and maker. I write TypeScript and
+              Next.js for the web, C and C++ for ESP32 boards, and Python for AI
+              agents, and I self-host most of what I use.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/contact"
-                className="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-bold text-gray-950 transition-transform hover:scale-[1.01]"
+              <a
+                href={links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gradient inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold transition-transform hover:scale-[1.02]"
               >
-                Start with a message
+                GitHub
+              </a>
+              <Link
+                href="#projects"
+                className="inline-flex items-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white/90 transition-transform hover:scale-[1.02] hover:bg-white/5"
+              >
+                See the projects
               </Link>
+            </div>
+          </div>
+          <div className="hidden lg:block">
+            <PrintCube />
+          </div>
+        </div>
+      </section>
+
+      {/* Projects as one bento grid; featured ones take the big tiles. */}
+      <section id="projects" className="scroll-mt-16 bg-gray-950 px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-black text-white">Projects</h2>
+          <SpotlightGrid className="mt-6 grid gap-4 md:grid-cols-3">
+            {projects.map((project) => (
+              <article
+                key={project.id}
+                className={
+                  project.featured
+                    ? "spotlight glow-card flex min-h-64 flex-col justify-between gap-6 rounded-3xl border border-white/10 bg-white/[0.04] p-6 text-white"
+                    : "spotlight glow-card flex flex-col justify-between gap-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 text-white"
+                }
+              >
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className={project.featured ? "text-2xl font-black" : "text-lg font-bold"}>
+                      {project.name}
+                    </h3>
+                    <span
+                      className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${statusStyle[project.status]}`}
+                    >
+                      {project.status}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-white/75">{project.summary}</p>
+                  <ul className="mt-4 flex flex-wrap gap-2" aria-label="Built with">
+                    {project.stack.map((tech) => (
+                      <li
+                        key={tech}
+                        className="rounded-full border border-white/15 px-2.5 py-0.5 text-xs text-white/70"
+                      >
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="relative">
+                  <ProjectLinks project={project} />
+                </div>
+              </article>
+            ))}
+          </SpotlightGrid>
+        </div>
+      </section>
+
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <Reveal className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-black text-gray-900 dark:text-white">Also on this site</h2>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {onThisSite.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="group flex h-full flex-col rounded-3xl border border-gray-200 bg-white p-5 transition-colors hover:border-primary dark:border-gray-800 dark:bg-gray-900"
+                >
+                  <span className="text-lg font-bold text-gray-900 dark:text-white">
+                    {item.title}{" "}
+                    <span aria-hidden="true" className="inline-block text-primary transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </span>
+                  <span className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                    {item.description}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </section>
+
+      {/* The site has no contact form. Paid work goes to the business, and
+          everything else to GitHub, so the page ends on those two. */}
+      <section className="bg-gray-950 px-4 py-12 text-white sm:px-6 lg:px-8">
+        <Reveal className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-black">Want something built?</h2>
+            <p className="mt-4 max-w-lg text-base leading-8 text-white/78">
+              Websites, custom tools, CAD and 3D printing are handled through my
+              business, Lumendot.
+            </p>
+            <a
+              href={links.lumendot}
+              className="btn-gradient mt-8 inline-flex items-center rounded-full px-6 py-3 text-sm font-bold transition-transform hover:scale-[1.01]"
+            >
+              Go to Lumendot
+            </a>
+          </div>
+          <div className="lg:pl-10">
+            <h2 className="text-3xl font-black">Anything else</h2>
+            <p className="mt-4 max-w-lg text-base leading-8 text-white/78">
+              Questions about a project, a bug, or an idea? Open an issue on the
+              repo, or find me on GitHub or LinkedIn.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href={links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
+              >
+                GitHub
+              </a>
+              <a
+                href={links.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
+              >
+                LinkedIn
+              </a>
               <Link
                 href="/about"
                 className="inline-flex items-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
               >
-                Learn more about me
+                About me
               </Link>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

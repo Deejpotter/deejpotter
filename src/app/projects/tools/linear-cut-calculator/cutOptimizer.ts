@@ -9,7 +9,6 @@
  * - Dósa, György (2007) Tight bound proof: BFD ≤ (11/9) * OPT + 6/9
  * - Wikipedia: https://en.wikipedia.org/wiki/Bin_packing_problem
  *
- * @see http://bookstack.deejpotter.com/books/deejpottercom/page/20-series-cut-calculator-implementation-guide
  */
 
 import type {

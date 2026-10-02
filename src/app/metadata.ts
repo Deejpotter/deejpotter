@@ -6,26 +6,21 @@ import { Metadata } from 'next';
  */
 export const defaultMetadata: Metadata = {
   title: {
-    default: 'Deej Potter | Websites, 3D Printing & Fabrication',
+    default: 'Deej Potter | Developer and Maker',
     template: '%s | Deej Potter'
   },
-  description: 'Website design, 3D printing, laser engraving, and CNC milling for small businesses and hobbyists. Upload a file, see your model in 3D, and get an instant price. Based in Frankston VIC.',
+  description: "Deej Potter's personal projects: web apps, ESP32 firmware, AI agents, browser games and maker tools. Code on GitHub.",
   keywords: [
-    'Website Designer',
-    'Website Developer',
-    'Web Design',
-    'Web Development',
-    'CAD/CAM',
-    'Fabrication',
-    '3D Printing',
-    'Laser Engraving',
-    'Milling',
+    'Deej Potter',
+    'Developer',
+    'Maker',
     'Next.js',
     'React',
     'TypeScript',
-    'Portfolio Website',
-    'Landing Pages',
-    'Custom Web Tools'
+    'ESP32',
+    'LVGL',
+    'AI agents',
+    'Open source'
   ],
   authors: [{ name: 'Daniel Potter', url: 'https://deejpotter.com' }],
   creator: 'Daniel Potter',
@@ -36,21 +31,21 @@ export const defaultMetadata: Metadata = {
     locale: 'en_US',
     url: 'https://deejpotter.com',
     siteName: 'Deej Potter',
-    title: 'Deej Potter | Websites, 3D Printing & Fabrication',
-    description: 'Website design, 3D printing, laser engraving, and CNC milling. Upload a file, see your model in 3D, get an instant price. Frankston VIC.',
+    title: 'Deej Potter | Developer and Maker',
+    description: "Deej Potter's personal projects: web apps, ESP32 firmware, AI agents, browser games and maker tools. Code on GitHub.",
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Deej Potter - Website Designer and Developer'
+        alt: 'Deej Potter, developer and maker'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Deej Potter | Website Designer and Developer',
-    description: 'Website designer, maker, and developer building practical websites, portfolio sites, custom digital tools, and light fabrication work.',
+    title: 'Deej Potter | Developer and Maker',
+    description: "Deej Potter's personal projects: web apps, ESP32 firmware, AI agents, browser games and maker tools. Code on GitHub.",
     images: ['/og-image.png'],
     creator: '@deejpotter'
   },

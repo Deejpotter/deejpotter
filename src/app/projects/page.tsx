@@ -1,11 +1,12 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import { Metadata } from "next";
+import { links } from "@/content/links";
 
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "A collection of websites, tools, apps, engineering projects, and games built by Deej Potter.",
+    "Websites, tools, apps, engineering projects and games built by Deej Potter.",
 };
 
 // Each project category with a short description and the sub-page link.
@@ -53,14 +54,6 @@ const categories = [
       "Unity games you can play in the browser, from base-defence shooters to platformers.",
     icon: "🎮",
   },
-  {
-    id: "services",
-    label: "Services",
-    href: "/projects/services",
-    description:
-      "Websites, custom tools, 3D printing, laser engraving, and CNC work.",
-    icon: "🛠️",
-  },
 ];
 
 export default function Projects(): ReactElement {
@@ -102,18 +95,18 @@ export default function Projects(): ReactElement {
       {/* CTA */}
       <section className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-900">
         <h2 className="mb-2 text-2xl font-bold">
-          Want to work on something together?
+          Want something built?
         </h2>
         <p className="mb-6 text-gray-600 dark:text-gray-400">
-          If you have a website, tool, or fabrication job in mind, send me a
-          short brief and I&apos;ll tell you whether it&apos;s a fit.
+          Websites, tools and fabrication for clients go through my business,
+          Lumendot.
         </p>
-        <Link
-          href="/contact"
+        <a
+          href={links.lumendot}
           className="inline-flex items-center rounded-full bg-primary px-6 py-3 font-semibold text-white shadow-sm transition-transform hover:scale-[1.01]"
         >
-          Get in touch
-        </Link>
+          Go to Lumendot
+        </a>
       </section>
     </div>
   );

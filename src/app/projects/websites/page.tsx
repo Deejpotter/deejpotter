@@ -151,18 +151,17 @@ export default function Websites(): ReactElement {
 
           <aside className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 to-sky-500/10 p-5 shadow-sm dark:border-primary/30">
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-              Interested in working together?
+              Need a website?
             </p>
             <p className="mb-6 text-gray-700 dark:text-gray-300">
-              If you want a website project with a clear purpose, send a message
-              and I&apos;ll help work through the scope and next steps.
+              Client websites are built through my business, Lumendot.
             </p>
-            <Link
-              href="/contact"
+            <a
+              href="https://lumendot.com"
               className="inline-flex items-center rounded-full bg-gray-900 px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02] dark:bg-gray-100 dark:text-gray-900"
             >
-              Contact me
-            </Link>
+              Go to Lumendot
+            </a>
           </aside>
         </section>
       </div>

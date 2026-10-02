@@ -377,6 +377,4 @@ export const esp32CarPost: BlogPost = {
   tags: ["esp32", "hardware", "embedded", "robotics"],
   content,
   readTime: 9,
-  bookstackUrl:
-    "http://bookstack.deejpotter.com/books/technical-blog-project-write-ups/page/esp32-wireless-car-motor-control-and-encoder-integration",
 };

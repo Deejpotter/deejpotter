@@ -1,0 +1,32 @@
+# Redirects for Netlify or Cloudflare Pages. Render uses the routes in
+# render.yaml instead; keep the two lists the same.
+#
+# The business pages moved to Lumendot on 1 Oct 2026 and go to the matching
+# Lumendot page.
+
+/projects/services/3d-printing               https://lumendot.com/projects/services/3d-printing 301
+/projects/services/3d-printing/*             https://lumendot.com/projects/services/3d-printing/:splat 301
+/projects/services/website-design            https://lumendot.com/websites 301
+/projects/services/website-design/*          https://lumendot.com/websites 301
+/projects/services/website-redesign          https://lumendot.com/websites 301
+/projects/services/website-redesign/*        https://lumendot.com/websites 301
+/projects/services/custom-tools              https://lumendot.com/fixes 301
+/projects/services/custom-tools/*            https://lumendot.com/fixes 301
+/projects/services/cad-cam-fabrication       https://lumendot.com/made-to-order 301
+/projects/services/cad-cam-fabrication/*     https://lumendot.com/made-to-order 301
+/projects/services                           https://lumendot.com/pricing 301
+/projects/services/*                         https://lumendot.com/pricing 301
+/contact                                     https://lumendot.com/contact 301
+/contact/*                                   https://lumendot.com/contact 301
+/terms                                       https://lumendot.com/terms 301
+/terms/*                                     https://lumendot.com/terms 301
+/account                                     https://lumendot.com/account 301
+/account/*                                   https://lumendot.com/account 301
+/admin                                       https://lumendot.com/admin 301
+/admin/*                                     https://lumendot.com/admin/:splat 301
+/sign-in                                     https://lumendot.com/sign-in 301
+/sign-in/*                                   https://lumendot.com/sign-in 301
+/sign-up                                     https://lumendot.com/sign-up 301
+/sign-up/*                                   https://lumendot.com/sign-up 301
+/groceries                                   https://github.com/Deejpotter/groceries-spend-visualiser 301
+/groceries/*                                 https://github.com/Deejpotter/groceries-spend-visualiser 301

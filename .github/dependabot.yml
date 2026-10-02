@@ -23,6 +23,11 @@ updates:
         dependency-type: "production"
         update-types:
           - "patch"
+    # @types/node follows the Node major the site runs on (Render NODE_VERSION=24),
+    # so its major bumps wait until the runtime moves up.
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     # Limit open PRs to avoid overwhelming the queue
     open-pull-requests-limit: 5
     # Add labels to PRs for better organization

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
-import { useAuth } from "@clerk/nextjs";
 import LayoutContainer from "@/components/LayoutContainer";
 import { Send, Upload, RotateCcw, MessageSquare, FileText } from "lucide-react";
 
@@ -17,7 +16,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   showConversations,
 }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
-  const { getToken } = useAuth();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -51,12 +49,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setIsTyping(true);
 
     try {
-      const jwt = await getToken();
       const response = await fetch(`${apiUrl}/api/ai/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
         },
         body: JSON.stringify({
           inputCode: userMessage.content,
@@ -115,13 +111,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     formData.append("file", file);
 
     try {
-      const jwt = await getToken();
       const response = await fetch(`${apiUrl}/upload`, {
         method: "POST",
         body: formData,
-        headers: {
-          ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
-        },
       });
 
       setUploadProgress(response.ok ? "File uploaded successfully!" : "Failed to upload file.");
@@ -176,12 +168,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
 
     try {
-      const jwt = await getToken();
       const response = await fetch(`${apiUrl}/reinitialize`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
         },
       });
 

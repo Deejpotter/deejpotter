@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-This is a Next.js portfolio site (see `docs/README.md` and `docs/DEVELOPMENT.md`; the root `readme.md` is the GitHub profile page). It runs on Render as a Node server (`yarn build` then `yarn start`), with Clerk for auth, MongoDB Atlas for data, Stripe for quote payments, and Cloudflare R2 for uploaded files:
+This is Deej's personal site: a static Next.js export (see `docs/README.md` and `docs/DEVELOPMENT.md`; the root `readme.md` is the GitHub profile page). It has no server code, database, sign-in or forms. The business app (quotes, Stripe, admin, Clerk, MongoDB) moved to the private `lumendot` repo; don't add it back here.
 
-- App code and routes: `src/app` (Next.js App Router).
+- App code and routes: `src/app` (Next.js App Router, all pages static).
 - UI components: `src/components` and `src/templates` (reusable sections like `BasicSection` and `GradientHeroSection`).
-- Auth: Clerk (`@clerk/nextjs`). `src/proxy.ts` runs `clerkMiddleware()` (Next.js 16's name for middleware). Client auth state lives in `src/components/ui/auth/AuthProvider.tsx`; server-side admin checks use `isAdminUser()` / `requireAdminPage()` in `src/lib/admin-auth.ts`, which allow the Clerk user IDs listed in the `ADMIN_USER_IDS` environment variable.
-- API routes: `src/app/api/*/route.ts` (Next.js Route Handlers). Data access goes through `src/lib/db.ts` (`getCollection()`, which also creates indexes on first use) and the `src/lib/db-*.ts` modules.
+- Home page data: `src/content/projects.ts` (project grid) and `src/content/links.ts` (GitHub, LinkedIn, Lumendot).
+- Old URL redirects: `public/_redirects`, read by the static host (Next.js can't redirect in a static export).
 - Static assets and games: `public/` (Unity WebGL in `public/basicBases/Build/`).
 - **Docs**: TypeDoc output goes to `public/docs` (`typedoc.json` and `yarn docs`).
 
@@ -40,33 +40,28 @@ This is a Next.js portfolio site (see `docs/README.md` and `docs/DEVELOPMENT.md`
 - Route `params` and `searchParams` are **Promises**: `const { slug } = await params;`. Synchronous access was removed in Next.js 16 ([Vercel, 2026c](#ref-vercel-2026c)). Reading `params.slug` directly made every blog post 404.
 - Metadata is only read from `page.tsx` or `layout.tsx`, and only in Server Components ([Vercel, 2026a](#ref-vercel-2026a)). A file named `metadata.tsx` is ignored unless the page re-exports it (`export { metadata } from "./metadata";`). Client-component pages can't export metadata; put it in a pass-through `layout.tsx` beside them.
 - The root layout's title template adds "| Deej Potter" to child segments ([Vercel, 2026a](#ref-vercel-2026a)). Page titles must not include it.
-- Rendering: pages are **static by default**, which is right for content that ships with the code. Use ISR (`export const revalidate = <seconds>`) only when a public page reads MongoDB, and call `revalidatePath()` from the admin API that changes that data ([Vercel, 2026b](#ref-vercel-2026b)). Current example: `/projects/services/3d-printing`. Details in `docs/ARCHITECTURE.md` ("Rendering and caching").
-- `GET` route handlers are dynamic by default ([Vercel, 2026d](#ref-vercel-2026d)). Add `export const dynamic = "force-static"` when the output only changes on deploy (see `blog/rss.xml`).
+- Rendering: the site is a static export (`output: "export"`). No ISR, cookies, proxy, server actions, request-reading route handlers, or `next.config.js` redirects/rewrites/headers ([Vercel, 2026b](#ref-vercel-2026b)). Dynamic routes need `generateStaticParams()`. Details in `docs/ARCHITECTURE.md` ("Static export").
+- Route handlers and metadata routes must set `export const dynamic = "force-static"` to be prerendered in a static export ([Vercel, 2026b](#ref-vercel-2026b)); see `robots.ts`, `sitemap.ts` and `blog/rss.xml`.
 - Unknown URLs render `src/app/not-found.tsx`; runtime errors render `src/app/error.tsx`.
 
 ## Developer Workflows (must-know commands)
 
 - Local dev: `yarn dev` — Next.js dev server.
-- Build (CI / production): `yarn build` (`next build`).
+- Build (CI / production): `yarn build` writes the static site to `out/`. `yarn start` doesn't work with a static export; serve `out/` with any static server.
 - Run tests: `yarn test`.
 - Lint: `yarn lint`.
 - Docs: `yarn docs` (writes to `public/docs`).
 - CI: GitHub Actions runs lint, stylelint, Vitest and the build on pushes and PRs (`.github/workflows/ci.yml`).
-- Env: example env vars are in `.env.example` (MONGODB_URI, DB_NAME).
-- Database: local development uses `DB_NAME=deejpotter_dev`; the site uses `deejpotter` on the same Atlas cluster. Never point local runs, builds or scripts at `deejpotter`. Refresh the dev database with mongosh (see `docs/DEVELOPMENT.md` "Local database").
-- Node: 24 LTS (`.nvmrc`, `engines`, CI). Render installs it via the `NODE_VERSION` env var, which overrides `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)).
-- Render: use the `render` CLI (logged in) for services, deploys and logs. It can't set env vars; use the Render MCP `update_environment_variables` for that.
+- Env: none required. `NEXT_PUBLIC_API_URL` (optional, build time) connects the CNC Technical AI chat and box calculator items to a backend.
+- Node: 24 LTS (`.nvmrc`, `engines`, CI).
 
-- Deploys: Render auto-deploys `dev` to `deejpotter-staging` (staging.deejpotter.com, free plan, sleeps when idle) and `main` to `deejpotter` (deejpotter.com). Work on `dev` and merge to `main` through a PR. Check design and content changes on staging, not just in code. Staging has its own database (`deejpotter_staging`), R2 prefix and Stripe sandbox (test keys and webhook), so test payments there use Stripe's test cards (docs/ARCHITECTURE.md "Hosting", docs/PAYMENTS_SETUP.md).
+- Deploys: until the switch in `docs/PERSONAL_SITE_PLAN.md`, Render still deploys the old business app from `dev` (staging) and `main` (production). The static site is on `feat/personal-site`; don't merge it into `dev` or `main` before lumendot.com has the quote flow. Planned host: Cloudflare Pages (build `yarn build`, output `out`).
 
 ## Integration Points & Environment
 
-- Hosting: Render. Its filesystem is wiped on every deploy, so anything that must persist goes in MongoDB (quotes, users, contact leads, grocery orders, settings) or R2 (uploaded files, see `docs/R2_SETUP.md`). R2 is only used once its variables are set; until then uploads fall back to the ephemeral local disk.
-- Contact form: `src/app/contact` posts to `src/app/api/contact/route.ts`, which saves leads to the `contact_leads` collection. Admins see them at `/admin/leads`.
-- Quotes: the 3D printing form posts to `/api/3d-printing-quote`. Laser work is engraving only (no laser cutting); laser and milling jobs are requested through the contact form.
-- 3D printing materials and prices come from the MongoDB `service_configs` collection (edited at `/admin/settings`). The quote page and quote API both read it through `getEnabledMaterials("3d_printing")` in `src/lib/db-config.ts`. `config/printing-materials.json` is only a fallback, plus the source of quality/infill presets and the hourly rate.
-- Box shipping calculator: needs `NEXT_PUBLIC_API_URL` (an external backend). It's unset, so the page shows "item database isn't connected".
-- Local env example: see `.env.example` for required environment variables to run local dev and deploy to new hosts.
+- No contact form: work enquiries link to lumendot.com, everything else to GitHub (`src/content/links.ts`).
+- Project cards link only to public repos. Never name private personal subdomains on the site, in the sitemap or in `robots.txt`.
+- Box shipping calculator and CNC Technical AI: need `NEXT_PUBLIC_API_URL` (an external backend). It's unset, so they show that they aren't connected.
 
 ## Project-Specific Conventions
 
@@ -80,10 +75,9 @@ This is a Next.js portfolio site (see `docs/README.md` and `docs/DEVELOPMENT.md`
 
 - `src/components/TopNavbar/TopNavbar.tsx` — Sticky primary navigation: logo left, mega-menu dropdown anchored to the header (hover + click, animated), mobile drawer.
 - `src/app/metadata.ts` — Default metadata, title template, and `generatePageMetadata()` for page titles, canonical URLs and OpenGraph.
-- `src/lib/db-config.ts` — Settings and service configs (materials, prices), including the one-off material seeding.
+- `src/content/projects.ts` — The home page project grid; only public repos get code links.
 - `src/contexts/NavbarContext.tsx` — Navigation state (items, dropdown open/close) via React reducer + context.
-- `src/components/ui/auth/AuthProvider.tsx` & `AuthButton.tsx` — Clerk auth state and the navbar sign-in / Admin buttons.
-- `src/proxy.ts` — Clerk request handling and the www to apex redirect.
+- `public/_redirects` — Old business URLs to lumendot.com, `/groceries` to the Grocery Visualiser repo.
 - `typedoc.json` + `yarn docs` — docs generation.
 - `public/basicBases/Build/` — Unity WebGL assets; treat as static assets.
 - `vitest.config.ts` — Test runner config with `@/` alias resolution and jsdom environment.
@@ -92,7 +86,7 @@ This is a Next.js portfolio site (see `docs/README.md` and `docs/DEVELOPMENT.md`
 
 ## Top tools for this repo
 
-- Next.js 16, Tailwind CSS v4, Clerk (auth), MongoDB, TypeScript, Vitest, TypeDoc
+- Next.js 16 (static export), Tailwind CSS v4, TypeScript, Vitest, TypeDoc
 
 ## Env keys quicklist
 
@@ -106,12 +100,8 @@ Tools degrade gracefully when optional keys are missing (DuckDuckGo works withou
 
 ## References
 
-<a id="ref-render-node"></a>Render. (n.d.). *Setting your Node.js version*. Render Docs. Retrieved September 26, 2026, from https://render.com/docs/node-version
-
 <a id="ref-vercel-2026a"></a>Vercel. (2026a, August 25). *generateMetadata*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-metadata
 
-<a id="ref-vercel-2026b"></a>Vercel. (2026b, June 23). *How to implement Incremental Static Regeneration (ISR)*. Next.js Docs. https://nextjs.org/docs/app/guides/incremental-static-regeneration
+<a id="ref-vercel-2026b"></a>Vercel. (2026b, August 25). *How to create a static export of your Next.js application*. Next.js Docs. https://nextjs.org/docs/app/guides/static-exports
 
 <a id="ref-vercel-2026c"></a>Vercel. (2026c, August 25). *How to upgrade to version 16*. Next.js Docs. https://nextjs.org/docs/app/guides/upgrading/version-16
-
-<a id="ref-vercel-2026d"></a>Vercel. (2026d, April 30). *route.js*. Next.js Docs. https://nextjs.org/docs/app/api-reference/file-conventions/route
