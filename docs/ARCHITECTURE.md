@@ -64,7 +64,7 @@ Both build with `yarn install --frozen-lockfile && yarn build` and publish `out`
 
 The redirect routes were applied to both services through the Render API with explicit priorities, so the specific rules win over the catch-alls (Render's docs don't say which rule wins otherwise). The services were created through the API, not from the Blueprint, so `render.yaml` is the record of their configuration; after changing `public/_redirects`, regenerate it (`node scripts/render-routes.mjs`) and apply the same routes to both services.
 
-The old web services `deejpotter` and `deejpotter-staging` still run, with auto-deploy off and no custom domains, until any quote still in progress on them is finished (plan section 6, phase D).
+The old web services `deejpotter` and `deejpotter-staging` were **suspended** on 2 Oct 2026 (auto-deploy off, no custom domains). No quote needed them: Lumendot shares the same `deejpotter` database, and the only quotes were two test quotes with status "new". Delete them once you're sure nothing else needs them.
 
 ## Environment variables
 

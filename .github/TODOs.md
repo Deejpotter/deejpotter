@@ -31,7 +31,12 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 - [x] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
 - [x] 9. Phase B gate: Lumendot live on lumendot.com (lumendot.com.au waits for the ABN)
 - [x] 10. Phase C, 2 Oct 2026: #144 and #143 merged; static sites `deejpotter-static` (main) and `deejpotter-static-staging` (dev); domains and Cloudflare records moved; staging kept
-- [ ] 11. Phase D, about two weeks later: delete the old Render services, Stripe and Clerk leftovers, old branches
+- [ ] 11. Phase D (started 2 Oct 2026)
+  - [x] 11.1 Basic Bases game frame fixed (#148) and mobile layout checked at 390px on staging: no page scrolls sideways
+  - [x] 11.2 Old Render services `deejpotter` and `deejpotter-staging` suspended (no quote in progress; Lumendot shares the database)
+  - [ ] 11.3 (Deej) Stripe live account `acct_1GfGL…`: delete the dead endpoint `deejpotter-completed` (deejpotter.com/api/webhooks/stripe). Lumendot's endpoint on lumendot.com stays. In test mode, delete the staging.deejpotter.com endpoint
+  - [ ] 11.4 (Deej) Clerk: delete the "deejpotter.com" application (production instance, unused since Lumendot moved to Better Auth), then the Clerk DNS records in Cloudflare (accounts, clerk, clk._domainkey, clk2._domainkey, clkmail)
+  - [ ] 11.5 Delete the suspended Render services, then the old branches
 
 ## Show-off ideas (Deej wants JavaScript on this site)
 
