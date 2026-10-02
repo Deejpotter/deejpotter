@@ -28,9 +28,9 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 - [x] 5. Docs: README, DEVELOPMENT, ARCHITECTURE, copilot instructions, this file, `.env.example`
 - [ ] 6. (Deej) Review the copy and the project list on the draft PR
 - [ ] 7. Check the mobile layout (couldn't be checked in the browser session on 1 Oct)
-- [ ] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
-- [ ] 9. Phase B gate: lumendot.com live and its quote flow tested (needs the ABN and domain first)
-- [ ] 10. Phase C: cut-over (merge #144, close #143, move the domains, drop staging.deejpotter.com)
+- [x] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
+- [x] 9. Phase B gate: Lumendot live on lumendot.com (lumendot.com.au waits for the ABN)
+- [x] 10. Phase C, 2 Oct 2026: #144 and #143 merged; static sites `deejpotter-static` (main) and `deejpotter-static-staging` (dev); domains and Cloudflare records moved; staging kept
 - [ ] 11. Phase D, about two weeks later: delete the old Render services, Stripe and Clerk leftovers, old branches
 
 ## Show-off ideas (Deej wants JavaScript on this site)

@@ -53,9 +53,18 @@ Synchronous access to `params` and `searchParams` was removed in Next.js 16, so 
 
 ## Hosting
 
-**Now (1 Oct 2026):** deejpotter.com still runs the old business app on Render (`main` to production, `dev` to staging), and will until lumendot.com takes the quote flow. This static site is on the `feat/personal-site` branch and deploys nowhere yet.
+**Since 2 Oct 2026:** two free Render static sites, the same staging/production split as before:
 
-**Planned:** a free static host (Cloudflare Pages), build command `yarn build`, output folder `out`. Then the Render services are retired. Order of work: [PERSONAL_SITE_PLAN.md](PERSONAL_SITE_PLAN.md) section 6.
+| Render service | Branch | Domain |
+|---|---|---|
+| `deejpotter-static` (`srv-davgh0favr4c73bu5690`) | `main` | deejpotter.com (www redirects to it) |
+| `deejpotter-static-staging` (`srv-davgh16k1f9s73a853t0`) | `dev` | staging.deejpotter.com |
+
+Both build with `yarn install --frozen-lockfile && yarn build` and publish `out`. Node comes from `.node-version` (24); there is no `NODE_VERSION` override. DNS is on Cloudflare: the three names are proxied CNAMEs to the services' onrender.com hostnames.
+
+The redirect routes were applied to both services through the Render API with explicit priorities, so the specific rules win over the catch-alls (Render's docs don't say which rule wins otherwise). The services were created through the API, not from the Blueprint, so `render.yaml` is the record of their configuration; after changing `public/_redirects`, regenerate it (`node scripts/render-routes.mjs`) and apply the same routes to both services.
+
+The old web services `deejpotter` and `deejpotter-staging` still run, with auto-deploy off and no custom domains, until any quote still in progress on them is finished (plan section 6, phase D).
 
 ## Environment variables
 
