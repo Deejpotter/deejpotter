@@ -1,9 +1,7 @@
 import { generatePageMetadata } from "../metadata";
 
-// Generate SEO-optimized metadata for the about page
 export const metadata = generatePageMetadata(
-  'About Me',
-  'Learn about Deej Potter\'s journey from chef to full-stack developer. Discover my passion for technology, AI, and creating innovative web solutions with Next.js, React, and TypeScript.',
-  '/about'
+  "About Me",
+  "Deej Potter: former chef, now a developer and maker in Frankston, building web apps, ESP32 firmware and AI agents.",
+  "/about"
 );
-

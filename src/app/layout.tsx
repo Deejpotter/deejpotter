@@ -4,9 +4,7 @@ import { Viewport } from "next"; // Importing the Viewport type from Next.js
 import { Fredoka, Nunito } from "next/font/google"; // Importing the Fredoka and Nunito fonts from the next/font/google module
 import React from "react"; // Importing React
 import MainFooter from "@/components/MainFooter/MainFooter";
-import AuthProvider from "@/contexts/AuthProvider"; // Client component wrapper
 import { NavbarProvider } from "@/contexts/NavbarContext";
-import { ClerkProvider } from "@clerk/nextjs";
 import BodyAttributesCleaner from "@/components/Client/BodyAttributesCleaner";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
 import { ThemeProvider } from "next-themes";
@@ -45,21 +43,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const hasClerk = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-
   const appShell = (
-    <AuthProvider>
-      <NavbarProvider>
-        {/* Client-only cleanup removes extension-injected attributes that break hydration */}
-        <BodyAttributesCleaner />
-        {/* Full-height column so the footer sits at the bottom of short pages */}
-        <div className="flex min-h-screen flex-col">
-          <TopNavbar />
-          <main className="w-full flex-1">{children}</main>
-          <MainFooter />
-        </div>
-      </NavbarProvider>
-    </AuthProvider>
+    <NavbarProvider>
+      {/* Client-only cleanup removes extension-injected attributes that break hydration */}
+      <BodyAttributesCleaner />
+      {/* Full-height column so the footer sits at the bottom of short pages */}
+      <div className="flex min-h-screen flex-col">
+        <TopNavbar />
+        <main className="w-full flex-1">{children}</main>
+        <MainFooter />
+      </div>
+    </NavbarProvider>
   );
 
   return (
@@ -80,8 +74,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Only initialize Clerk in environments with a publishable key configured */}
-          {hasClerk ? <ClerkProvider>{appShell}</ClerkProvider> : appShell}
+          {appShell}
         </ThemeProvider>
       </body>
     </html>

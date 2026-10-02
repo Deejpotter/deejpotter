@@ -150,15 +150,15 @@ export default function Games(): ReactElement {
 
           <aside className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm dark:border-emerald-900/50 dark:bg-emerald-950/30">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-100">
-              Want something custom?
+              More games
             </p>
             <p className="mb-6 text-gray-700 dark:text-gray-300">
-              Have an idea for a game or interactive experience? Send a brief
-              message and we can talk through the concept.
+              Idle Minds, a Phaser autobattler, and an AI agent that plays Game
+              Boy Advance games are on GitHub.
             </p>
-            <Link href="/contact" className="inline-flex items-center rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
-              Let&apos;s discuss it
-            </Link>
+            <a href="https://github.com/Deejpotter" className="inline-flex items-center rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
+              See them on GitHub
+            </a>
           </aside>
         </section>
       </div>

@@ -4,7 +4,7 @@ import { generatePageMetadata } from "@/app/metadata";
 
 export const metadata = generatePageMetadata(
   "Portfolio Website",
-  "Technical overview of deejpotter.com - a portfolio and lead-generation site for website design, website development, and practical custom tools.",
+  "Technical overview of deejpotter.com: a static Next.js site for personal projects, tools and games.",
   "/projects/websites/deejpotter",
   "/images/og/portfolio-deejpotter.png"
 );
@@ -14,32 +14,30 @@ const currentStack = [
   "TypeScript",
   "React",
   "Tailwind CSS with legacy SCSS where migration is still in progress",
-  "Clerk authentication",
-  "MongoDB-backed API routes",
+  "Static export: no server, database or sign-in",
   "Vitest, Testing Library, Storybook, and TypeDoc",
 ];
 
 const priorities = [
   {
-    title: "Clear positioning",
-    body: "The site needs to explain quickly that I design and build websites, not just experiment with code in private repos.",
+    title: "A companion to GitHub",
+    body: "The home page says who I am and points at the projects worth a look; the code itself lives on GitHub.",
   },
   {
     title: "Useful proof of work",
     body: "Project pages should show practical thinking, technical range, and the ability to finish real work - not just list buzzwords.",
   },
   {
-    title: "Low-friction contact",
-    body: "The goal is to attract text-first conversations through forms, messaging, social platforms, or freelance marketplaces instead of pushing phone calls.",
+    title: "No forms to maintain",
+    body: "There is no contact form or login. Paid work goes to Lumendot and everything else to GitHub, so the site can stay fully static.",
   },
 ];
 
 const roadmap = [
-  "Keep refining the homepage and service positioning around website design and development.",
+  "Add interactive demos to the project cards so the home page shows the work, not just describes it.",
   "Improve project case studies so they explain the problem, approach, and result more clearly.",
-  "Strengthen SEO, metadata, and internal linking so the site works harder as a marketing asset.",
+  "Move hosting to a static host now that the site needs no server.",
   "Continue replacing older styling patterns with cleaner reusable components and stronger tests.",
-  "Prepare for self-hosted deployment and tighter operational control as the surrounding stack matures.",
 ];
 
 export default function Deejpotter(): ReactElement {
@@ -190,8 +188,8 @@ export default function Deejpotter(): ReactElement {
           <h3 className="mb-2 text-2xl font-bold">Want the broader context?</h3>
           <p className="mb-0 text-gray-700 dark:text-gray-300">
             Explore more <Link href="/projects/websites">website projects</Link>,
-            read the <Link href="/blog">blog</Link>, or <Link href="/contact">send a message</Link>
-            if you want to talk about a website or custom build.
+            read the <Link href="/blog">write-ups</Link>, or browse the code on{" "}
+            <a href="https://github.com/Deejpotter">GitHub</a>.
           </p>
         </section>
       </div>

@@ -26,16 +26,16 @@ export default function NotFound() {
             Home
           </Link>
           <Link
-            href="/projects/services"
+            href="/#projects"
             className="rounded-full border border-gray-300 px-5 py-2.5 text-sm font-semibold hover:border-primary dark:border-white/15"
           >
-            Services
+            Projects
           </Link>
           <Link
-            href="/contact"
+            href="/projects/tools"
             className="rounded-full border border-gray-300 px-5 py-2.5 text-sm font-semibold hover:border-primary dark:border-white/15"
           >
-            Contact
+            Tools
           </Link>
         </div>
       </div>

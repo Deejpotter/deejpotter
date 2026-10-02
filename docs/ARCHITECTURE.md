@@ -2,254 +2,100 @@
 
 ## Overview
 
-Next.js 16 (App Router) + MongoDB Atlas + Clerk + Stripe + Cloudflare R2.
-Multi-service quoting platform: 3D printing, laser engraving (engraving only, no cutting), CNC milling. The public quote form handles 3D printing; laser and milling jobs come in through the contact form for now.
+A static Next.js 16 site (App Router, `output: "export"`): Deej's personal homepage, a companion to the GitHub profile, and the parent domain for personal apps. It has no server code, database, sign-in or forms.
+
+The business app that used to live here (3D printing quotes, Stripe Payment Links, Australia Post shipping, admin, contact leads, Clerk, MongoDB, R2, Resend) moved to the private `lumendot` repo on 30 Sept 2026 with its full history. Its decisions and the Better Auth plan are recorded there. The groceries tool was replaced by the separate Grocery Visualiser app. The reasoning and remaining steps are in [PERSONAL_SITE_PLAN.md](PERSONAL_SITE_PLAN.md).
 
 ---
 
-## Tech Stack Decisions
+## Decisions
 
-### MongoDB over flat files
-**Date:** 2026-05-26
-**Why:** The old system stored quotes in `data/3d-printing-quotes/index.json` — a single JSON file. This doesn't scale (file grows unbounded), can't handle concurrent writes, can't query efficiently, and has no indexing. MongoDB Atlas provides:
-- Proper indexing (by email, status, service type, date)
-- Concurrent read/write safety
-- Query filtering (admin can filter by status, service type)
-- Dashboard stats without scanning all documents
+### Static export, with JavaScript
+**Date:** 2026-10-01
+**Why:** Nothing left on the site needs a server, so `next build` writes plain files to `out/` that any static host can serve ([Vercel, 2026b](#ref-vercel-2026b)). It stays on Next.js (rather than a lighter static generator) because it is a developer site meant to show off interactive work: the home page motion, the wireframe hero and the browser tools are React components, and they carry over unchanged.
 
-**Collections:** `quotes`, `settings`, `service_configs`, `users`, `contact_leads`, `grocery_orders`
+What a static export rules out, and how the site handles it ([Vercel, 2026b](#ref-vercel-2026b)):
 
-**2026-09-25:** Contact leads and grocery orders moved off local JSON files into MongoDB too (Render's disk is wiped on every deploy). Indexes are created by `ensureIndexes()` on the first `getCollection()` call in each process.
+| Not supported in a static export | What the site does |
+|---|---|
+| Redirects, rewrites and headers in `next.config.js` | Redirects live in `public/_redirects`, read by the static host |
+| Proxy (middleware) | Removed; the www-to-apex redirect is a host setting |
+| Image optimisation with the default loader | `images.unoptimized: true` |
+| Dynamic routes without `generateStaticParams()` | Write-ups use `generateStaticParams()` and `dynamicParams = false` |
+| Route handlers that read the request | Only `GET` handlers marked `export const dynamic = "force-static"` (`robots.ts`, `sitemap.ts`, `blog/rss.xml`) |
 
-**2026-09-26:** `service_configs` (3d_printing) is the source of truth for 3D printing materials and prices. See "Rendering and caching" below.
+`trailingSlash: true` makes Next.js emit `/about/index.html` instead of `/about.html` ([Vercel, 2026b](#ref-vercel-2026b)), so every static host serves `/about/` without extension rewriting.
 
-### Databases: one cluster, one database per environment
-**Date:** 2026-09-26
-**Why:** Local development used to read and write the site's own database, because `.env` pointed at it. Each environment now has its own database on the same Atlas cluster (`cluster0.adstw`), chosen with `DB_NAME` (`src/lib/db.ts`, default `deejpotter`):
+### No login, no contact form
+**Date:** 2026-10-01
+**Why:** Everything that needed sign-in moved out (admin, accounts and contact leads to Lumendot; groceries to the Grocery Visualiser). Work enquiries go to lumendot.com and everything else to GitHub, so there is no email address or form to maintain or protect from spam. All outbound links are in `src/content/links.ts`.
 
-| Environment | `DB_NAME` | Notes |
-|---|---|---|
-| Production (Render `deejpotter`) | `deejpotter` | The site's data |
-| Local development | `deejpotter_dev` | Set in the gitignored `.env`; refresh from `deejpotter` with mongosh (see `DEVELOPMENT.md`) |
-| Staging (Render `deejpotter-staging`) | `deejpotter_staging` | Set 2026-09-27 and copied from `deejpotter` (before that, staging shared production's data) |
+### Old URLs
+**Date:** 2026-10-01
+**Why:** Business URLs have links, QR codes and search results pointing at them. `public/_redirects` sends them to Lumendot (and `/groceries` to the Grocery Visualiser repo). Cloudflare Pages reads this file from the build output, accepts absolute external destinations and `*` wildcards, and always follows a redirect even when a file exists at that path ([Cloudflare, 2026](#ref-cloudflare-redirects)). Netlify reads the same file.
 
-All data is test data so far. The databases share one Atlas user, so a local script could still reach `deejpotter` by changing `DB_NAME`. A dev-only Atlas user limited to `deejpotter_dev` would close that off (TODO).
+The write-ups keep their `/blog/<slug>` URLs, and `/projects/*` keeps its paths, because lumendot.com redirects those paths here.
 
-### Hosting (Render)
-**Checked:** 2026-09-27 with the Render CLI and API
-
-| Service | ID | Branch | Plan | URL |
-|---|---|---|---|---|
-| `deejpotter` (production) | `srv-d89ak9dckfvc738du5d0` | `main` | Starter | deejpotter.com |
-| `deejpotter-staging` | `srv-d89ak9ul51nc738837g0` | `dev` | Free | staging.deejpotter.com |
-
-Both auto-deploy on push, run in Oregon, and set `NODE_VERSION=24`. Staging is on the free plan, so it sleeps when idle and the first request after that is slow. Don't read a slow first load there as a performance problem. `/api/health` reports status and database connection.
-
-**Staging isolation (2026-09-27):**
-- **MongoDB:** separate, via `DB_NAME=deejpotter_staging` (copied from production on 2026-09-27)
-- **R2:** same bucket, but staging sets `R2_KEY_PREFIX=staging/`, so its uploads go under `staging/quotes/...`. Quotes copied from production keep their files at the unprefixed key; `readQuoteFileBuffer` in `db-quotes.ts` tries the prefixed key first and then the unprefixed one
-- **Stripe:** staging uses a Stripe sandbox (test keys and its own test webhook), so payments there use test cards and take no real money. Verified 2026-09-29 with a full test order
-- **Clerk:** staging uses a test instance
-
-### Admins from an environment variable
-**Date:** 2026-09-25
-**Why:** Admin access is a server setting, not user data. `getAdminAccess()` in `src/lib/admin-auth.ts` checks the signed-in user ID (from `src/lib/session.ts`, the only server code that talks to the auth provider) against `ADMIN_USER_IDS` (comma-separated). Pages use `requireAdminPage()`, API routes `adminApiGuard()` or `requireAdmin()`. `/admin/*` and `/groceries` are admin only. Nothing in the app or database can grant or remove admin access. This replaced a MongoDB role, which a bug in `upsertUser` reset to "customer" on every quote submission, and a Clerk `publicMetadata.role` fallback.
-
-### Clerk for auth (not custom)
-**Planned change:** moving to Better Auth, with users and sessions in MongoDB and Clerk kept only as an optional "Sign in with Clerk" provider, matching the Day Planner. See [AUTH_MIGRATION_PLAN.md](AUTH_MIGRATION_PLAN.md).
-
-**Why:** Already integrated in the site. Provides OAuth, session management, MFA. We store only the minimum user data in MongoDB (`users` collection: clerkId, email, name, role) — auth stays in Clerk. Customer accounts can be created without Clerk (email-only quote flow), but account features require sign-in.
-
-### Resend for email
-**Why:** Native React email support (`react-email` components), simple API, free tier (100 emails/day), Next.js App Router compatible. Emails fire non-blocking. If `RESEND_API_KEY` isn't set, they skip with a log line, so nothing crashes.
-
-Only quotes send email: `notifyQuoteReceived` (new quote, to the customer and `ADMIN_EMAIL`) and `notifyQuoteUpdated` (admin changes a quote). Contact form messages are saved to MongoDB and shown at `/admin/leads` but don't send email. Emails come from `EMAIL_FROM` (default `Deej Potter <noreply@deejpotter.com>`), so deejpotter.com has to be verified in Resend.
-
-**2026-09-25:** `RESEND_API_KEY` set on both Render services.
-
-### Cloudflare R2 for file storage
-**Why:** Render's disk is ephemeral — files lost on every deploy. R2 is S3-compatible, no egress fees, $0.015/GB/month. Files stored under `deejpotter/cad/{quoteNumber}/{filename}`. Fallback: if R2 env vars aren't set, files save to local disk (same as legacy system). This means the system works immediately on deploy without R2, and can be upgraded by adding env vars.
-
-### Three.js + @react-three/fiber for 3D preview
-**Why:** `react-three-fiber` provides React-native Three.js components. Loaded with `dynamic(() => import(...), { ssr: false })` to avoid SSR issues. STL parsing is done both client-side (for instant preview) and server-side (for accurate quoting via `quote-analysis.ts`).
-
-### DXF/SVG 2D preview — canvas-based, not Three.js
-**Why:** DXF files are 2D linework. Rendering with Three.js is overkill and adds complexity. A canvas renderer with regex-based DXF entity extraction is simpler, lighter, and sufficient for showing the outline. SVGs render as native `<img>` elements. If high-fidelity DXF rendering is needed later, `dxf-render` library can replace the custom parser.
-
-### Rendering and caching: static by default
-**Why:** Almost every public page's content ships with the code (page copy, `src/content`, markdown blog posts, `config/printing-materials.json`), so it only changes on deploy. Static generation at build time is the fastest option and needs no cache rules. ISR exists to "update static content without rebuilding the entire site" ([Vercel, 2026c](#ref-vercel-2026c)), so it only adds regeneration work for content that can't change between deploys.
-
-- **Static (default):** marketing pages, tools, blog list, and blog posts (`generateStaticParams` + `dynamicParams = false`: only the generated paths are served and anything else returns 404 ([Vercel, 2026b](#ref-vercel-2026b))).
-- **Dynamic:** pages that depend on the request — admin (auth), account (per user), sign-in/up, and Stripe return pages (`searchParams`).
-- **Client data:** tool pages and the quote status lookup fetch their own data in the browser.
-- **When to use ISR:** when a *public* page reads data that changes without a deploy (MongoDB). Render it on the server with `export const revalidate = <seconds>` as a safety net, and call `revalidatePath()` from the admin API that changes the data. `revalidatePath` invalidates the cached page and the next request regenerates it, rather than regenerating eagerly ([Vercel, 2026c](#ref-vercel-2026c)).
-- **In use:** the 3D printing page is ISR (`revalidate = 3600`). It reads enabled materials and prices from the MongoDB service config, and the admin service-config API calls `revalidatePath()` on save. The quote API validates and prices against the same config. If the database is unreachable at build or regeneration, the page falls back to `config/printing-materials.json`.
-- **Seeding (2026-09-26):** the JSON materials seed the MongoDB config once (`materialsSeeded` flag), so materials removed in admin don't come back. Quality/infill presets and the hourly rate still come from the JSON file.
-
-**Next.js 16 conventions:** synchronous access to `params` and `searchParams` was removed in Next.js 16, so they must be awaited ([Vercel, 2026d](#ref-vercel-2026d)). Metadata is exported from `layout.js` or `page.js` and is only supported in Server Components ([Vercel, 2026a](#ref-vercel-2026a)), so client-component pages use a pass-through `layout.tsx`. The root layout's `title.template` applies to child route segments ([Vercel, 2026a](#ref-vercel-2026a)) and appends "| Deej Potter", so page titles don't include it. `GET` route handlers have been dynamic by default since v15 ([Vercel, 2026e](#ref-vercel-2026e)), which is why `blog/rss.xml` sets `dynamic = "force-static"`.
+### Project list as data
+**Why:** The home page grid comes from `src/content/projects.ts`, so adding a project is a data change. Only public repos get a code link. Private projects are listed without links, and personal app subdomains are never named on the site (see the plan's "Subdomains" section).
 
 ### Design system: brand gradients as accents
 **Date:** 2026-09-26
-**Why:** Large gradient fills read as dated and hurt legibility (the old see-through dropdown showed the page behind its links). The brand green (`#1E9952`) and info blue (`#59B7CC`) are used as accents instead: glows behind the hero, thin accent lines, gradient text on a key phrase, and one gradient primary button per section. Utilities live in `src/styles/globals.css` and are documented in `.github/GRADIENT-GUIDE.md`. Interaction feedback is short (about 150 to 200ms). The homepage also has slower ambient motion (drifting hero glows, the printing wireframe part, scroll reveals) from `src/components/home/motion.tsx`; it stays in the background and never hides content before JavaScript runs. All motion is turned off for `prefers-reduced-motion`, which detects that a user has asked their device to minimise non-essential motion ([MDN contributors, n.d.](#ref-mdn-reduced-motion)).
+**Why:** Large gradient fills read as dated and hurt legibility. The brand green (`#1E9952`) and info blue (`#59B7CC`) are accents: glows behind the hero, thin accent lines, gradient text on a key phrase, one gradient primary button per section. Utilities live in `src/styles/globals.css` and are documented in `.github/GRADIENT-GUIDE.md`. Interaction feedback is short (about 150 to 200ms); the home page's slower ambient motion (drifting glows, the printing wireframe part, scroll reveals, the cursor spotlight on project cards) is in `src/components/home/motion.tsx`. It never hides content before JavaScript runs, and all motion stops for `prefers-reduced-motion`, which reports that a user has asked their device to minimise non-essential motion ([MDN contributors, n.d.](#ref-mdn-reduced-motion)).
 
-- **Navbar:** sticky 56px header, logo top-left, links beside it, theme and auth on the right. The dropdown panel is absolutely positioned inside the header (not `fixed`), so it moves with the header and can't float over the page after scrolling.
-- **Spacing:** one step tighter than the original design so full pages fit on medium screens: 16px body text, page titles `text-3xl`/`sm:text-4xl`, sections `py-10`, cards `p-5`. Prefer these sizes over larger ones for new sections.
+- **Navbar:** sticky 56px header, logo top-left, links beside it, theme toggle and GitHub on the right. The dropdown panel is absolutely positioned inside the header, so it moves with it.
+- **Spacing:** 16px body text, page titles `text-3xl`/`sm:text-4xl`, sections `py-10`, cards `p-5`.
 
----
-
-## Known Issues & Workarounds
-
-### Zod v4 type definitions
-**Date:** 2026-05-26
-**Issue:** The project uses Zod v4.3.5. The build-time TypeScript checking reports "Expected 2-3 arguments, but got 1" on `.min()`, `.default()`, and `.record()` chain calls. Runtime behavior is correct — only the type definitions are incompatible.
-
-**Workaround:** Added `// @ts-nocheck` to `src/lib/db-schemas.ts` and any route files using Zod schemas. This suppresses TS checking at build time while preserving runtime validation.
-
-**Resolution path:** Either downgrade to Zod v3 (API is stable but misses v4 features), or wait for Next.js/Turbopack to support Zod v4 types properly. The zod v4 changelog indicates `.default()` was kept but the TS inference changed.
-
-### R2 env var truncation
-**Issue:** Some file writes from OpenClaw tools truncate `process.env.SOME_LONG_NAME` strings in source files. Already fixed post-write.
+### Next.js 16 conventions
+Synchronous access to `params` and `searchParams` was removed in Next.js 16, so they must be awaited ([Vercel, 2026c](#ref-vercel-2026c)). Metadata is exported from `layout.js` or `page.js` and only in Server Components ([Vercel, 2026a](#ref-vercel-2026a)), so client-component pages use a pass-through `layout.tsx`. The root layout's `title.template` appends "| Deej Potter" to child segments ([Vercel, 2026a](#ref-vercel-2026a)), so page titles don't include it.
 
 ---
 
-## Data Architecture
+## Hosting
 
-### Quote to order flow (2026-09-27)
-**Why:** A quote should move along by itself wherever it can, every admin step should be one button, and every change should email the customer. The rules live in `src/lib/quote-workflow.ts` (which step is allowed from which status, and the customer's wording). `src/lib/quote-actions.ts` carries out a step (status, Stripe, email), so the admin buttons and the Stripe webhook have identical side effects. Plan and reasoning: `.github/ISSUES/007-quote-order-flow.md`.
+**Now (1 Oct 2026):** deejpotter.com still runs the old business app on Render (`main` to production, `dev` to staging), and will until lumendot.com takes the quote flow. This static site is on the `feat/personal-site` branch and deploys nowhere yet.
 
-```
-[Customer submits form]  → new               automatic; live price + delivery shown before submitting
-[Admin opens the board]  → reviewing         automatic (GET /api/admin/quotes)
-[Send quote]             → awaiting_payment  Stripe Payment Link created and emailed (job + delivery lines)
-[Stripe webhook]         → approved (paid)   automatic; link deactivated; receipt + admin email
-[Start job]              → in_progress       email
-[Mark ready / Ship]      → ready             pickup/local email, or shipped email with tracking link
-[Complete]               → completed         email
-[Decline / Cancel]       → declined/cancelled  email; payment link deactivated
-```
+**Planned:** a free static host (Cloudflare Pages), build command `yarn build`, output folder `out`. Then the Render services are retired. Order of work: [PERSONAL_SITE_PLAN.md](PERSONAL_SITE_PLAN.md) section 6.
 
-- **Payment Links, not an on-site checkout.** Customers only pay through the link Deej sends; the site shows that same link again on the status page and account page. Payment Links don't expire, are single-use (`restrictions.completed_sessions.limit = 1`), and carry `metadata.quoteNumber`, which Stripe copies to the checkout session ([Stripe, n.d.](#ref-stripe-paymentlink-create)).
-- **Webhook** (`/api/webhooks/stripe`): handles `checkout.session.completed` and, for payment methods that settle later, `checkout.session.async_payment_succeeded`. The signature is always checked. Each event is claimed in the `stripe_events` collection with a 5-minute lease and marked done only after the quote is updated, so repeats can't pay twice and a crash mid-way is retried. A payment is only accepted if it came from the quote's current Payment Link, in AUD, for the quote's total; anything else (an old link after a re-send, a cancelled quote) is left unpaid and Deej is emailed.
-- **Races:** order steps update the quote only if its status hasn't changed since it was read, so two clicks (or a click and the webhook) can't both win. A payment link made by the losing attempt is deactivated.
-- **Email failures** don't undo a step, but the admin board is told so Deej can reach the customer another way.
-- **Manual fixes:** PATCH `/api/admin/quotes` changes status, notes or turnaround without emailing, and records "Changed by hand" in the timeline.
-- **Timeline:** every status change appends to `statusHistory` (who: customer, admin, stripe, system).
-
-### Live price and weight
-**Why:** The old estimate used the part's outer box, which overpriced hollow and thin parts and gave shipping a wrong weight. `src/lib/stl-geometry.ts` reads every triangle for the real volume and surface area; `src/lib/print-estimate.ts` treats the outer skin (1.2 mm) as solid and the inside at the chosen infill. Both are free of Node APIs, so the browser prices a file the moment it's picked and the server stores the same numbers on submit. Constants (skin thickness, 15 g/hour, 0.25 h setup, $8 base fee) are at the top of `print-estimate.ts`.
-
-### Shipping
-**Why:** Customers see print + delivery as one total before submitting. `src/lib/shipping.ts` packs the part (2 cm padding, copies stacked on the thinnest side, packaging weight added) and asks Australia Post's Postage Assessment Calculator for Parcel Post and Express Post prices (`/postage/parcel/domestic/service.json`, dimensions in cm, weight in kg, key in the `AUTH-KEY` header; each service's price can be used as the final price when no extras like extra cover are added; [Australia Post, n.d.](#ref-auspost-pac)). Pickup is always offered; local delivery only for the postcodes in admin settings. The quote API re-prices delivery from the uploaded file, so a tampered form can't set its own shipping price. If Australia Post is unavailable or the parcel is over 105 cm / 22 kg, the customer can still submit and Deej adds delivery when sending the quote. Shipping account: MyPost Business (labels are bought outside the site; the tracking number goes in with the "Ship" button).
-
-### File storage strategy
-1. **Primary:** Cloudflare R2 (`deejpotter/cad/{quoteNumber}/{filename}`)
-2. **Fallback:** Local disk (`data/quotes/{quoteNumber}/{filename}`)
-3. **Auto-detect:** `isR2Configured()` checks env vars — if missing, uses local
-4. **Migration:** Old files stay on disk. New files go to R2. No data loss either way.
-
-### Turnaround calculation
-- Sums estimated print/cut minutes for all active jobs
-- Distributes across configured business hours (per-day start/end)
-- Skips holidays and vacation periods
-- Customer sees: "ETA: 3 Business days"
-- Admin sees: queue position, total minutes ahead, estimated completion date (with timestamp)
-- Recalculable on demand from admin dashboard
-
-### User sync (Clerk ↔ MongoDB)
-- **Primary path:** Clerk webhook (`/api/webhooks/clerk`) on user.create/update/delete
-- **Fallback:** Quote submission also upserts user (covers case where webhook isn't set up)
-- **Syncs:** clerkId, email, name (a `role` field defaults to "customer" but is not used for access)
-- **Does NOT sync:** passwords, sessions, OAuth tokens (Clerk owns those)
-
----
-
-## Directory Structure
-
-```
-src/
-├── lib/
-│   ├── db.ts              # MongoDB connection (pooling, retry, health)
-│   ├── db-schemas.ts      # Zod schemas for all collections
-│   ├── db-quotes.ts       # Quote CRUD + file storage
-│   ├── db-config.ts       # Settings + service config (materials, pricing)
-│   ├── db-users.ts        # User sync
-│   ├── turnaround.ts      # Business hours + queue calculator
-│   ├── email.ts           # Resend email templates + triggers
-│   ├── r2-storage.ts      # Cloudflare R2 upload/download/delete
-│   ├── contact-leads.ts   # Contact form messages (MongoDB)
-│   ├── admin-auth.ts      # ADMIN_USER_IDS check
-│   ├── quote-workflow.ts  # Order steps, allowed transitions, customer wording
-│   ├── quote-actions.ts   # Runs a step: status, Stripe link, emails
-│   ├── stripe-payments.ts # Payment Links (create / deactivate)
-│   ├── stl-geometry.ts    # STL size, volume, surface area (browser + server)
-│   ├── print-estimate.ts  # Weight, time and price maths (browser + server)
-│   ├── shipping.ts        # Parcel packing, Australia Post prices, local rules
-│   └── quote-analysis.ts  # Estimate stored with a submitted quote
-├── app/
-│   ├── account/           # Customer dashboard
-│   ├── admin/             # Admin dashboard + settings + service config
-│   ├── api/
-│   │   ├── 3d-printing-quote/  # Legacy quote endpoint (3D only, uses db-quotes)
-│   │   ├── quotes/             # Unified quote endpoint (all service types)
-│   │   ├── admin/              # Admin settings/quotes/service-config APIs (quotes/action = order steps)
-│   │   ├── shipping/estimate/  # Delivery options for the quote form
-│   │   ├── webhooks/           # Stripe (marks paid) + Clerk webhook handlers
-│   │   └── health/             # Render health check
-│   └── projects/services/3d-printing/  # Customer-facing quote form
-└── components/
-    └── ModelDropZone/     # 3D STL viewer + 2D DXF/SVG preview
-```
-
----
-
-## Environment Variables (Render)
+## Environment variables
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `MONGODB_URI` | Yes | MongoDB Atlas connection string |
-| `DB_NAME` | Optional | Database name (default `deejpotter`; local `.env` uses `deejpotter_dev`) |
-| `NODE_VERSION` | Yes (Render) | Node.js version Render installs (`24`). Takes precedence over `.node-version`, `.nvmrc` and `engines` ([Render, n.d.](#ref-render-node)). Node 24 is an LTS release, and Node.js advises only LTS releases in production ([OpenJS Foundation, n.d.](#ref-openjs-releases)) |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk frontend auth |
-| `CLERK_SECRET_KEY` | Yes | Clerk backend auth |
-| `STRIPE_SECRET_KEY` | Yes | Creates quote Payment Links (Send quote fails with a clear message without it) |
-| `STRIPE_WEBHOOK_SECRET` | Yes | Webhook signature check; the webhook refuses all events without it. Endpoint: `/api/webhooks/stripe`, events `checkout.session.completed` and `checkout.session.async_payment_succeeded` |
-| `NEXT_PUBLIC_BASE_URL` | Yes | Site URL, used for the Payment Link redirect and links in emails (staging must point at staging) |
-| `AUSPOST_PAC_API_KEY` | Recommended | Australia Post Postage Assessment Calculator key for delivery prices (from the Australia Post developer centre) |
-| `ADMIN_USER_IDS` | Yes | Clerk user IDs allowed into `/admin` (comma-separated) |
-| `RESEND_API_KEY` | Optional | Quote emails (skipped with a log line if absent) |
-| `EMAIL_FROM` | Optional | Sender address (default `Deej Potter <noreply@deejpotter.com>`) |
-| `ADMIN_EMAIL` | Optional | Where admin notifications go (default `deejpotter@gmail.com`) |
-| `CLERK_WEBHOOK_SECRET` | Optional | Clerk user sync (fallback upserts on submit) |
-| `R2_ACCOUNT_ID` | Optional | Cloudflare R2 file storage (local fallback) |
-| `R2_ACCESS_KEY_ID` | Optional | R2 auth |
-| `R2_SECRET_ACCESS_KEY` | Optional | R2 auth |
-| `R2_BUCKET_NAME` | Optional | R2 bucket name (default: "deejpotter") |
-| `R2_KEY_PREFIX` | Optional | Prepended to R2 keys; staging uses `staging/` so its uploads stay apart from production |
-| `NEXT_PUBLIC_API_URL` | Optional | Backend for the box shipping calculator's items. Unset on both services, so the calculator shows "item database isn't connected" |
+| `NEXT_PUBLIC_API_URL` | Optional | Backend for the CNC Technical AI chat and the box shipping calculator's item list. Unset, so those two tools show that they aren't connected. It is read at build time |
 
-### Contact form endpoint
-The contact form always posts to its own `/api/contact`. It used to honour `NEXT_PUBLIC_CONTACT_ENDPOINT` / `NEXT_PUBLIC_BACKEND_URL`, and a leftover value sent submissions to another address, which Chrome blocked with a local network permission prompt. Those variables are no longer read and can be deleted from Render.
+---
+
+## Directory structure
+
+```
+src/
+├── app/                 # Pages (all static)
+│   ├── blog/            # Write-ups (URLs kept from the old blog) + RSS
+│   ├── projects/        # apps, engineering, games, tools, websites
+│   ├── about/, privacy/
+│   └── robots.ts, sitemap.ts
+├── components/home/     # Home page and its motion
+├── content/
+│   ├── projects.ts      # Project grid data
+│   ├── links.ts         # GitHub, LinkedIn, Lumendot
+│   └── blog/, blog-md/  # Write-up sources
+└── lib/                 # blog.ts, cutOptimizer.ts, utils.ts
+public/
+├── _redirects           # Old business URLs to Lumendot
+├── basicBases/          # Unity WebGL game
+└── geek-pride-day/      # Pixel-art game
+```
 
 ---
 
 ## References
 
-<a id="ref-auspost-pac"></a>Australia Post. (n.d.). *Calculate domestic parcel postage cost*. Postage Assessment Calculator, Australia Post Developers. Retrieved September 29, 2026, from https://developers.auspost.com.au/apis/pac/tutorial/domestic-parcel
+<a id="ref-cloudflare-redirects"></a>Cloudflare. (2026, August 25). *Redirects*. Cloudflare Pages docs. https://developers.cloudflare.com/pages/configuration/redirects/
 
 <a id="ref-mdn-reduced-motion"></a>MDN contributors. (n.d.). *prefers-reduced-motion*. MDN Web Docs. Retrieved September 26, 2026, from https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
 
-<a id="ref-openjs-releases"></a>OpenJS Foundation. (n.d.). *Node.js releases*. Node.js. Retrieved September 26, 2026, from https://nodejs.org/en/about/previous-releases
-
-<a id="ref-render-node"></a>Render. (n.d.). *Setting your Node.js version*. Render Docs. Retrieved September 26, 2026, from https://render.com/docs/node-version
-
-<a id="ref-stripe-paymentlink-create"></a>Stripe. (n.d.). *Create a payment link*. Stripe API Reference. Retrieved September 27, 2026, from https://docs.stripe.com/api/payment-link/create
-
 <a id="ref-vercel-2026a"></a>Vercel. (2026a, August 25). *generateMetadata*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-metadata
 
-<a id="ref-vercel-2026b"></a>Vercel. (2026b, August 25). *generateStaticParams*. Next.js Docs. https://nextjs.org/docs/app/api-reference/functions/generate-static-params
+<a id="ref-vercel-2026b"></a>Vercel. (2026b, August 25). *How to create a static export of your Next.js application*. Next.js Docs. https://nextjs.org/docs/app/guides/static-exports
 
-<a id="ref-vercel-2026c"></a>Vercel. (2026c, June 23). *How to implement Incremental Static Regeneration (ISR)*. Next.js Docs. https://nextjs.org/docs/app/guides/incremental-static-regeneration
-
-<a id="ref-vercel-2026d"></a>Vercel. (2026d, August 25). *How to upgrade to version 16*. Next.js Docs. https://nextjs.org/docs/app/guides/upgrading/version-16
-
-<a id="ref-vercel-2026e"></a>Vercel. (2026e, April 30). *route.js*. Next.js Docs. https://nextjs.org/docs/app/api-reference/file-conventions/route
+<a id="ref-vercel-2026c"></a>Vercel. (2026c, August 25). *How to upgrade to version 16*. Next.js Docs. https://nextjs.org/docs/app/guides/upgrading/version-16

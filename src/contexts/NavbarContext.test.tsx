@@ -11,11 +11,10 @@ describe('NavbarContext', () => {
     it('provides correct navigation structure', () => {
       const { result } = renderHook(() => useNavbar(), { wrapper });
       
-      expect(result.current.navItems).toHaveLength(4);
+      expect(result.current.navItems).toHaveLength(3);
       expect(result.current.navItems[0].label).toBe('Projects');
-      expect(result.current.navItems[1].label).toBe('Blog');
+      expect(result.current.navItems[1].label).toBe('Write-ups');
       expect(result.current.navItems[2].label).toBe('About Me');
-      expect(result.current.navItems[3].label).toBe('Contact Me');
     });
 
     it('Projects dropdown has 4 categories (no Apps)', () => {

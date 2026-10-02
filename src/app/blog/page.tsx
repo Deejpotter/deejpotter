@@ -3,9 +3,9 @@ import Link from "next/link";
 import { getAllPosts, getAllTags, getFeaturedPosts, formatDate } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Insights, Build Notes, and Website Strategy",
+  title: "Write-ups",
   description:
-    "Practical articles on websites, automation, custom tools, and the engineering decisions behind Deej Potter's client work.",
+    "Build notes and troubleshooting write-ups from Deej Potter's projects.",
 };
 
 export default function BlogPage() {
@@ -19,28 +19,15 @@ export default function BlogPage() {
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)] lg:items-center">
           <div>
             <span className="mb-4 inline-flex rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
-              Blog, build notes, and practical guides
+              Build notes and troubleshooting
             </span>
             <h1 className="mb-4 text-3xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-4xl">
-              Articles that show how Deej thinks, builds, and solves problems
+              Write-ups
             </h1>
             <p className="mb-6 text-lg text-gray-700 dark:text-gray-300">
-              This is where project write-ups, troubleshooting notes, website strategy, and hands-on technical work live.
-              If you are deciding whether Deej is the right person to build your site or tool, this is the proof.
+              Longer notes on how some of my projects were built, and what went wrong along the way.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/projects/services/website-design"
-                className="inline-flex items-center rounded-full bg-primary px-5 py-3 font-semibold text-white shadow-sm transition-transform hover:scale-[1.02]"
-              >
-                Explore website services
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center rounded-full border border-primary/30 px-5 py-3 font-semibold text-primary transition hover:bg-primary/5"
-              >
-                Start a conversation
-              </Link>
               <a
                 href="/blog/rss.xml"
                 className="inline-flex items-center rounded-full border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
@@ -53,10 +40,9 @@ export default function BlogPage() {
           <div className="rounded-3xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-900">
             <h2 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">What you will find here</h2>
             <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-              <li>website design and redesign thinking</li>
-              <li>custom tool and workflow automation notes</li>
-              <li>practical troubleshooting write-ups</li>
-              <li>clear examples of how problems get solved</li>
+              <li>how a project was put together</li>
+              <li>bugs that took too long to find</li>
+              <li>tools and hardware worth knowing about</li>
             </ul>
           </div>
         </div>
@@ -66,7 +52,7 @@ export default function BlogPage() {
         <section className="space-y-4">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Featured posts</h2>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Start here</h2>
               <p className="text-gray-500 dark:text-gray-400">A quick starting point if you are new here.</p>
             </div>
           </div>

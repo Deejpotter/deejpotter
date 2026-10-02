@@ -23,12 +23,6 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
-vi.mock("@/components/ui/auth/AuthButton", () => ({
-  default: ({ buttonSize }: { buttonSize?: string }) => (
-    <button type="button">Auth {buttonSize ?? "default"}</button>
-  ),
-}));
-
 describe("TopNavbar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -53,9 +47,9 @@ describe("TopNavbar", () => {
 
     expect(screen.getByRole("navigation", { name: /primary/i })).toBeInTheDocument();
     expect(screen.getByText("Projects")).toBeInTheDocument();
-    expect(screen.getByText("Blog")).toBeInTheDocument();
+    expect(screen.getByText("Write-ups")).toBeInTheDocument();
     expect(screen.getByText("About Me")).toBeInTheDocument();
-    expect(screen.getByText("Contact Me")).toBeInTheDocument();
+    expect(screen.queryByText("Contact Me")).toBeNull();
     expect(screen.getAllByAltText("Deej Potter Logo")[0]).toBeInTheDocument();
     expect(screen.getAllByText("Deej Potter").length).toBeGreaterThan(0);
   });
@@ -134,7 +128,8 @@ describe("TopNavbar", () => {
     await waitFor(() => {
       expect(mobileNav).toHaveAttribute("data-expanded", "true");
       expect(screen.getByLabelText("Close navigation")).toBeInTheDocument();
-      expect(screen.getByText("Auth default")).toBeInTheDocument();
+      // The drawer ends with a GitHub link now that the site has no sign-in.
+      expect(screen.getAllByRole("link", { name: "GitHub" }).length).toBe(2);
     });
 
     await user.click(screen.getByLabelText("Close navigation"));
