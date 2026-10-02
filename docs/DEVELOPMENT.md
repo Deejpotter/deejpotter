@@ -42,7 +42,7 @@ CI (`.github/workflows`) runs lint, Stylelint, Vitest and the build on pushes an
 
 ## Deploys
 
-Until the switch in `PERSONAL_SITE_PLAN.md`, Render still deploys the old business app from `dev` (staging) and `main` (production). The static site lives on `feat/personal-site` and must not be merged into `dev` or `main` before lumendot.com has the quote flow.
+`dev` deploys to staging.deejpotter.com and `main` to deejpotter.com, both as Render static sites (details in `ARCHITECTURE.md`, "Hosting"). Check changes on staging before merging `dev` into `main`.
 
 ## Conventions
 
