@@ -36,7 +36,8 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
   - [x] 11.2 Old Render services `deejpotter` and `deejpotter-staging` suspended (no quote in progress; Lumendot shares the database)
   - [ ] 11.3 (Deej) Stripe live account `acct_1GfGL…`: delete the dead endpoint `deejpotter-completed` (deejpotter.com/api/webhooks/stripe). Lumendot's endpoint on lumendot.com stays. In test mode, delete the staging.deejpotter.com endpoint
   - [ ] 11.4 (Deej) Clerk: delete the "deejpotter.com" application (production instance, unused since Lumendot moved to Better Auth), then the Clerk DNS records in Cloudflare (accounts, clerk, clk._domainkey, clk2._domainkey, clkmail)
-  - [ ] 11.5 Delete the suspended Render services, then the old branches
+  - [x] 11.5a Old branches deleted (3 Oct 2026): 27 removed; the 8 with commits not in `main` are kept as `archive/<branch>` tags on origin
+  - [ ] 11.5b Delete the suspended Render services
 
 ## Show-off ideas (Deej wants JavaScript on this site)
 
@@ -48,7 +49,7 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 
 - [ ] Box shipping calculator and CNC Technical AI: connect a backend with `NEXT_PUBLIC_API_URL`, or mark them as demos
 - [ ] Update the GitHub repo description (still describes the quote system) once this is merged
-- [ ] Delete old branches (`feature/ecommerce-shop`, `deploy-ecommerce`, `feat/quote-order-flow`, `spike/better-auth`, `feat/astro-site`); that history is kept in the `lumendot` repo
+- [x] Old branches deleted (3 Oct 2026); unmerged work kept as `archive/*` tags
 - [ ] `.github/agents` and `.github/prompts` still hold business prompts (customer replies, CNC triage); move them to `lumendot` or delete them
 
 ## Dependency follow-ups
