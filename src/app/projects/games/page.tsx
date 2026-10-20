@@ -27,16 +27,6 @@ export default function Games(): ReactElement {
       buttonLabel: "Play Basic Bases",
       link: "/projects/games/basic-bases",
     },
-    {
-      id: "geek-pride-day",
-      name: "Geek Pride Day Platformer",
-      description:
-        "A browser-friendly platformer prototype built from the Geek Pride Day asset pack, ready to embed in a blog post.",
-      technologies: ["HTML", "Canvas", "Browser Game"],
-      image: "/geek-pride-day/resource/The-worker-in-a-yellow-hard-hat-and-blue-overalls-performs-a.webp",
-      buttonLabel: "Play Geek Pride Day Prototype",
-      link: "/projects/games/geek-pride-day",
-    },
   ];
 
   return (
@@ -62,13 +52,6 @@ export default function Games(): ReactElement {
                   "applicationCategory": "Game",
                   "operatingSystem": "Web Browser",
                   "description": "A simple but fun WebGL game where you defend your base against waves of enemies"
-                },
-                {
-                  "@type": "SoftwareApplication",
-                  "name": "Geek Pride Day Platformer",
-                  "applicationCategory": "Game",
-                  "operatingSystem": "Web Browser",
-                  "description": "A browser-friendly platformer prototype built from the Geek Pride Day asset pack"
                 }
               ]
             }
