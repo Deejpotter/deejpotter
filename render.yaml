@@ -13,7 +13,7 @@ services:
     runtime: static
     branch: dev
     autoDeployTrigger: commit
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    buildCommand: rm -rf out .next && yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./out
     routes:
       - type: redirect
@@ -100,7 +100,7 @@ services:
     runtime: static
     branch: main
     autoDeployTrigger: commit
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    buildCommand: rm -rf out .next && yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./out
     routes:
       - type: redirect
