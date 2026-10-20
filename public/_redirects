@@ -30,3 +30,6 @@
 /sign-up/*                                   https://lumendot.com/sign-up 301
 /groceries                                   https://github.com/Deejpotter/groceries-spend-visualiser 301
 /groceries/*                                 https://github.com/Deejpotter/groceries-spend-visualiser 301
+/geek-pride-day                              /projects/games 301
+/geek-pride-day/*                            /projects/games 301
+/downloads/geek-pride-day-prototype.zip      /projects/games 301

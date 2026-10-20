@@ -94,6 +94,15 @@ services:
       - type: redirect
         source: "/groceries/*"
         destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+      - type: redirect
+        source: "/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/downloads/geek-pride-day-prototype.zip"
+        destination: "/projects/games"
   # deejpotter.com
   - type: web
     name: deejpotter-static
@@ -181,3 +190,12 @@ services:
       - type: redirect
         source: "/groceries/*"
         destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+      - type: redirect
+        source: "/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/downloads/geek-pride-day-prototype.zip"
+        destination: "/projects/games"
