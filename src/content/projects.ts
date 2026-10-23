@@ -26,6 +26,17 @@ const gh = (repo: string) => `https://github.com/Deejpotter/${repo}`;
 
 export const projects: Project[] = [
   {
+    id: "helpbuy-studio",
+    name: "Help to Buy Studio",
+    summary:
+      "A shared-equity planner for the Australian Government Help to Buy scheme: repayments on your share, the government stake over time, buy-back plans, sale outcomes and rule checks, plus a listing importer.",
+    stack: ["TypeScript", "React", "Vite", "Vitest"],
+    status: "live",
+    repo: gh("helpbuy-calculator"),
+    live: "https://helpbuy.deejpotter.com",
+    featured: true,
+  },
+  {
     id: "game-agent",
     name: "Game Agent",
     summary:
