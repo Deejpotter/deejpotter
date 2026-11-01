@@ -6,6 +6,7 @@ describe("sitemap", () => {
     const urls = sitemap().map((entry) => entry.url);
 
     expect(urls).toContain("https://deejpotter.com/projects/games/geek-pride-day");
+    expect(urls).toContain("https://deejpotter.com/projects/games/dungeon-crawl");
     expect(urls).toContain("https://deejpotter.com/projects/games/basic-bases/basic-bases-privacy");
     expect(urls).toContain("https://deejpotter.com/blog/openclaw-android-pairing-request-churn");
     expect(urls.some((url) => url.includes("/projects/services"))).toBe(false);
