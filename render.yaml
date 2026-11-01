@@ -13,7 +13,7 @@ services:
     runtime: static
     branch: dev
     autoDeployTrigger: commit
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    buildCommand: rm -rf out .next && yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./out
     routes:
       - type: redirect
@@ -94,13 +94,28 @@ services:
       - type: redirect
         source: "/groceries/*"
         destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+      - type: redirect
+        source: "/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/downloads/geek-pride-day-prototype.zip"
+        destination: "/projects/games"
   # deejpotter.com
   - type: web
     name: deejpotter-static
     runtime: static
     branch: main
     autoDeployTrigger: commit
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    buildCommand: rm -rf out .next && yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./out
     routes:
       - type: redirect
@@ -181,3 +196,18 @@ services:
       - type: redirect
         source: "/groceries/*"
         destination: "https://github.com/Deejpotter/groceries-spend-visualiser"
+      - type: redirect
+        source: "/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/downloads/geek-pride-day-prototype.zip"
+        destination: "/projects/games"

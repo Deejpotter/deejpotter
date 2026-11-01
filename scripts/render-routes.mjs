@@ -58,7 +58,7 @@ services:`;
     runtime: static
     branch: ${s.branch}
     autoDeployTrigger: commit
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    buildCommand: rm -rf out .next && yarn install --frozen-lockfile && yarn build
     staticPublishPath: ./out
     routes:
 ${routes}`,

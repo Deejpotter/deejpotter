@@ -21,7 +21,6 @@ const staticRoutes = [
   "/projects/games/basic-bases",
   "/projects/games/basic-bases/basic-bases-privacy",
   "/projects/games/dungeon-crawl",
-  "/projects/games/geek-pride-day",
   "/projects/tools",
   "/projects/tools/20-series-cut-calculator",
   "/projects/tools/box-shipping-calculator",
