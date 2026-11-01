@@ -101,6 +101,12 @@ services:
         source: "/geek-pride-day/*"
         destination: "/projects/games"
       - type: redirect
+        source: "/projects/games/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
         source: "/downloads/geek-pride-day-prototype.zip"
         destination: "/projects/games"
   # deejpotter.com
@@ -195,6 +201,12 @@ services:
         destination: "/projects/games"
       - type: redirect
         source: "/geek-pride-day/*"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day"
+        destination: "/projects/games"
+      - type: redirect
+        source: "/projects/games/geek-pride-day/*"
         destination: "/projects/games"
       - type: redirect
         source: "/downloads/geek-pride-day-prototype.zip"

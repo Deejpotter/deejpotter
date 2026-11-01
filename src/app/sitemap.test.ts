@@ -5,7 +5,7 @@ describe("sitemap", () => {
   it("lists the personal pages and write-ups, and none of the moved business pages", () => {
     const urls = sitemap().map((entry) => entry.url);
 
-    expect(urls).toContain("https://deejpotter.com/projects/games/geek-pride-day");
+    expect(urls).not.toContain("https://deejpotter.com/projects/games/geek-pride-day");
     expect(urls).toContain("https://deejpotter.com/projects/games/dungeon-crawl");
     expect(urls).toContain("https://deejpotter.com/projects/games/basic-bases/basic-bases-privacy");
     expect(urls).toContain("https://deejpotter.com/blog/openclaw-android-pairing-request-churn");
