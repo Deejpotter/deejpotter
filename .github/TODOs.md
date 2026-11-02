@@ -47,7 +47,7 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 
 ## Follow-ups
 
-- [ ] Box shipping calculator and CNC Technical AI: connect a backend with `NEXT_PUBLIC_API_URL`, or mark them as demos
+- [x] Box shipping calculator runs in the browser with sample items (2 Nov 2026); CNC Technical AI shows an offline page until `NEXT_PUBLIC_API_URL` has a working backend
 - [ ] Update the GitHub repo description (still describes the quote system) once this is merged
 - [x] Old branches deleted (3 Oct 2026); unmerged work kept as `archive/*` tags
 - [ ] `.github/agents` and `.github/prompts` still hold business prompts (customer replies, CNC triage); move them to `lumendot` or delete them
