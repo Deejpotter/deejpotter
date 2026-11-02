@@ -29,7 +29,7 @@ It was already on `dev` through #164. PR #165 put it on `main` at 20:30 while th
 
 ### Basic Bases
 
-- **The new version could not be shipped because its source is missing.** The rebuild was recorded at `C:\Users\Deej\Unity\projects\BasicBases-Recovered`. That user folder no longer exists and the project was not found anywhere searched. The search did not establish whether G: holds a copy; that part of the check was not reviewed.
+- **The new version could not be shipped because its source is missing.** The rebuild was recorded at `C:\Users\Deej\Unity\projects\BasicBases-Recovered`. That user folder no longer exists and the project was not found anywhere searched. A depth-4 name search of G: found only `G:\My Drive\Game Stuff\Games\Basic Bases`, which holds the technical doc. That folder was not opened.
 - **Still available:** the raw recovered assets at `D:\Backups\old-drive-archive\Repos\krasus\tmp\basic-bases-recovery\RecoveredProject\ExportedProject`. These have art and the font but no working scripts. Also `Repos\krasus\tmp\basic-bases-webgl-candidate`, screenshots, logs, and the reverted WebGL commits in git (`1b91f4e` to `4164e40`).
 - **The reverted WebGL builds are not an option.** The 20 Oct investigation records a startup failure on staging. They were not retested here.
 - **Editor version:** Only Unity 6000.6.7f1 is installed. Unity 2022.3.32f1, used for the rebuild, is not.
