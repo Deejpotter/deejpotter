@@ -14,11 +14,22 @@ export const SAMPLE_ITEMS: ShippingItem[] = [
   { _id: "sample-6", name: "Bearing pack (10)", sku: "SAMPLE-BRG-10", length: 80, width: 60, height: 20, weight: 60 },
 ];
 
+function isShippingItem(value: unknown): value is ShippingItem {
+  const item = value as ShippingItem | null;
+  return (
+    typeof item?._id === "string" &&
+    typeof item.name === "string" &&
+    [item.length, item.width, item.height, item.weight].every(Number.isFinite)
+  );
+}
+
 export function loadItems(): ShippingItem[] {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     const parsed = stored ? JSON.parse(stored) : null;
-    return Array.isArray(parsed) ? parsed : [...SAMPLE_ITEMS];
+    return Array.isArray(parsed) && parsed.every(isShippingItem)
+      ? parsed
+      : [...SAMPLE_ITEMS];
   } catch {
     return [...SAMPLE_ITEMS];
   }

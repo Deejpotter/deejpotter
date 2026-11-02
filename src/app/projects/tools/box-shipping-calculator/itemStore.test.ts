@@ -44,6 +44,12 @@ describe("itemStore", () => {
     window.localStorage.setItem("box-shipping-calculator-items", "{not json");
     expect(loadItems()).toEqual(SAMPLE_ITEMS);
 
+    window.localStorage.setItem("box-shipping-calculator-items", "[null]");
+    expect(loadItems()).toEqual(SAMPLE_ITEMS);
+
+    window.localStorage.setItem("box-shipping-calculator-items", "[{}]");
+    expect(loadItems()).toEqual(SAMPLE_ITEMS);
+
     vi.spyOn(window.localStorage, "getItem").mockImplementation(() => {
       throw new Error("blocked");
     });

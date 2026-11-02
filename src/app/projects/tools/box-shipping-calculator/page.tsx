@@ -33,7 +33,7 @@ const BoxShippingCalculatorPage: React.FC = () => {
     useState<MultiBoxPackingResult | null>(null);
 
   const handleAddItem = (item: Omit<ShippingItem, "_id">) => {
-    setItems((prevItems) => addItem(item, prevItems));
+    setItems(addItem(item, items));
   };
 
   const handleReset = () => {
