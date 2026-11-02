@@ -52,7 +52,7 @@ Fix the open items from the games page post-mortem, then find what would improve
 1. Find or rebuild Basic Bases.
 2. Play Dungeon Crawl through and test the APK.
 3. The Geek Pride redirects from #167 were only added to `render.yaml`. The services were created through the API, so they may not be applied live. The stub pages cover those URLs either way.
-4. Two medium Dependabot alerts remain: minimatch and glob.
+4. One medium Dependabot alert remains: minimatch below 11.0.1. Follow-up on 2026-11-03 removed glob, which was only a stale `resolutions` entry. minimatch 3.x comes from ESLint 9 and its plugins, and 10.x from typedoc and typescript-estree. These are lint and docs tools, not shipped to visitors. It was not forced to 11 because 3.x's default export differs, so wait for upstream or ESLint 10.
 
 ## 8. Commands to reproduce
 
