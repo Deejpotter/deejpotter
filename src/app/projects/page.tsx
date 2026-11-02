@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Projects",
   description:
     "Websites, tools, apps, engineering projects and games built by Deej Potter.",
+  alternates: { canonical: "https://deejpotter.com/projects" },
 };
 
 // Each project category with a short description and the sub-page link.
