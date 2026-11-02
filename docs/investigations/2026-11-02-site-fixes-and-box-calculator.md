@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-02
 **Investigator:** Claude Code
-**Status:** See section 6 for what reached staging and production.
+**Status:** Done. Live on staging (#170) and production (#171). Dependabot alerts went from 21 to 2 (both medium: minimatch, glob).
 
 ## 1. What was asked
 
@@ -44,12 +44,15 @@ Fix the open items from the games page post-mortem, then find what would improve
 - Types clean, lint 0 errors and 4 warnings, 118 of 118 tests, build clean.
 - Audit of the export: no broken links; remaining issues are the 404 and retired stub pages, which need no canonical. The CNC h1 renders client side.
 - Browser test on the export: added two items, calculated a result (1 Small Box), a delete survived reload, reset restored samples, the CNC offline page showed, the card image loaded, and there were no page errors.
+- Review fixes on #170: saved items are validated, a new item is saved once, nanoid is 3.3.20. Tests, types, frozen install and build were rerun; lint and the local browser test were not.
+- Staging and production: calculator returned a packing result, card image loaded (960 x 600), CNC offline page showed, the Geek Pride URL landed on Games, no console errors.
 
 ## 7. Open items
 
 1. Find or rebuild Basic Bases.
 2. Play Dungeon Crawl through and test the APK.
 3. The Geek Pride redirects from #167 were only added to `render.yaml`. The services were created through the API, so they may not be applied live. The stub pages cover those URLs either way.
+4. Two medium Dependabot alerts remain: minimatch and glob.
 
 ## 8. Commands to reproduce
 
