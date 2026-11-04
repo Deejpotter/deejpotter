@@ -41,7 +41,7 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 
 ## Show-off ideas (Deej wants JavaScript on this site)
 
-- [ ] Interactive demos on project cards (for example a live cut optimiser run, or a CYD screen mock)
+- [x] Live cut optimiser demo on the home page (5 Nov 2026). Still open: a CYD screen mock
 - [ ] Real photos or short clips of the hardware builds
 - [ ] Per-project write-up pages for Game Agent and the CYD boards
 
