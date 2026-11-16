@@ -377,7 +377,7 @@ exports[`BoxResultsDisplay > BoxResultsDisplay component > should match snapshot
     >
       <svg
         aria-hidden="true"
-        class="lucide lucide-circle-alert lucide-alert-circle mt-0.5 shrink-0"
+        class="lucide lucide-circle-exclamation-point lucide-alert-circle lucide-circle-alert mt-0.5 shrink-0"
         fill="none"
         height="18"
         stroke="currentColor"
@@ -420,7 +420,7 @@ exports[`BoxResultsDisplay > BoxResultsDisplay component > should match snapshot
           >
             <svg
               aria-hidden="true"
-              class="lucide lucide-circle-alert lucide-alert-circle"
+              class="lucide lucide-circle-exclamation-point lucide-alert-circle lucide-circle-alert"
               fill="none"
               height="18"
               stroke="currentColor"
