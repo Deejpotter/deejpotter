@@ -11,7 +11,7 @@ import { ReactElement } from "react";
 export default function BasicBasesPrivacy(): ReactElement {
   return (
     <>
-      <h2>Privacy Policy</h2>{" "}
+      <h1>Privacy Policy</h1>{" "}
       <p>
         Deejpotter built the Basic Bases game as free game. This SERVICE is
         provided by Deejpotter at no cost and is intended for use as is.

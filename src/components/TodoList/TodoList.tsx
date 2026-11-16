@@ -15,7 +15,7 @@ export default function TodoList(): ReactElement | null {
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900">
         <div className="border-b border-gray-100 bg-primary px-6 py-5 text-white dark:border-gray-800">
-          <h2 className="text-2xl font-bold">Todo List</h2>
+          <h1 className="text-2xl font-bold">Todo List</h1>
         </div>
         <div className="p-5">
           <ul className="space-y-3">

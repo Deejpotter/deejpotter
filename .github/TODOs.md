@@ -28,22 +28,28 @@ Plan and reasoning: `docs/PERSONAL_SITE_PLAN.md`. Branch `feat/personal-site`. D
 - [x] 5. Docs: README, DEVELOPMENT, ARCHITECTURE, copilot instructions, this file, `.env.example`
 - [ ] 6. (Deej) Review the copy and the project list on the draft PR
 - [ ] 7. Check the mobile layout (couldn't be checked in the browser session on 1 Oct)
-- [ ] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
-- [ ] 9. Phase B gate: lumendot.com live and its quote flow tested (needs the ABN and domain first)
-- [ ] 10. Phase C: cut-over (merge #144, close #143, move the domains, drop staging.deejpotter.com)
-- [ ] 11. Phase D, about two weeks later: delete the old Render services, Stripe and Clerk leftovers, old branches
+- [x] 8. Phase A (plan section 6): Render static site from `render.yaml` on this branch; check pages, games, every redirect, mobile, Lighthouse
+- [x] 9. Phase B gate: Lumendot live on lumendot.com (lumendot.com.au waits for the ABN)
+- [x] 10. Phase C, 2 Oct 2026: #144 and #143 merged; static sites `deejpotter-static` (main) and `deejpotter-static-staging` (dev); domains and Cloudflare records moved; staging kept
+- [ ] 11. Phase D (started 2 Oct 2026)
+  - [x] 11.1 Basic Bases game frame fixed (#148) and mobile layout checked at 390px on staging: no page scrolls sideways
+  - [x] 11.2 Old Render services `deejpotter` and `deejpotter-staging` suspended (no quote in progress; Lumendot shares the database)
+  - [ ] 11.3 (Deej) Stripe live account `acct_1GfGL…`: delete the dead endpoint `deejpotter-completed` (deejpotter.com/api/webhooks/stripe). Lumendot's endpoint on lumendot.com stays. In test mode, delete the staging.deejpotter.com endpoint
+  - [ ] 11.4 (Deej) Clerk: delete the "deejpotter.com" application (production instance, unused since Lumendot moved to Better Auth), then the Clerk DNS records in Cloudflare (accounts, clerk, clk._domainkey, clk2._domainkey, clkmail)
+  - [x] 11.5a Old branches deleted (3 Oct 2026): 27 removed; the 8 with commits not in `main` are kept as `archive/<branch>` tags on origin
+  - [ ] 11.5b Delete the suspended Render services
 
 ## Show-off ideas (Deej wants JavaScript on this site)
 
-- [ ] Interactive demos on project cards (for example a live cut optimiser run, or a CYD screen mock)
+- [x] Live cut optimiser demo on the home page (5 Nov 2026). Still open: a CYD screen mock
 - [ ] Real photos or short clips of the hardware builds
 - [ ] Per-project write-up pages for Game Agent and the CYD boards
 
 ## Follow-ups
 
-- [ ] Box shipping calculator and CNC Technical AI: connect a backend with `NEXT_PUBLIC_API_URL`, or mark them as demos
+- [x] Box shipping calculator runs in the browser with sample items (2 Nov 2026); CNC Technical AI shows an offline page until `NEXT_PUBLIC_API_URL` has a working backend
 - [ ] Update the GitHub repo description (still describes the quote system) once this is merged
-- [ ] Delete old branches (`feature/ecommerce-shop`, `deploy-ecommerce`, `feat/quote-order-flow`, `spike/better-auth`, `feat/astro-site`); that history is kept in the `lumendot` repo
+- [x] Old branches deleted (3 Oct 2026); unmerged work kept as `archive/*` tags
 - [ ] `.github/agents` and `.github/prompts` still hold business prompts (customer replies, CNC triage); move them to `lumendot` or delete them
 
 ## Dependency follow-ups

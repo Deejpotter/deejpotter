@@ -55,7 +55,7 @@ This is Deej's personal site: a static Next.js export (see `docs/README.md` and 
 - Env: none required. `NEXT_PUBLIC_API_URL` (optional, build time) connects the CNC Technical AI chat and box calculator items to a backend.
 - Node: 24 LTS (`.nvmrc`, `engines`, CI).
 
-- Deploys: until the switch in `docs/PERSONAL_SITE_PLAN.md`, Render still deploys the old business app from `dev` (staging) and `main` (production). The static site is on `feat/personal-site`; don't merge it into `dev` or `main` before lumendot.com has the quote flow. Planned host: Cloudflare Pages (build `yarn build`, output `out`).
+- Deploys: Render static sites. `dev` deploys to `deejpotter-static-staging` (staging.deejpotter.com) and `main` to `deejpotter-static` (deejpotter.com). Work on a branch, PR into `dev`, check staging, then merge `dev` into `main`. Redirect routes live in `public/_redirects` (generate `render.yaml` with `node scripts/render-routes.mjs`) and are applied to both services through the Render API.
 
 ## Integration Points & Environment
 

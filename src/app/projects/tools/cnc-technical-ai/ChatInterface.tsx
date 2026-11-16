@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import Link from "next/link";
 import LayoutContainer from "@/components/LayoutContainer";
 import { Send, Upload, RotateCcw, MessageSquare, FileText } from "lucide-react";
 
@@ -182,13 +183,32 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   };
 
+  // Without a backend every request would fail, so say so up front.
+  if (!apiUrl) {
+    return (
+      <LayoutContainer>
+        <div className="mx-auto max-w-2xl py-10 text-center">
+          <MessageSquare size={48} className="mx-auto mb-4 text-primary" />
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">CNC Technical AI</h1>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">
+            This assistant answered CNC and 3D printing questions from a Q&amp;A knowledge base. Its
+            backend is offline, so the chat isn&apos;t available right now.
+          </p>
+          <Link href="/blog/cnc-technical-ai" className="mt-6 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-white">
+            Read how it was built
+          </Link>
+        </div>
+      </LayoutContainer>
+    );
+  }
+
   return (
     <LayoutContainer className="min-h-[calc(100vh-9rem)]">
       <div className="grid min-h-[calc(100vh-9rem)] gap-4 lg:grid-cols-[320px_1fr]">
         <aside className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           <div className="mb-4 flex items-center gap-2">
             <MessageSquare size={20} className="text-primary" />
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">CNC Technical AI</h2>
+            <h1 className="text-lg font-bold text-gray-900 dark:text-white">CNC Technical AI</h1>
           </div>
 
           <div

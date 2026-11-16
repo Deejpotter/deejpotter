@@ -14,11 +14,11 @@ describe("redirects", () => {
     expect(read("render.yaml")).toBe(renderYaml(parseRedirects(read("public/_redirects"))));
   });
 
-  test("business pages go to lumendot.com, and specific rules come before catch-alls", () => {
+  test("redirect destinations are approved external sites or an internal retirement route", () => {
     const rules: { source: string; destination: string }[] = parseRedirects(read("public/_redirects"));
     expect(rules.length).toBeGreaterThan(0);
     for (const rule of rules) {
-      expect(rule.destination).toMatch(/^https:\/\/(lumendot\.com|github\.com)\//);
+      expect(rule.destination).toMatch(/^(https:\/\/(lumendot\.com|github\.com)\/|\/projects\/games$)/);
     }
     // Render doesn't document which of two matching rules wins, so keep the
     // more specific one first in case it uses the first match.

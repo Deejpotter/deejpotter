@@ -88,7 +88,11 @@ Old URLs have links, QR codes, Google results and possibly Stripe emails pointin
 
 This site must not lose the quote flow before Lumendot has it.
 
-### Where things stand
+### Status
+
+**Phases A to C done on 2 Oct 2026.** Lumendot runs on lumendot.com while the ABN for lumendot.com.au is pending, so every redirect points there. deejpotter.com, www and staging.deejpotter.com now serve the static site from two Render static sites (staging from `dev`, production from `main`); see `ARCHITECTURE.md`, "Hosting". Phase D is what's left.
+
+### Where things stood before the switch
 
 | | State on 2 Oct 2026 |
 |---|---|

@@ -79,6 +79,7 @@ const initialState: NavbarState = {
           href: "/projects/games",
           items: [
             { href: "/projects/games/basic-bases", label: "Basic Bases" },
+            { href: "/projects/games/dungeon-crawl", label: "Dungeon Crawl" },
             // Add more links here.
           ],
         },

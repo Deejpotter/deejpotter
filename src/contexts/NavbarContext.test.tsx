@@ -71,14 +71,14 @@ describe('NavbarContext', () => {
       expect(engineering?.items?.[0].label).toBe('Wireless Car');
     });
 
-    it('Games category has Basic Bases', () => {
+    it('Games category has Basic Bases and Dungeon Crawl', () => {
       const { result } = renderHook(() => useNavbar(), { wrapper });
       
       const projects = result.current.navItems.find(item => item.label === 'Projects');
       const games = projects?.items?.find(item => item.label === 'Games');
       
       expect(games?.href).toBe('/projects/games');
-      expect(games?.items).toHaveLength(1);
+      expect(games?.items).toHaveLength(2);
       expect(games?.items?.[0].label).toBe('Basic Bases');
     });
   });

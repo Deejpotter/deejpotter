@@ -4,10 +4,8 @@
  * Author: Deej Potter
  * Description: Provides a user interface for selecting items, calculating box sizes, and managing item data.
  * Used on the Box Shipping Calculator page.
- * This component allows users to search, filter, and sort items, as well as add, edit, and delete items from the database.
- *
- * Note: This component handles client-side operations for item management.
- * Database operations are handled through server actions to maintain proper separation of concerns.
+ * This component allows users to search, filter, and sort items, as well as edit and delete them.
+ * Items are stored in the visitor's browser through itemStore.ts.
  */
 
 "use client";
@@ -17,12 +15,13 @@ import ShippingItem, {
   SelectedShippingItem,
 } from "@/types/box-shipping-calculator/ShippingItem";
 import { Search, Plus, Minus, X, Edit, Trash2, Save } from "lucide-react";
+import { deleteItem, updateItem } from "./itemStore";
 
 /**
  * Props interface for ItemSelectAndCalculate component
  * Defines the expected properties and callbacks for the component
  *
- * - availableItems: All items from DB (ShippingItem[])
+ * - availableItems: All stored items (ShippingItem[])
  * - selectedItems: UI state, includes quantity (SelectedShippingItem[])
  * - onSelectedItemsChange: callback for UI state (SelectedShippingItem[])
  * - onCalculateBox: callback for calculation, receives SelectedShippingItem[] with quantities
@@ -35,17 +34,10 @@ interface ItemSelectAndCalculateProps {
    * Callback to trigger box calculation. Receives SelectedShippingItem[] with quantities.
    */
   onCalculateBox: (items: SelectedShippingItem[]) => void;
+  /** Asks the parent to load the stored items. */
   onItemsChange: () => void;
-  /**
-   * Optional callback for when an item is updated
-   * If provided, will be called instead of onItemsChange for better performance
-   */
-  onItemUpdate?: (updatedItem: ShippingItem) => void;
-  /**
-   * Optional callback for when an item is deleted
-   * If provided, will be called instead of onItemsChange for better performance
-   */
-  onItemDelete?: (deletedItemId: string) => void;
+  /** Hands the parent the full list after an edit or delete. */
+  onItemsReplaced: (items: ShippingItem[]) => void;
 }
 
 /**
@@ -59,9 +51,6 @@ type FilterOption = "all" | "light" | "heavy";
  * ItemSelectAndCalculate Component
  * Handles the selection, filtering, and management of items for box calculation
  * Includes search, sort, and filter functionality
- *
- * Note: This is a client-side component that manages the UI state and interactions
- * All database operations are delegated to server actions
  */
 export default function ItemSelectAndCalculate({
   availableItems,
@@ -69,8 +58,7 @@ export default function ItemSelectAndCalculate({
   onSelectedItemsChange,
   onCalculateBox,
   onItemsChange,
-  onItemUpdate,
-  onItemDelete,
+  onItemsReplaced,
 }: ItemSelectAndCalculateProps) {
   // State Management
   // ---------------
@@ -81,11 +69,8 @@ export default function ItemSelectAndCalculate({
   const [editingItemData, setEditingItemData] = useState<ShippingItem | null>(
     null
   ); // Temporary data for the item being edited
-  const [isDeleting, setIsDeleting] = useState<string | null>(null); // Item being deleted (using string ID)
-  const [pendingUpdates, setPendingUpdates] = useState<string[]>([]); // Track items with pending DB updates
   // Focus and UX state
   const [lastEditedItems, setLastEditedItems] = useState<string[]>([]); // IDs of recently edited items
-  const [deletedItemIds, setDeletedItemIds] = useState<string[]>([]); // IDs of deleted items to filter out of UI
   const availableItemsRef = useRef<HTMLDivElement>(null); // Reference for scrolling back to position
   const [scrollPosition, setScrollPosition] = useState(0); // Remember scroll position
   // Loading state for items - this component now manages its own loading
@@ -143,19 +128,10 @@ export default function ItemSelectAndCalculate({
   /**
    * Filter and sort available items based on current criteria
    * Uses useMemo to cache the processed items until dependencies change
-   *
-   * Debug: Log the availableItems and processedItems to verify weights before rendering.
    */
   const processedItems = useMemo(() => {
-    // Debug: Log availableItems to verify weights before filtering/sorting
-    console.log("[ItemSelectAndCalculate] availableItems:", availableItems);
-    // First filter items based on search term, weight filter, and deleted status
-    let filtered = availableItems.filter((item) => {
-      // Skip deleted items
-      if (deletedItemIds.includes(String(item._id))) {
-        return false;
-      }
-
+    // First filter items based on search term and weight filter
+    const filtered = availableItems.filter((item) => {
       const matchesSearch =
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.sku?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -171,7 +147,7 @@ export default function ItemSelectAndCalculate({
     });
 
     // Then sort the filtered items
-    const sorted = filtered.sort((a, b) => {
+    return filtered.sort((a, b) => {
       switch (sortBy) {
         case "weight":
           return a.weight - b.weight;
@@ -183,10 +159,7 @@ export default function ItemSelectAndCalculate({
           return a.name.localeCompare(b.name);
       }
     });
-    // Debug: Log processedItems to verify weights after filtering/sorting
-    console.log("[ItemSelectAndCalculate] processedItems:", sorted);
-    return sorted;
-  }, [availableItems, searchTerm, sortBy, filterBy, deletedItemIds]);
+  }, [availableItems, searchTerm, sortBy, filterBy]);
 
   /**
    * Add an item to the selected items list or increment its quantity
@@ -277,106 +250,44 @@ export default function ItemSelectAndCalculate({
     // This uses the browser's built-in focus management
   };
   /**
-   * Handle item update submission
-   * Updates the item immediately in the UI and syncs to database in background
-   * This approach prevents UI disruption while ensuring data persistence
+   * Save an edited item and update any selected copy of it
    * @param updatedItem Item with updated values
-   */ const handleUpdateItem = async (updatedItem: ShippingItem) => {
-    try {
-      // Save scroll position before update
-      if (availableItemsRef.current) {
-        setScrollPosition(availableItemsRef.current.scrollTop);
-      }
-
-      // Ensure weights and dimensions are integers
-      const processedItem = {
-        ...updatedItem,
-        weight: Math.round(updatedItem.weight),
-        length: Math.round(updatedItem.length),
-        width: Math.round(updatedItem.width),
-        height: Math.round(updatedItem.height),
-      };
-
-      // Update any selected items that match this ID first (immediate UI update)
-      if (
-        selectedItems.some(
-          (item) => String(item._id) === String(updatedItem._id)
-        )
-      ) {
-        onSelectedItemsChange(
-          selectedItems.map((item) =>
-            String(item._id) === String(updatedItem._id)
-              ? { ...updatedItem, quantity: item.quantity }
-              : item
-          )
-        );
-      }
-
-      // Mark this item as recently edited for highlighting
-      setLastEditedItems([String(processedItem._id)]);
-
-      // Add this item to pending updates
-      setPendingUpdates((prev) => [...prev, String(processedItem._id)]);
-
-      // Reset editing state immediately to provide responsive UI
-      setEditingItemId(null);
-      setEditingItemData(null);
-
-      // Update the database in the background using backend API
-      updateItemInBackend(processedItem)
-        .then((response) => {
-          setPendingUpdates((prev) =>
-            prev.filter((id) => id !== String(processedItem._id))
-          );
-          // Use specific callback if available, otherwise reload all items
-          if (onItemUpdate && response.success && response.data) {
-            onItemUpdate(response.data);
-          } else {
-            onItemsChange();
-          }
-        })
-        .catch((error) => {
-          console.error("Background item update failed:", error);
-          // On error, trigger reload to ensure consistency
-          onItemsChange();
-        });
-    } catch (error) {
-      console.error("Failed to update item:", error);
-      throw error;
+   */
+  const handleUpdateItem = (updatedItem: ShippingItem) => {
+    if (availableItemsRef.current) {
+      setScrollPosition(availableItemsRef.current.scrollTop);
     }
+
+    // Ensure weights and dimensions are integers
+    const processedItem = {
+      ...updatedItem,
+      weight: Math.round(updatedItem.weight),
+      length: Math.round(updatedItem.length),
+      width: Math.round(updatedItem.width),
+      height: Math.round(updatedItem.height),
+    };
+
+    onSelectedItemsChange(
+      selectedItems.map((item) =>
+        String(item._id) === String(processedItem._id)
+          ? { ...processedItem, quantity: item.quantity }
+          : item
+      )
+    );
+    setLastEditedItems([String(processedItem._id)]);
+    setEditingItemId(null);
+    setEditingItemData(null);
+    onItemsReplaced(updateItem(processedItem, availableItems));
   };
 
-  const handleDeleteItem = async (itemId: string) => {
+  const handleDeleteItem = (itemId: string) => {
     if (!window.confirm("Are you sure you want to delete this item?")) {
       return;
     }
-    try {
-      setIsDeleting(itemId);
-      setDeletedItemIds((prev) => [...prev, itemId]);
-
-      // Delete from backend API
-      await deleteItemInBackend(itemId);
-
-      // Remove from selected items if it was selected
-      onSelectedItemsChange(
-        selectedItems.filter((item) => String(item._id) !== itemId)
-      );
-
-      // Use specific callback if available, otherwise reload all items
-      if (onItemDelete) {
-        onItemDelete(itemId);
-      } else {
-        // Trigger parent to reload items from database to reflect deletion
-        onItemsChange();
-      }
-    } catch (error) {
-      console.error("Failed to delete item:", error);
-      // On error, remove from local deleted items list and reload
-      setDeletedItemIds((prev) => prev.filter((id) => id !== itemId));
-      onItemsChange();
-    } finally {
-      setIsDeleting(null);
-    }
+    onSelectedItemsChange(
+      selectedItems.filter((item) => String(item._id) !== itemId)
+    );
+    onItemsReplaced(deleteItem(itemId, availableItems));
   };
 
   /**
@@ -632,14 +543,7 @@ export default function ItemSelectAndCalculate({
                     /* Normal View Mode */
                     <>
                       <div className="flex-grow">
-                        <h6 className="mb-1">
-                          {item.name}
-                          {pendingUpdates.includes(String(item._id)) && (
-                            <small className="ml-2">
-                              <span className="inline-block animate-spin border-2 border-gray-500 border-t-transparent rounded-full w-3 h-3" />
-                            </small>
-                          )}
-                        </h6>
+                        <h6 className="mb-1">{item.name}</h6>
                         <small className="text-gray-600">
                           {item.length}x{item.width}x{item.height}mm |{" "}
                           {item.weight}g{item.sku && ` | SKU: ${item.sku}`}
@@ -666,14 +570,9 @@ export default function ItemSelectAndCalculate({
                         <button
                           className="border border-red-500 text-red-500 px-2 py-1 text-sm hover:bg-red-500 hover:text-white ml-1"
                           onClick={() => handleDeleteItem(String(item._id))}
-                          disabled={isDeleting === String(item._id)}
                           title="Delete item"
                         >
-                          {isDeleting === String(item._id) ? (
-                            <span className="inline-block animate-spin border-2 border-gray-500 border-t-transparent rounded-full w-4 h-4" />
-                          ) : (
-                            <Trash2 size={16} />
-                          )}
+                          <Trash2 size={16} />
                         </button>
                       </div>
                     </>
@@ -759,36 +658,4 @@ export default function ItemSelectAndCalculate({
       </button>
     </div>
   );
-}
-
-// Remove server action imports and use backend API endpoints for item update/delete
-// These functions integrate with the technical-ai backend service
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-/**
- * Update an existing shipping item in the backend database
- * Endpoint: PUT /api/shipping/items/:id (Note: This endpoint may need to be implemented in backend)
- * @param item - The shipping item to update (includes _id)
- * Returns: { success: boolean, data: ShippingItem, error?: string }
- */
-async function updateItemInBackend(item: ShippingItem) {
-  const res = await fetch(`${API_URL}/api/shipping/items/${item._id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(item),
-  });
-  return await res.json();
-}
-
-/**
- * Delete a shipping item from the backend database
- * Endpoint: DELETE /api/shipping/items/:id (Note: This endpoint may need to be implemented in backend)
- * @param id - The ID of the shipping item to delete
- * Returns: { success: boolean, error?: string }
- */
-async function deleteItemInBackend(id: string) {
-  const res = await fetch(`${API_URL}/api/shipping/items/${id}`, {
-    method: "DELETE",
-  });
-  return await res.json();
 }

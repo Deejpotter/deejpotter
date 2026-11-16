@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Write-ups",
   description:
     "Build notes and troubleshooting write-ups from Deej Potter's projects.",
+  alternates: { canonical: "https://deejpotter.com/blog" },
 };
 
 export default function BlogPage() {

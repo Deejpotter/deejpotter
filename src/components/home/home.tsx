@@ -4,6 +4,7 @@ import Script from "next/script";
 import { links } from "@/content/links";
 import { projects, type Project } from "@/content/projects";
 import { PrintCube, Reveal, SpotlightGrid } from "./motion";
+import CutDemo from "./CutDemo";
 
 // Status chips share one colour scale so "live" reads as done at a glance.
 const statusStyle: Record<Project["status"], string> = {
@@ -177,6 +178,21 @@ export default function Home(): ReactElement {
               </article>
             ))}
           </SpotlightGrid>
+        </div>
+      </section>
+
+      {/* One tool running live, so the page shows the work as well as listing it. */}
+      <section id="try-it" className="bg-gray-950 px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-black text-white">Try one</h2>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-white/75">
+            The cut optimiser from my tools, running in your browser. Change the
+            cuts and it works out how to get them from the fewest lengths of
+            extrusion.
+          </p>
+          <div className="mt-6">
+            <CutDemo />
+          </div>
         </div>
       </section>
 

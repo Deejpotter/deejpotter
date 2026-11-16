@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import Home from "@/components/home/home";
 import { projects } from "@/content/projects";
@@ -23,6 +23,22 @@ describe("Home component", () => {
     const card = screen.getByRole("heading", { name: "Day Planner" }).closest("article")!;
     expect(within(card).queryByRole("link")).toBeNull();
     expect(within(card).getByText(/private repo/i)).toBeInTheDocument();
+  });
+
+  test("the cut demo plans the starting cuts and replans on edits", () => {
+    render(<Home />);
+    // 4 × 700, 6 × 400 and 4 × 350 with 3 mm kerf fit in 5 lengths of 1500 mm.
+    expect(screen.getByText(/5 × 1500 mm lengths/)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Stock length"), { target: { value: "3000" } });
+    expect(screen.getByText(/× 3000 mm lengths/)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Cut 1 length in mm"), { target: { value: "4000" } });
+    expect(screen.getByRole("alert")).toHaveTextContent(/longer than longest available stock/);
+    expect(screen.getByRole("link", { name: /full cut calculator/i })).toHaveAttribute(
+      "href",
+      "/projects/tools/linear-cut-calculator",
+    );
   });
 
   test("sends work enquiries to Lumendot and has no contact form link", () => {

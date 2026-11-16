@@ -28,14 +28,14 @@ export default function Games(): ReactElement {
       link: "/projects/games/basic-bases",
     },
     {
-      id: "geek-pride-day",
-      name: "Geek Pride Day Platformer",
+      id: "dungeon-crawl",
+      name: "Dungeon Crawl",
       description:
-        "A browser-friendly platformer prototype built from the Geek Pride Day asset pack, ready to embed in a blog post.",
-      technologies: ["HTML", "Canvas", "Browser Game"],
-      image: "/geek-pride-day/resource/The-worker-in-a-yellow-hard-hat-and-blue-overalls-performs-a.webp",
-      buttonLabel: "Play Geek Pride Day Prototype",
-      link: "/projects/games/geek-pride-day",
+        "An idle guild manager RPG. Recruit heroes, clear dungeons, send out expeditions and ascend. Built with Unity.",
+      technologies: ["Unity", "C#", "WebGL"],
+      image: "/images/games/dungeon-crawl.jpg",
+      buttonLabel: "Play Dungeon Crawl",
+      link: "/projects/games/dungeon-crawl",
     },
   ];
 
@@ -65,10 +65,10 @@ export default function Games(): ReactElement {
                 },
                 {
                   "@type": "SoftwareApplication",
-                  "name": "Geek Pride Day Platformer",
+                  "name": "Dungeon Crawl",
                   "applicationCategory": "Game",
                   "operatingSystem": "Web Browser",
-                  "description": "A browser-friendly platformer prototype built from the Geek Pride Day asset pack"
+                  "description": "An idle guild manager RPG where you recruit heroes, clear dungeons and send out expeditions"
                 }
               ]
             }
@@ -153,8 +153,8 @@ export default function Games(): ReactElement {
               More games
             </p>
             <p className="mb-6 text-gray-700 dark:text-gray-300">
-              Idle Minds, a Phaser autobattler, and an AI agent that plays Game
-              Boy Advance games are on GitHub.
+              An AI agent that plays Game Boy Advance games and my other
+              experiments are on GitHub.
             </p>
             <a href="https://github.com/Deejpotter" className="inline-flex items-center rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]">
               See them on GitHub

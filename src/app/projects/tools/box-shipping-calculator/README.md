@@ -9,11 +9,9 @@ Author: Deej Potter
 
 ## Data source and current status
 
-Items and boxes are not stored in this app. `page.tsx` and `ItemSelectAndCalculate.tsx` call an external backend at `NEXT_PUBLIC_API_URL` (`/api/shipping/items`, `/api/shipping/boxes`, `/api/shipping/process-invoice` and the packing endpoints), originally the `technical-ai` service from the `general-backend` repo.
+The site is a static export with no backend. Items live in the visitor's browser (`localStorage`) through `itemStore.ts`, starting from a list of sample parts, and packing runs client side in `BoxCalculations.ts`. If storage is blocked, the samples still load and changes last until the page closes.
 
-- **Status (2026-09-26):** `NEXT_PUBLIC_API_URL` is not set on staging or production, and the `technical-ai` backend didn't respond. The page shows "The item database isn't connected (NEXT_PUBLIC_API_URL is not set)" and makes no requests.
-- **Loading:** items load once when the page mounts. An earlier version re-fetched in a loop after a failed load (tens of thousands of requests per visit); see #121.
-- **Next step (open):** either set `NEXT_PUBLIC_API_URL` to a working backend on both Render services, or move items into this app's MongoDB like the other data. Tracked in `.github/TODOs.md`.
+Invoice import was removed on 2 Nov 2026 because it needed the old `technical-ai` backend, which no longer responds.
 
 ## Features
 
@@ -21,11 +19,9 @@ Items and boxes are not stored in this app. `page.tsx` and `ItemSelectAndCalcula
 - **Multi-Box Support**: Can distribute items across multiple boxes when a single box isn't sufficient
 - **Weight & Volume Optimization**: Considers both weight and volume constraints for optimal shipping costs
 - **Visual Results**: Displays packing results with detailed metrics about volume and weight utilization
-- **Item Management**: Add, edit, and remove items from the database with a user-friendly interface
+- **Item Management**: Add, edit, and remove items, saved in the browser
 - **Smart Box Selection**: Prioritizes smaller boxes over larger ones to minimize shipping costs
 - **Orientation Optimization**: Considers all possible item orientations to maximize space efficiency
-- **Invoice Processing**: Import items from text files using AI-powered text extraction
-- **Simplified File Processing**: Processes text files directly (no complex PDF dependencies)
 
 ## Components
 
@@ -57,11 +53,11 @@ The main user interface for selecting items and initiating calculations, featuri
 
 ### 4. `ItemAddForm.tsx`
 
-Form for adding new items to the database. Editing and deleting happen inside `ItemSelectAndCalculate.tsx`.
+Form for adding new items. Editing and deleting happen inside `ItemSelectAndCalculate.tsx`.
 
-### 5. `PdfImport` (`src/components/PdfImport.tsx`)
+### 5. `itemStore.ts`
 
-Shared upload component used to send an invoice PDF to the backend's `/api/shipping/process-invoice` endpoint, which extracts item information.
+Loads and saves the item list in `localStorage` and holds the sample items.
 
 ## Algorithm Details
 
@@ -82,7 +78,7 @@ To use the Box Shipping Calculator:
 2. **Adjust Quantities**: Set the quantity for each item as needed.
 3. **Calculate**: Click the "Calculate Box Size" button to determine the optimal box configuration.
 4. **Review Results**: View the recommended box configuration with detailed metrics.
-5. **Manage Items**: Use the item management functions to add, edit, or remove items from the database.
+5. **Manage Items**: Use the item management functions to add, edit, or remove items.
 
 ## Data Structure
 
@@ -122,8 +118,8 @@ The 3D bin packing algorithm is implemented in `BoxCalculations.ts` and consists
 - **`page.tsx`**: Main page component that integrates all calculator functionality
 - **`ItemSelectAndCalculate.tsx`**: Handles item selection and initiates calculations
 - **`BoxResultsDisplay.tsx`**: Visualizes packing results with metrics
-- **`ItemAddForm.tsx`**: Adds item database entries
-- **`PdfImport`** (`src/components/PdfImport.tsx`): Uploads invoices to extract item information
+- **`ItemAddForm.tsx`**: Adds items
+- **`itemStore.ts`**: Browser storage for items
 
 ### Testing
 
@@ -149,5 +145,4 @@ Common issues and their solutions:
 - **Items Not Fitting**: If items don't fit, try adjusting their orientations or dimensions. Very large items may require special handling.
 - **Weight Distribution**: If weight distribution is uneven, consider manually adjusting item assignment to boxes.
 - **Performance Issues**: For very large item sets (100+), calculations may take longer. Consider breaking down into smaller batches.
-- **Data Import Errors**: When using the invoice uploader, ensure the invoice format matches the expected structure.
 - **Performance Issues**: For very large numbers of items, try grouping similar items or breaking the calculation into smaller batches.

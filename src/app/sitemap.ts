@@ -20,7 +20,7 @@ const staticRoutes = [
   "/projects/games",
   "/projects/games/basic-bases",
   "/projects/games/basic-bases/basic-bases-privacy",
-  "/projects/games/geek-pride-day",
+  "/projects/games/dungeon-crawl",
   "/projects/tools",
   "/projects/tools/20-series-cut-calculator",
   "/projects/tools/box-shipping-calculator",
