@@ -243,7 +243,7 @@ exports[`BoxResultsDisplay > BoxResultsDisplay component > should match snapshot
             >
               <div
                 class="h-2.5 rounded-full bg-green-500"
-                style="width: 9.333333333333334%;"
+                style="width: 9.33333%;"
               />
             </div>
           </div>
